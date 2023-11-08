@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-space {
+    background: url('../../public/images/backgrounds/space.jpg');
+    background-size: 1600px;
+}
