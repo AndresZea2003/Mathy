@@ -2,11 +2,7 @@
 
 @section('main')
 
-{{--    <div class="bg-space h-screen">--}}
+{{--    <basic-activity></basic-activity>--}}
 
-{{--    </div>--}}
-
-{{--    <my-component></my-component>--}}
-
-    <basic-activity></basic-activity>
+    <interactive-sudoku></interactive-sudoku>
 @endsection
