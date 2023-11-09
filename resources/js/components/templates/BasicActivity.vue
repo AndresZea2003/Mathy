@@ -14,7 +14,7 @@ const idk = () => {
 
 </script>
 <template>
-    <div class="bg-space flex flex-col min-h-screen">
+    <div class="flex flex-col min-h-screen bg-orange-300">
 
         <!--        <nav class="bg-gray-300">-->
         <!--            <div class="mx-auto container px-[1%]">-->
@@ -22,38 +22,27 @@ const idk = () => {
         <!--            </div>-->
         <!--        </nav>-->
 
-        <div class="mx-auto flex-1 container flex justify-center p-[1%]">
+        <div class="mx-auto flex-1 container flex justify-center">
 
             <div class="flex bg-orange-600 p-6 w-full gap-5 rounded-md">
                 <div class="w-[16%] bg-red-200">
                     <HelpCharacter :image="`${localHost}/images/characters/robot/normal.png`"
                                    :image_2="`${localHost}/images/characters/robot/talk.gif`" class=""/>
                 </div>
-                <div id="dat" class="w-[68%] bg-red-200 p-5">
-                    <div class="bg-red-500 flex-col justify-center items-center h-full">
+                <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
+                     <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
+                                         :planet_2="`${localHost}/images/planets/rojo.svg`"
+                                         :rocket="`${localHost}/images/rockets/1.svg`"/>
+                    <div class="bg-red-500 flex justify-center items-center row-span-3">
                         <div>
-                            <div class="mx-auto container p-[1%] flex justify-center">
-                                <div class="">
-                                    <div class="mx-auto container p-[1%] flex justify-center">
-                                        <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
-                                                     :planet_2="`${localHost}/images/planets/rojo.svg`"
-                                                     :rocket="`${localHost}/images/rockets/1.svg`"/>
+                            <div class="my-6 flex justify-center">
+
+                                <div class="grid grid-cols-2">
+                                    <div v-for="i in 4" :key="i" class="bg-blue-200 h-12 w-12 border border-black">
+
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div id="board" class="flex flex-grow justify-center">
-                            <div class="grid grid-cols-2 bg-blue-600 w-full">
-                                <div class="flex justify-center items-center">
-                                    <button
-                                        class="bg-gray-300 shadow-md rounded-lg p-[40%] hover:bg-gray-400 hover:scale-95 duration-300">
-                                    </button>
-                                </div>
-                                <div class="flex justify-center items-center">
-                                    <button
-                                        class="bg-gray-300 shadow-md rounded-lg p-[40%] hover:bg-gray-400 hover:scale-95 duration-300">
-                                    </button>
-                                </div>
+
                             </div>
                         </div>
                     </div>

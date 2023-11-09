@@ -11,7 +11,7 @@ let totalActivities = 10
 </script>
 
 <template>
-    <div class="bg-gray-600 px-5 rounded-md border-black border-2">
+    <div class="bg-space px-5 rounded-md border-black border-2 flex items-center justify-center">
         <div class="grid grid-cols-1">
             <div class="flex justify-center">
                 <span class="font-bold text-white">PROGRESO DEL VIAJE</span>
@@ -20,7 +20,7 @@ let totalActivities = 10
                 <div>
                     <img :src="props.planet_1" width="50" alt="">
                 </div>
-                <div class="flex w-[80%] justify-center bg-gray-400 rounded-full">
+                <div class="flex w-[80%] justify-center bg-gray-400 rounded-full border-2 border-gray-300">
                     <div v-for="i in totalActivities" :key="i" :id="`bar${i}`"
                          :class="['w-full h-5', 'bg-gray-400',
                                                  { 'bg-green-400' : i < activityNumber},
