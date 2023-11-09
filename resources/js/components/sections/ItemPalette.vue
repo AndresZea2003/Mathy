@@ -3,7 +3,7 @@
 
         <div class="w-full flex justify-center">
             <div class="grid grid-cols-2 gap-4 w-full">
-                <div class="flex justify-center col-span-2 gap-10 pb-[15%]">
+                <div class="flex justify-center col-span-2 gap-10 py-[2%]">
 
                     <button class="bg-gray-200 rounded-md p-[6%]">
                         <svg fill="#000000" viewBox="0 0 24 24" version="1.2" baseProfile="tiny" width="30px"
