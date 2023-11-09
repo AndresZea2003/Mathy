@@ -5,9 +5,9 @@
             <div class="grid grid-cols-2 gap-4 w-full">
                 <div class="flex justify-center col-span-2 gap-10 py-[2%]">
 
-                    <button class="bg-gray-200 rounded-md p-[6%]">
-                        <svg fill="#000000" viewBox="0 0 24 24" version="1.2" baseProfile="tiny" width="30px"
-                             height="30px"
+                    <button class="bg-gray-200 rounded-md py-[3%] px-[8%]">
+                        <svg fill="#000000" viewBox="0 0 24 24" version="1.2" baseProfile="tiny" width="26px"
+                             height="26px"
                              xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -20,12 +20,11 @@
                                 </g>
                             </g>
                         </svg>
-
                     </button>
 
-                    <button class="bg-gray-200 rounded-md p-[6%]">
-                        <svg viewBox="-1 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" width="30px"
-                             height="30px"
+                    <button class="bg-gray-200 rounded-md py-[3%] px-[8%]">
+                        <svg viewBox="-1 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" width="26px"
+                             height="26px"
                              xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
