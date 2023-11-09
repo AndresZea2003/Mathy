@@ -1,19 +1,38 @@
 <script setup>
 import IconShoppingCart from "../icons/IconShoppingCart.vue"
-import {ref} from "vue";
+import {ref, onMounted } from "vue";
+import {types, localHost, getSelectItem} from '../../use';
+
+let itemSelected = ref()
+
+onMounted(() => {
+    localStorage.setItem('itemSelected', null)
+    itemSelected.value = getSelectItem()
+});
 
 const props = defineProps({
     items: {type: Object},
-    item_2: {type: String},
-    item_3: {type: String},
-    item_4: {type: String},
 })
 
-let itemSelected = ref(localStorage.getItem('itemSelected'))
-
 const selectItem = (item) => {
-    localStorage.setItem('itemSelected', item.name)
-    itemSelected.value = localStorage.getItem('itemSelected')
+    let selectSound = new Audio()
+    selectSound.src = `${localHost}/audios/effects/bubble.wav`
+    selectSound.play()
+
+    localStorage.setItem('itemSelected', JSON.stringify(item))
+
+    if (item.type === types.letter || item.type === types.number) {
+        for (let i = 0; i < props.items.length; i++) {
+            const item = props.items[i];
+            document.getElementById('itemScreen').classList.remove(item.content)
+        }
+        document.getElementById('itemScreen').classList.add('bg-white')
+        itemSelected.value = getSelectItem()
+    } else if (item.type === types.color) {
+        itemSelected.value.name = null
+        document.getElementById('itemScreen').classList.replace('bg-white', item.content)
+    }
+
 }
 
 </script>
@@ -76,17 +95,18 @@ const selectItem = (item) => {
                     class="bg-red-100 col-span-2 flex justify-center m-3 p-2 rounded-md border-orange-400 border-4 border-dashed">
                     <span class="font-semibold text-xl text-center">Paleta de colores</span>
                 </div>
-                <div @click="selectItem(item)" v-for="item in props.items" class="flex justify-center items-center w-full h-full">
+                <div @click="selectItem(item)" v-for="item in props.items"
+                     class="flex justify-center items-center w-full h-full">
                     <button
                         class="bg-gray-300 shadow-md rounded-lg py-[30%] px-[35%] hover:bg-gray-400 hover:scale-95 duration-300">
-                        {{item.name}}
+                        {{ item.name }}
                     </button>
                 </div>
 
                 <div class="col-span-2 m-3">
                     <div id="itemScreen"
                          :class="`border-2 border-black h-14 col-span-2 shadow-xl rounded-md flex justify-center font-bold text-5xl bg-white`">
-                        {{itemSelected}}
+                        {{ itemSelected ? itemSelected.name : null }}
                     </div>
                 </div>
 
@@ -106,20 +126,6 @@ const selectItem = (item) => {
             </div>
         </div>
     </div>
-
-    <!--                                <div class="col-span-2 flex justify-center mt-5">-->
-    <!--                                    <a :href="props.route_next">-->
-    <!--                                        <button v-if="winLevel"-->
-    <!--                                                class="bg-yellow-300 p-2 font-MPlus flex items-center arrow border-2 border-yellow-100 animate-pulse shadow-2xl shadow-amber-300">-->
-    <!--                                            Siguiente-->
-    <!--                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"-->
-    <!--                                                 viewBox="0 0 24 24">-->
-    <!--                                                <path-->
-    <!--                                                    d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"/>-->
-    <!--                                            </svg>-->
-    <!--                                        </button>-->
-    <!--                                    </a>-->
-    <!--                                </div>-->
 </template>
 
 <style>

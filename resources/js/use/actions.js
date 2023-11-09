@@ -4,5 +4,11 @@ export const types = {
     number: 'NUMBER',
     color: 'COLOR',
     figure: 'FIGURE',
-    zea: 'banana'
+    eraser: 'ERASER'
+}
+
+export const localHost = window.location.origin
+
+export const getSelectItem = () => {
+    return JSON.parse(localStorage.getItem('itemSelected'))
 }
