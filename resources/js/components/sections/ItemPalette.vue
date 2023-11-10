@@ -3,6 +3,7 @@ import IconShoppingCart from "../icons/IconShoppingCart.vue"
 import IconPaintBrush from "../icons/IconPaintBrush.vue"
 import {ref, onMounted} from "vue";
 import {types, sizes, localHost, getSelectItem} from '../../use';
+import Swal from 'sweetalert2'
 
 let itemSelected = ref()
 let itemImg = ref()
@@ -59,7 +60,40 @@ const selectItem = (item) => {
         }
 
     }
+}
 
+const pause = () => {
+    Swal.fire({
+        title: "Pausa",
+        text: "Haz pausado el juego",
+        width: "40rem",
+        html: `
+            <div class="grid gap-2">
+                <div>
+                    <button id="swal-button1" class="bg-blue-200 px-16 py-2 hover:opacity-75 hover:scale-90 rounded-md duration-300">
+                        <span class="font-bold text-2xl">Continuar</span>
+                    </button>
+                </div>
+                <div>
+                    <button id="swal-button1" class="bg-blue-200 px-16 py-2 hover:opacity-75 hover:scale-90 rounded-md duration-300">
+                        <span class="font-bold text-2xl">Niveles</span>
+                    </button>
+                </div>
+                <div>
+                    <button id="swal-button1" class="bg-blue-200 px-16 py-2 hover:opacity-75 hover:scale-90 rounded-md duration-300">
+                        <span class="font-bold text-2xl">Salir</span>
+                    </button>
+                </div>
+            </div>
+          `,
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            // Swal.fire("Saved!", "", "success");
+        } else if (result.isDenied) {
+            Swal.fire("Changes are not saved", "", "info");
+        }
+    });
 }
 
 </script>
@@ -74,7 +108,7 @@ const selectItem = (item) => {
                         <IconShoppingCart/>
                     </button>
 
-                    <button class="bg-gray-200 rounded-md py-[3%] px-[8%]">
+                    <button @click="pause()" class="bg-gray-200 rounded-md py-[3%] px-[8%]">
                         <svg viewBox="-1 0 8 8" version="1.1" xmlns="http://www.w3.org/2000/svg" width="26px"
                              height="26px"
                              xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
@@ -125,13 +159,13 @@ const selectItem = (item) => {
                 <div @click="selectItem(item)" v-for="item in props.items"
                      class="flex justify-center items-center w-full h-full">
                     <button
-                        :class="['bg-gray-100 shadow-md rounded-lg hover:opacity-75 hover:scale-95 duration-300 select-none font-bold text-6xl' ,
-                        {'py-[30%] px-[35%]' : item.type !== types.image && item.type !== types.figure },
-                        {'py-[18%] px-[16%]' : item.type === types.color },
-                        {'py-[12%] px-[20%]' : item.type === types.letter },
-                        {'py-[26%] px-[26%]' : (item.type === types.image || item.type === types.figure ) && item.size === sizes.small },
-                        {'py-[20%] px-[20%]' : (item.type === types.image || item.type === types.figure ) && item.size === sizes.normal },
-                        {'py-[16%] px-[16%]' : (item.type === types.image || item.type === types.figure ) && item.size === sizes.big }
+                        :class="['bg-gray-100 shadow-md rounded-lg hover:opacity-75 hover:scale-95 duration-300 select-none font-bold text-6xl w-20 h-20 flex justify-center items-center' ,
+                        // {'py-[30%] px-[35%]' : item.type !== types.image && item.type !== types.figure },
+                        // {'py-[18%] px-[16%]' : item.type === types.color },
+                        // {'py-[12%] px-[20%]' : item.type === types.letter },
+                        // {'py-[26%] px-[26%]' : (item.type === types.image || item.type === types.figure ) && item.size === sizes.small },
+                        // {'py-[20%] px-[20%]' : (item.type === types.image || item.type === types.figure ) && item.size === sizes.normal },
+                        // {'py-[16%] px-[16%]' : (item.type === types.image || item.type === types.figure ) && item.size === sizes.big }
                         ]">
 
                         {{ item.type === types.letter || item.type === types.number ? item.name : null }}

@@ -6,6 +6,11 @@ import ProgressBar from "../sections/ProgressBar.vue";
 import {types, localHost, sizes, getSelectItem} from '../../use';
 import {ref} from "vue";
 
+const props = defineProps({
+    order_to_resolve: {type: Array},
+    fill_sudoku: {type: Array}
+})
+
 const items = [
     {name: 'A', type: types.letter, content: 'a'},
     // {name: 'b', type: types.letter, content: 'b'},
@@ -57,15 +62,38 @@ const paintItem = (id) => {
 
             imgExisting.src = itemSelected.content;
 
-            if (itemSelected.size === sizes.small){
+            if (itemSelected.size === sizes.small) {
                 imgExisting.width = 50;
-            } else if (itemSelected.size === sizes.normal){
+            } else if (itemSelected.size === sizes.normal) {
                 imgExisting.width = 100;
             }
 
             box.appendChild(imgExisting);
         }
 
+    }
+}
+
+const intro = () => {
+    document.getElementById(props.order_to_resolve[0]).classList.add('animate-pulse')
+}
+
+setTimeout(function () {
+    intro()
+    prepareSudoku()
+}, 500)
+
+const prepareSudoku = () => {
+    let orderArray = []
+    for (let i = 0; i <= 8; i++) {
+        let order = props.fill_sudoku[i] - 1
+        orderArray.push(order)
+        if (orderArray[i] === -1) {
+            continue
+        }
+        let item = items[orderArray[i]]
+        localStorage.setItem('itemSelected', JSON.stringify(item))
+        paintItem(i + 1)
     }
 }
 
