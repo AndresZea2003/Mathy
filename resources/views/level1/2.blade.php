@@ -2,18 +2,18 @@
 
 @section('main')
 
-{{--    <basic-activity></basic-activity>--}}
-
     <interactive-sudoku
-        :size="{{3}}"
-        :order_to_resolve="[1,5,9]"
-        :solution="[1,1,1]"
+        :size="{{4}}"
+        :order_to_resolve="[6,11,15]"
+        :solution="[4,4,4]"
         :fill_sudoku="[
-        0,2,3,
-        3,0,2,
-        2,3,0
+        2,2,3,1,
+        3,0,2,1,
+        2,3,0,1,
+        2,3,0,1,
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
     ></interactive-sudoku>
+
 
 @endsection

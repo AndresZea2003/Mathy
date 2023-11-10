@@ -9,14 +9,16 @@ let itemSelected = ref()
 let itemImg = ref()
 let itemSize = ref()
 
+const props = defineProps({
+    level: {type: Array},
+    items: {type: Object},
+})
+
+
 onMounted(() => {
     localStorage.setItem('itemSelected', null)
     itemSelected.value = getSelectItem()
 });
-
-const props = defineProps({
-    items: {type: Object},
-})
 
 const selectItem = (item) => {
     let selectSound = new Audio()
@@ -131,6 +133,8 @@ const pause = () => {
                         </svg>
                     </button>
                 </div>
+
+
                 <div class="flex justify-center col-span-2 items-center gap-2">
                     <svg height="50px" width="50px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"
@@ -152,6 +156,8 @@ const pause = () => {
                                       d="M283.826,211.478c0,9.223,7.479,16.696,16.696,16.696c9.217,0,16.696-7.473,16.696-16.696 c0-27.961-18.869-51.551-44.522-58.843v-7.939c0-9.223-7.479-16.696-16.696-16.696v55.652 C271.348,183.652,283.826,196.136,283.826,211.478z"></path> </g> </g></svg>
                     <span class="text-white font-bold text-2xl">x008</span>
                 </div>
+
+
                 <div
                     class="bg-red-100 col-span-2 flex justify-center m-3 p-2 rounded-md border-orange-400 border-4 border-dashed">
                     <span class="font-semibold text-xl text-center">Paleta de colores</span>
@@ -189,16 +195,18 @@ const pause = () => {
                 </div>
 
                 <div class="col-span-2 flex justify-center">
-                    <button
-                        class="bg-yellow-infinite py-5 px-12 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400">
+                    <a :href="`${localHost}/level${props.level[0]}/${props.level[1] + 1}`">
+                        <button id="nextLevelButton"
+                                class="bg-yellow-infinite py-5 px-12 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden">
 
-                        <div class="arrow">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
+                            <div class="arrow">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
 
-                    </button>
+                        </button>
+                    </a>
                 </div>
 
             </div>

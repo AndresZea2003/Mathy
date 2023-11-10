@@ -1,12 +1,21 @@
 <script setup>
 
+import {onMounted, ref} from "vue";
+
 const props = defineProps({
     rocket: {type: String},
     planet_1: {type: String},
     planet_2: {type: String},
+    activity_number: {type: Number},
 })
 
-let activityNumber = 7
+let activityNumber = ref(0)
+
+onMounted(() => {
+    activityNumber.value = props.activity_number
+});
+
+
 let totalActivities = 10
 </script>
 
