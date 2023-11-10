@@ -3,16 +3,23 @@ import "../sections/HelpCharacter.vue";
 import HelpCharacter from "../sections/HelpCharacter.vue";
 import ItemPalette from "../sections/ItemPalette.vue";
 import ProgressBar from "../sections/ProgressBar.vue";
-import {types, localHost, getSelectItem} from '../../use';
+import {types, localHost, sizes, getSelectItem} from '../../use';
+import {ref} from "vue";
 
 const items = [
-    {name: 'a', type: types.letter, content: 'a'},
-    {name: 'b', type: types.letter, content: 'b'},
-    {name: 'c', type: types.letter, content: 'c'},
-    {name: 'd', type: types.letter, content: 'd'},
-    {name: 'azul', type: types.color, content: 'bg-blue-600'},
-    {name: 'eraser', type: types.eraser, content: 'bg-white'},
+    {name: 'A', type: types.letter, content: 'a'},
+    // {name: 'b', type: types.letter, content: 'b'},
+    // {name: 'c', type: types.letter, content: 'c'},
+    // {name: 'd', type: types.letter, content: 'd'},
+    {name: 'blue', type: types.color, content: 'bg-blue-600', hex: '#2563eb'},
+    {name: 'yellow', type: types.color, content: 'bg-yellow-400', hex: '#facc15'},
+    // {name: 'eraser', type: types.eraser, content: 'bg-white'},
+    // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.small},
+    // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.normal},
+    {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.big},
 ]
+
+let paintImage = ref(false)
 
 const paintItem = (id) => {
 
@@ -33,6 +40,32 @@ const paintItem = (id) => {
         document.getElementById(id).classList.remove('bg-white')
         document.getElementById(id).classList.add(itemSelected.content)
         document.getElementById(id).innerText = null
+    } else if (itemSelected.type === types.image) {
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            document.getElementById(id).classList.remove(item.content)
+        }
+        document.getElementById(id).classList.add('bg-white')
+        document.getElementById(id).innerText = null
+
+        let box = document.getElementById(id);
+
+        let imgExisting = box.querySelector('img');
+
+        if (!imgExisting) {
+            let imgExisting = document.createElement('img');
+
+            imgExisting.src = itemSelected.content;
+
+            if (itemSelected.size === sizes.small){
+                imgExisting.width = 50;
+            } else if (itemSelected.size === sizes.normal){
+                imgExisting.width = 100;
+            }
+
+            box.appendChild(imgExisting);
+        }
+
     }
 }
 
@@ -55,8 +88,7 @@ const paintItem = (id) => {
 
                                 <div class="grid grid-cols-3">
                                     <div :id="i" @click="paintItem(i)" v-for="i in 9" :key="i"
-                                         class="bg-white h-36 w-36 border border-black hover:opacity-75 flex justify-center items-center font-bold text-6xl">
-
+                                         class="bg-white h-36 w-36 border border-black hover:opacity-75 flex justify-center items-center font-bold text-6xl select-none">
                                     </div>
                                 </div>
 

@@ -1,9 +1,12 @@
 <script setup>
 import IconShoppingCart from "../icons/IconShoppingCart.vue"
-import {ref, onMounted } from "vue";
-import {types, localHost, getSelectItem} from '../../use';
+import IconPaintBrush from "../icons/IconPaintBrush.vue"
+import {ref, onMounted} from "vue";
+import {types, sizes, localHost, getSelectItem} from '../../use';
 
 let itemSelected = ref()
+let itemImg = ref()
+let itemSize = ref()
 
 onMounted(() => {
     localStorage.setItem('itemSelected', null)
@@ -22,6 +25,7 @@ const selectItem = (item) => {
     localStorage.setItem('itemSelected', JSON.stringify(item))
 
     if (item.type === types.letter || item.type === types.number) {
+        itemImg.value = null
         for (let i = 0; i < props.items.length; i++) {
             const item = props.items[i];
             document.getElementById('itemScreen').classList.remove(item.content)
@@ -29,8 +33,31 @@ const selectItem = (item) => {
         document.getElementById('itemScreen').classList.add('bg-white')
         itemSelected.value = getSelectItem()
     } else if (item.type === types.color) {
-        itemSelected.value.name = null
-        document.getElementById('itemScreen').classList.replace('bg-white', item.content)
+        itemSelected.value = null
+        itemImg.value = null
+        for (let i = 0; i < props.items.length; i++) {
+            const item = props.items[i];
+            document.getElementById('itemScreen').classList.remove(item.content)
+            document.getElementById('itemScreen').classList.remove('bg-white')
+        }
+        document.getElementById('itemScreen').classList.add(item.content)
+    } else if (item.type === types.image) {
+        itemSelected.value = null
+        for (let i = 0; i < props.items.length; i++) {
+            const item = props.items[i];
+            document.getElementById('itemScreen').classList.remove(item.content)
+        }
+        document.getElementById('itemScreen').classList.add('bg-white')
+        itemImg.value = item.content
+
+        if (item.size === sizes.small) {
+            itemSize.value = 30
+        } else if (item.size === sizes.normal) {
+            itemSize.value = 40
+        } else if (item.size === sizes.big) {
+            itemSize.value = 50
+        }
+
     }
 
 }
@@ -98,8 +125,24 @@ const selectItem = (item) => {
                 <div @click="selectItem(item)" v-for="item in props.items"
                      class="flex justify-center items-center w-full h-full">
                     <button
-                        class="bg-gray-300 shadow-md rounded-lg py-[30%] px-[35%] hover:bg-gray-400 hover:scale-95 duration-300">
-                        {{ item.name }}
+                        :class="['bg-gray-100 shadow-md rounded-lg hover:opacity-75 hover:scale-95 duration-300 select-none font-bold text-6xl' ,
+                        {'py-[30%] px-[35%]' : item.type !== types.image && item.type !== types.figure },
+                        {'py-[18%] px-[16%]' : item.type === types.color },
+                        {'py-[12%] px-[20%]' : item.type === types.letter },
+                        {'py-[26%] px-[26%]' : (item.type === types.image || item.type === types.figure ) && item.size === sizes.small },
+                        {'py-[20%] px-[20%]' : (item.type === types.image || item.type === types.figure ) && item.size === sizes.normal },
+                        {'py-[16%] px-[16%]' : (item.type === types.image || item.type === types.figure ) && item.size === sizes.big }
+                        ]">
+
+                        {{ item.type === types.letter || item.type === types.number ? item.name : null }}
+
+                        <IconPaintBrush v-if="item.type === types.color" :hex="item.hex"/>
+
+                        <img v-if="item.type === types.image || item.type === types.figure" :src="item.content" alt=""
+                             :class="[
+                                 {'w-[30px]' : item.size === sizes.small},
+                                 {'w-[40px]' : item.size === sizes.normal},
+                                 {'w-[50px]' : item.size === sizes.big} ]">
                     </button>
                 </div>
 
@@ -107,6 +150,7 @@ const selectItem = (item) => {
                     <div id="itemScreen"
                          :class="`border-2 border-black h-14 col-span-2 shadow-xl rounded-md flex justify-center font-bold text-5xl bg-white`">
                         {{ itemSelected ? itemSelected.name : null }}
+                        <img v-if="itemImg" :src="itemImg" alt="" :width="itemSize">
                     </div>
                 </div>
 

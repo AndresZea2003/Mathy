@@ -7,6 +7,12 @@ export const types = {
     eraser: 'ERASER'
 }
 
+export const sizes = {
+    small: 'SMALL',
+    normal: 'NORMAL',
+    big: 'BIG'
+}
+
 export const localHost = window.location.origin
 
 export const getSelectItem = () => {
