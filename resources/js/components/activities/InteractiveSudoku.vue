@@ -13,7 +13,8 @@ const props = defineProps({
     solution: {type: Array},
     level: {type: Array},
     activity_number: {type: Number},
-    level_number: {type: Number}
+    level_number: {type: Number},
+    selectors: {type: Array},
 })
 
 let boxSize = ref(0)
@@ -28,18 +29,17 @@ onMounted(() => {
 
     for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        console.log(item)
 
         let audioPath = `${localHost}/audios/items/${item.name}.mp3`;
 
         verificarExistenciaArchivo(audioPath, function (exist) {
-        if (exist) {
-            console.log('El archivo existe.');
-        } else {
-            // resolveAudio(item.name, item.name, 'items')
-            console.log('El archivo no existe.');
-        }
-    });
+            if (exist) {
+                console.log('El archivo existe.');
+            } else {
+                // resolveAudio(item.name, item.name, 'items')
+                console.log('El archivo no existe.');
+            }
+        });
     }
 
 });
@@ -74,7 +74,6 @@ function verificarExistenciaArchivo(url, callback) {
     xhr.send();
 }
 
-
 const items = [
     {name: 'A', type: types.letter, content: 'a'},
     // {name: 'b', type: types.letter, content: 'b'},
@@ -85,7 +84,12 @@ const items = [
     // {name: 'eraser', type: types.eraser, content: 'bg-white'},
     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.small},
     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.normal},
-    {name: 'Balon dorado', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.big},
+    {
+        name: 'Balon dorado',
+        type: types.image,
+        content: `${localHost}/images/objects/ballon-dorado.svg`,
+        size: sizes.big
+    },
 ]
 
 let paintImage = ref(false)
@@ -159,6 +163,7 @@ const errorPaint = (id) => {
 }
 
 const prepareSudoku = () => {
+
     let orderArray = []
     for (let i = 0; i <= (props.size * props.size) - 1; i++) {
         let order = props.fill_sudoku[i] - 1
@@ -201,6 +206,11 @@ const validateOrder = (id) => {
             bubble.play()
 
             paintItem(id)
+
+            if (props.selectors) {
+                selector(props.selectors[step.value][0], props.selectors[step.value][1], nextBox)
+            }
+
             step.value++
         } else {
             errorPaint(id)
@@ -211,8 +221,106 @@ const validateOrder = (id) => {
 
 }
 
+
+const selector = (row, col, nextBox) => {
+
+    nextBox.classList.remove('animate-pulse')
+    let sudokuIds = []
+    let time = 3000
+
+    for (let i = 1; i <= (props.size * props.size); i++) {
+        sudokuIds.push(i)
+    }
+
+    let sudokuArray = convertInArray(sudokuIds, props.size, props.size);
+
+    let rowsAndCols = getRowsAndCols(sudokuArray)
+
+    for (let i = 0; i <= props.size - 1; i++) {
+        const selectRow = () => {
+            if (row) {
+                document.getElementById(rowsAndCols[0][row - 1][i]).classList.add('duration-300', 'scale-75')
+                setTimeout(function () {
+                    document.getElementById(rowsAndCols[0][row - 1][i]).classList.remove('scale-75')
+                }, time)
+            }
+        }
+
+        const selectCol = () => {
+            if (col) {
+                document.getElementById(rowsAndCols[1][col - 1][i]).classList.add('duration-300', 'scale-75')
+                setTimeout(function () {
+                    document.getElementById(rowsAndCols[1][col - 1][i]).classList.remove('scale-75')
+                }, time)
+            }
+        }
+
+        if (row) {
+            selectRow()
+
+            if (col) {
+                setTimeout(function () {
+                    selectCol()
+                    setTimeout(function () {
+                        nextBox.classList.add('animate-pulse')
+                    }, time)
+                }, time + 500)
+            } else {
+                setTimeout(function () {
+                    nextBox.classList.add('animate-pulse')
+                }, time)
+            }
+
+        } else {
+            selectCol()
+            setTimeout(function () {
+                nextBox.classList.add('animate-pulse')
+            }, time)
+        }
+
+    }
+}
+
+function convertInArray(sudokuIds, rows, cols) {
+    let array = [];
+    for (let i = 0; i < rows; i++) {
+        let row = [];
+        for (let j = 0; j < cols; j++) {
+            row.push(sudokuIds[i * cols + j]);
+        }
+        array.push(row);
+    }
+    return array;
+}
+
+
+function getRowsAndCols(sudokuIds) {
+
+    let getRows = sudokuIds.length;
+    let getCol = sudokuIds[0].length;
+
+    let rows = []
+    let cols = []
+
+    for (let i = 0; i < getRows; i++) {
+        rows.push(sudokuIds[i])
+    }
+
+    for (let j = 0; j < getCol; j++) {
+        let col = [];
+        for (let i = 0; i < getRows; i++) {
+            col.push(sudokuIds[i][j]);
+        }
+        cols.push(col)
+    }
+
+    return [rows, cols]
+}
+
+
 </script>
 <template>
+    <div id="loadStyles" hidden :class="`h-36 w-36 h-24 w-24 h-20 w-20 ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`"></div>
     <div class="flex flex-col min-h-screen bg-orange-300">
         <div class="mx-auto flex-1 container flex justify-center">
             <div class="flex bg-orange-600 p-6 w-full gap-5 rounded-md">
