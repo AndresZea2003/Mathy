@@ -320,7 +320,7 @@ function getRowsAndCols(sudokuIds) {
 
 </script>
 <template>
-    <div id="loadStyles" hidden :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5
+    <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden
     grid-cols-6 grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11 grid-cols-12
      ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`
 
