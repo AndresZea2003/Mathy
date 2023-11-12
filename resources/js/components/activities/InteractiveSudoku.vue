@@ -694,7 +694,7 @@ const showItemsPresentation = () => {
                                  :rocket="`${localHost}/images/rockets/1.svg`"
                                  :activity_number="props.level[1]"
                     />
-                    <div class="bg-red-500 flex justify-center items-center row-span-3">
+                    <div class="bg-red-400 flex justify-center items-center row-span-3">
                         <div>
                             <div class="my-6 flex justify-center">
 

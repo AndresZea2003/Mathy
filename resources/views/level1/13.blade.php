@@ -4,9 +4,9 @@
 
     <interactive-sudoku
         :items="{{json_encode([
-            ['name' => 'Gris', 'type' => 'COLOR', 'content' => 'bg-gray-500', 'hex' => '#6b7280' , 'group' => 'Color'],
-            ['name' => 'Fucsia', 'type' => 'COLOR', 'content' => 'bg-fuchsia-600', 'hex' => '#c026d3' , 'group' => 'Color'],
-            ['name' => 'Verde', 'type' => 'COLOR', 'content' => 'bg-green-600', 'hex' => '#16a34a' , 'group' => 'Color'],
+            ['name' => 'Las uvas', 'type' => 'IMAGE', 'content' => asset('/images/items/fruits/uvas.svg'), 'size' => 'BIG', 'group' => 'Fruta'],
+            ['name' => 'Las bananas', 'type' => 'IMAGE', 'content' => asset('/images/items/fruits/bananas.svg'), 'size' => 'BIG', 'group' => 'Fruta'],
+            ['name' => 'Las fresas', 'type' => 'IMAGE', 'content' => asset('/images/items/fruits/fresas.svg'), 'size' => 'BIG', 'group' => 'Fruta'],
             ['name' => 'Balon dorado', 'type' => 'IMAGE', 'content' => asset('/images/objects/ballon-dorado.svg'), 'size' => 'BIG', 'group' => 'Imagen']
         ])}}"
         :size="{{3}}"

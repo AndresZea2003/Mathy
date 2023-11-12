@@ -4,9 +4,9 @@
 
     <interactive-sudoku
         :items="{{json_encode([
-            ['name' => 'Elcaballo', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/caballo.svg'), 'size' => 'BIG', 'group' => 'Animal'],
-            ['name' => 'Elvaca', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/vaca.svg'), 'size' => 'BIG', 'group' => 'Animal'],
-            ['name' => 'Elcerdo', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/cerdo.svg'), 'size' => 'BIG', 'group' => 'Animal'],
+            ['name' => 'Rosa', 'type' => 'COLOR', 'content' => 'bg-rose-400', 'hex' => '#fb7185' , 'group' => 'Color'],
+            ['name' => 'Violeta', 'type' => 'COLOR', 'content' => 'bg-[#78288C]', 'hex' => '#78288C' , 'group' => 'Color'],
+            ['name' => 'Azul Claro', 'type' => 'COLOR', 'content' => 'bg-[#00aae4]', 'hex' => '#00aae4' , 'group' => 'Color'],
             ['name' => 'Balon dorado', 'type' => 'IMAGE', 'content' => asset('/images/objects/ballon-dorado.svg'), 'size' => 'BIG', 'group' => 'Imagen']
         ])}}"
         :size="{{3}}"
