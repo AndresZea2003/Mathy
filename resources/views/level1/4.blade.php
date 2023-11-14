@@ -2,27 +2,22 @@
 
 @section('main')
 
-    <interactive-sudoku
+    <paint-pattern
         :items="{{json_encode([
-            ['name' => 'Elleon', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/leon.svg'), 'size' => 'BIG', 'group' => 'Animal'],
-            ['name' => 'Elcocodrilo', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/cocodrilo.svg'), 'size' => 'BIG', 'group' => 'Animal'],
-            ['name' => 'Elelefante', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/elefante.svg'), 'size' => 'BIG', 'group' => 'Animal'],
-            ['name' => 'Balon dorado', 'type' => 'IMAGE', 'content' => asset('/images/objects/ballon-dorado.svg'), 'size' => 'BIG', 'group' => 'Imagen']
+            ['name' => 'Gris', 'type' => 'COLOR', 'content' => 'bg-gray-700', 'hex' => '#334155' , 'group' => 'Color'],
+            ['name' => 'Rojo', 'type' => 'COLOR', 'content' => 'bg-red-600', 'hex' => '#dc2626' , 'group' => 'Color'],
+            ['name' => 'Verde', 'type' => 'COLOR', 'content' => 'bg-green-600', 'hex' => '#16a34a' , 'group' => 'Color'],
+            ['name' => 'Amarillo', 'type' => 'COLOR', 'content' => 'bg-yellow-400', 'hex' => '#facc15' , 'group' => 'Color'],
         ])}}"
-        :size="{{3}}"
-        :order_to_resolve="[1,7,6]"
-        :solution="[3,2,3]"
-        :fill_sudoku="[
-        0,1,2,
-        1,2,0,
-        0,3,1
-        ]"
-        :selectors="[
-        [1,0],
-        [3,1],
-        [2,3],
+        :size="[3,3]"
+        :solution="[1,1,1]"
+        :fill_sample="[
+        3,2,1,
+        1,3,2,
+        2,1,3,
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
-    ></interactive-sudoku>
+        :rotate="false"
+    ></paint-pattern>
 
 @endsection

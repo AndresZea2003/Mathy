@@ -2,48 +2,55 @@
 import "../sections/HelpCharacter.vue";
 import HelpCharacter from "../sections/HelpCharacter.vue";
 import ItemPalette from "../sections/ItemPalette.vue";
-import WinView from "../templates/WinView.vue";
 import ProgressBar from "../sections/ProgressBar.vue";
+import WinView from "../templates/WinView.vue";
 import {
-    errorPaint,
-    getCoins,
-    getSelectItem,
+    types,
     localHost,
-    paintItem,
+    sizes,
+    getSelectItem,
     talk,
     talkCharacter,
-    types,
-    updateCoins
+    paintItem,
+    errorPaint,
+    updateCoins, getCoins
 } from '../../use';
 import {onMounted, ref} from "vue";
+import IconArrowRight from "../icons/IconArrowRight.vue"
 import Swal from "sweetalert2";
 
 const props = defineProps({
-    size: {type: Number, required: true},
-    order_to_resolve: {type: Array},
-    fill_sudoku: {type: Array},
+    size: {type: Number},
+    fill_sample: {type: Array},
     solution: {type: Array},
     level: {type: Array},
-    activity_number: {type: Number},
-    level_number: {type: Number},
-    selectors: {type: Array},
     items: {type: Array},
+    rotate: {type: Boolean},
 })
 
 let talkBool = ref(false)
 
 let boxSize = ref(0)
 
+let boxes = ref([])
+
 onMounted(() => {
-    validateAudiosOfPositions(props.selectors)
+    // validateAudiosOfPositions(props.selectors)
+    if (props.size < 5) {
+        boxSize.value = 46
+    } else if (props.size >= 5 && props.size < 10) {
+        boxSize.value = 34
+    } else if (props.size >= 10 && props.size < 12) {
+        boxSize.value = 30
+    } else if (props.size >= 12 && props.size < 20) {
+        boxSize.value = 22
+    }
+
     document.getElementById('coinsCount').innerText = `x ${getCoins()}`
     talk(false)
-    if (props.size === 3) {
-        boxSize.value = 36
-    } else if (props.size === 4) {
-        boxSize.value = 24
-    } else if (props.size === 5) {
-        boxSize.value = 20
+
+    for (let i = 0; i < props.size[0] * props.size[1]; i++) {
+        boxes.value.push(false)
     }
 
     for (let i = 0; i < items.length; i++) {
@@ -96,22 +103,52 @@ function verificarExistenciaArchivo(url, callback) {
 
 
 const items = props.items
+// const items = [
+//
+//     // {name: 'muy bien', type: types.letter, content: 'a'},
+//     // {name: 'correcto', type: types.letter, content: 'a'},
+//     // {name: 'exacto', type: types.letter, content: 'a'},
+//     // {name: 'excelente', type: types.letter, content: 'a'},
+//     // {name: 'Perfecto', type: types.letter, content: 'a'},
+//     // {name: 'genial', type: types.letter, content: 'a'},
+//     // {name: 'brillante', type: types.letter, content: 'a'},
+//     // {name: 'fantastico', type: types.letter, content: 'a'},
+//
+//
+//     // {name: '3', type: types.number, content: '3'},
+//
+//     {name: 'A', type: types.letter, content: 'a', group: 'Letra'},
+//
+//
+//     // {name: 'B', type: types.letter, content: 'b'},
+//     // {name: 'c', type: types.letter, content: 'c'},
+//     // {name: 'd', type: types.letter, content: 'd'},
+//
+//     {name: 'Azul', type: types.color, content: 'bg-blue-600', hex: '#2563eb', group: 'Color'},
+//     {name: 'Amarillo', type: types.color, content: 'bg-yellow-400', hex: '#facc15', group: 'Color'},
+//
+//
+//     // {name: 'eraser', type: types.eraser, content: 'bg-white'},
+//     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.small},
+//     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.normal},
+//
+//
+//     {
+//         name: 'Balon dorado',
+//         type: types.image,
+//         content: `${localHost}/images/objects/ballon-dorado.svg`,
+//         size: sizes.big,
+//         group: 'Imagen'
+//     },
+// ]
 
 let paintImage = ref(false)
 
 const intro = () => {
-
-    let introductionAudio = new Audio(`${localHost}/audios/start/sudoku/introduction/vamossuperarsiguientereto.m4a`)
-
-    introductionAudio.play()
-
-    introductionAudio.onended = function () {
-        showItemsPresentation(true)
-    }
+    showFocusBox(props.order_to_resolve[0])
 }
 
 const showFocusBox = (id) => {
-
     document.getElementById(id).classList.add('animate-pulse', 'zoom-box')
 
     setTimeout(function () {
@@ -119,47 +156,57 @@ const showFocusBox = (id) => {
     }, 3000)
 }
 
-setTimeout(function () {
-    Swal.fire({
-        title: `Actividad ${props.level[1]}`,
-        text: 'Llegamos a los Sudokus! Aqui veremos un poco de pensamiento combinatorio, filas y muchos colores!',
-        icon: 'warning',
-        confirmButtonText: 'Comenzar'
-    }).then((result) => {
-        // if (result.isConfirmed) {
-        //     initialAudio();
-        //     prepareSudoku()
-        // }
-        intro();
-        prepareSudoku()
-    });
-}, 500)
-
 // setTimeout(function () {
-//     intro();
-//     prepareSudoku()
+//     Swal.fire({
+//         title: `Actividad ${props.level[1]}`,
+//         text: 'Llegamos a los Sudokus! Aqui veremos un poco de pensamiento combinatorio, filas y muchos colores!',
+//         icon: 'warning',
+//         confirmButtonText: 'Comenzar'
+//     }).then((result) => {
+//         // if (result.isConfirmed) {
+//         //     initialAudio();
+//         //     prepareSudoku()
+//         // }
+//         intro();
+//         prepareSudoku()
+//     });
 // }, 500)
 
-const prepareSudoku = () => {
+setTimeout(function () {
+    // intro();
+    prepare()
+}, 500)
+
+const prepare = () => {
 
     let orderArray = []
-    for (let i = 0; i <= (props.size * props.size) - 1; i++) {
-        let order = props.fill_sudoku[i] - 1
+    for (let i = 0; i <= props.fill_sample.length - 1; i++) {
+        let order = props.fill_sample[i] - 1
         orderArray.push(order)
         if (orderArray[i] === -1) {
             continue
         }
         let item = items[orderArray[i]]
         localStorage.setItem('itemSelected', JSON.stringify(item))
-        paintItem(i + 1, items)
-        localStorage.setItem('itemSelected', JSON.stringify(null))
+        paintItem(`sample-${i + 1}`, items)
 
+        localStorage.setItem('itemSelected', JSON.stringify(null))
     }
+
+    if (props.rotate) {
+        document.getElementById('sample-img').classList.add('rotate-45', 'scale-75')
+
+        document.getElementById('activity-img').classList.add('rotate-45', 'scale-75')
+    }
+
 }
 
 let step = ref(0)
 let focusBox = ref()
+
+
 const validateOrder = (id) => {
+
     let itemSelected = getSelectItem()
 
     if (itemSelected.type === types.eraser) {
@@ -167,134 +214,40 @@ const validateOrder = (id) => {
         return
     }
 
-    focusBox.value = props.order_to_resolve[step.value]
+    if (itemSelected.content === items[(props.fill_sample[id - 1]) - 1].content) {
+        paintItem(id, items)
 
-    let box = document.getElementById(`${props.order_to_resolve[step.value]}`)
-    let nextBox = document.getElementById(`${props.order_to_resolve[step.value + 1]}`)
+        let bubble = new Audio()
+        bubble.src = `${localHost}/audios/effects/soapBubble.wav`
+        bubble.play()
 
-    if (focusBox.value === id && talkBool.value === false) {
+        document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
 
+        boxes.value[id - 1] = true
 
-        let item = items[props.solution[step.value] - 1]
-
-
-        if (item.name === itemSelected.name) {
-
-            let successes = new Audio(`${localHost}/audios/successes/muybien.m4a`)
-
-            let ext = new Audio()
-            let showExt = true
-
-            if (item.type === types.letter) {
-                ext.src = `${localHost}/audios/items/extensions/La letra.wav`
-            } else if (item.type === types.number) {
-                ext.src = `${localHost}/audios/items/extensions/El numero.wav`
-            } else if (item.type === types.color) {
-                ext.src = `${localHost}/audios/items/extensions/El color.wav`
-            } else {
-                showExt = false
-            }
-
-
-            let itemSound = new Audio(`${localHost}/audios/items/${item.name}.m4a`)
-            let explainSound = new Audio(`${localHost}/audios/explanations/erafaltanteparacompletar.m4a`)
-
-            talkBool.value = true
-            talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-
-            successes.play()
-
-            successes.onended = function () {
-                if (showExt) {
-                    ext.play()
-                } else {
-                    itemSound.play()
-                }
-            };
-
-            ext.onended = function () {
-                itemSound.play()
-            };
-
-            itemSound.onended = function () {
-                explainSound.play()
-            };
-
-            explainSound.onended = function () {
-                if (props.selectors) {
-                    selector(props.selectors[step.value][0], props.selectors[step.value][1], nextBox, item, false)
-                }
+        for (let i = 0; i < props.size[0] * props.size[1]; i++) {
+            if (boxes.value[i] === true) {
                 step.value++
-
             }
-
-            box.classList.remove('animate-pulse')
-
-            let bubble = new Audio()
-            bubble.src = `${localHost}/audios/effects/soapBubble.wav`
-            bubble.play()
-
-            paintItem(id, items)
-
-        } else {
-            errorPaint(id)
-            let errorSound = new Audio(`${localHost}/audios/effects/wood.wav`)
-            errorSound.play()
-
-            talkBool.value = true
-            talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-
-            let ext = new Audio()
-            let showExt = true
-
-            let itemError = getSelectItem()
-
-            if (itemError.type === types.letter) {
-                ext.src = `${localHost}/audios/items/extensions/La letra.wav`
-            } else if (itemError.type === types.number) {
-                ext.src = `${localHost}/audios/items/extensions/El numero.wav`
-            } else if (itemError.type === types.color) {
-                ext.src = `${localHost}/audios/items/extensions/El color.wav`
-            } else {
-                showExt = false
-            }
-
-            let failed = new Audio(`${localHost}/audios/failed/buenintentopero.m4a`)
-            let itemSound = new Audio(`${localHost}/audios/items/${itemError.name}.m4a`)
-            let failedExplainSound = new Audio(`${localHost}/audios/explanations/errors/yaseencuentra.m4a`)
-
-            failed.play()
-
-            failed.onended = function () {
-                if (showExt) {
-                    ext.play()
-                } else {
-                    itemSound.play()
-                }
-            };
-
-            ext.onended = function () {
-                itemSound.play()
-            };
-
-            itemSound.onended = function () {
-                failedExplainSound.play()
-            };
-
-            failedExplainSound.onended = function () {
-                if (props.selectors) {
-                    selector(props.selectors[step.value][0], props.selectors[step.value][1], nextBox, item, true)
-                } else {
-                    errorPaint(id)
-                }
-            }
-
-
         }
-    } else {
-        errorPaint(id)
-    }
+        console.log(step.value)
 
+        if (step.value === props.size[0] * props.size[1]) {
+            win()
+        }
+        step.value = 0
+
+    } else {
+        paintItem(id, items)
+
+        let bubble = new Audio()
+        bubble.src = `${localHost}/audios/effects/wood.wav`
+        bubble.play()
+
+        boxes.value[id - 1] = false
+
+        document.getElementById(id).classList.add('animate-pulse', 'scale-95')
+    }
 }
 
 
@@ -329,16 +282,16 @@ const selector = (row, col, nextBox, item, isError) => {
             if (row) {
                 if (isError) {
                     setTimeout(function () {
-                        document.getElementById(rowsAndCols[0][row - 1][i]).classList.add('duration-300', 'scale-50', 'border-8', 'border-red-600')
+                        document.getElementById(rowsAndCols[0][row - 1][i]).classList.add('duration-300', 'animate-bounce')
                         setTimeout(function () {
-                            document.getElementById(rowsAndCols[0][row - 1][i]).classList.remove('scale-50', 'border-8', 'border-red-600')
+                            document.getElementById(rowsAndCols[0][row - 1][i]).classList.remove('animate-bounce')
                         }, time)
                     }, 100)
 
                 } else {
-                    document.getElementById(rowsAndCols[0][row - 1][i]).classList.add('duration-300', 'scale-50', 'border-8', 'border-yellow-400')
+                    document.getElementById(rowsAndCols[0][row - 1][i]).classList.add('duration-300', 'scale-75')
                     setTimeout(function () {
-                        document.getElementById(rowsAndCols[0][row - 1][i]).classList.remove('scale-50', 'border-8', 'border-yellow-400')
+                        document.getElementById(rowsAndCols[0][row - 1][i]).classList.remove('scale-75')
                     }, time)
                 }
             }
@@ -348,16 +301,16 @@ const selector = (row, col, nextBox, item, isError) => {
             if (col) {
                 if (isError) {
                     setTimeout(function () {
-                        document.getElementById(rowsAndCols[1][col - 1][i]).classList.add('duration-300', 'scale-50', 'border-8', 'border-red-600')
+                        document.getElementById(rowsAndCols[1][col - 1][i]).classList.add('duration-300', 'animate-bounce')
                         setTimeout(function () {
-                            document.getElementById(rowsAndCols[1][col - 1][i]).classList.remove('scale-50', 'border-8', 'border-red-600')
+                            document.getElementById(rowsAndCols[1][col - 1][i]).classList.remove('animate-bounce')
                         }, time)
                     }, 100)
 
                 } else {
-                    document.getElementById(rowsAndCols[1][col - 1][i]).classList.add('duration-300', 'scale-50', 'border-8', 'border-yellow-400')
+                    document.getElementById(rowsAndCols[1][col - 1][i]).classList.add('duration-300', 'scale-75')
                     setTimeout(function () {
-                        document.getElementById(rowsAndCols[1][col - 1][i]).classList.remove('scale-50', 'border-8', 'border-yellow-400')
+                        document.getElementById(rowsAndCols[1][col - 1][i]).classList.remove('scale-75')
                     }, time)
                 }
             }
@@ -634,34 +587,27 @@ const validateAudiosOfPositions = (selector) => {
     }
 }
 
-const showItemsPresentation = (showFocus) => {
+const showItemsPresentation = () => {
     let box = document.getElementById('itemPresentation')
 
     box.classList.remove('hidden')
 
-    let time = 0
-
     for (let i = 0; i < items.length; i++) {
-
-        let subTime = 0
-
-        time = subTime
-
+        let time = 0
 
         if (i === 1) {
-            subTime = 2000
+            time = 2000
         } else if (i === 2) {
-            subTime = subTime + 4000
+            time = time + 4000
         } else if (i === 3) {
-            subTime = subTime + 6000
+            time = time + 6000
         } else if (i === 4) {
-            subTime = subTime + 8000
+            time = time + 8000
         } else if (i === 5) {
-            subTime = subTime + 10000
+            time = time + 10000
         }
 
         let itemSound = new Audio(`${localHost}/audios/items/${items[i].name}.m4a`)
-        let start = new Audio(`${localHost}/audios/start/sudoku/locate/${items[0].group}.m4a`)
 
         if (items[i].type === types.image) {
 
@@ -675,7 +621,7 @@ const showItemsPresentation = (showFocus) => {
                 img.alt = 'Descripción de la imagen';
 
                 box.appendChild(img);
-            }, subTime)
+            }, time)
 
             setTimeout(function () {
                 let imgExt = box.getElementsByTagName('img')[0];
@@ -683,7 +629,7 @@ const showItemsPresentation = (showFocus) => {
                 if (imgExt) {
                     box.removeChild(imgExt);
                 }
-            }, subTime + 2000)
+            }, time + 2000)
 
         } else if (items[i].type === types.letter || items[i].type === types.number) {
 
@@ -696,11 +642,11 @@ const showItemsPresentation = (showFocus) => {
             setTimeout(function () {
                 itemSound.play()
                 box.innerText = items[i].name
-            }, subTime)
+            }, time)
 
             setTimeout(function () {
                 box.innerText = null
-            }, subTime + 2000)
+            }, time + 2000)
         } else if (items[i].type === types.color) {
 
             let imgExt = box.getElementsByTagName('img')[0];
@@ -712,39 +658,25 @@ const showItemsPresentation = (showFocus) => {
             setTimeout(function () {
                 itemSound.play()
                 box.classList.replace('bg-gray-200', items[i].content)
-            }, subTime)
+            }, time)
 
             setTimeout(function () {
                 box.classList.replace(items[i].content, 'bg-gray-200')
-            }, subTime + 2000)
+            }, time + 2000)
         } else if (items[i].type === types.eraser) {
             setTimeout(function () {
                 box.classList.add('hidden')
-                start.play()
-                if (showFocus) {
-                    start.onended = function () {
-                        showFocusBox(props.order_to_resolve[0])
-                    }
-                }
-            }, subTime)
+            }, time)
             continue
         }
 
         if (i === items.length - 1) {
             setTimeout(function () {
                 box.classList.add('hidden')
-                start.play()
-                if (showFocus) {
-                    start.onended = function () {
-                        showFocusBox(props.order_to_resolve[0])
-                    }
-                }
-            }, subTime + 2000)
+            }, time + 2000)
 
         }
     }
-
-    return time
 }
 
 </script>
@@ -752,44 +684,51 @@ const showItemsPresentation = (showFocus) => {
     <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden
     grid-cols-6 grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11 grid-cols-12
      ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`
+
 "></div>
 
     <WinView id="winView" class="hidden opacity-0 duration-300"/>
 
-    <div class="flex flex-col min-h-screen bg-orange-300">
+    <div class="flex flex-col min-h-screen bg-blue-300">
         <div class="mx-auto flex-1 container flex justify-center">
-            <div class="flex bg-orange-600 p-6 w-full gap-5 rounded-md">
-                <div class="w-[16%] bg-red-200">
-                    <HelpCharacter :image="`${localHost}/images/characters/robot/normal.png`"
-                                   :image_2="`${localHost}/images/characters/robot/talk.gif`"
-                                   bg=""
-                    />
-                </div>
-                <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
-                    <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
-                                 :planet_2="`${localHost}/images/planets/rojo.svg`"
-                                 :rocket="`${localHost}/images/rockets/1.svg`"
-                                 :activity_number="props.level[1]"
-                    />
-                    <div class="flex justify-center items-center row-span-3">
+            <div class="flex bg-blue-500 p-6 w-full gap-5 rounded-md grid grid-cols-5">
+                <div class="col-span-4 grid grid-cols-4 gap-5 grid-rows-3">
+                    <div class="col-span-4 flex justify-center items-center bg-rose-200">
                         <div>
-                            <div class="my-6 flex justify-center">
-
-                                <div :class="`grid grid-cols-${props.size}`">
-                                    <div :id="i" @click="validateOrder(i)" v-for="i in props.size * props.size" :key="i"
-                                         :class="`bg-white border border-black hover:opacity-75
+                            <div class="my-6 flex justify-center gap-5">
+                                <div id="sample-img" :class="`flex`">
+                                    <div :id="`sample-${i}`" @click="validateOrder(i)"
+                                         v-for="i in props.size" :key="i"
+                                         :class="`bg-white border border-black hover:opacity-75 w-14 h-14
                                           flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
+
+                    <div class="flex col-span-4 gap-5 row-span-2 grid grid-cols-4">
+                        <div @click="showItemsPresentation()" class="bg-red-200">
+                            <HelpCharacter class="" :image="`${localHost}/images/characters/robot/normal.png`"
+                                           :image_2="`${localHost}/images/characters/robot/talk.gif`"
+                            />
+                        </div>
+                        <div id="dat" class="col-span-3 bg-red-200 p-5 grid flex">
+                            <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
+                                         :planet_2="`${localHost}/images/planets/rojo.svg`"
+                                         :rocket="`${localHost}/images/rockets/1.svg`"
+                                         :activity_number="props.level[1]"
+                            />
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="w-[16%] bg-red-200">
+                <div class="">
                     <ItemPalette :level="props.level" :items="items"/>
                 </div>
+
+
             </div>
         </div>
     </div>

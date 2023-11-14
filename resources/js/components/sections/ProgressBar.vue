@@ -16,11 +16,11 @@ onMounted(() => {
 });
 
 
-let totalActivities = 30
+let totalActivities = 7
 </script>
 
 <template>
-    <div class="bg-space px-5 rounded-md border-black border-2 flex items-center justify-center">
+    <div class="bg-space px-5 rounded-md border-black border-2 flex-col items-center justify-center">
         <div class="grid grid-cols-1">
             <div class="flex justify-center">
                 <span class="font-bold text-white">PROGRESO DEL VIAJE</span>
@@ -51,7 +51,7 @@ let totalActivities = 30
                     <div id="naveDiv" :style="`grid-column: ${activityNumber};`"
                          class="flex justify-center duration-300">
                         <img id="nave" class="" :src="props.rocket"
-                             width="60" alt="">
+                             width="160" alt="">
                     </div>
                 </div>
             </div>

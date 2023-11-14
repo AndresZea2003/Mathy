@@ -12,7 +12,7 @@ let showImage = ref(props.image)
 
 </script>
 <template>
-    <div class="bg-orange-400 h-full grid grid-row-2">
+    <div class="bg-rose-300 h-full grid grid-row-2">
         <div class="flex justify-center items-center">
             <div id="itemPresentation" class="h-36 w-36 bg-gray-200 flex justify-center items-center text-8xl font-bold shadow-xl hidden">
             </div>

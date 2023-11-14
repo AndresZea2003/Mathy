@@ -44,7 +44,7 @@ const selectItem = (item) => {
             document.getElementById('itemScreen').classList.remove('bg-white')
         }
         document.getElementById('itemScreen').classList.add(item.content)
-    } else if (item.type === types.image) {
+    } else if (item.type === types.image || item.type === types.eraser) {
         itemSelected.value = null
         for (let i = 0; i < props.items.length; i++) {
             const item = props.items[i];
@@ -100,7 +100,7 @@ const pause = () => {
 
 </script>
 <template>
-    <div class="flex  items-center justify-between justify-center bg-red-800 h-full">
+    <div class="flex items-center justify-between justify-center bg-rose-400 h-full">
 
         <div class="w-full flex justify-center">
             <div class="grid grid-cols-2 gap-4 w-full">
@@ -188,7 +188,7 @@ const pause = () => {
 
                         <IconPaintBrush v-if="item.type === types.color" :hex="item.hex"/>
 
-                        <img v-if="item.type === types.image || item.type === types.figure" :src="item.content" alt=""
+                        <img v-if="item.type === types.image || item.type === types.figure || item.type === types.eraser" :src="item.content" alt=""
                              :class="[
                                  {'w-[30px]' : item.size === sizes.small},
                                  {'w-[40px]' : item.size === sizes.normal},
