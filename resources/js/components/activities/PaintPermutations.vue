@@ -20,12 +20,13 @@ import IconArrowRight from "../icons/IconArrowRight.vue"
 import Swal from "sweetalert2";
 
 const props = defineProps({
-    size: {type: Number},
-    fill_sample: {type: Array},
+    size: {type: Array},
     solution: {type: Array},
     level: {type: Array},
     items: {type: Array},
     rotate: {type: Boolean},
+    order_to_resolve: {type: Array},
+    fill_sample: {type: Array},
 })
 
 let talkBool = ref(false)
@@ -36,14 +37,14 @@ let boxes = ref([])
 
 onMounted(() => {
     // validateAudiosOfPositions(props.selectors)
-    if (props.size < 5) {
-        boxSize.value = 46
-    } else if (props.size >= 5 && props.size < 10) {
-        boxSize.value = 34
-    } else if (props.size >= 10 && props.size < 12) {
-        boxSize.value = 30
-    } else if (props.size >= 12 && props.size < 20) {
-        boxSize.value = 22
+    if (props.size[0] * props.size[1] < 5) {
+        boxSize.value = 36
+    } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 10) {
+        boxSize.value = 24
+    } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 26) {
+        boxSize.value = 20
+    }  else if (props.size[0] * props.size[1] > 26) {
+        boxSize.value = 12
     }
 
     document.getElementById('coinsCount').innerText = `x ${getCoins()}`
@@ -103,44 +104,6 @@ function verificarExistenciaArchivo(url, callback) {
 
 
 const items = props.items
-// const items = [
-//
-//     // {name: 'muy bien', type: types.letter, content: 'a'},
-//     // {name: 'correcto', type: types.letter, content: 'a'},
-//     // {name: 'exacto', type: types.letter, content: 'a'},
-//     // {name: 'excelente', type: types.letter, content: 'a'},
-//     // {name: 'Perfecto', type: types.letter, content: 'a'},
-//     // {name: 'genial', type: types.letter, content: 'a'},
-//     // {name: 'brillante', type: types.letter, content: 'a'},
-//     // {name: 'fantastico', type: types.letter, content: 'a'},
-//
-//
-//     // {name: '3', type: types.number, content: '3'},
-//
-//     {name: 'A', type: types.letter, content: 'a', group: 'Letra'},
-//
-//
-//     // {name: 'B', type: types.letter, content: 'b'},
-//     // {name: 'c', type: types.letter, content: 'c'},
-//     // {name: 'd', type: types.letter, content: 'd'},
-//
-//     {name: 'Azul', type: types.color, content: 'bg-blue-600', hex: '#2563eb', group: 'Color'},
-//     {name: 'Amarillo', type: types.color, content: 'bg-yellow-400', hex: '#facc15', group: 'Color'},
-//
-//
-//     // {name: 'eraser', type: types.eraser, content: 'bg-white'},
-//     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.small},
-//     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.normal},
-//
-//
-//     {
-//         name: 'Balon dorado',
-//         type: types.image,
-//         content: `${localHost}/images/objects/ballon-dorado.svg`,
-//         size: sizes.big,
-//         group: 'Imagen'
-//     },
-// ]
 
 let paintImage = ref(false)
 
@@ -190,10 +153,14 @@ const prepare = () => {
         localStorage.setItem('itemSelected', JSON.stringify(item))
         paintItem(`${i + 1}`, items)
 
+        if (props.order_to_resolve.includes(i + 1)) {
+            document.getElementById(`${i + 1}`).classList.replace(getSelectItem().content, 'bg-white')
+        }
+
         localStorage.setItem('itemSelected', JSON.stringify(null))
     }
 
-    if (props.rotate) {
+    if (props.rotate){
         document.getElementById('sample-img').classList.add('rotate-45', 'scale-75')
 
         document.getElementById('activity-img').classList.add('rotate-45', 'scale-75')
@@ -207,15 +174,16 @@ let focusBox = ref()
 
 const validateOrder = (id) => {
 
-    paintItem(id, items)
+    console.log('ola')
+    let itemSelected = getSelectItem()
 
-    // let itemSelected = getSelectItem()
-    //
-    // if (itemSelected.type === types.eraser) {
-    //     errorPaint(id)
-    //     return
-    // }
-    //
+    if (itemSelected.type === types.eraser) {
+        errorPaint(id)
+        return
+    }
+
+    paintItem(id,items)
+
     // if (itemSelected.content === items[(props.fill_sample[id - 1]) - 1].content) {
     //     paintItem(id, items)
     //
@@ -691,47 +659,42 @@ const showItemsPresentation = () => {
 
     <WinView id="winView" class="hidden opacity-0 duration-300"/>
 
-    <div class="flex flex-col min-h-screen bg-green-300">
+    <div class="flex flex-col min-h-screen bg-yellow-300">
         <div class="mx-auto flex-1 container flex justify-center">
-            <div class="flex bg-green-500 p-6 w-full gap-5 rounded-md grid grid-cols-5">
-                <div class="col-span-4 grid grid-cols-4 gap-5 grid-rows-3">
+            <div class="flex bg-yellow-500 p-6 w-full gap-5 rounded-md">
+                <div @click="showItemsPresentation()" class="w-[16%] bg-red-200">
+                    <HelpCharacter :image="`${localHost}/images/characters/robot/normal.png`"
+                                   :image_2="`${localHost}/images/characters/robot/talk.gif`"
+                    />
+                </div>
+                <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
+                    <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
+                                 :planet_2="`${localHost}/images/planets/rojo.svg`"
+                                 :rocket="`${localHost}/images/rockets/1.svg`"
+                                 :activity_number="props.level[1]"
+                    />
 
-                    <div class="flex col-span-4 gap-5 row-span-2 grid grid-cols-4">
-                        <div @click="showItemsPresentation()" class="bg-red-200">
-                            <HelpCharacter class="" :image="`${localHost}/images/characters/robot/normal.png`"
-                                           :image_2="`${localHost}/images/characters/robot/talk.gif`"
-                            />
-                        </div>
-                        <div id="dat" class="col-span-3 bg-red-200 p-5 grid flex">
-                            <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
-                                         :planet_2="`${localHost}/images/planets/rojo.svg`"
-                                         :rocket="`${localHost}/images/rockets/1.svg`"
-                                         :activity_number="props.level[1]"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="col-span-4 flex justify-center items-center bg-rose-200">
+                    <div class="row-span-3 flex justify-center items-center">
                         <div>
                             <div class="my-6 flex justify-center gap-5">
-                                <div id="sample-img" :class="`flex`">
-                                    <div :id="`${i}`" @click="validateOrder(i)"
-                                         v-for="i in props.size" :key="i"
-                                         :class="`bg-white border border-black hover:opacity-75 w-14 h-14
-                                          flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
+
+                                <div id="activity" :class="`grid grid-cols-3 gap-y-2 gap-x-1`">
+                                    <div :id="i" @click="validateOrder(i)" v-for="i in 21"
+                                         :key="i"
+                                         :class="`bg-white border border-black hover:opacity-75
+                                          flex justify-center items-center font-bold text-6xl select-none h-14 w-24`">
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="">
+                <div class="w-[16%]">
                     <ItemPalette :level="props.level" :items="items"/>
                 </div>
-
-
             </div>
         </div>
     </div>

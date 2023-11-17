@@ -22,3 +22,5 @@ Route::post('/loadAudio', [ActivityController::class, 'loadAudio'])->name('loadA
 
 Route::get('level{levelNumber}/{activityNumber}', [ActivityController::class, 'showActivity']);
 
+Route::view('/levels', 'levels')->name('levels');
+

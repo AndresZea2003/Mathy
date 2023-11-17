@@ -20,12 +20,14 @@ import IconArrowRight from "../icons/IconArrowRight.vue"
 import Swal from "sweetalert2";
 
 const props = defineProps({
-    size: {type: Number},
+    size: {type: Array},
     fill_sample: {type: Array},
     solution: {type: Array},
     level: {type: Array},
     items: {type: Array},
     rotate: {type: Boolean},
+    order_to_resolve: {type: Array},
+    select_cols: {type: Array},
 })
 
 let talkBool = ref(false)
@@ -36,14 +38,14 @@ let boxes = ref([])
 
 onMounted(() => {
     // validateAudiosOfPositions(props.selectors)
-    if (props.size < 5) {
-        boxSize.value = 46
-    } else if (props.size >= 5 && props.size < 10) {
-        boxSize.value = 34
-    } else if (props.size >= 10 && props.size < 12) {
-        boxSize.value = 30
-    } else if (props.size >= 12 && props.size < 20) {
-        boxSize.value = 22
+    if (props.size[0] * props.size[1] < 5) {
+        boxSize.value = 36
+    } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 10) {
+        boxSize.value = 24
+    } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 37) {
+        boxSize.value = 16
+    } else if (props.size[0] * props.size[1] > 37) {
+        boxSize.value = 9
     }
 
     document.getElementById('coinsCount').innerText = `x ${getCoins()}`
@@ -103,44 +105,6 @@ function verificarExistenciaArchivo(url, callback) {
 
 
 const items = props.items
-// const items = [
-//
-//     // {name: 'muy bien', type: types.letter, content: 'a'},
-//     // {name: 'correcto', type: types.letter, content: 'a'},
-//     // {name: 'exacto', type: types.letter, content: 'a'},
-//     // {name: 'excelente', type: types.letter, content: 'a'},
-//     // {name: 'Perfecto', type: types.letter, content: 'a'},
-//     // {name: 'genial', type: types.letter, content: 'a'},
-//     // {name: 'brillante', type: types.letter, content: 'a'},
-//     // {name: 'fantastico', type: types.letter, content: 'a'},
-//
-//
-//     // {name: '3', type: types.number, content: '3'},
-//
-//     {name: 'A', type: types.letter, content: 'a', group: 'Letra'},
-//
-//
-//     // {name: 'B', type: types.letter, content: 'b'},
-//     // {name: 'c', type: types.letter, content: 'c'},
-//     // {name: 'd', type: types.letter, content: 'd'},
-//
-//     {name: 'Azul', type: types.color, content: 'bg-blue-600', hex: '#2563eb', group: 'Color'},
-//     {name: 'Amarillo', type: types.color, content: 'bg-yellow-400', hex: '#facc15', group: 'Color'},
-//
-//
-//     // {name: 'eraser', type: types.eraser, content: 'bg-white'},
-//     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.small},
-//     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.normal},
-//
-//
-//     {
-//         name: 'Balon dorado',
-//         type: types.image,
-//         content: `${localHost}/images/objects/ballon-dorado.svg`,
-//         size: sizes.big,
-//         group: 'Imagen'
-//     },
-// ]
 
 let paintImage = ref(false)
 
@@ -177,9 +141,24 @@ setTimeout(function () {
     prepare()
 }, 500)
 
+let focusCols = ref([])
+
 const prepare = () => {
 
     let orderArray = []
+
+    let sudokuIds = []
+    let time = 2000
+
+    for (let i = 1; i <= (props.size[1] * props.size[0]); i++) {
+        sudokuIds.push(i)
+    }
+
+    let sudokuArray = convertInArray(sudokuIds, props.size[1], props.size[0]);
+
+    let rowsAndCols = getRowsAndCols(sudokuArray)
+
+
     for (let i = 0; i <= props.fill_sample.length - 1; i++) {
         let order = props.fill_sample[i] - 1
         orderArray.push(order)
@@ -188,18 +167,27 @@ const prepare = () => {
         }
         let item = items[orderArray[i]]
         localStorage.setItem('itemSelected', JSON.stringify(item))
+        paintItem(`sample-${i + 1}`, items)
+
         paintItem(`${i + 1}`, items)
 
-        localStorage.setItem('itemSelected', JSON.stringify(null))
+
+        for (let colIndex = 0; colIndex <= props.select_cols.length - 1; colIndex++) {
+
+            focusCols.value.push(rowsAndCols[1][props.select_cols[colIndex] - 1])
+
+            for (let i = 0; i <= rowsAndCols[1][props.select_cols[colIndex] - 1].length - 1; i++) {
+
+                document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]).classList.remove('bg-white')
+                document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]).classList.replace(getSelectItem().content, 'bg-white')
+                document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]).classList.add('bg-gray-200', 'border-dashed')
+
+
+            }
+        }
     }
-
-    if (props.rotate) {
-        document.getElementById('sample-img').classList.add('rotate-45', 'scale-75')
-
-        document.getElementById('activity-img').classList.add('rotate-45', 'scale-75')
-    }
-
 }
+
 
 let step = ref(0)
 let focusBox = ref()
@@ -207,185 +195,28 @@ let focusBox = ref()
 
 const validateOrder = (id) => {
 
-    paintItem(id, items)
+    if (props.solution.includes(id)) {
+        console.log('NICE')
+        paintItem(id, items)
+        let bubble = new Audio()
+        bubble.src = `${localHost}/audios/effects/soapBubble.wav`
+        bubble.play()
 
-    // let itemSelected = getSelectItem()
-    //
-    // if (itemSelected.type === types.eraser) {
-    //     errorPaint(id)
-    //     return
-    // }
-    //
-    // if (itemSelected.content === items[(props.fill_sample[id - 1]) - 1].content) {
-    //     paintItem(id, items)
-    //
-    //     let bubble = new Audio()
-    //     bubble.src = `${localHost}/audios/effects/soapBubble.wav`
-    //     bubble.play()
-    //
-    //     document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
-    //
-    //     boxes.value[id - 1] = true
-    //
-    //     for (let i = 0; i < props.size[0] * props.size[1]; i++) {
-    //         if (boxes.value[i] === true) {
-    //             step.value++
-    //         }
-    //     }
-    //     console.log(step.value)
-    //
-    //     if (step.value === props.size[0] * props.size[1]) {
-    //         win()
-    //     }
-    //     step.value = 0
-    //
-    // } else {
-    //     paintItem(id, items)
-    //
-    //     let bubble = new Audio()
-    //     bubble.src = `${localHost}/audios/effects/wood.wav`
-    //     bubble.play()
-    //
-    //     boxes.value[id - 1] = false
-    //
-    //     document.getElementById(id).classList.add('animate-pulse', 'scale-95')
-    // }
-}
+        step.value++
 
-
-const selector = (row, col, nextBox, item, isError) => {
-    let sudokuIds = []
-    let time = 2000
-
-    for (let i = 1; i <= (props.size * props.size); i++) {
-        sudokuIds.push(i)
-    }
-
-    let sudokuArray = convertInArray(sudokuIds, props.size, props.size);
-
-    let rowsAndCols = getRowsAndCols(sudokuArray)
-
-    let audio1 = new Audio()
-    let audio2 = new Audio()
-
-    if (row) {
-        audio1.src = `${localHost}/audios/positions/rows/${row}.m4a`
-
-        if (col) {
-            audio2.src = `${localHost}/audios/positions/cols/extensions/${col}.m4a`
+        if (step.value === props.solution.length){
+            win()
         }
-
     } else {
-        audio1.src = `${localHost}/audios/positions/cols/${col}.m4a`
-    }
-
-    for (let i = 0; i <= props.size - 1; i++) {
-        const selectRow = () => {
-            if (row) {
-                if (isError) {
-                    setTimeout(function () {
-                        document.getElementById(rowsAndCols[0][row - 1][i]).classList.add('duration-300', 'animate-bounce')
-                        setTimeout(function () {
-                            document.getElementById(rowsAndCols[0][row - 1][i]).classList.remove('animate-bounce')
-                        }, time)
-                    }, 100)
-
-                } else {
-                    document.getElementById(rowsAndCols[0][row - 1][i]).classList.add('duration-300', 'scale-75')
-                    setTimeout(function () {
-                        document.getElementById(rowsAndCols[0][row - 1][i]).classList.remove('scale-75')
-                    }, time)
-                }
-            }
-        }
-
-        const selectCol = () => {
-            if (col) {
-                if (isError) {
-                    setTimeout(function () {
-                        document.getElementById(rowsAndCols[1][col - 1][i]).classList.add('duration-300', 'animate-bounce')
-                        setTimeout(function () {
-                            document.getElementById(rowsAndCols[1][col - 1][i]).classList.remove('animate-bounce')
-                        }, time)
-                    }, 100)
-
-                } else {
-                    document.getElementById(rowsAndCols[1][col - 1][i]).classList.add('duration-300', 'scale-75')
-                    setTimeout(function () {
-                        document.getElementById(rowsAndCols[1][col - 1][i]).classList.remove('scale-75')
-                    }, time)
-                }
-            }
-        }
-
-        if (row) {
-            selectRow()
-            audio1.play()
-
-            if (col) {
-                setTimeout(function () {
-                    selectCol()
-                    audio2.play()
-                    setTimeout(function () {
-                        if (i === props.size - 1 && isError === false) {
-                            nextStep()
-                        } else if (isError) {
-                            talkBool.value = false
-                            talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-                        }
-                    }, time)
-                }, time + 500)
-            } else {
-                setTimeout(function () {
-                    if (i === props.size - 1 && isError === false) {
-                        nextStep()
-                    } else if (isError) {
-                        talkBool.value = false
-                        talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-                    }
-                }, time)
-            }
-
-        } else {
-            selectCol()
-            audio1.play()
-            setTimeout(function () {
-                if (i === props.size - 1 && isError === false) {
-                    nextStep()
-                } else if (isError) {
-                    talkBool.value = false
-                    talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-                }
-            }, time)
-        }
-
-    }
-
-    const nextStep = () => {
-
-        let nextAudio = new Audio()
-
-        if (nextBox) {
-            nextAudio.src = `${localHost}/audios/explanations/nextPositionFocus/${item.group}.m4a`
-            nextAudio.play()
-
-            nextAudio.onended = function () {
-                talkBool.value = false
-                talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-                if (nextBox) {
-                    showFocusBox(`${props.order_to_resolve[step.value]}`)
-                    nextBox.classList.add('animate-pulse')
-                } else {
-                    win(true)
-                }
-            }
-        } else {
-            talkBool.value = false
-            talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-            win(true)
-        }
+        console.log('BAD')
+        // document.getElementById(id).classList.add('animate-pulse', 'scale-95')
+        errorPaint(id)
+        let wood = new Audio()
+        wood.src = `${localHost}/audios/effects/wood.wav`
+        wood.play()
     }
 }
+
 
 const win = (coinAdd) => {
 
@@ -683,7 +514,7 @@ const showItemsPresentation = () => {
 
 </script>
 <template>
-    <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden
+    <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden w-10 h-10 w-9 h-9 w-8 h-8
     grid-cols-6 grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11 grid-cols-12
      ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`
 
@@ -691,47 +522,54 @@ const showItemsPresentation = () => {
 
     <WinView id="winView" class="hidden opacity-0 duration-300"/>
 
-    <div class="flex flex-col min-h-screen bg-green-300">
+    <div class="flex flex-col min-h-screen bg-red-300">
         <div class="mx-auto flex-1 container flex justify-center">
-            <div class="flex bg-green-500 p-6 w-full gap-5 rounded-md grid grid-cols-5">
-                <div class="col-span-4 grid grid-cols-4 gap-5 grid-rows-3">
+            <div class="flex bg-red-500 p-6 w-full gap-5 rounded-md">
+                <div @click="showItemsPresentation()" class="w-[16%] bg-red-200">
+                    <HelpCharacter :image="`${localHost}/images/characters/robot/normal.png`"
+                                   :image_2="`${localHost}/images/characters/robot/talk.gif`"
+                    />
+                </div>
+                <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
+                    <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
+                                 :planet_2="`${localHost}/images/planets/rojo.svg`"
+                                 :rocket="`${localHost}/images/rockets/1.svg`"
+                                 :activity_number="props.level[1]"
+                    />
 
-                    <div class="flex col-span-4 gap-5 row-span-2 grid grid-cols-4">
-                        <div @click="showItemsPresentation()" class="bg-red-200">
-                            <HelpCharacter class="" :image="`${localHost}/images/characters/robot/normal.png`"
-                                           :image_2="`${localHost}/images/characters/robot/talk.gif`"
-                            />
-                        </div>
-                        <div id="dat" class="col-span-3 bg-red-200 p-5 grid flex">
-                            <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
-                                         :planet_2="`${localHost}/images/planets/rojo.svg`"
-                                         :rocket="`${localHost}/images/rockets/1.svg`"
-                                         :activity_number="props.level[1]"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="col-span-4 flex justify-center items-center bg-rose-200">
+                    <div class="row-span-3 flex justify-center items-center">
                         <div>
                             <div class="my-6 flex justify-center gap-5">
-                                <div id="sample-img" :class="`flex`">
-                                    <div :id="`${i}`" @click="validateOrder(i)"
-                                         v-for="i in props.size" :key="i"
-                                         :class="`bg-white border border-black hover:opacity-75 w-14 h-14
+
+                                <div id="sample-img" :class="`grid grid-cols-${props.size[0]} gap-x-2`">
+                                    <div :id="`sample-${i}`" @click="validateOrder(i)"
+                                         v-for="i in (props.size[0] * props.size[1])" :key="i"
+                                         :class="`bg-white border border-black hover:opacity-75
                                           flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
                                     </div>
                                 </div>
+
+                                <div class="flex items-center">
+                                    <IconArrowRight/>
+                                </div>
+
+                                <div id="activity-img" :class="`grid grid-cols-${props.size[0]} gap-x-2`">
+                                    <div :id="i" @click="validateOrder(i)" v-for="i in (props.size[0] * props.size[1])"
+                                         :key="i"
+                                         :class="`bg-white border border-black hover:opacity-75
+                                          flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="">
+                <div class="w-[16%]">
                     <ItemPalette :level="props.level" :items="items"/>
                 </div>
-
-
             </div>
         </div>
     </div>

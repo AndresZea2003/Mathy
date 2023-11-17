@@ -40,8 +40,10 @@ onMounted(() => {
         boxSize.value = 36
     } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 10) {
         boxSize.value = 24
-    } else if (props.size[0] * props.size[1] > 10) {
+    } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 26) {
         boxSize.value = 20
+    }  else if (props.size[0] * props.size[1] > 26) {
+        boxSize.value = 12
     }
 
     document.getElementById('coinsCount').innerText = `x ${getCoins()}`
@@ -101,44 +103,6 @@ function verificarExistenciaArchivo(url, callback) {
 
 
 const items = props.items
-// const items = [
-//
-//     // {name: 'muy bien', type: types.letter, content: 'a'},
-//     // {name: 'correcto', type: types.letter, content: 'a'},
-//     // {name: 'exacto', type: types.letter, content: 'a'},
-//     // {name: 'excelente', type: types.letter, content: 'a'},
-//     // {name: 'Perfecto', type: types.letter, content: 'a'},
-//     // {name: 'genial', type: types.letter, content: 'a'},
-//     // {name: 'brillante', type: types.letter, content: 'a'},
-//     // {name: 'fantastico', type: types.letter, content: 'a'},
-//
-//
-//     // {name: '3', type: types.number, content: '3'},
-//
-//     {name: 'A', type: types.letter, content: 'a', group: 'Letra'},
-//
-//
-//     // {name: 'B', type: types.letter, content: 'b'},
-//     // {name: 'c', type: types.letter, content: 'c'},
-//     // {name: 'd', type: types.letter, content: 'd'},
-//
-//     {name: 'Azul', type: types.color, content: 'bg-blue-600', hex: '#2563eb', group: 'Color'},
-//     {name: 'Amarillo', type: types.color, content: 'bg-yellow-400', hex: '#facc15', group: 'Color'},
-//
-//
-//     // {name: 'eraser', type: types.eraser, content: 'bg-white'},
-//     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.small},
-//     // {name: 'balloon', type: types.image, content: `${localHost}/images/objects/ballon-dorado.svg`, size: sizes.normal},
-//
-//
-//     {
-//         name: 'Balon dorado',
-//         type: types.image,
-//         content: `${localHost}/images/objects/ballon-dorado.svg`,
-//         size: sizes.big,
-//         group: 'Imagen'
-//     },
-// ]
 
 let paintImage = ref(false)
 
