@@ -180,7 +180,7 @@ const introductionText = () => {
                 d="M19 7.358v15.642l-8-5v-.785l8-9.857zm3-6.094l-1.548-1.264-3.446 4.247-6.006 3.753v3.646l-2 2.464v-6.11h-4v10h.843l-3.843 4.736 1.548 1.264 18.452-22.736z"/>
         </svg>
     </div>
-    <div class="h-full flex justify-center items-center ">
+    <div class="flex justify-center items-center ">
         <div id="loader"
              class="fixed top-0 left-0 w-full h-full bg-black transition-opacity duration-500">
             <div class="flex items-center justify-center h-full">
@@ -222,150 +222,79 @@ const introductionText = () => {
                     <div class="h-star h-star-position7"></div>
                 </div>
 
-                <div v-if="!playGame" id="home">
-                    <div id="homeUp" class="text-white select-none">
-                        <div class="flex-col">
-                        <span class="font-MPlus text-5xl">
-                            Salva los
-                            <span class="text-6xl text-yellow-700">colores</span>
-                            con
-                        </span>
-                            <div class="flex justify-center font-MPlus">
-                                <span class="text-red-600 font-bold text-8xl">Mati&nbsp</span>
-                                <span class="font-bold text-8xl">y&nbsp</span>
-                                <span class="text-blue-600 font-bold text-8xl">Motas</span>
-                            </div>
+
+                <!--                <div class="bg-green-400 p-4">Comenzar</div>-->
+
+
+                <div class="">
+                    <div class="text-white mb-12 font-bold flex justify-center">
+                        <div class="text-6xl">
+                             Experencias Logico matematicas
                         </div>
                     </div>
-
-                    <div id="homeDown">
-                        <div class="flex justify-center mt-10">
+                    <div class="flex justify-center">
+                        <a href="/levels">
                             <principalButton @click="play()" id="principalButton" @mouseover="buttonSound()"
-                                             class="font-P2 text-2xl cursor-cell">Comenzar
-                                <div class="star-1">
-                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
-                                         style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                         version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
-                                        <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                            <path
-                                                d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                class="fil0"></path></g></svg>
-                                </div>
-                                <div class="star-2">
-                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
-                                         style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                         version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
-                                        <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                            <path
-                                                d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                class="fil0"></path></g></svg>
-                                </div>
-                                <div class="star-3">
-                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
-                                         style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                         version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
-                                        <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                            <path
-                                                d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                class="fil0"></path></g></svg>
-                                </div>
-                                <div class="star-4">
-                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
-                                         style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                         version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
-                                        <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                            <path
-                                                d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                class="fil0"></path></g></svg>
-                                </div>
-                                <div class="star-5">
-                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
-                                         style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                         version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
-                                        <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                            <path
-                                                d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                class="fil0"></path></g></svg>
-                                </div>
-                                <div class="star-6">
-                                    <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
-                                         style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                                         version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
-                                        <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                                            <path
-                                                d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-                                                class="fil0"></path></g></svg>
-                                </div>
-                            </principalButton>
+                                     class="font-P2 text-2xl cursor-cell">Comenzar
+                        <div class="star-1">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
+                                 style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
+                                <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                    <path
+                                        d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                        class="fil0"></path></g></svg>
                         </div>
-                        <div class="flex justify-center my-5">
-                            <button @mouseover="buttonSound()" class="btn">
-                            <span class="icon">
-                                <svg viewBox="0 0 175 80" width="40" height="40">
-                                    <rect width="80" height="15" fill="#f0f0f0" rx="10"></rect>
-                                    <rect y="30" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
-                                    <rect y="60" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
-                                </svg>
-                            </span>
-                                <span class="text">MENU</span>
-                            </button>
+                        <div class="star-2">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
+                                 style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
+                                <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                    <path
+                                        d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                        class="fil0"></path></g></svg>
                         </div>
-                        <div class="flex justify-center">
-                            <button @mouseover="buttonSound()" class="text-white font-P2 hover:text-gray-400">Volver
-                            </button>
+                        <div class="star-3">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
+                                 style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
+                                <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                    <path
+                                        d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                        class="fil0"></path></g></svg>
                         </div>
+                        <div class="star-4">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
+                                 style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
+                                <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                    <path
+                                        d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                        class="fil0"></path></g></svg>
+                        </div>
+                        <div class="star-5">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
+                                 style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
+                                <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                    <path
+                                        d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                        class="fil0"></path></g></svg>
+                        </div>
+                        <div class="star-6">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53"
+                                 style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><defs></defs>
+                                <g id="Layer_x0020_1"><metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                    <path
+                                        d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+                                        class="fil0"></path></g></svg>
+                        </div>
+                    </principalButton>
+                        </a>
                     </div>
                 </div>
 
-
-                <div v-if="playGame" id="principalText" class="text-white fixed top-36 font-P2 flex justify-center">
-
-                </div>
-
-                <div v-if="figure1" class="fixed top-36" style="transform: scale(2);">
-                    <div class="loader2 flex gap-x-16">
-                        <div class="box2"></div>
-                        <div class="circle2"></div>
-                        <div class="triangle2"></div>
-                    </div>
-                </div>
-
-                <div v-if="figure2" class="fixed top-36 mr-28">
-                    <div class="container3">
-                        <div class="item item-1"></div>
-                        <div class="item item-2"></div>
-                        <div class="item item-3"></div>
-                        <div class="item item-4"></div>
-                    </div>
-                </div>
-
-                <div id="planet1" class="fixed top-96 hidden duration-300">
-                    <img :src="`${props.asset_images}/planetas/tierra.svg`" width="300" alt="">
-                </div>
-
-                <div id="secondText" class="fixed top-36 font-P2 flex justify-center text-7xl text-gray-500"></div>
-
-
-                <div v-if="playGame" class="rocket top-[1500px]" @click="rocketUp()" id="rocket">
-                    <div class="rocket-body">
-                        <div class="body"></div>
-                        <div class="fin fin-left"></div>
-                        <div class="fin fin-right"></div>
-                        <div class="window"></div>
-                    </div>
-                    <div class="exhaust-flame"></div>
-                    <ul id="rocket-humo" class="exhaust-fumes duration-300 opacity-0">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                    </ul>
-                </div>
 
             </div>
         </div>
@@ -526,172 +455,6 @@ const introductionText = () => {
     left: 1480px;
 }
 
-/*nave*/
-.rocket-up {
-    top: 100%;
-}
-
-.rocket-up {
-    bottom: -100%;
-}
-
-.rocket {
-    position: absolute;
-    width: 80px;
-    left: calc(50% - 40px);
-    transition: top 5s ease-in-out;
-}
-
-.rocket .rocket-body {
-    width: 80px;
-    left: calc(50% - 50px);
-    animation: bounce 0.5s infinite;
-}
-
-.rocket .rocket-body .body {
-    background-color: #dadada;
-    height: 180px;
-    top: -180px;
-    z-index: -10;
-    left: calc(60% - 50px);
-    border-radius: 100% 100% 50% 50%;
-    border-top: 5px solid #f5f5f5;
-}
-
-.rocket .rocket-body:before {
-    content: '';
-    position: absolute;
-    left: calc(50% - 24px);
-    width: 48px;
-    height: 13px;
-    background-color: #554842;
-    bottom: -13px;
-    border-bottom-right-radius: 60%;
-    border-bottom-left-radius: 60%;
-}
-
-.rocket .window {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 100%;
-    background-color: #60a5fa;
-    left: calc(50% - 25px);
-    top: -150px;
-    border: 5px solid #b4b2b2;
-}
-
-.rocket .fin {
-    position: absolute;
-    z-index: -100;
-    height: 55px;
-    width: 50px;
-    top: 10px;
-    background-color: #60a5fa;
-}
-
-.rocket .fin-left {
-    left: -30px;
-    top: calc(100% - 55px);
-    border-top-left-radius: 80%;
-    border-bottom-left-radius: 20%;
-}
-
-.rocket .fin-right {
-    right: -30px;
-    top: calc(100% - 55px);
-    border-top-right-radius: 80%;
-    border-bottom-right-radius: 20%;
-}
-
-.rocket .exhaust-flame {
-    position: absolute;
-    top: 90%;
-    width: 28px;
-    background: linear-gradient(to bottom, transparent 10%, #f5f5f5 100%);
-    height: 150px;
-    left: calc(50% - 14px);
-    animation: exhaust 0.2s infinite;
-}
-
-.rocket .exhaust-fumes li {
-    width: 60px;
-    height: 60px;
-    background-color: #f5f5f5;
-    list-style: none;
-    top: 100px;
-    position: absolute;
-    border-radius: 100%;
-}
-
-.rocket .exhaust-fumes li:first-child {
-    width: 200px;
-    height: 200px;
-    bottom: -10px;
-    animation: fumes 5s infinite;
-}
-
-.rocket .exhaust-fumes li:nth-child(2) {
-    width: 150px;
-    height: 150px;
-    left: -120px;
-    top: 100px;
-    animation: fumes 3.2s infinite;
-}
-
-.rocket .exhaust-fumes li:nth-child(3) {
-    width: 120px;
-    height: 120px;
-    left: -40px;
-    top: 230px;
-    animation: fumes 3s 1s infinite;
-}
-
-.rocket .exhaust-fumes li:nth-child(4) {
-    width: 100px;
-    height: 100px;
-    left: -170px;
-    animation: fumes 4s 2s infinite;
-    top: 280px;
-}
-
-.rocket .exhaust-fumes li:nth-child(5) {
-    width: 130px;
-    height: 130px;
-    left: -120px;
-    top: 250px;
-    animation: fumes 5s infinite;
-}
-
-.rocket .exhaust-fumes li:nth-child(6) {
-    width: 200px;
-    height: 200px;
-    left: -60px;
-    top: 180px;
-    animation: fumes2 10s infinite;
-}
-
-.rocket .exhaust-fumes li:nth-child(7) {
-    width: 100px;
-    height: 100px;
-    left: -100px;
-    top: 220px;
-}
-
-.rocket .exhaust-fumes li:nth-child(8) {
-    width: 110px;
-    height: 110px;
-    left: 70px;
-    top: 240px;
-}
-
-.rocket .exhaust-fumes li:nth-child(9) {
-    width: 90px;
-    height: 90px;
-    left: 200px;
-    top: 280px;
-    animation: fumes 20s infinite;
-}
 
 .star li {
     list-style: none;
@@ -1015,6 +778,156 @@ const introductionText = () => {
     75% {
         transform: translate(0, -50px)
     }
+}
+
+
+principalButton {
+    position: relative;
+    padding: 12px 35px;
+    background: #4ade80;
+    font-size: 17px;
+    font-weight: 500;
+    color: #fff;
+    border: 3px solid #4ade80;
+    border-radius: 8px;
+    box-shadow: 0 0 0 #fec1958c;
+    transition: all .3s ease-in-out;
+}
+
+.star-1 {
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 25px;
+    height: auto;
+    filter: drop-shadow(0 0 0 #fffdef);
+    z-index: -5;
+    transition: all 1s cubic-bezier(0.05, 0.83, 0.43, 0.96);
+}
+
+.star-2 {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    width: 15px;
+    height: auto;
+    filter: drop-shadow(0 0 0 #fffdef);
+    z-index: -5;
+    transition: all 1s cubic-bezier(0, 0.4, 0, 1.01);
+}
+
+.star-3 {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    width: 5px;
+    height: auto;
+    filter: drop-shadow(0 0 0 #fffdef);
+    z-index: -5;
+    transition: all 1s cubic-bezier(0, 0.4, 0, 1.01);
+}
+
+.star-4 {
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    width: 8px;
+    height: auto;
+    filter: drop-shadow(0 0 0 #fffdef);
+    z-index: -5;
+    transition: all .8s cubic-bezier(0, 0.4, 0, 1.01);
+}
+
+.star-5 {
+    position: absolute;
+    top: 25%;
+    left: 45%;
+    width: 15px;
+    height: auto;
+    filter: drop-shadow(0 0 0 #fffdef);
+    z-index: -5;
+    transition: all .6s cubic-bezier(0, 0.4, 0, 1.01);
+}
+
+.star-6 {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    width: 5px;
+    height: auto;
+    filter: drop-shadow(0 0 0 #fffdef);
+    z-index: -5;
+    transition: all .8s ease;
+}
+
+principalButton:hover {
+    background: transparent;
+    color: #FEC195;
+    box-shadow: 0 0 25px #fec1958c;
+}
+
+principalButton:hover .star-1 {
+    position: absolute;
+    top: -80%;
+    left: -30%;
+    width: 25px;
+    height: auto;
+    filter: drop-shadow(0 0 10px #fffdef);
+    z-index: 2;
+}
+
+principalButton:hover .star-2 {
+    position: absolute;
+    top: -25%;
+    left: 10%;
+    width: 15px;
+    height: auto;
+    filter: drop-shadow(0 0 10px #fffdef);
+    z-index: 2;
+}
+
+principalButton:hover .star-3 {
+    position: absolute;
+    top: 55%;
+    left: 25%;
+    width: 5px;
+    height: auto;
+    filter: drop-shadow(0 0 10px #fffdef);
+    z-index: 2;
+}
+
+principalButton:hover .star-4 {
+    position: absolute;
+    top: 30%;
+    left: 80%;
+    width: 8px;
+    height: auto;
+    filter: drop-shadow(0 0 10px #fffdef);
+    z-index: 2;
+}
+
+principalButton:hover .star-5 {
+    position: absolute;
+    top: 25%;
+    left: 115%;
+    width: 15px;
+    height: auto;
+    filter: drop-shadow(0 0 10px #fffdef);
+    z-index: 2;
+}
+
+principalButton:hover .star-6 {
+    position: absolute;
+    top: 5%;
+    left: 60%;
+    width: 5px;
+    height: auto;
+    filter: drop-shadow(0 0 10px #fffdef);
+    z-index: 2;
+}
+
+.fil0 {
+    fill: #FFFDEF
 }
 
 </style>

@@ -33,7 +33,7 @@ let talkBool = ref(false)
 
 let boxSize = ref(0)
 
-let boxes = ref([])
+let boxes = ref([false, false, false])
 
 onMounted(() => {
     // validateAudiosOfPositions(props.selectors)
@@ -43,16 +43,17 @@ onMounted(() => {
         boxSize.value = 24
     } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 26) {
         boxSize.value = 20
-    }  else if (props.size[0] * props.size[1] > 26) {
+    } else if (props.size[0] * props.size[1] > 26) {
         boxSize.value = 12
     }
 
-    document.getElementById('coinsCount').innerText = `x ${getCoins()}`
+    // document.getElementById('coinsCount').innerText = `x ${getCoins()}`
+
     talk(false)
 
-    for (let i = 0; i < props.size[0] * props.size[1]; i++) {
-        boxes.value.push(false)
-    }
+    // for (let i = 0; i < props.size[0] * props.size[1]; i++) {
+    //     boxes.value.push(false)
+    // }
 
     for (let i = 0; i < items.length; i++) {
         const item = items[i];
@@ -136,7 +137,7 @@ const showFocusBox = (id) => {
 // }, 500)
 
 setTimeout(function () {
-    // intro();
+    intro();
     prepare()
 }, 500)
 
@@ -151,6 +152,7 @@ const prepare = () => {
         }
         let item = items[orderArray[i]]
         localStorage.setItem('itemSelected', JSON.stringify(item))
+
         paintItem(`${i + 1}`, items)
 
         if (props.order_to_resolve.includes(i + 1)) {
@@ -158,9 +160,10 @@ const prepare = () => {
         }
 
         localStorage.setItem('itemSelected', JSON.stringify(null))
+        document.getElementById(`${i + 1}`).classList.add('duration-300')
     }
 
-    if (props.rotate){
+    if (props.rotate) {
         document.getElementById('sample-img').classList.add('rotate-45', 'scale-75')
 
         document.getElementById('activity-img').classList.add('rotate-45', 'scale-75')
@@ -170,11 +173,13 @@ const prepare = () => {
 
 let step = ref(0)
 let focusBox = ref()
-
+let trys = ref(0)
+let focusLastRow = ref(false)
 
 const validateOrder = (id) => {
 
-    console.log('ola')
+    console.log(boxes.value)
+
     let itemSelected = getSelectItem()
 
     if (itemSelected.type === types.eraser) {
@@ -182,42 +187,177 @@ const validateOrder = (id) => {
         return
     }
 
-    paintItem(id,items)
 
-    // if (itemSelected.content === items[(props.fill_sample[id - 1]) - 1].content) {
-    //     paintItem(id, items)
-    //
-    //     let bubble = new Audio()
-    //     bubble.src = `${localHost}/audios/effects/soapBubble.wav`
-    //     bubble.play()
-    //
-    //     document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
-    //
-    //     boxes.value[id - 1] = true
-    //
-    //     for (let i = 0; i < props.size[0] * props.size[1]; i++) {
-    //         if (boxes.value[i] === true) {
-    //             step.value++
-    //         }
-    //     }
-    //     console.log(step.value)
-    //
-    //     if (step.value === props.size[0] * props.size[1]) {
-    //         win()
-    //     }
-    //     step.value = 0
-    //
-    // } else {
-    //     paintItem(id, items)
-    //
-    //     let bubble = new Audio()
-    //     bubble.src = `${localHost}/audios/effects/wood.wav`
-    //     bubble.play()
-    //
-    //     boxes.value[id - 1] = false
-    //
-    //     document.getElementById(id).classList.add('animate-pulse', 'scale-95')
-    // }
+
+    if (focusLastRow.value) {
+
+        console.log(id)
+        if (id === 19) {
+            boxes.value[0] = true
+            paintItem(id, items)
+
+        } else if (id === 20) {
+
+            boxes.value[1] = true
+            paintItem(id, items)
+
+        } else if (id === 21) {
+
+            paintItem(id, items)
+            boxes.value[2] = true
+        } else {
+            errorPaint(id)
+        }
+
+        console.log(boxes.value)
+        if (boxes.value[0] === true && boxes.value[1] === true && boxes.value[2] === true) {
+
+            if (trys.value === 0) {
+                console.log('nope')
+                boxes.value[0] = false
+                boxes.value[1] = false
+                boxes.value[2] = false
+
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    document.getElementById(`${19}`).classList.remove(item.content)
+                    document.getElementById(`${20}`).classList.remove(item.content)
+                    document.getElementById(`${21}`).classList.remove(item.content)
+
+                }
+
+                document.getElementById(`${19}`).classList.add('bg-white')
+                document.getElementById(`${20}`).classList.add('bg-white')
+                document.getElementById(`${21}`).classList.add('bg-white')
+
+            }
+
+            if (trys.value === 1) {
+                console.log('Casi')
+
+                boxes.value[0] = false
+                boxes.value[1] = false
+                boxes.value[2] = false
+
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    document.getElementById(`${19}`).classList.remove(item.content)
+                    document.getElementById(`${20}`).classList.remove(item.content)
+                    document.getElementById(`${21}`).classList.remove(item.content)
+
+                }
+
+                document.getElementById(`${19}`).classList.add('bg-white')
+                document.getElementById(`${20}`).classList.add('bg-white')
+                document.getElementById(`${21}`).classList.add('bg-white')
+            }
+
+            if (trys.value === 2) {
+                boxes.value[0] = false
+                boxes.value[1] = false
+                boxes.value[2] = false
+
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    document.getElementById(`${19}`).classList.remove(item.content)
+                    document.getElementById(`${20}`).classList.remove(item.content)
+                    document.getElementById(`${21}`).classList.remove(item.content)
+
+                }
+
+                document.getElementById(`${19}`).classList.add('bg-white')
+                document.getElementById(`${20}`).classList.add('bg-white')
+                document.getElementById(`${21}`).classList.add('bg-white')
+                win()
+            }
+
+            trys.value++
+
+        }
+
+        return;
+
+    }
+
+    focusBox.value = props.order_to_resolve[step.value]
+
+    let box = document.getElementById(`${props.order_to_resolve[step.value]}`)
+    let nextBox = document.getElementById(`${props.order_to_resolve[step.value + 1]}`)
+
+    if (focusBox.value === id && talkBool.value === false) {
+        paintItem(id, items)
+
+        let item = items[props.solution[step.value] - 1]
+
+
+        if (item.name === itemSelected.name) {
+            let bubble = new Audio()
+            bubble.src = `${localHost}/audios/effects/soapBubble.wav`
+            bubble.play()
+
+            box.classList.remove('animate-pulse')
+
+
+            setTimeout(function () {
+                nextBox.classList.remove('zoom-box')
+            }, 3000)
+
+            step.value++
+
+            if (nextBox) {
+                nextBox.classList.add('animate-pulse', 'zoom-box')
+            } else {
+                lastRow()
+                // win()
+            }
+
+
+        } else {
+            let wood = new Audio()
+            wood.src = `${localHost}/audios/effects/wood.wav`
+            wood.play()
+
+            showError()
+        }
+
+    } else {
+        errorPaint(id)
+
+        let wood = new Audio()
+        wood.src = `${localHost}/audios/effects/wood.wav`
+        wood.play()
+    }
+
+    function showError() {
+
+        document.getElementById(id).classList.remove('animate-pulse')
+
+        document.getElementById(id).classList.add('scale-75', 'opacity-75')
+        document.getElementById(`${2}`).classList.add('scale-75', 'opacity-75')
+
+        setTimeout(function () {
+            document.getElementById(id).classList.remove('scale-75', 'opacity-75')
+            document.getElementById(`${2}`).classList.remove('scale-75', 'opacity-75')
+            document.getElementById(id).classList.add('animate-pulse')
+        }, 2000)
+    }
+
+    function lastRow() {
+        focusLastRow.value = true
+        zoomLastRow()
+    }
+
+    function zoomLastRow() {
+        document.getElementById(`${19}`).classList.add('animate-pulse', 'zoom-box')
+        document.getElementById(`${20}`).classList.add('animate-pulse', 'zoom-box')
+        document.getElementById(`${21}`).classList.add('animate-pulse', 'zoom-box')
+
+        setTimeout(function () {
+            document.getElementById(`${19}`).classList.remove('animate-pulse', 'zoom-box')
+            document.getElementById(`${20}`).classList.remove('animate-pulse', 'zoom-box')
+            document.getElementById(`${21}`).classList.remove('animate-pulse', 'zoom-box')
+        }, 3000)
+    }
 }
 
 
@@ -682,7 +822,7 @@ const showItemsPresentation = () => {
                                     <div :id="i" @click="validateOrder(i)" v-for="i in 21"
                                          :key="i"
                                          :class="`bg-white border border-black hover:opacity-75
-                                          flex justify-center items-center font-bold text-6xl select-none h-14 w-24`">
+                                          flex justify-center items-center font-bold text-6xl select-none h-14 w-14`">
                                     </div>
                                 </div>
 

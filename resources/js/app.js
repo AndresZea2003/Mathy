@@ -10,6 +10,7 @@ import PaintPermutations from "./components/activities/PaintPermutations.vue"
 import PaintLadder from "./components/activities/PaintLadder.vue"
 import PixelArt from "./components/activities/PixelArt.vue"
 import HomeView from "./components/templates/HomeView.vue"
+import SelectLevel from "./components/templates/SelectLevel.vue"
 
 createApp({
     components: {
@@ -22,6 +23,7 @@ createApp({
         'paint-permutations': PaintPermutations,
         'paint-ladder': PaintLadder,
         'pixel-art': PixelArt,
-        'home-view': HomeView
+        'home-view': HomeView,
+        'select-level': SelectLevel,
     }
 }).mount("#app");
