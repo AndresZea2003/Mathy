@@ -16,7 +16,7 @@ onMounted(() => {
 });
 
 
-let totalActivities = 7
+let totalActivities = 12
 </script>
 
 <template>

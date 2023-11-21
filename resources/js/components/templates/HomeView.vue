@@ -233,7 +233,7 @@ const introductionText = () => {
                         </div>
                     </div>
                     <div class="flex justify-center">
-                        <a href="/levels">
+                        <a href="/level16/6">
                             <principalButton @click="play()" id="principalButton" @mouseover="buttonSound()"
                                      class="font-P2 text-2xl cursor-cell">Comenzar
                         <div class="star-1">

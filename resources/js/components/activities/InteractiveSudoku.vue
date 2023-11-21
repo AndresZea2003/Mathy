@@ -36,7 +36,7 @@ let boxSize = ref(0)
 
 onMounted(() => {
     validateAudiosOfPositions(props.selectors)
-    document.getElementById('coinsCount').innerText = `x ${getCoins()}`
+    // document.getElementById('coinsCount').innerText = `x ${getCoins()}`
     talk(false)
     if (props.size === 3) {
         boxSize.value = 36
@@ -159,6 +159,7 @@ const prepareSudoku = () => {
 
 let step = ref(0)
 let focusBox = ref()
+
 const validateOrder = (id) => {
     let itemSelected = getSelectItem()
 
@@ -194,7 +195,6 @@ const validateOrder = (id) => {
             } else {
                 showExt = false
             }
-
 
             let itemSound = new Audio(`${localHost}/audios/items/${item.name}.m4a`)
             let explainSound = new Audio(`${localHost}/audios/explanations/erafaltanteparacompletar.m4a`)

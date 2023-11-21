@@ -7,7 +7,7 @@
             ['name' => 'Eltiburon', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/tiburon.svg'), 'size' => 'BIG', 'group' => 'Animal'],
             ['name' => 'Elcangrejo', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/cangrejo.svg'), 'size' => 'BIG', 'group' => 'Animal'],
             ['name' => 'Elpulpo', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/pulpo.svg'), 'size' => 'BIG', 'group' => 'Animal'],
-            ['name' => 'Balon dorado', 'type' => 'IMAGE', 'content' => asset('/images/objects/ballon-dorado.svg'), 'size' => 'BIG', 'group' => 'Imagen']
+            ['name' => 'Borrador', 'type' => 'ERASER', 'content' => asset('/images/items/tools/eraser.png'), 'size' => 'BIG', 'group' => 'Borrador']
         ])}}"
         :size="{{3}}"
         :order_to_resolve="[4,1,8,9]"

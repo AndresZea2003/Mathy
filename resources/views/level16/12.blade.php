@@ -7,7 +7,7 @@
             ['name' => 'Rosa', 'type' => 'COLOR', 'content' => 'bg-rose-400', 'hex' => '#fb7185' , 'group' => 'Color'],
             ['name' => 'Violeta', 'type' => 'COLOR', 'content' => 'bg-[#78288C]', 'hex' => '#78288C' , 'group' => 'Color'],
             ['name' => 'Azul Claro', 'type' => 'COLOR', 'content' => 'bg-[#00aae4]', 'hex' => '#00aae4' , 'group' => 'Color'],
-            ['name' => 'Balon dorado', 'type' => 'IMAGE', 'content' => asset('/images/objects/ballon-dorado.svg'), 'size' => 'BIG', 'group' => 'Imagen']
+            ['name' => 'Borrador', 'type' => 'ERASER', 'content' => asset('/images/items/tools/eraser.png'), 'size' => 'BIG', 'group' => 'Borrador']
         ])}}"
         :size="{{3}}"
         :order_to_resolve="[1,7,6]"
