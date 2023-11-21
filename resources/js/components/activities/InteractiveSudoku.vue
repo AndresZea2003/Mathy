@@ -36,7 +36,7 @@ let boxSize = ref(0)
 
 onMounted(() => {
     validateAudiosOfPositions(props.selectors)
-    // document.getElementById('coinsCount').innerText = `x ${getCoins()}`
+    document.getElementById('coinsCount').innerText = `x ${getCoins()}`
     talk(false)
     if (props.size === 3) {
         boxSize.value = 36
