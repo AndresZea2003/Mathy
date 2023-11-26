@@ -17,6 +17,7 @@ import {
 } from '../../use';
 import {onMounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
+import IconPaintBrush from "../icons/IconPaintBrush.vue"
 import Swal from "sweetalert2";
 
 const props = defineProps({
@@ -42,7 +43,7 @@ onMounted(() => {
         boxSize.value = 24
     } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 26) {
         boxSize.value = 20
-    }  else if (props.size[0] * props.size[1] > 26) {
+    } else if (props.size[0] * props.size[1] > 26) {
         boxSize.value = 12
     }
 
@@ -155,7 +156,7 @@ const prepare = () => {
         localStorage.setItem('itemSelected', JSON.stringify(null))
     }
 
-    if (props.rotate){
+    if (props.rotate) {
         document.getElementById('sample-img').classList.add('rotate-45', 'scale-75')
 
         document.getElementById('activity-img').classList.add('rotate-45', 'scale-75')
@@ -208,7 +209,12 @@ const validateOrder = (id) => {
 
         boxes.value[id - 1] = false
 
-        document.getElementById(id).classList.add('animate-pulse', 'scale-95')
+        document.getElementById(id).innerText = 'X'
+        document.getElementById(id).classList.add('animate-pulse', 'scale-95', 'zoom-box')
+
+        setTimeout(function () {
+            document.getElementById(id).classList.remove('zoom-box')
+        }, 3000)
     }
 }
 
@@ -670,11 +676,22 @@ const showItemsPresentation = () => {
                         <div>
                             <div class="my-6 flex justify-center gap-5">
 
-                                <div id="sample-img" :class="`grid grid-cols-${props.size[0]}`">
-                                    <div :id="`sample-${i}`" @click="validateOrder(i)"
-                                         v-for="i in (props.size[0] * props.size[1])" :key="i"
-                                         :class="`bg-white border border-black hover:opacity-75
+                                <div>
+                                    <div class="flex justify-center">
+                                        <div>
+                                            <div class="flex justify-center h-12">
+                                                <img :src="`${localHost}/images/characters/robot/eyes.png`" alt="">
+                                            </div>
+                                            <div class="font-bold text-3xl">OBSERVA</div>
+                                        </div>
+                                    </div>
+
+                                    <div id="sample-img" :class="`grid grid-cols-${props.size[0]} mt-5`">
+                                        <div :id="`sample-${i}`" @click="validateOrder(i)"
+                                             v-for="i in (props.size[0] * props.size[1])" :key="i"
+                                             :class="`bg-white border border-black hover:opacity-75
                                           flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
+                                        </div>
                                     </div>
                                 </div>
 
@@ -682,11 +699,23 @@ const showItemsPresentation = () => {
                                     <IconArrowRight/>
                                 </div>
 
-                                <div id="activity-img" :class="`grid grid-cols-${props.size[0]}`">
-                                    <div :id="i" @click="validateOrder(i)" v-for="i in (props.size[0] * props.size[1])"
-                                         :key="i"
-                                         :class="`bg-white border border-black hover:opacity-75
+                                <div>
+                                    <div class="flex justify-center">
+                                        <div>
+                                            <div class="flex justify-center h-12">
+                                                <IconPaintBrush hex="#804000"/>
+                                            </div>
+                                            <div class="font-bold text-3xl">COLOREA</div>
+                                        </div>
+                                    </div>
+
+                                    <div id="activity-img" :class="`grid grid-cols-${props.size[0]} mt-5`">
+                                        <div :id="i" @click="validateOrder(i)"
+                                             v-for="i in (props.size[0] * props.size[1])"
+                                             :key="i"
+                                             :class="`bg-white border border-black hover:opacity-75
                                           flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
+                                        </div>
                                     </div>
                                 </div>
 
