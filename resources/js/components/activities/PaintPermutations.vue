@@ -212,6 +212,9 @@ const validateOrder = (id) => {
         console.log(boxes.value)
         if (boxes.value[0] === true && boxes.value[1] === true && boxes.value[2] === true) {
 
+            errorPaint(`${19}`)
+            errorPaint(`${20}`)
+            errorPaint(`${21}`)
             if (trys.value === 0) {
                 console.log('nope')
                 boxes.value[0] = false
