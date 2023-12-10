@@ -109,7 +109,14 @@ const items = props.items
 let paintImage = ref(false)
 
 const intro = () => {
-    showFocusBox(props.order_to_resolve[0])
+
+    let introductionAudio = new Audio(`${localHost}/audios/start/permutations/introduction/vamosencontrarmanerasordenar.m4a`)
+
+    introductionAudio.play()
+
+    introductionAudio.onended = function () {
+        showItemsPresentation(true)
+    }
 }
 
 const showFocusBox = (id) => {
@@ -120,31 +127,32 @@ const showFocusBox = (id) => {
     }, 3000)
 }
 
-// setTimeout(function () {
-//     Swal.fire({
-//         title: `Actividad ${props.level[1]}`,
-//         text: 'Llegamos a los Sudokus! Aqui veremos un poco de pensamiento combinatorio, filas y muchos colores!',
-//         icon: 'warning',
-//         confirmButtonText: 'Comenzar'
-//     }).then((result) => {
-//         // if (result.isConfirmed) {
-//         //     initialAudio();
-//         //     prepareSudoku()
-//         // }
-//         intro();
-//         prepareSudoku()
-//     });
-// }, 500)
-
 setTimeout(function () {
-    intro();
-    prepare()
+    Swal.fire({
+        title: `Actividad ${props.level[1]}`,
+        text: 'Llegamos a los Permutaciones! Aqui veremos un poco de pensamiento combinatorio, filas y muchos colores!',
+        icon: 'warning',
+        confirmButtonText: 'Comenzar'
+    }).then((result) => {
+        // if (result.isConfirmed) {
+        //     initialAudio();
+        //     prepareSudoku()
+        // }
+        intro();
+        prepare()
+    });
 }, 500)
+
+// setTimeout(function () {
+//     intro();
+//     prepare()
+// }, 500)
 
 const prepare = () => {
 
     let orderArray = []
     for (let i = 0; i <= props.fill_sample.length - 1; i++) {
+
         let order = props.fill_sample[i] - 1
         orderArray.push(order)
         if (orderArray[i] === -1) {
@@ -153,14 +161,23 @@ const prepare = () => {
         let item = items[orderArray[i]]
         localStorage.setItem('itemSelected', JSON.stringify(item))
 
-        paintItem(`${i + 1}`, items)
+
 
         if (props.order_to_resolve.includes(i + 1)) {
             document.getElementById(`${i + 1}`).classList.replace(getSelectItem().content, 'bg-white')
+        }else {
+            paintItem(`${i + 1}`, items)
         }
 
         localStorage.setItem('itemSelected', JSON.stringify(null))
         document.getElementById(`${i + 1}`).classList.add('duration-300')
+
+        if (i > 2){
+            document.getElementById(`${i + 1}`).classList.replace('hover:opacity-75', 'opacity-0')
+            document.getElementById(`${19}`).classList.replace('hover:opacity-75', 'opacity-0')
+            document.getElementById(`${20}`).classList.replace('hover:opacity-75', 'opacity-0')
+            document.getElementById(`${21}`).classList.replace('hover:opacity-75', 'opacity-0')
+        }
     }
 
     if (props.rotate) {
@@ -307,13 +324,43 @@ const validateOrder = (id) => {
 
             step.value++
 
+
+
+            if (step.value === 1){
+                document.getElementById(`${4}`).classList.replace('opacity-0', 'hover:opacity-75')
+                document.getElementById(`${5}`).classList.replace('opacity-0', 'hover:opacity-75')
+            } else if (step.value === 2){
+                document.getElementById(`${6}`).classList.replace('opacity-0', 'hover:opacity-75')
+            } else if (step.value === 3){
+                document.getElementById(`${7}`).classList.replace('opacity-0', 'hover:opacity-75')
+                document.getElementById(`${8}`).classList.replace('opacity-0', 'hover:opacity-75')
+                document.getElementById(`${9}`).classList.replace('opacity-0', 'hover:opacity-75')
+            } else if (step.value === 4){
+                document.getElementById(`${10}`).classList.replace('opacity-0', 'hover:opacity-75')
+                document.getElementById(`${11}`).classList.replace('opacity-0', 'hover:opacity-75')
+            } else if (step.value === 5) {
+                document.getElementById(`${12}`).classList.replace('opacity-0', 'hover:opacity-75')
+            } else if (step.value === 6) {
+                document.getElementById(`${13}`).classList.replace('opacity-0', 'hover:opacity-75')
+                document.getElementById(`${14}`).classList.replace('opacity-0', 'hover:opacity-75')
+                document.getElementById(`${15}`).classList.replace('opacity-0', 'hover:opacity-75')
+            } else if (step.value === 7) {
+                document.getElementById(`${16}`).classList.replace('opacity-0', 'hover:opacity-75')
+                document.getElementById(`${17}`).classList.replace('opacity-0', 'hover:opacity-75')
+            } else if (step.value === 8) {
+                document.getElementById(`${18}`).classList.replace('opacity-0', 'hover:opacity-75')
+            } else if (step.value === 9) {
+                document.getElementById(`${19}`).classList.replace('opacity-0', 'hover:opacity-75')
+                document.getElementById(`${20}`).classList.replace('opacity-0', 'hover:opacity-75')
+                document.getElementById(`${21}`).classList.replace('opacity-0', 'hover:opacity-75')
+            }
+
             if (nextBox) {
                 nextBox.classList.add('animate-pulse', 'zoom-box')
             } else {
                 lastRow()
                 // win()
             }
-
 
         } else {
             let wood = new Audio()
@@ -700,7 +747,7 @@ const validateAudiosOfPositions = (selector) => {
     }
 }
 
-const showItemsPresentation = () => {
+const showItemsPresentation = (showFocus) => {
     let box = document.getElementById('itemPresentation')
 
     box.classList.remove('hidden')
@@ -721,6 +768,7 @@ const showItemsPresentation = () => {
         }
 
         let itemSound = new Audio(`${localHost}/audios/items/${items[i].name}.m4a`)
+        let start = new Audio(`${localHost}/audios/start/sudoku/locate/${items[0].group}.m4a`)
 
         if (items[i].type === types.image) {
 
@@ -779,6 +827,12 @@ const showItemsPresentation = () => {
         } else if (items[i].type === types.eraser) {
             setTimeout(function () {
                 box.classList.add('hidden')
+                start.play()
+                if (showFocus) {
+                    start.onended = function () {
+                        showFocusBox(props.order_to_resolve[0])
+                    }
+                }
             }, time)
             continue
         }
@@ -786,6 +840,12 @@ const showItemsPresentation = () => {
         if (i === items.length - 1) {
             setTimeout(function () {
                 box.classList.add('hidden')
+                start.play()
+                if (showFocus) {
+                    start.onended = function () {
+                        showFocusBox(props.order_to_resolve[0])
+                    }
+                }
             }, time + 2000)
 
         }

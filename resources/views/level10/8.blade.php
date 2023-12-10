@@ -4,9 +4,9 @@
 
     <paint-permutations
         :items="{{json_encode([
-            ['name' => 'Azul', 'type' => 'COLOR', 'content' => 'bg-blue-600', 'hex' => '#2563eb' , 'group' => 'Color'],
-            ['name' => 'Verde', 'type' => 'COLOR', 'content' => 'bg-green-600', 'hex' => '#16a34a' , 'group' => 'Color'],
-            ['name' => 'Rojo', 'type' => 'COLOR', 'content' => 'bg-red-600', 'hex' => '#dc2626' , 'group' => 'Color'],
+            ['name' => 'Morado', 'type' => 'COLOR', 'content' => 'bg-[#572364]', 'hex' => '#572364' , 'group' => 'Color'],
+            ['name' => 'Naranja', 'type' => 'COLOR', 'content' => 'bg-orange-400', 'hex' => '#fb923c' , 'group' => 'Color'],
+            ['name' => 'Negro', 'type' => 'COLOR', 'content' => 'bg-black', 'hex' => '#000000' , 'group' => 'Color'],
             ['name' => 'Borrador', 'type' => 'ERASER', 'content' => asset('/images/items/tools/eraser.png'), 'size' => 'BIG', 'group' => 'Borrador']
         ])}}"
         :order_to_resolve="[3,5,6,9,11,12,15,17,18]"
