@@ -51,7 +51,7 @@ let totalActivities = 12
                     <div id="naveDiv" :style="`grid-column: ${activityNumber};`"
                          class="flex justify-center duration-300">
                         <img id="nave" class="" :src="props.rocket"
-                             width="160" alt="">
+                             width="100" alt="">
                     </div>
                 </div>
             </div>

@@ -12,6 +12,9 @@ import PixelArt from "./components/activities/PixelArt.vue"
 import HomeView from "./components/templates/HomeView.vue"
 import SelectLevel from "./components/templates/SelectLevel.vue"
 
+
+import TestPermutations from "./components/activities/TestPermutations.vue"
+
 createApp({
     components: {
         'my-component': MyComponent,
@@ -25,5 +28,8 @@ createApp({
         'pixel-art': PixelArt,
         'home-view': HomeView,
         'select-level': SelectLevel,
+
+        'test-permutations': TestPermutations,
+
     }
 }).mount("#app");
