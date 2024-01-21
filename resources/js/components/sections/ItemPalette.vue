@@ -20,7 +20,7 @@ onMounted(() => {
     itemSelected.value = getSelectItem()
 });
 
-const selectItem = (item) => {
+const selectItemPalette = (item) => {
     let selectSound = new Audio()
     selectSound.src = `${localHost}/audios/effects/bubble.wav`
     selectSound.play()
@@ -201,7 +201,7 @@ const pause = () => {
                     class="bg-red-100 col-span-2 flex justify-center m-3 p-2 rounded-md border-orange-400 border-4 border-dashed">
                     <span class="font-semibold text-xl text-center">Paleta de colores</span>
                 </div>
-                <div @click="selectItem(item)" v-for="item in props.items"
+                <div @click="selectItemPalette(item)" v-for="item in props.items"
                      class="flex justify-center items-center w-full h-full">
                     <button
                         :class="['bg-gray-100 shadow-md rounded-lg hover:opacity-75 hover:scale-95 duration-300 select-none font-bold text-6xl w-20 h-20 flex justify-center items-center' ,
