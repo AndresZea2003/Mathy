@@ -38,14 +38,15 @@ let boxes = ref([])
 
 onMounted(() => {
     // validateAudiosOfPositions(props.selectors)
+    console.log('props.size', props.size[0] * props.size[1])
     if (props.size[0] * props.size[1] < 5) {
         boxSize.value = 36
-    } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 10) {
-        boxSize.value = 24
-    } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 37) {
-        boxSize.value = 16
-    } else if (props.size[0] * props.size[1] > 37) {
-        boxSize.value = 9
+    } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 31) {
+        boxSize.value = '64px'
+    } else if (props.size[0] * props.size[1] > 31 && props.size[0] * props.size[1] < 65) {
+        boxSize.value = '48px'
+    } else if (props.size[0] * props.size[1] > 65) {
+        boxSize.value = '38px'
     }
 
     document.getElementById('coinsCount').innerText = `x ${getCoins()}`
@@ -158,6 +159,13 @@ const prepare = () => {
 
     let rowsAndCols = getRowsAndCols(sudokuArray)
 
+    let eraser = {
+        "name": "Borrador",
+        "type": "ERASER",
+        "content": '/images/items/tools/eraser.png',
+        "size": "BIG",
+        "group": "Borrador"
+    }
 
     for (let i = 0; i <= props.fill_sample.length - 1; i++) {
         let order = props.fill_sample[i] - 1
@@ -167,10 +175,10 @@ const prepare = () => {
         }
         let item = items[orderArray[i]]
         localStorage.setItem('itemSelected', JSON.stringify(item))
+
         paintItem(`sample-${i + 1}`, items)
 
         paintItem(`${i + 1}`, items)
-
 
         for (let colIndex = 0; colIndex <= props.select_cols.length - 1; colIndex++) {
 
@@ -180,11 +188,14 @@ const prepare = () => {
 
                 document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]).classList.remove('bg-white')
                 document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]).classList.replace(getSelectItem().content, 'bg-white')
-                document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]).classList.add('bg-gray-200', 'border-dashed')
+                document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]).innerText = null
 
+                document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]).classList.add('bg-gray-200', 'border-dashed')
 
             }
         }
+
+        localStorage.setItem('itemSelected', null)
     }
 }
 
@@ -512,6 +523,41 @@ const showItemsPresentation = () => {
     }
 }
 
+const showHelp = () => {
+
+    if (talkBool.value) {
+        return
+    }
+
+    talkBool.value = true
+    let indication1 = new Audio(`${localHost}/audios/start/pattern/help/observa-colorea.m4a`)
+    indication1.play()
+
+    indication1.onended = function () {
+        talkBool.value = false
+    }
+
+    document.getElementById('fig1').classList.add('animate-pulse')
+    document.getElementById('arrow').classList.add('scale-50')
+    document.getElementById('fig2').classList.add('scale-50')
+
+    setTimeout(function () {
+        document.getElementById('fig1').classList.remove('animate-pulse')
+        document.getElementById('arrow').classList.remove('scale-50')
+        document.getElementById('fig2').classList.remove('scale-50')
+
+        document.getElementById('fig2').classList.add('animate-pulse')
+        document.getElementById('fig1').classList.add('scale-50')
+        document.getElementById('arrow-right').style.fill = 'green';
+
+        setTimeout(function () {
+            document.getElementById('fig2').classList.remove('animate-pulse')
+            document.getElementById('fig1').classList.remove('scale-50')
+            document.getElementById('arrow-right').style.fill = '#9ca3af';
+        }, 2000)
+        }, 2000)
+}
+
 </script>
 <template>
     <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden w-10 h-10 w-9 h-9 w-8 h-8
@@ -525,8 +571,9 @@ const showItemsPresentation = () => {
     <div class="flex flex-col min-h-screen bg-red-300">
         <div class="mx-auto flex-1 container flex justify-center">
             <div class="flex bg-red-500 p-6 w-full gap-5 rounded-md">
-                <div @click="showItemsPresentation()" class="w-[16%] bg-red-200">
-                    <HelpCharacter :image="`${localHost}/images/characters/robot/normal.png`"
+                <div class="w-[16%] bg-red-200">
+                    <HelpCharacter @click="showHelp()"
+                                   :image="`${localHost}/images/characters/robot/normal.png`"
                                    :image_2="`${localHost}/images/characters/robot/talk.gif`"
                     />
                 </div>
@@ -539,25 +586,27 @@ const showItemsPresentation = () => {
 
                     <div class="row-span-3 flex justify-center items-center">
                         <div>
-                            <div class="my-6 flex justify-center gap-5">
+                            <div class="my-6 flex justify-center items-center gap-5 ">
 
-                                <div id="sample-img" :class="`grid grid-cols-${props.size[0]} gap-x-2`">
+                                <div id="fig1" :class="`grid grid-cols-${props.size[0]} gap-x-2 flex items-center justify-center duration-300`">
                                     <div :id="`sample-${i}`" @click="validateOrder(i)"
                                          v-for="i in (props.size[0] * props.size[1])" :key="i"
                                          :class="`bg-white border border-black hover:opacity-75
-                                          flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
+                                          flex justify-center items-center font-bold text-6xl select-none`"
+                                          :style="`width: ${boxSize}; height: ${boxSize};`">
                                     </div>
                                 </div>
 
-                                <div class="flex items-center">
+                                <div id="arrow" class="flex items-center duration-300">
                                     <IconArrowRight/>
                                 </div>
 
-                                <div id="activity-img" :class="`grid grid-cols-${props.size[0]} gap-x-2`">
+                                <div id="fig2" :class="`grid grid-cols-${props.size[0]} gap-x-2 flex items-center justify-center duration-300`">
                                     <div :id="i" @click="validateOrder(i)" v-for="i in (props.size[0] * props.size[1])"
                                          :key="i"
                                          :class="`bg-white border border-black hover:opacity-75
-                                          flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
+                                          flex justify-center items-center font-bold text-6xl select-none`"
+                                    :style="`width: ${boxSize}; height: ${boxSize};`">
                                     </div>
                                 </div>
 

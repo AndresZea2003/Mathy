@@ -229,15 +229,15 @@ const validateOrder = (id) => {
     //
     //     for (let i = 0; i < props.size[0] * props.size[1]; i++) {
     //         if (boxes.value[i] === true) {
-    //             step.value++
+    //             row.value++
     //         }
     //     }
-    //     console.log(step.value)
+    //     console.log(row.value)
     //
-    //     if (step.value === props.size[0] * props.size[1]) {
+    //     if (row.value === props.size[0] * props.size[1]) {
     //         win()
     //     }
-    //     step.value = 0
+    //     row.value = 0
     //
     // } else {
     //     paintItem(id, items)

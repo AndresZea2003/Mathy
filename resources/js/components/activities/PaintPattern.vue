@@ -108,7 +108,42 @@ const items = props.items
 let paintImage = ref(false)
 
 const intro = () => {
-    showFocusBox(props.order_to_resolve[0])
+
+}
+
+const showHelp = () => {
+
+    if (talkBool.value) {
+        return
+    }
+
+    talkBool.value = true
+    let indication1 = new Audio(`${localHost}/audios/start/pattern/help/observa-colorea.m4a`)
+    indication1.play()
+
+    indication1.onended = function () {
+        talkBool.value = false
+    }
+
+    document.getElementById('fig1').classList.add('animate-pulse')
+    document.getElementById('arrow').classList.add('scale-50')
+    document.getElementById('fig2').classList.add('scale-50')
+
+    setTimeout(function () {
+        document.getElementById('fig1').classList.remove('animate-pulse')
+        document.getElementById('arrow').classList.remove('scale-50')
+        document.getElementById('fig2').classList.remove('scale-50')
+
+        document.getElementById('fig2').classList.add('animate-pulse')
+        document.getElementById('fig1').classList.add('scale-50')
+        document.getElementById('arrow-right').style.fill = 'green';
+
+        setTimeout(function () {
+            document.getElementById('fig2').classList.remove('animate-pulse')
+            document.getElementById('fig1').classList.remove('scale-50')
+            document.getElementById('arrow-right').style.fill = '#9ca3af';
+        }, 2000)
+        }, 2000)
 }
 
 const showFocusBox = (id) => {
@@ -131,7 +166,7 @@ const showFocusBox = (id) => {
 //         //     prepareSudoku()
 //         // }
 //         intro();
-//         prepareSudoku()
+//         prepare()
 //     });
 // }, 500)
 
@@ -660,8 +695,9 @@ const showItemsPresentation = () => {
     <div class="flex flex-col min-h-screen bg-blue-300">
         <div class="mx-auto flex-1 container flex justify-center">
             <div class="flex bg-blue-500 p-6 w-full gap-5 rounded-md">
-                <div @click="showItemsPresentation()" class="w-[16%] bg-red-200">
-                    <HelpCharacter :image="`${localHost}/images/characters/robot/normal.png`"
+                <div class="w-[16%] bg-red-200">
+                    <HelpCharacter @click="showHelp()"
+                                   :image="`${localHost}/images/characters/robot/normal.png`"
                                    :image_2="`${localHost}/images/characters/robot/talk.gif`"
                     />
                 </div>
@@ -676,7 +712,7 @@ const showItemsPresentation = () => {
                         <div>
                             <div class="my-6 flex justify-center gap-5">
 
-                                <div>
+                                <div id="fig1" class="duration-300">
                                     <div class="flex justify-center">
                                         <div>
                                             <div class="flex justify-center h-12">
@@ -695,11 +731,11 @@ const showItemsPresentation = () => {
                                     </div>
                                 </div>
 
-                                <div class="flex items-center">
+                                <div id="arrow" class="flex items-center translate-y-[50px] duration-300">
                                     <IconArrowRight/>
                                 </div>
 
-                                <div>
+                                <div id="fig2" class="duration-300">
                                     <div class="flex justify-center">
                                         <div>
                                             <div class="flex justify-center h-12">

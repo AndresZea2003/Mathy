@@ -163,7 +163,6 @@ const prepare = () => {
         localStorage.setItem('itemSelected', JSON.stringify(item))
 
 
-
         document.getElementById(`${i + 1}`).classList.replace(getSelectItem().content, 'bg-white')
         // if (props.order_to_resolve.includes(i + 1)) {
         //     document.getElementById(`${i + 1}`).classList.replace(getSelectItem().content, 'bg-white')
@@ -174,7 +173,7 @@ const prepare = () => {
         localStorage.setItem('itemSelected', JSON.stringify(null))
         document.getElementById(`${i + 1}`).classList.add('duration-300')
 
-        if (i > 2){
+        if (i > 2) {
             // Usar aqui para omitir los primeros 3
         }
 
@@ -199,7 +198,7 @@ let focusLastRow = ref(false)
 
 const validateOrder = (id) => {
 
-    console.log(boxes.value)
+
 
     let itemSelected = getSelectItem()
 
@@ -207,7 +206,6 @@ const validateOrder = (id) => {
         errorPaint(id)
         return
     }
-
 
 
     if (focusLastRow.value) {
@@ -257,18 +255,18 @@ const validateOrder = (id) => {
                     boxes.value[1] = false
                     boxes.value[2] = false
 
-                for (let i = 0; i < items.length; i++) {
-                    const item = items[i];
-                    document.getElementById(`${19}`).classList.remove(item.content)
-                    document.getElementById(`${20}`).classList.remove(item.content)
-                    document.getElementById(`${21}`).classList.remove(item.content)
+                    for (let i = 0; i < items.length; i++) {
+                        const item = items[i];
+                        document.getElementById(`${19}`).classList.remove(item.content)
+                        document.getElementById(`${20}`).classList.remove(item.content)
+                        document.getElementById(`${21}`).classList.remove(item.content)
 
-                }
+                    }
 
-                document.getElementById(`${19}`).classList.add('bg-white')
-                document.getElementById(`${20}`).classList.add('bg-white')
-                document.getElementById(`${21}`).classList.add('bg-white')
-                focusLastRow.value = true
+                    document.getElementById(`${19}`).classList.add('bg-white')
+                    document.getElementById(`${20}`).classList.add('bg-white')
+                    document.getElementById(`${21}`).classList.add('bg-white')
+                    focusLastRow.value = true
                 }
             }
 
@@ -306,26 +304,10 @@ const validateOrder = (id) => {
                 focusLastRow.value = false
 
                 error3.onended = function () {
-                    // boxes.value[0] = false
-                    // boxes.value[1] = false
-                    // boxes.value[2] = false
-
-                    // for (let i = 0; i < items.length; i++) {
-                    //     const item = items[i];
-                    //     document.getElementById(`${19}`).classList.remove(item.content)
-                    //     document.getElementById(`${20}`).classList.remove(item.content)
-                    //     document.getElementById(`${21}`).classList.remove(item.content)
-
-                    // }
-
-                    // document.getElementById(`${19}`).classList.add('bg-white')
-                    // document.getElementById(`${20}`).classList.add('bg-white')
-                    // document.getElementById(`${21}`).classList.add('bg-white')
                     win()
                 }
 
-                
-                
+
             }
 
             trys.value++
@@ -351,15 +333,19 @@ const validateOrder = (id) => {
     let audioItem2 = new Audio(`${localHost}/audios/items/${items[1].name}.m4a`)
     let audioItem3 = new Audio(`${localHost}/audios/items/${items[2].name}.m4a`)
 
-
-    let question1 = new Audio(`${localHost}/audios/items/questions/color/1.m4a`)
-    let question2 = new Audio(`${localHost}/audios/items/questions/color/2.m4a`)
+    let question1 = new Audio(`${localHost}/audios/items/questions/${items[0].group}/1.m4a`)
+    let question2 = new Audio(`${localHost}/audios/items/questions/${items[0].group}/2.m4a`)
 
     let explainAudio1 = new Audio(`${localHost}/audios/permutations/5.m4a`)
     let explainAudio2 = new Audio(`${localHost}/audios/permutations/6.m4a`)
     let explainAudio3 = new Audio(`${localHost}/audios/permutations/7.m4a`)
     let explainAudio4 = new Audio(`${localHost}/audios/permutations/8.m4a`)
     let explainAudio5 = new Audio(`${localHost}/audios/permutations/9.m4a`)
+
+    let error1 = 'Error 1'
+    let error2 = 'Error 2'
+
+    let error = 'Sin asignar'
 
     if (focusBox.value === id && talkBool.value === false) {
         paintItem(id, items)
@@ -381,9 +367,7 @@ const validateOrder = (id) => {
 
             step.value++
 
-
-
-            if (step.value === 1){
+            if (step.value === 1) {
 
                 audioOk1.play()
 
@@ -402,8 +386,8 @@ const validateOrder = (id) => {
                 question2.onended = function () {
                     showFocusBox(`${props.order_to_resolve[step.value]}`)
                 }
-                
-            } else if (step.value === 2){
+
+            } else if (step.value === 2) {
 
                 audioOk2.play()
 
@@ -413,7 +397,7 @@ const validateOrder = (id) => {
                     document.getElementById(`${6}`).classList.replace('opacity-0', 'hover:opacity-75')
                 }
 
-            } else if (step.value === 3){
+            } else if (step.value === 3) {
 
                 audioOk3.play()
 
@@ -492,13 +476,13 @@ const validateOrder = (id) => {
                     document.getElementById(`${7}`).classList.replace('opacity-0', 'hover:opacity-75')
                     localStorage.setItem('itemSelected', JSON.stringify(items[2]))
                     paintItem(`${7}`, items)
-                    
+
                     audioItem3.onended = function () {
                         localStorage.setItem('itemSelected', JSON.stringify(items[1]))
                         paintItem(`${8}`, items)
                         audioItem2.play()
                         document.getElementById(`${8}`).classList.replace('opacity-0', 'hover:opacity-75')
-                        
+
                     }
 
                     audioItem2.onended = function () {
@@ -507,8 +491,8 @@ const validateOrder = (id) => {
                         showFocusBox(`${props.order_to_resolve[step.value]}`)
                     }
                 }
-            
-            } else if (step.value === 4){
+
+            } else if (step.value === 4) {
 
                 audioOk4.play()
 
@@ -527,7 +511,7 @@ const validateOrder = (id) => {
                 question2.onended = function () {
                     showFocusBox(`${props.order_to_resolve[step.value]}`)
                 }
-                
+
             } else if (step.value === 5) {
                 audioOk2.play()
 
@@ -539,7 +523,7 @@ const validateOrder = (id) => {
                 question1.onended = function () {
                     showFocusBox(`${props.order_to_resolve[step.value]}`)
                 }
-                
+
             } else if (step.value === 6) {
 
                 explainAudio4.play()
@@ -596,7 +580,7 @@ const validateOrder = (id) => {
                 question1.onended = function () {
                     showFocusBox(`${props.order_to_resolve[step.value]}`)
                 }
-                
+
             } else if (step.value === 7) {
 
                 audioOk5.play()
@@ -655,14 +639,178 @@ const validateOrder = (id) => {
 
     function showError() {
 
+        console.log(error, `paso`, `${step.value}`)
+
+        console.log('Items selected :', itemSelected.name, items[0].name)
+
+        // azul item 0
+        // verde item 1
+        // rojo item 2
+
+        let errorRow = new Audio(`${localHost}/audios/permutations/errors/color/row.m4a`)
+        let errorBackRow = new Audio(`${localHost}/audios/permutations/errors/color/backrow.m4a`)
+
+        let compareId = ref(null)
+        if (step.value === 0) {
+            talkBool.value = true
+            if (itemSelected.name === items[0].name) {
+                // [x, - , o]
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 1
+            } else if (itemSelected.name === items[2].name) {
+                // [-, x , o]
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 2
+            }
+
+        } else if (step.value === 1) {
+            talkBool.value = true
+            if (itemSelected.name === items[0].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                // [-, - , -]
+                // [x, o , ?]
+                compareId.value = 4
+            } else if (itemSelected.name === items[2].name) {
+                // [-, x , -]
+                // [-, o , ?]
+                // Compara con fila anterior
+                errorBackRow.play()
+                errorBackRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 2
+            }
+
+        } else if (step.value === 2) {
+            talkBool.value = true
+            if (itemSelected.name === items[0].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 4
+            } else if (itemSelected.name === items[1].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 5
+            }
+
+        } else if (step.value === 3) {
+            talkBool.value = true
+            if (itemSelected.name === items[1].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 8
+            } else if (itemSelected.name === items[2].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 7
+            }
+        } else if (step.value === 4) {
+            talkBool.value = true
+            if (itemSelected.name === items[1].name) {
+                // Compara fila anterior
+                errorBackRow.play()
+                errorBackRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 8
+            } else if (itemSelected.name === items[2].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 10
+            }
+
+        } else if (step.value === 5) {
+            talkBool.value = true
+            if (itemSelected.name === items[0].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 11
+            } else if (itemSelected.name === items[2].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 10
+            }
+
+        } else if (step.value === 6) {
+            talkBool.value = true
+            if (itemSelected.name === items[0].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 14
+            } else if (itemSelected.name === items[1].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 13
+            }
+        } else if (step.value === 7) {
+            talkBool.value = true
+            if (itemSelected.name === items[0].name) {
+                // comparara con fila anterior
+                errorBackRow.play()
+                errorBackRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 14
+            } else if (itemSelected.name === items[1].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 16
+            }
+
+        } else if (step.value === 8) {
+            talkBool.value = true
+            if (itemSelected.name === items[1].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 16
+            } else if (itemSelected.name === items[2].name) {
+                errorRow.play()
+                errorRow.onended = function () {
+                    talkBool.value = false
+                }
+                compareId.value = 17
+            }
+        }
+
         document.getElementById(id).classList.remove('animate-pulse')
 
         document.getElementById(id).classList.add('scale-75', 'opacity-75')
-        document.getElementById(`${2}`).classList.add('scale-75', 'opacity-75')
+        document.getElementById(`${compareId.value}`).classList.add('scale-75', 'opacity-75')
 
         setTimeout(function () {
             document.getElementById(id).classList.remove('scale-75', 'opacity-75')
-            document.getElementById(`${2}`).classList.remove('scale-75', 'opacity-75')
+            document.getElementById(`${compareId.value}`).classList.remove('scale-75', 'opacity-75')
             document.getElementById(id).classList.add('animate-pulse')
         }, 2000)
     }
@@ -1111,12 +1259,6 @@ const showItemsPresentation = (showFocus) => {
         } else if (items[i].type === types.eraser) {
             setTimeout(function () {
                 box.classList.add('hidden')
-                // start.play()
-                // if (showFocus) {
-                //     start.onended = function () {
-                //         showFocusBox(props.order_to_resolve[0])
-                //     }
-                // }
             }, time)
             continue
         }
@@ -1124,12 +1266,6 @@ const showItemsPresentation = (showFocus) => {
         if (i === items.length - 1) {
             setTimeout(function () {
                 box.classList.add('hidden')
-                // start.play()
-                // if (showFocus) {
-                //     start.onended = function () {
-                //         showFocusBox(props.order_to_resolve[0])
-                //     }
-                // }
             }, time + 2000)
 
         }
@@ -1144,12 +1280,12 @@ const consoleLog = () => {
     let audioItem2 = new Audio(`${localHost}/audios/items/${items[1].name}.m4a`)
     let audioItem3 = new Audio(`${localHost}/audios/items/${items[2].name}.m4a`)
 
-    let question1 = new Audio(`${localHost}/audios/items/questions/color/1.m4a`)
+    let question1 = new Audio(`${localHost}/audios/items/questions/${items[0].group}/1.m4a`)
 
     let audio1 = new Audio(`${localHost}/audios/permutations/1.m4a`)
-    let audio2 = new Audio(`${localHost}/audios/groups/next/color.m4a`)
+    let audio2 = new Audio(`${localHost}/audios/groups/next/${items[0].group}.m4a`)
     let audio3 = new Audio(`${localHost}/audios/permutations/2.m4a`)
-    let audio4 = new Audio(`${localHost}/audios/groups/none/color.m4a`)
+    let audio4 = new Audio(`${localHost}/audios/groups/none/${items[0].group}.m4a`)
     let audio5 = new Audio(`${localHost}/audios/permutations/3.m4a`)
     let audio6 = new Audio(`${localHost}/audios/permutations/4.m4a`)
 
@@ -1158,11 +1294,11 @@ const consoleLog = () => {
     audio1.onended = function () {
         audio2.play()
         // showItemsPresentation(true)
-        
+
     }
 
     audio2.onended = function () {
-        // console.log(showItemsPresentation(true)) 
+        // console.log(showItemsPresentation(true))
         setTimeout(function () {
             audio3.play()
         }, showItemsPresentation(true))
@@ -1182,14 +1318,12 @@ const consoleLog = () => {
             let element = document.getElementById(i.toString())
             if (element) {
                 element.classList.remove('opacity-0')
-        }
+            }
         }
 
     }
-    
+
     audio6.onended = function () {
-        console.log('hola')
-        
         audioItem1.play()
         localStorage.setItem('itemSelected', JSON.stringify(items[0]))
         paintItem(`${1}`, items)
@@ -1205,16 +1339,11 @@ const consoleLog = () => {
 
     audioItem3.onended = function () {
         question1.play()
-        
-        // document.getElementById('3').classList.remove(`bg-white`)
-        // document.getElementById('3').classList.add(`${items[(props.fill_sample[2] - 1)].content}`)
     }
 
     question1.onended = function () {
         showFocusBox(props.order_to_resolve[0])
     }
-
-    console.log('hola')
 }
 
 </script>
@@ -1246,7 +1375,7 @@ const consoleLog = () => {
                         <div>
                             <div class="my-6 flex justify-center gap-5">
 
-                                <div id="activity" :class="`grid grid-cols-3 gap-y-2 gap-x-1`">
+                                <div id="activity" :class="[`grid grid-cols-3 gap-y-2 gap-x-1`, talkBool ? 'cursor-not-allowed' : 'cursor-cell']">
                                     <div :id="i" @click="validateOrder(i)" v-for="i in 21"
                                          :key="i"
                                          :class="`bg-white border border-black hover:opacity-75
