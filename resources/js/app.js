@@ -12,6 +12,10 @@ import PixelArt from "./components/activities/PixelArt.vue"
 import HomeView from "./components/templates/HomeView.vue"
 import SelectLevel from "./components/templates/SelectLevel.vue"
 
+import '@fontsource/press-start-2p';
+import '@fontsource/bangers';
+import '@fontsource/luckiest-guy';
+
 
 import TestPermutations from "./components/activities/TestPermutations.vue"
 

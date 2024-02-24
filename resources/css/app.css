@@ -6,3 +6,15 @@
     background: url('../../public/images/backgrounds/space.jpg');
     background-size: 1600px;
 }
+
+.font-press-start {
+    font-family: 'Press Start 2P', cursive;
+}
+
+.font-bangers {
+  font-family: 'Bangers', system-ui;
+}
+
+.font-luckiest-guy {
+  font-family: 'Luckiest Guy', system-ui;
+}
