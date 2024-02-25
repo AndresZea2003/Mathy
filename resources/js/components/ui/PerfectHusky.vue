@@ -17,15 +17,16 @@ const props = defineProps({
     <div>
       <span :class="textColor">Actividad {{ props.activity }}</span>
       <div class="flex justify-center items-center">
-        <LightBars></LightBars>
+        <LightBars class=""></LightBars>
       </div>
     </div>
   </div>
   <div class="second-content">
     <span :class="[``, props.hoverTextColor]">Jugar!</span>
     <div class="fixed">
-      <DullShrimp class="absolute"></DullShrimp>
-      <DullShrimp class="absolute scale-50"></DullShrimp>
+<!--      <DullShrimp class="absolute -z-10"></DullShrimp>-->
+      <DullShrimp class="absolute scale-50 -z-10"></DullShrimp>
+      <DullShrimp class="absolute scale-50 -z-10"></DullShrimp>
     </div>
 
   </div>
@@ -35,20 +36,20 @@ const props = defineProps({
 </template>
 <style scoped>
 .card {
-  width: 190px;
-  height: 254px;
+  width: 150px;
+  height: 224px;
   //background: rgb(103, 225, 255);
   transition: all 0.4s;
   border-radius: 10px;
   box-shadow: 0px 0px 10px 5px  rgba(0, 0, 0, 0.705);
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 900;
 }
 
 .card:hover {
   border-radius: 15px;
   cursor: pointer;
-  transform: scale(1.2);
+  transform: scale(.9);
   box-shadow: 0px 0px 10px 5px  rgba(0, 0, 0, 0.705);
   //background: rgb(103, 151, 255);
 }

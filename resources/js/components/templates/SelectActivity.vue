@@ -8,17 +8,29 @@ import SpaceBg from "@/components/ui/SpaceBg.vue";
 import PerfectHusky from "@/components/ui/PerfectHusky.vue";
 import CardRadar from "@/components/ui/CardRadar.vue";
 import CardPlanet from "@/components/ui/CardPlanet.vue";
+import DullShrimp from "@/components/ui/DullShrimp.vue";
 
 const props = defineProps({
   level: {type: Array},
   planet: {type: String},
+
 })
 
 import {
   HomeIcon,
   ArrowLeftCircleIcon,
   ArrowRightCircleIcon,
+  ChevronDoubleUpIcon,
+  ChevronDoubleDownIcon
 } from '@heroicons/vue/24/solid'
+
+const up = () => {
+  document.querySelector('.bg-pattern1').scrollBy(0, -100); // Cambia -100 a la cantidad de píxeles que deseas desplazar hacia arriba
+}
+
+const down = () => {
+  document.querySelector('.bg-pattern1').scrollBy(0, 100); // Cambia 100 a la cantidad de píxeles que deseas desplazar hacia abajo
+}
 </script>
 <template>
 
@@ -27,22 +39,22 @@ import {
   <div class="fixed h-full w-full flex justify-center items-center">
     <div class="flex bg-blue-800 p-2 rounded  w-full m-12 container justify-center">
 
-      <div class="flex justify-between fixed mt-2 gap-x-10">
+      <div class="flex justify-between fixed gap-x-10 translate-y-[-50px]">
         <div class="flex">
           <button class="hover:scale-125 duration-300">
-            <ArrowLeftCircleIcon class="w-10 text-gray-800 hover:text-white duration-300"></ArrowLeftCircleIcon>
+            <ArrowLeftCircleIcon class="w-10 text-white hover:text-white duration-300"></ArrowLeftCircleIcon>
           </button>
         </div>
 
         <div class="flex">
           <button class="hover:scale-125 duration-300">
-            <HomeIcon class="w-10 text-gray-800 hover:text-white duration-300"></HomeIcon>
+            <HomeIcon class="w-10 text-white hover:text-white duration-300"></HomeIcon>
           </button>
         </div>
 
         <div class="flex">
           <button class="hover:scale-125 duration-300">
-            <ArrowRightCircleIcon class="w-10 text-gray-800 hover:text-white duration-300"></ArrowRightCircleIcon>
+            <ArrowRightCircleIcon class="w-10 text-white hover:text-white duration-300"></ArrowRightCircleIcon>
           </button>
         </div>
       </div>
@@ -50,27 +62,45 @@ import {
       <div class="grid grid-cols-5">
         <div class="bg-pattern2 flex justify-center p-4">
           <div class="text-center">
-            <span class="font-luckiest-guy text-gray-300 text-3xl">Planeta Tierra</span>
+            <span class="font-luckiest-guy text-gray-300 text-3xl">Planeta {{ props.planet }}</span>
             <div class="font-luckiest-guy text-gray-300 text-xl pt-4">
-              Nivel 1
+              Nivel {{ props.level[0] }}
             </div>
 
-            <CardPlanet :planetUrl="localHost + '/images/planets/templates/tierra.jfif'" class="scale-75"></CardPlanet>
+            <CardPlanet :planetUrl="localHost + `/images/planets/templates/${props.planet}.jfif`"
+                        class="scale-75"></CardPlanet>
 
 
           </div>
         </div>
 
-        <div class="bg-pattern1 col-span-3 border-4 border-black">
-          <div class="scale-75 gap-x-20 gap-y-12 items-center grid grid-cols-4">
-            <a :href="`${localHost}/level${props.level[0]}/${i}`" :id="i" v-for="i in 8" :key="i">
+        <div
+            class="bg-pattern1 col-span-3 border-4 border-black h-[600px] overflow-auto grid grid-cols-4 p-12 gap-6 relative">
+          <div :id="i" v-for="i in props.level[1]" class="flex justify-center">
+            <a :href="`${localHost}/level${props.level[0]}/${i}`" :key="i">
               <PerfectHusky :activity="i" color="bg-blue-500"></PerfectHusky>
             </a>
           </div>
-
         </div>
 
-        <div class="bg-pattern2">
+        <div class="bg-pattern2 relative ">
+
+          <div class="absolute w-[40px] top-0 py-2 h-full rounded-3xl ">
+            <div :class="[`bg-orange-800 h-full rounded-3xl translate-x-[-40px] w-[36px] -z-10`, props.level[1] > 4 ? 'hidden' : '']">
+
+            </div>
+
+            <button @click="up" id="scrollUp" class="bg-yellow-400 border-4 border-yellow-600 absolute translate-x-[-40px] w-[36px] top-0 py-2 rounded-t-xl translate-y-[4px]">
+              <ChevronDoubleUpIcon class="w-7"></ChevronDoubleUpIcon>
+            </button>
+
+
+
+          <button @click="down" id="scrollDown" class="bg-yellow-400 border-4 border-yellow-600 absolute translate-x-[-40px] w-[36px] bottom-0 py-2 rounded-b-xl translate-y-[-4px]">
+            <ChevronDoubleDownIcon class="w-7"></ChevronDoubleDownIcon>
+          </button>
+          </div>
+
           <div class="p-2">
             <div class="flex p-6 bg-stone-700 rounded border-2 border-stone-500">
               <span class="font-luckiest-guy font-luckiest-guy text-gray-300 text-3xl">Bronze:</span>
@@ -91,6 +121,7 @@ import {
                      :style="{transform: `translateX(${20 * i}px)`}">$
                 </div>
               </div>
+
             </div>
 
             <div class="flex p-6 bg-yellow-900 rounded border-2 border-yellow-500">
@@ -126,5 +157,28 @@ import {
 .bg-pattern2 {
   background-color: #330033;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23404' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%23505'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.bg-pattern1::-webkit-scrollbar {
+  width: 36px; /* Ancho de la barra de desplazamiento */
+  transition-duration: 300ms;
+}
+
+.bg-pattern1::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+  transition-duration: 300ms;
+}
+
+.bg-pattern1::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #9a3412; /* Color del deslizador */
+  transition-duration: 300ms;
+}
+
+.bg-pattern1::-webkit-scrollbar-thumb:hover {
+  background: #7c2d12; /* Color del deslizador al pasar el mouse */
+  transition-duration: 300ms;
 }
 </style>

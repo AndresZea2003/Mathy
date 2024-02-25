@@ -3,8 +3,8 @@
 @section('main')
 
     <select-activity
-        :level="[{{1}},{{$activityNumber}}]"
-        planet="{{asset('/images/planets/tierra.svg')}}"
+        :level="[{{$activityNumber}},{{20}}]"
+        planet="tierra"
     ></select-activity>
 
 @endsection
