@@ -14,7 +14,7 @@
 
       </div>
    </div>
-   <p>Aprende</p>
+   <p></p>
 </div>
 </template>
 <style scoped>
