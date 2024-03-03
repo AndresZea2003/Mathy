@@ -13,7 +13,8 @@ import DullShrimp from "@/components/ui/DullShrimp.vue";
 const props = defineProps({
   level: {type: Array},
   planet: {type: String},
-
+  color_card: {type: String},
+  planet_name: {type: String}
 })
 
 import {
@@ -62,12 +63,12 @@ const down = () => {
       <div class="grid grid-cols-5">
         <div class="bg-pattern2 flex justify-center p-4">
           <div class="text-center">
-            <span class="font-luckiest-guy text-gray-300 text-3xl">Planeta {{ props.planet }}</span>
+            <span class="font-luckiest-guy text-gray-300 text-3xl">Planeta {{ props.planet_name }}</span>
             <div class="font-luckiest-guy text-gray-300 text-xl pt-4">
               Nivel {{ props.level[0] }}
             </div>
 
-            <CardPlanet :planetUrl="localHost + `/images/planets/templates/${props.planet}.jfif`"
+            <CardPlanet :planetUrl="localHost + `/images/planets/templates/${props.planet}`"
                         class="scale-75"></CardPlanet>
 
 
@@ -78,7 +79,7 @@ const down = () => {
             class="bg-pattern1 col-span-3 border-4 border-black h-[600px] overflow-auto grid grid-cols-4 p-12 gap-6 relative">
           <div :id="i" v-for="i in props.level[1]" class="flex justify-center">
             <a :href="`${localHost}/level${props.level[0]}/${i}`" :key="i">
-              <PerfectHusky :activity="i" color="bg-blue-500"></PerfectHusky>
+              <PerfectHusky :activity="i" :color="color_card"></PerfectHusky>
             </a>
           </div>
         </div>

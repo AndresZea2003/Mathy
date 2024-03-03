@@ -35,7 +35,7 @@ const props = defineProps({
 
     <div>
       <div class="text-white font-luckiest-guy text-7xl text-center select-none">
-        Salva la <span class="text-red-500">Colores</span> con <br>
+        Salva los <span class="text-red-500">Colores</span> con <br>
         <span class="text-red-500">Mati</span> y <span class="text-blue-500">Motas</span>
       </div>
 

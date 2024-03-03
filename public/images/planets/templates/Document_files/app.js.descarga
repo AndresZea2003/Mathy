@@ -1,0 +1,39 @@
+import "/resources/js/bootstrap.js";
+import {createApp} from "/node_modules/.vite/deps/vue_dist_vue__esm-bundler__js.js?v=f779eef6";
+import MyComponent from "/resources/js/components/MyComponent.vue";
+import BasicActivity from "/resources/js/components/templates/BasicActivity.vue"
+import SelectActivity from "/resources/js/components/templates/SelectActivity.vue?t=1709471381416"
+import InteractiveSudoku from "/resources/js/components/activities/InteractiveSudoku.vue"
+import PaintPattern from "/resources/js/components/activities/PaintPattern.vue"
+import LinePaintPattern from "/resources/js/components/activities/LinePaintPattern.vue"
+import PaintPermutations from "/resources/js/components/activities/PaintPermutations.vue"
+import PaintLadder from "/resources/js/components/activities/PaintLadder.vue"
+import PixelArt from "/resources/js/components/activities/PixelArt.vue"
+import HomeView from "/resources/js/components/templates/HomeView.vue?t=1709471202968"
+import SelectLevel from "/resources/js/components/templates/SelectLevel.vue"
+
+import "/node_modules/@fontsource/press-start-2p/index.css";
+import "/node_modules/@fontsource/bangers/index.css";
+import "/node_modules/@fontsource/luckiest-guy/index.css";
+
+
+import TestPermutations from "/resources/js/components/activities/TestPermutations.vue"
+
+createApp({
+    components: {
+        'my-component': MyComponent,
+        'basic-activity': BasicActivity,
+        'interactive-sudoku': InteractiveSudoku,
+        'paint-pattern': PaintPattern,
+        'line-paint-pattern': LinePaintPattern,
+        'select-activity': SelectActivity,
+        'paint-permutations': PaintPermutations,
+        'paint-ladder': PaintLadder,
+        'pixel-art': PixelArt,
+        'home-view': HomeView,
+        'select-level': SelectLevel,
+
+        'test-permutations': TestPermutations,
+
+    }
+}).mount("#app");
