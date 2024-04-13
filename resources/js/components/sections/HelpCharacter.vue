@@ -18,7 +18,7 @@ let showImage = ref(props.image)
             </div>
         </div>
         <div class="flex justify-center items-end">
-            <img id="character" @click="talkCharacter(props.image, props.image_2)" class="cursor-pointer" :src="showImage" width="160" alt="">
+            <img id="character" class="cursor-pointer" :src="showImage" width="160" alt="">
         </div>
     </div>
 </template>

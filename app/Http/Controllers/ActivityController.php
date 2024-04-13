@@ -9,12 +9,15 @@ use Illuminate\View\View;
 
 class ActivityController extends Controller
 {
-    //
     public function loadAudio(Request $request)
     {
 
+//        return $request->text;
         $apiKey = '5lDOi3anN42aHBBUyMZTrR3T5gMTrjn5Q5uACsd9'; // Reemplaza 'tu-clave-api' con tu clave API real
-        $textToConvert = $request->text;;
+//        $textToConvert = str_replace('%20', ' ', urlencode($request->text));
+        $textToConvert = str_replace('+', ' ', urlencode($request->text));
+//        $textToConvert = urlencode($request->text);
+
         $apiUrl = 'https://api.narakeet.com/text-to-speech/m4a';
         $voice = 'armando';
         $voiceSpeed = $request->speed;
@@ -23,22 +26,29 @@ class ActivityController extends Controller
 //        $textToConvert = "Hi there, this is your API speaking";
 
         $response = Http::withHeaders([
-            'Content-Type' => 'text/plain',
+            'Content-Type' => 'application/x-www-form-urlencoded',
             'x-api-key' => $apiKey,
             'accept' => 'application/octet-stream',
-            ])->post('https://api.narakeet.com/text-to-speech/mp3?voice=' . $voice . '&voice-speed=' . $voiceSpeed, $textToConvert);
+            ])->post('https://api.narakeet.com/text-to-speech/m4a?voice=' . $voice . '&voice-speed=' . $voiceSpeed, $textToConvert);
 
 
-
-        if ($response->successful()) {
-            // Guarda la respuesta en un archivo
-            $outputFilePath = public_path('/audios/'. $request->path .'/'. $request->name .'.m4a'); // Guarda el archivo en la carpeta pública
+        try {
+            $outputFilePath = public_path('audios/'. $request->path .'/'. $request->name .'.m4a'); // Guarda el archivo en la carpeta pública
             file_put_contents($outputFilePath, $response->body());
-
             return 'Archivo descargado con éxito: ' . $outputFilePath;
-        } else {
-            return 'Error al realizar la solicitud: ' . $response->body();
+        } catch (\Exception $e) {
+            return 'Error al realizar la solicitud: ' . $e->getMessage();
         }
+
+//        if ($response->successful()) {
+//            // Guarda la respuesta en un archivo
+//            $outputFilePath = public_path('/audios/'. $request->path .'/'. $request->name .'.m4a'); // Guarda el archivo en la carpeta pública
+//            file_put_contents($outputFilePath, $response->body());
+//
+//            return 'Archivo descargado con éxito: ' . $outputFilePath;
+//        } else {
+//            return 'Error al realizar la solicitud: ' . $response->body();
+//        }
     }
 
 

@@ -18,6 +18,7 @@ import '@fontsource/luckiest-guy';
 
 
 import TestPermutations from "./components/activities/TestPermutations.vue"
+import TestNaraket from "./components/activities/TestNaraket.vue"
 
 createApp({
     components: {
@@ -34,6 +35,7 @@ createApp({
         'select-level': SelectLevel,
 
         'test-permutations': TestPermutations,
+        'test-naraket': TestNaraket
 
     }
 }).mount("#app");
