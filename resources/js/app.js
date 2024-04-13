@@ -20,6 +20,8 @@ import '@fontsource/luckiest-guy';
 import TestPermutations from "./components/activities/TestPermutations.vue"
 import TestNaraket from "./components/activities/TestNaraket.vue"
 
+import MenuTest from "./components/stiven/components/Menu/Menu.vue"
+
 createApp({
     components: {
         'my-component': MyComponent,
@@ -35,7 +37,9 @@ createApp({
         'select-level': SelectLevel,
 
         'test-permutations': TestPermutations,
-        'test-naraket': TestNaraket
+        'test-naraket': TestNaraket,
+
+        'menu-test': MenuTest
 
     }
 }).mount("#app");

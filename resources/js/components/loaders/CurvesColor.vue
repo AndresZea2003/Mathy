@@ -20,7 +20,7 @@ const props = defineProps({
 </template>
 
 
-<style>
+<style scoped>
 #page {
     display: flex;
     justify-content: center;

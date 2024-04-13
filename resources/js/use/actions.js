@@ -127,3 +127,5 @@ export const updateCoins = (addCoin) => {
 
     return coins + addCoin
 }
+
+localStorage.setItem("unlockedLevels", [1, 2, 3, 4]);

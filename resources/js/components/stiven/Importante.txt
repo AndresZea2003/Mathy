@@ -1,0 +1,185 @@
+Informacion Importante componentes
+_____________________________STORE________________________________
+
+El componente principal store se compone con los siguientes conmponentes.
+
+-Cards: Es el componente del grid de las tarjetas para seleccionar.
+-CoinCounter: Es el componente que muestra la cantidad de monedas de oro que se tienen.
+-MainCard: Es el componente de la tarjeta principal que muestra la nave seleccionada en la lista de tarjetas.
+-ShipSelectedAnimation: Es la animacion de seleccion de nave para pantallas grandes.
+-ShipSelectedAnimationMobile: Es la animacion de seleccion de nave para pantallas moviles.
+
+Habra un archivo extra que se llama "store_data.js" que contendra la siguiente estructura de datos.
+
+Un array con los datos de cada nave.
+let store_data = [
+    {
+        name: "T-01",//Nombre
+        id: 1,//id
+        img: ship1,//Imagen de la nave
+        tier: 1,//Tier de la nave
+        smoke: smoke1,//Humo de tarjeta principal
+        stars: stars1,//Estrellas de tarjeta principal
+        elipse: elipse1,//Elipse de tarjeta giatorio pequeño
+        elipseg: elipse1g,//Elipse de tarjeta giratorio grande
+        price: 2,//Precio de nave
+        purchased: false,//Boleano que indica si la nave fue comprada o no
+        unlocked: false//Boleano que indica si la nave esta bloqueada o desbloqueada
+    },
+]
+
+Las imagenes de cada nave iran en la carpeta globals dentro de imagenes, el resto de imagenes iran en la carpeta store dentro de imagenes.
+
+Los sonidos del componente estaran en la carpeta store dentro de audio.
+
+
+El componente recibe las siguientes props
+
+    <Store :currentShipStorage="'shipSelected'" :unlockedShips="unlockedShips" :storageGold="'goldCoins'"/>
+
+:currentShipStorage="'shipSelected'": Es el nombre que tendra la nave seleccionada en la store.
+
+:unlockedShips="unlockedShips": Es un array que se le pasa al componente y estaran los niveles que estaran desbloqueados.
+
+:storageGold="'goldCoins'": Es el nombre que tiene en la storage el numero de monedas de oro.
+
+
+_____________________________________MENU__________________________________
+
+El componente principal menu se compone con los siguientes conmponentes.
+
+-AnimatedElection: Es el componente que despliega la animacion al seleccionar el nivel.
+-BackTo: Es el componente del boton de retroceder para configurar mas facilmente esa funcionalidad.
+-GridMobile: Es el componente que se encarga de mostrar el grid en dispositivos moviles.
+-GridScreen: Es el componente que se encarga de mostrar el grid en pantallas grandes.
+-LogicoMatematicos: Es el componente que muestra el logo principal en el menu o en la parte alta de el grid movil.
+
+Las imagenes del componente estaran en la carpeta menu dentro de imagenes, las imagenes de cada nivel estaran pasadas por diferentes objetos dentro de props referentes a cada nivel.
+
+El componente recibe las siguientes props.
+
+    <Menu :arrayAccess="arrayAccess" :currentShipStorage="'shipSelected'" :unlockedLevelsStorage="'unlockedLevels'"/>
+
+:arrayAccess="arrayAccess": Recibe un array con los datos de cada nivel.
+
+{
+    level: 1,  El numero del nivel
+    location: "", La ubicacion del nivel al que se redirigira cuando se le de click
+    img: "https://cdn.pixabay.com/photo/2022/05/12/16/04/trees-7191822_1280.png", La imagen del nivel
+    style: "linear-gradient(45deg,#00c8ff, #ffffff, #00c8ff,  #ffffff, #ffffff, #00c8ff, #fffffd, #00c8ff, #ffffff)" Son los estilos que usa el degradado del borde de la tarjeta cuando esta activo
+}
+
+
+:currentShipStorage="'shipSelected'": Es el nombre que tendra la nave seleccionada en la store.
+
+:unlockedLevelsStorage="'unlockedLevels'": Es el nombre que tendra en el localStorage los niveles desbloqueado.
+
+_________________________________COIN CHANGER____________________________________________
+
+El componente principal coin-changer se compone con los siguientes conmponentes.
+
+-ChangeAnimation: Es el componente que muestr ala animacion en el momento del cambio.
+-ChangeError: Es el componente que muestra un error a la hora de cambiar una moneda.
+-CoinChangerScreen: Es el componente que contiene el codigo principal del componente ya que se elimino la version movil.
+-CoinChangerTutorial: Es el componente que muestra las animaciones de guia para el usuario.
+
+Las imagenes del componente estaran en la carpeta coinChanger de imagenes, habra imagenes que estaran en globales.
+
+Los sonidos estaran en la carpeta coinChanger en audio.
+
+El componente esta dentro de un div que controla el tamaño del componente CoinChanger con el siguiente selector
+
+.coin-changer--container {
+    width: 700px; Simplemente se cambia el tamaño del div segun sea necesario para adaptarse a moviles.
+    /* width: 300px; */
+    height: 600px; /*Dejar en tamaño actual para evitar bugs.*/
+}
+
+El componente recibe las siguientes props.
+
+    <div class="coin-changer--container">
+        <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'"  :goldenExchange="3" :silverExchange="3" :guide="true"/>
+    </div>
+
+
+-:storageBronze="'bronzeCoins'": Es el nombre que tendra en el storage el contador de las monedas de bronce.
+
+-:storageSilver="'silverCoins'": Es el nombre que contendra en el storage el contador de monedas de plata.
+
+-:storageGold="'goldCoins'": Es el nombre que contendra en el storage el contador de monedas de oro.
+
+-:goldenExchange="3": Es el valor de monedas que se necesita para recibir monedas de oro.
+
+-:silverExchange="3" Es el valor de monedas que se necesita para recibir monedas de plata.
+
+-:guide="true": Es un boleano que indica si se debe mostrar la guia visual de deslizamiento de las monedas.
+
+
+_________________________________TEMPLATE DRAW ACTIVITY___________________________________________
+
+El componente principal TemplateDrawActivity se compone con los siguientes componentes.
+
+-AnimatedStars: Es el componente que contiene las estrellas del fondo.
+-FinishedLevel: Es el componente que se muestra al final cuando se termina un dibijo o se cumple el requisito.
+-Star: Es una estrella individual animada que toma el componente AnimatedStars para mostrar en el fondo.
+-TemplateDrawActivity: Es el componente de la actividad de rellenar con dibujo.
+-TemplateDrawActivityFree: Es el componente de la actividad de pintado libre.
+
+
+Las imagenes del componente estaran en la carpeta draw-activity de imagenes, habra imagenes que estaran en globales.
+
+El componente recibe las siguientes props.
+
+    <TemplateDrawActivity :drawActivity="drawActivity1"/>
+
+
+:drawActivity="drawActivity1": drawActivity1 sera un objeto que manda los siguiente valores al componente.
+
+const drawActivity1 = {
+    colorPalette: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],               El color de la paleta de pintado.
+    exampleImage: exampleImage,                      La imagen de ejemplo
+    canvas: [ 62, 38,],                              El porcentaje que ocupa el canvas segun las areas del dibujo para rellenar en este caso son porcentajes del height.
+    colorParts: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],                 El color con el que debe ir pintada cada parte van en orden hacia abajo.
+    correctPercentage: [0.21, 0.40],                                          El porcentaje de pintado segun sea necesari probar siempre para configurar de manera correcta.
+    drawImage: drawImage                                                      La imagen que se rellenara.
+};
+
+
+_________________________________TEMPLATE DRAW ACTIVITY FREE___________________________________________
+
+El componente principal TemplateDrawActivityFree se compone con los siguientes componentes.
+
+-AnimatedStars: Es el componente que contiene las estrellas del fondo.
+-FinishedLevel: Es el componente que se muestra al final cuando se termina un dibijo o se cumple el requisito.
+-Star: Es una estrella individual animada que toma el componente AnimatedStars para mostrar en el fondo.
+-TemplateDrawActivity: Es el componente de la actividad de rellenar con dibujo.
+-TemplateDrawActivityFree: Es el componente de la actividad de pintado libre.
+
+
+Las imagenes del componente estaran en la carpeta draw-activity de imagenes, habra imagenes que estaran en globales.
+
+El componente recibe las siguientes props.
+
+    <TemplateDrawActivityFree :drawActivity="drawActivityFree1"/>
+
+:drawActivity="drawActivityFree1": drawActivityFree1 sera un objeto que manda los siguiente valores al componente.
+
+const drawActivityFree1 = {
+    colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'], El color de la paleta de pintado.
+    drawImage: drawImageFree,                                                 La imagen que va encima del canvas.
+    correctPercentage: [0.70],                                                El porcentaje de pintado que se quiere para que el niño complete la actividad.
+};
+
+Importante Los colores siempre deben ir con el formato RGB para no generar incompatibilidades.
+
+
+
+______________________________________________EXTRAS___________________________________________
+
+    Las fuentes usadas.
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lakki+Reddy&display=swap" rel="stylesheet">

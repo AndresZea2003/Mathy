@@ -253,7 +253,7 @@ const pause = () => {
     </div>
 </template>
 
-<style>
+<style scoped>
 
 .bg-yellow-infinite {
     animation: yellow-infinite 2.5s infinite;
