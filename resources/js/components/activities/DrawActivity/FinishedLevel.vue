@@ -1,6 +1,8 @@
 <script setup>
-import ring from '../../img/Draw-image/ring.png';
-import check from '../../img/Draw-image/check.png';
+
+//Importacion imagenes
+import ring from '../../../../../public/images/draw-image/ring.png';
+import check from '../../../../../public/images/draw-image/check.png';
 
 //Props
 const props = defineProps({
@@ -16,7 +18,7 @@ const props = defineProps({
                 <img class="finished-level__img--ring w-40 absolute pointer-events-none pointer-events-none select-none" :src="ring" alt="ring"/>
                 <img class="finished-level__img--check w-32 absolute pointer-events-none pointer-events-none select-none" :src="check" alt="check"/>
             </div>
-            <div v-if="props.finishedLevels" class="m-auto flex justify-center items-center relative top-50">
+            <div v-if="props.finishedLevels" class="m-auto flex justify-center items-center relative top-80">
                 <div class="finished-level__div--indicator w-16 h-16  mx-2 rounded-full border-cyan-600 border-2 border-solid" v-for="check, index in props.finishedLevels" :key="index" :style="{backgroundColor: check.state ? ('green'):('red')}"></div>
             </div>
         </div>
@@ -34,7 +36,7 @@ const props = defineProps({
 .finished-level__div--container-massage {
     width: 100%;
     height: 100%;
-    background-image: url('../../img/Draw-image/background-level-completed.png');
+    background-image: url('../../../../../public/images/draw-image/background-level-completed.png');
     background-position: center;
     background-size: 1800px;
     background-repeat: no-repeat;
