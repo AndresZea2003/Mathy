@@ -77,7 +77,7 @@ const clickEffectSound = () => {
         </div>
 
         <button @mouseenter="hoverEffectSound"
-            class="change-animation__button--continuar text-slate-300 m-auto w-25 h-8 rounded-3 bg-cyan-950 absolute left-0 right-0 transition-all hover:scale-125 hover:text-slate-100"
+            class="change-animation__button--continuar text-slate-300 m-auto w-56 h-8 rounded rounded-lg bg-cyan-950 absolute left-0 right-0 transition-all hover:scale-125 hover:text-slate-100"
             @click="closeAnimation">Continuar</button>
     </div>
 </template>

@@ -624,7 +624,7 @@ const blockDragCoins = (array, props, type) => {
 
             <button @mouseenter="hoverEffectSoundFunction()" v-if="changeReady" @click="changeCoins"
                 class="coin-changer-screen__button--changer-button size-12 rounded-full m-auto flex justify-center items-center relative left-0.5 hover:scale-125">
-                <img :src="coinButton" alt="coin" />
+                <img class="w-12" :src="coinButton" alt="coin" />
             </button>
             <div class="coin-changer-screen__div--elipses-container relative ">
                 <img :class="{ 'coin-changer-screen__div--elipse-1-animation relative top-10': startConversion, 'relative top-10': !startConversion }"
