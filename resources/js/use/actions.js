@@ -140,6 +140,8 @@ if(!localStorage.getItem("shipSelected")){
     localStorage.setItem("shipSelected", 1);
 };
 
+
+//Logica de variables de cada moneda en el local storage.
 if(!localStorage.getItem("goldCoins")){
     localStorage.setItem("goldCoins", 1);
 };

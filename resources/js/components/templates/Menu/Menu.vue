@@ -3,11 +3,11 @@
 import { ref } from 'vue';
 
 //Impportacion de componentes.
-import ShotingStar from '../ShotingStar.vue';
-import Asteroids from '../AsteroidsAnimation.vue';
+import ShotingStar from '../../background/ShotingStar.vue';
+import Asteroids from '../../background/AsteroidsAnimation.vue';
 import GridMobile from './GridMobile.vue';
 import GridScreen from './GridScreen.vue';
-import HomeScreen from '../HomeScreen.vue';
+import HomeScreen from '../../background/HomeScreen.vue';
 
 //Props
 const props = defineProps({

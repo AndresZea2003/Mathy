@@ -1,6 +1,9 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue';
-import goldCoinIMG from '../../img/globals/gold-coin.png';
+
+
+//Importacion de imagenes
+import goldCoinIMG from '../../../../../public/images/globals/gold-coin.png';
 
 
 const props = defineProps({

@@ -1,37 +1,37 @@
 //Importacion de las imagenes de las naves.
-import ship0 from '../img/store/standard-ship.png';
+import ship0 from '../../../public/images/store/standard-ship.png';
 // import ship1 from '../img/nave.png';
-import ship1 from '../img/globals/Cohetes-01.svg';
-import ship2 from '../img/globals/Cohetes-10.svg';
-import ship3 from '../img/globals/Cohetes-11.svg';
-import ship4 from '../img/globals/Cohetes-12.svg';
-import ship5 from '../img/globals/Cohetes-13.svg';
-import ship6 from '../img/globals/Cohetes-14.svg';
-import ship7 from '../img/globals/Cohetes-15.svg';
-import ship8 from '../img/globals/Cohetes-16.svg';
+import ship1 from '../../../public/images/globals/Cohetes-01.svg';
+import ship2 from '../../../public/images/globals/Cohetes-10.svg';
+import ship3 from '../../../public/images/globals/Cohetes-11.svg';
+import ship4 from '../../../public/images/globals/Cohetes-12.svg';
+import ship5 from '../../../public/images/globals/Cohetes-13.svg';
+import ship6 from '../../../public/images/globals/Cohetes-14.svg';
+import ship7 from '../../../public/images/globals/Cohetes-15.svg';
+import ship8 from '../../../public/images/globals/Cohetes-16.svg';
 
 //Importacion de el humo de cada tier
-import smoke1 from '../img/store/smoke-tier-1.png';
-import smoke2 from '../img/store/smoke-tier-2.png';
-import smoke3 from '../img/store/smoke-tier-3.png';
-import smoke4 from '../img/store/smoke-tier-4.png';
+import smoke1 from '../../../public/images/store/smoke-tier-1.png';
+import smoke2 from '../../../public/images/store/smoke-tier-2.png';
+import smoke3 from '../../../public/images/store/smoke-tier-3.png';
+import smoke4 from '../../../public/images/store/smoke-tier-4.png';
 
 
 //Importación de estrellas de cada tier
-import stars1 from '../img/store/stars-tier-1.png';
-import stars2 from '../img/store/stars-tier-2.png';
-import stars3 from '../img/store/stars-tier-3.png';
-import stars4 from '../img/store/stars-tier-4.png';
+import stars1 from '../../../public/images/store/stars-tier-1.png';
+import stars2 from '../../../public/images/store/stars-tier-2.png';
+import stars3 from '../../../public/images/store/stars-tier-3.png';
+import stars4 from '../../../public/images/store/stars-tier-4.png';
 
 //Importación de alipses de cada tier
-import elipse1 from '../img/store/elipse-tier-1.png';
-import elipse1g from '../img/store/elipse-g-tier-1.png';
-import elipse2 from '../img/store/elipse-tier-2.png';
-import elipse2g from '../img/store/elipse-g-tier-2.png';
-import elipse3 from '../img/store/elipse-tier-3.png';
-import elipse3g from '../img/store/elipse-g-tier-3.png';
-import elipse4 from '../img/store/elipse-tier-4.png';
-import elipse4g from '../img/store/elipse-g-tier-4.png';
+import elipse1 from '../../../public/images/store/elipse-tier-1.png';
+import elipse1g from '../../../public/images/store/elipse-g-tier-1.png';
+import elipse2 from '../../../public/images/store/elipse-tier-2.png';
+import elipse2g from '../../../public/images/store/elipse-g-tier-2.png';
+import elipse3 from '../../../public/images/store/elipse-tier-3.png';
+import elipse3g from '../../../public/images/store/elipse-g-tier-3.png';
+import elipse4 from '../../../public/images/store/elipse-tier-4.png';
+import elipse4g from '../../../public/images/store/elipse-g-tier-4.png';
 
 
 //Array que contiene los datos de todas las naves que estaran en la tienda, datos principales dato, img, price y sus dos variantes de moneda oro y plata y purchased que indica si esa nave ya se compro o no.

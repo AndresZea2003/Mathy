@@ -1,1 +1,25 @@
 Archivo Actions_________________________________________________
+-Agregado codigo para que en el localStorage se cree el array de niveles debloqueadas de inicio en el menu.
+
+-Agregada varibale con array con las naves desbloqueadas de inicio.
+
+-Agregada logica de nave seleccionada por el usuario, si no existe la variable en el localStorage se crea seleccionando la nave 1.
+
+-Agregada logica de la cantidad de monedas si no existen las variables en el local storage, de principio tendremos de a 1 moneda por valor.
+
+
+MENU____________________________________________________________
+-La carpeta con los componentes de menu se paso para la carpeta templates.
+
+COMPONENTES GLOBALES____________________________________________
+Los componentes shotingStar HomeScreen y Asteoroids animation se pasaron a la carpeta background que se creo nueva donde iran los recursos relacionados al fondo, tambien en un futuro se añadiran los fondos de los niveles.
+
+AUDIOS__________________________________________________________
+-Los audios de la carpeta global se pasaron a la carpeta effects.
+-Los audios usados especificamente en store y menu se pasaron con las carpetas nombradas especificamente al apartado audios.
+
+IMAGENES________________________________________________________
+-Las imagenes de la carpeta globals, menu y store se pasaron respectivamente con sus carpetas a imagenes.
+
+STORE___________________________________________________________
+-Store se movio a templates tambien

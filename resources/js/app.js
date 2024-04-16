@@ -20,9 +20,9 @@ import '@fontsource/luckiest-guy';
 import TestPermutations from "./components/activities/TestPermutations.vue"
 import TestNaraket from "./components/activities/TestNaraket.vue"
 
-import MenuTest from "./components/stiven/components/Menu/Menu.vue"
+import MenuTest from "./components/templates/Menu/Menu.vue";
 
-import StoreMain from "./components/stiven/components/Store/Store.vue"
+import StoreMain from "./components/templates/Store/Store.vue";
 
 createApp({
     components: {

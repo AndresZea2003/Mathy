@@ -3,7 +3,7 @@
 import { ref } from 'vue';
 
 //Importación de imagenes
-import shotingStar from '../img/globals/shoting-star.png';
+import shotingStar from '../../../../public/images/globals/shoting-star.png';
 
 
 //Creamos una variable que es controlado por un intervalo que desmonta el div que contiene las estrellas fugaces el intervalo desactiva el div y lo vuelve a montar de nuevo para comenzar las animaciones nuevamente.

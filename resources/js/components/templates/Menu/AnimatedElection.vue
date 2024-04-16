@@ -1,12 +1,16 @@
 <script setup>
-import { store_data } from '../../lib/store_data.js';
+
 import { onBeforeMount, ref } from 'vue';
 
 //Sonidos
-import coheteSound from '../../audio/global/audio-cohete.mp3';
+import coheteSound from '../../../../../public/audios/effects/audio-cohete.mp3';
+
+//Importacion de los datos de la nave
+import { store_data } from '../../../use/store_data';
+
 
 //Gif imprtado prueba
-import gifNave from '../../audio/global/Cohetes-13.gif';
+import gifNave from '../../../../../public/images/globals/Cohetes-13.gif';
 
 //Props
 const props = defineProps({

@@ -2,13 +2,13 @@
 import { onBeforeMount, onUpdated, ref, watchEffect } from 'vue';
 
 //Importacion de sonidos
-import hoverAudio from '../../audio/global/audio-hover-standard.mp3';
-import clickAudio from '../../audio/global/audio-click-standard.mp3';
+import hoverAudio from '../../../../../public/audios/effects/audio-hover-standard.mp3';
+import clickAudio from '../../../../../public/audios/effects/audio-click-standard.mp3';
 
 
 //Importacion de imagenes
-import selectedShipImage from '../../img/store/selected-ship.png';
-import unlockedShipImage from '../../img/store/unlocked-ship.png';
+import selectedShipImage from '../../../../../public/images/store/selected-ship.png';
+import unlockedShipImage from '../../../../../public/images/store/unlocked-ship.png';
 
 
 //Props
@@ -169,6 +169,10 @@ const clickEffectSound = () => {
     width: 95%;
     height: 95%;
     background-color: #02124A;
+}
+
+.main__div--inside:hover {
+    background-color: #090081;
 }
 
 

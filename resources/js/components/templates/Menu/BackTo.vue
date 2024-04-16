@@ -1,5 +1,8 @@
 <script setup>
-import arrow from '../../img/globals/Arrow 15.png';
+
+
+//Importacion de imagenes
+import arrow from '../../../../../public/images/globals/Arrow 15.png';
 
 const backTo = () => {
     console.log("Volver");

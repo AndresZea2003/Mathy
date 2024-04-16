@@ -4,7 +4,7 @@ import { onMounted, onUpdated, ref } from 'vue';
 
 //Componentes
 import CoinChangerScreen from '../Coin Changer/CoinChangerScreen.vue';
-import ShotingStar from '../ShotingStar.vue';
+import ShotingStar from '../../../background/ShotingStar.vue';
 
 
 //Props
@@ -30,9 +30,9 @@ let widthLimit = 550;
 
 //Funcion que compara el tamaño con el tamaño limite para elegir el componente a mostrar.
 const calculatedResponsive = () => {
-    if(parseInt(widthRef.value) < widthLimit){
+    if (parseInt(widthRef.value) < widthLimit) {
         responsiveScreen.value = false;
-    }else if(parseInt(widthRef.value) >= widthLimit){
+    } else if (parseInt(widthRef.value) >= widthLimit) {
         responsiveScreen.value = true;
     };
 };
@@ -55,9 +55,12 @@ onUpdated(() => {
 
 <template>
     <div class="coin-changer__div--container relative w-full h-full rounded-md overflow-hidden">
-        <div class="coin-changer__div--space-background w-full h-full absolute top-0 left-0 bg-cover bg-center z-0 overflow-hidden bg-center"></div>
-        <ShotingStar/>
-        <CoinChangerScreen :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldenExchange="props.goldenExchange" :silverExchange="props.silverExchange" :guide="props.guide"/>
+        <div
+            class="coin-changer__div--space-background w-full h-full absolute top-0 left-0 bg-cover bg-center z-0 overflow-hidden bg-center">
+        </div>
+        <ShotingStar />
+        <CoinChangerScreen :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldenExchange="props.goldenExchange"
+            :silverExchange="props.silverExchange" :guide="props.guide" />
     </div>
 </template>
 

@@ -1,6 +1,6 @@
 <script setup>
 //Importacion de imagenes
-import ship from '../../img/globals/nave.png';
+import ship from '../../../../../public/images/globals/nave.png';
 </script>
 
 <template>

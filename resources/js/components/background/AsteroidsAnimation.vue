@@ -1,5 +1,5 @@
 <script setup>
-import asteroid from '../img/globals/asteroid-2.png';
+import asteroid from '../../../../public/images/globals/asteroid-2.png';
 
 </script>
 

@@ -3,12 +3,13 @@ import { onBeforeMount, onUpdated, ref } from 'vue';
 
 
 //Importacion de imagenes
-import check from '../../img/store/check.png';
-import padlock from '../../img/store/padlock.png';
+import check from '../../../../../public/images/store/check.png';
+import padlock from '../../../../../public/images/store/padlock.png';
 
 //Importacion de sonidos
-import gravitySound from '../../audio/store/gravity-ship-2.mp3';
-import clickSound from '../../audio/global/audio-click-standard.mp3';
+import gravitySound from '../../../../../public/audios/store/gravity-ship-2.mp3';
+import clickSound from '../../../../../public/audios/effects/audio-click-standard.mp3';
+
 
 
 //Props
