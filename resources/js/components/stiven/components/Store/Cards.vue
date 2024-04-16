@@ -20,6 +20,8 @@ const props = defineProps({
 });
 
 
+console.log("unlocked ships", props.unlockedShips);
+
 //Ref que controla si la nave esta elegida actualmente.
 const currentShip = ref(false);
 

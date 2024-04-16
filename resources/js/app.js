@@ -22,6 +22,8 @@ import TestNaraket from "./components/activities/TestNaraket.vue"
 
 import MenuTest from "./components/stiven/components/Menu/Menu.vue"
 
+import StoreMain from "./components/stiven/components/Store/Store.vue"
+
 createApp({
     components: {
         'my-component': MyComponent,
@@ -39,7 +41,10 @@ createApp({
         'test-permutations': TestPermutations,
         'test-naraket': TestNaraket,
 
-        'menu-test': MenuTest
+        'menu-test': MenuTest,
+
+        'store-main': StoreMain
+
 
     }
 }).mount("#app");

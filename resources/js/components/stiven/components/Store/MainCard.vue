@@ -17,8 +17,10 @@ const props = defineProps({
     currentShip: Number,
     unlockedShips: Array,
     changeCards: Number,
-    currentShipStorage: String
+    current_ship_storage: String
 });
+
+
 
 //Ref que controla si se muestran el humo, las estrellas y el boton.
 const shouldShowContent = ref(false);
@@ -181,7 +183,8 @@ const emit = defineEmits(['changeCards']);
 //Función que se ejecuta si al darle click al boton de la tarjeta principal
 const clickButtonMaincard = () => {
     clickEffectSound();
-    localStorage.setItem(props.currentShipStorage, props.ship.id);
+    console.log("currentShip storage", props.current_ship_storage);
+    localStorage.setItem(props.current_ship_storage, props.ship.id);
     emit('changeCards', props.ship.id);
     currentShipRef.value = props.ship.id;
     //Segmento de codigo que establece el ref en false para que no se ejecute el sonido en momentos donde no debe hacerlo.

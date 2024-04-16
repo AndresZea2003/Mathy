@@ -6,11 +6,11 @@ import goldCoinIMG from '../../img/globals/gold-coin.png';
 const props = defineProps({
     currentShip: Number,
     unlockedShips: Array,
-    storageGold: String
+    storage_gold: String
 });
 
 
-const goldCoinsStorage = ref(localStorage.getItem(props.storageGold));
+const goldCoinsStorage = ref(localStorage.getItem(props.storage_gold));
 
 const arrayCoins = ref([]);
 

@@ -1,5 +1,5 @@
 <script setup>
-import { store_data } from "@/lib/store_data";
+import { store_data } from "../../lib/store_data";
 import { onBeforeMount, ref } from "vue";
 
 //Importacion de imagenes

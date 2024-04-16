@@ -17,18 +17,26 @@ import HomeScreen from '../HomeScreen.vue';
 
 
 //Importacion de datos de la tienda.
-import { standardShip, store_data } from '@/lib/store_data';
+import { standardShip, store_data } from '../../lib/store_data';
 import ShipSelectedAnimationMobile from './ShipSelectedAnimationMobile.vue';
+
+
+//Importacion de naves desbloqueadas
+import { unlockedShips } from '../../../../use/actions';
+
+
 
 
 
 const props = defineProps({
-    currentShipStorage: String,
-    unlockedShips: Array,
-    storageGold: String
+    current_ship_storage: String,
+    // unlockedShips: Array,
+    storage_gold: String
 });
 
-const currentShip = localStorage.getItem(props.currentShipStorage);
+console.log("current_ship_storage", props.current_ship_storage);
+
+const currentShip = localStorage.getItem(props.current_ship_storage);
 
 //Ref que maneja la nave seleccionada para mostrar
 const selectedShipRef = ref(0);
@@ -98,7 +106,7 @@ let responsiveScreen = ajustarAnchoDePantalla();
 <template>
     <div class="store__div--container w-full h-screen relative overflow-hidden">
         <HomeScreen v-if="homeScreenExit" @homeScreenExit="closeScreenHome"/>
-        <CoinCounter :storageGold="props.storageGold"/>
+        <CoinCounter :storage_gold="props.storage_gold"/>
         <ShipSelectedAnimation v-if="shipSelectedAnimation && responsiveScreen == true"/>
         <ShipSelectedAnimationMobile v-else-if="shipSelectedAnimation && responsiveScreen == false"/>
         <button @click="backTo" class="absolute z-40 transition-all top-1 left-1 border-2 border-slate-400 rounded flex items-center cursor-pointer lg:top-7 lg:left-7  hover:scale-125"><img class="w-14 p-1" :src="back" alt="back"/></button>
@@ -116,10 +124,10 @@ let responsiveScreen = ajustarAnchoDePantalla();
                 <!-- tarjeta estandar cuando una nave no esta elegida -->
                 <MainCard :ship="standardShip" v-if="selectedShipRef === 0"/>
                 <!-- tarjeta de nave animada cuando se elige una carta -->
-                <MainCard @changeCards="changeCards" v-else :ship="selectedShipRef" :currentShip="currentShip" :unlockedShips="props.unlockedShips" :changeCards="changeCardsRef" :currentShipStorage="props.currentShipStorage"/>
+                <MainCard @changeCards="changeCards" v-else :ship="selectedShipRef" :currentShip="currentShip" :unlockedShips="unlockedShips" :changeCards="changeCardsRef" :current_ship_storage="props.current_ship_storage"/>
             </div>
             <div class="store__div--container-cards relative top-6 h-80  grid gap-3 p-3 overflow-auto lg:w-7/12 lg:absolute lg:left-20 lg:top-16  lg:h-4/5 ">
-                <Cards v-for="ship in store_data" :key="ship.id" :ship="ship" :unlockedShips="props.unlockedShips" :currentShip="currentShip"  @selected-ship="selectedShip" :changeCards="changeCardsRef"/>
+                <Cards v-for="ship in store_data" :key="ship.id" :ship="ship" :unlockedShips="unlockedShips" :currentShip="currentShip"  @selected-ship="selectedShip" :changeCards="changeCardsRef"/>
             </div>
         </div>
     </div>
@@ -151,4 +159,6 @@ let responsiveScreen = ajustarAnchoDePantalla();
         grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 }
-</style>
+</style>import { unlockedShips } from '../../../../use/actions';import { unlockedShips } from '../../../../use/actions';
+import { unlockedShips } from '../../../../use/actions';
+

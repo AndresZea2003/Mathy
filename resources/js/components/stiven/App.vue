@@ -16,7 +16,6 @@ const unlockedShips = [1, 2, 3, 4, 5];
 
 
 
-
 //Datos componente menu
 
 //Datos del localStorage de niveles desbloqueados
@@ -173,9 +172,9 @@ const drawActivityFree1 = {
 
 
 <template>
-    <!-- <Store :currentShipStorage="'shipSelected'" :unlockedShips="unlockedShips" :storageGold="'goldCoins'"/> -->
+    <Store :currentShipStorage="'shipSelected'" :unlockedShips="unlockedShips" :storageGold="'goldCoins'"/>
     <!-- <Pruebas/> -->
-     <Menu :arrayAccess="arrayAccess" :currentShipStorage="'shipSelected'" :unlockedLevelsStorage="'unlockedLevels'"/>
+    <!-- <Menu :arrayAccess="arrayAccess" :currentShipStorage="'shipSelected'" :unlockedLevelsStorage="'unlockedLevels'"/> -->
     <!-- <div class="coin-changer--container">
         <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'"  :goldenExchange="3" :silverExchange="3" :guide="true"/>
     </div> -->
