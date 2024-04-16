@@ -21,8 +21,9 @@ import TestPermutations from "./components/activities/TestPermutations.vue"
 import TestNaraket from "./components/activities/TestNaraket.vue"
 
 import MenuTest from "./components/templates/Menu/Menu.vue";
-
 import StoreMain from "./components/templates/Store/Store.vue";
+import CoinChanger from "./components/activities/Coin Changer/CoinChangerMain.vue";
+
 
 createApp({
     components: {
@@ -42,8 +43,8 @@ createApp({
         'test-naraket': TestNaraket,
 
         'menu-test': MenuTest,
-
-        'store-main': StoreMain
+        'store-main': StoreMain,
+        'coin-changer': CoinChanger
 
 
     }

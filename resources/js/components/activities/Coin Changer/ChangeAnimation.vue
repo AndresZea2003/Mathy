@@ -2,18 +2,18 @@
 import { onBeforeMount, ref } from 'vue';
 
 //Importacion de imagenes
-import coinBronze from '../../img/globals/bronze-coin.png';
-import coinSilver from '../../img/globals/silver-coin.png';
-import coinGolden from '../../img/globals/gold-coin.png';
-import ovni from '../../img/coin-change/ovni.png';
-import catnauta from '../../img/coin-change/catnauta.png';
-import star from '../../img/coin-change/star.png';
-import planet from '../../img/coin-change/planet.png';
+import coinBronze from '../../../../../public/images/globals/bronze-coin.png';
+import coinSilver from '../../../../../public/images/globals/silver-coin.png';
+import coinGolden from '../../../../../public/images/globals/gold-coin.png';
+import ovni from '../../../../../public/images/coin-change/ovni.png';
+import catnauta from '../../../../../public/images/coin-change/catnauta.png';
+import star from '../../../../../public/images/coin-change/star.png';
+import planet from '../../../../../public/images/coin-change/planet.png';
 
 
 //Importacion de sonidos
-import hoverEffect from '../../audio/global/audio-hover-standard.mp3';
-import clickEffect from '../../audio/global/audio-click-standard.mp3';
+import hoverEffect from '../../../../../public/audios/effects/audio-hover-standard.mp3';
+import clickEffect from '../../../../../public/audios/effects/audio-click-standard.mp3';
 
 
 //Props

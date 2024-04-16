@@ -4,7 +4,7 @@ import { onMounted, onUpdated, ref } from 'vue';
 
 //Componentes
 import CoinChangerScreen from '../Coin Changer/CoinChangerScreen.vue';
-import ShotingStar from '../../../background/ShotingStar.vue';
+import ShotingStar from '../../../components/background/ShotingStar.vue';
 
 
 //Props
@@ -16,6 +16,7 @@ const props = defineProps({
     guide: Boolean
 });
 
+console.log("storageSilver", props.storageSilver);
 
 const silverCoins = ref(localStorage.getItem(props.storageSilver));
 const bronzeCoins = ref(localStorage.getItem(props.storageBronze));
@@ -70,6 +71,6 @@ onUpdated(() => {
 }
 
 .coin-changer__div--space-background {
-    background-image: url('../../img/coin-change/coin-change-background.png');
+    background-image: url('../../../../../public/images/coin-change/coin-change-background.png');
 }
 </style>

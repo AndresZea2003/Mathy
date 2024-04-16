@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import cursorHand from '../../img/coin-change/cursorHand.png';
+
+
+//Imagenes
+import cursorHand from '../../../../../public/images/coin-change/cursorHand.png';
 
 // let coinType = "silver";
 // let capsuleCoins = 0;
@@ -96,7 +99,7 @@ if (capsuleCoins.value.length === 0 && bronzeArray.value.length > 0 && silverArr
 }
 
 .coin-changer-tutorial__div--coin-silver {
-    background-image: url('../../img/globals/silver-coin.png');
+    background-image: url('../../../../../public/images/globals/silver-coin.png');
     width: 50px;
     height: 50px;
     border-radius: 100%;
@@ -125,7 +128,7 @@ if (capsuleCoins.value.length === 0 && bronzeArray.value.length > 0 && silverArr
 }
 
 .coin-changer-tutorial__div--coin-bronze {
-    background-image: url('../../img/globals/bronze-coin.png');
+    background-image: url('../../../../../public/images/globals/bronze-coin.png');
     width: 50px;
     height: 50px;
     border-radius: 100%;

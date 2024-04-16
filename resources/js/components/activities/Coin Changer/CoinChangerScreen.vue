@@ -9,29 +9,29 @@ import CoinChangerTutorial from './CoinChangerTutorial.vue';
 
 
 //Importacion de imagenes
-import bronzeIMG from '../../img/globals/bronze-coin.png';
-import silverIMG from '../../img/globals/silver-coin.png';
-import goldenIMG from '../../img/globals/gold-coin.png';
-import shotingStar from '../../img/globals/shoting-star.png';
-import naveIMG from '../../img/globals/nave.png';
-import elipseChangerPlatform from '../../img/coin-change/elipse-changer-platform.png';
-import purplePanel from '../../img/coin-change/purple-panel.png';
-import panel1 from '../../img/coin-change/panel1.png';
-import panel2 from '../../img/coin-change/panel2.png';
-import arrow from '../../img/coin-change/flecha.png';
+import bronzeIMG from '../../../../../public/images/globals/bronze-coin.png';
+import silverIMG from '../../../../../public/images/globals/silver-coin.png';
+import goldenIMG from '../../../../../public/images/globals/gold-coin.png';
+import shotingStar from '../../../../../public/images/globals/shoting-star.png';
+import naveIMG from '../../../../../public/images/globals/nave.png';
+import elipseChangerPlatform from '../../../../../public/images/coin-change/elipse-changer-platform.png';
+import purplePanel from '../../../../../public/images/coin-change/purple-panel.png';
+import panel1 from '../../../../../public/images/coin-change/panel1.png';
+import panel2 from '../../../../../public/images/coin-change/panel2.png';
+import arrow from '../../../../../public/images/coin-change/flecha.png';
 
 //Importacion de sonidos
-import depositCoinSound from '../../audio/coin-changer/deposit-coin-sound.mp3';
-import coinMovementSound from '../../audio/coin-changer/coin-movement.mp3';
-import splendorSound1 from '../../audio/coin-changer/splendor-effect-sound1.mp3';
-import splendorSound2 from '../../audio/coin-changer/splendor-effect-sound2.mp3';
-import hoverEffectSound from '../../audio/global/audio-hover-standard.mp3';
-import clickEffectSound from '../../audio/global/audio-click-standard.mp3';
-import tunnelEffectSound from '../../audio/coin-changer/tunel-animation-sound.mp3';
-import tunnelEffectSound2 from '../../audio/coin-changer/tunel-animation-sound2.mp3';
-import spawnCoinEffectSound from '../../audio/coin-changer/spawn-coin-sound.mp3';
-import endChangeEffectSound from '../../audio/coin-changer/end-change-sound.mp3';
-import endChangeButtonEffectSound from '../../audio/coin-changer/end-button-sound.mp3'
+import depositCoinSound from '../../../../../public/audios/coin-changer/coin-deposit-sound.mp3';
+import coinMovementSound from '../../../../../public/audios/coin-changer/coin-movement.mp3';
+import splendorSound1 from '../../../../../public/audios/coin-changer/splendor-effect-sound1.mp3';
+import splendorSound2 from '../../../../../public/audios/coin-changer/splendor-effect-sound2.mp3';
+import hoverEffectSound from '../../../../../public/audios/effects/audio-hover-standard.mp3';
+import clickEffectSound from '../../../../../public/audios/effects/audio-click-standard.mp3';
+import tunnelEffectSound from '../../../../../public/audios/coin-changer/tunel-animation-sound.mp3';
+import tunnelEffectSound2 from '../../../../../public/audios/coin-changer/tunel-animation-sound2.mp3';
+import spawnCoinEffectSound from '../../../../../public/audios/coin-changer/spawn-coin-sound.mp3';
+import endChangeEffectSound from '../../../../../public/audios/coin-changer/end-change-sound.mp3';
+import endChangeButtonEffectSound from '../../../../../public/audios/coin-changer/end-button-sound.mp3'
 
 
 
@@ -1112,7 +1112,7 @@ const blockDragCoins = (array, props, type) => {
     top: -40px;
     /* background: rgba(2, 18, 74, 0.67); */
     animation: shadowAnimation 4s infinite;
-    background-image: url('../../img/coin-change/coin-example.png');
+    background-image: url('../../../../../public/images/coin-change/coin-example.png');
     background-position: center;
     background-size: 90%;
     background-repeat: no-repeat;
@@ -1413,7 +1413,7 @@ const blockDragCoins = (array, props, type) => {
     width: 70px;
     height: 70px;
     background-size: 100%;
-    background-image: url('../../img/coin-change/coin-return.png');
+    background-image: url('../../../../../public/images/coin-change/coin-return.png');
 }
 
 .coin-changer-screen__button--return-coins:hover {

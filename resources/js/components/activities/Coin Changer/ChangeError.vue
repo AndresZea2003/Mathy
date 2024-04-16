@@ -1,7 +1,7 @@
 <script setup>
 
 //Imagenes
-import arrow from '../../img/coin-change/flecha.png';
+import arrow from '../../../../../public/images/coin-change/flecha.png';
 
 
 //Configurando emits para actualizar las tarjetas.
