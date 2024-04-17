@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "@fontsource/bangers": "^5.0.18",
+        "@fontsource/julius-sans-one": "^5.0.19",
         "@fontsource/luckiest-guy": "^5.0.18",
         "@fontsource/press-start-2p": "^5.0.18",
         "@heroicons/vue": "^2.1.1",
