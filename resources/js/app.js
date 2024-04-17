@@ -15,8 +15,6 @@ import SelectLevel from "./components/templates/SelectLevel.vue"
 import '@fontsource/press-start-2p';
 import '@fontsource/bangers';
 import '@fontsource/luckiest-guy';
-import '@fontsource/julius-sans-one';
-
 
 
 import TestPermutations from "./components/activities/TestPermutations.vue"
@@ -25,7 +23,6 @@ import TestNaraket from "./components/activities/TestNaraket.vue"
 import MenuTest from "./components/templates/Menu/Menu.vue";
 import StoreMain from "./components/templates/Store/Store.vue";
 import CoinChanger from "./components/activities/Coin Changer/CoinChangerMain.vue";
-import DrawActivity from "./components/activities/DrawActivity/DrawActivityMain.vue";
 
 
 createApp({
@@ -47,8 +44,7 @@ createApp({
 
         'menu-test': MenuTest,
         'store-main': StoreMain,
-        'coin-changer': CoinChanger,
-        'draw-activity': DrawActivity
+        'coin-changer': CoinChanger
 
 
     }

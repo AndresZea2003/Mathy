@@ -146,7 +146,7 @@ let responsiveScreen = ajustarAnchoDePantalla();
 
 /* Estilos imagen de fondo con planetas y estrellas */
 .store__div--space-background {
-    background-image: url('../../../../../public/images/store/space-store.png');
+    background-image: url('../../img/store/space-store.png');
 }
 
 /*Estilos titulo */

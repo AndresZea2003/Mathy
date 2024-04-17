@@ -6,13 +6,13 @@ import AnimatedStars from './AnimatedStars.vue';
 import FinishedLevel from './FinishedLevel.vue';
 
 //Importacion de imagenes
-import line1 from '../../../../../public/images/draw-image/line1.png';
-import line2 from '../../../../../public/images/draw-image/Line2.png';
-import line3 from '../../../../../public/images/draw-image/line3.png';
-import line4 from '../../../../../public/images/draw-image/line4.png';
-import brush from '../../../../../public/images/draw-image/brush.png';
-import eraser from '../../../../../public/images/draw-image/eraser.png';
-import mainBorder from '../../../../../public/images/draw-image/main-border.png';
+import line1 from '../../img/Draw-image/line1.png';
+import line2 from '../../img/Draw-image/Line2.png';
+import line3 from '../../img/Draw-image/line3.png';
+import line4 from '../../img/Draw-image/line4.png';
+import brush from '../../img/Draw-image/brush.png';
+import eraser from '../../img/Draw-image/eraser.png';
+import mainBorder from '../../img/Draw-image/main-border-free.png';
 
 
 
