@@ -7,6 +7,8 @@ Archivo Actions_________________________________________________
 
 -Agregada logica de la cantidad de monedas si no existen las variables en el local storage, de principio tendremos de a 1 moneda por valor.
 
+STORE DATA______________________________________________________
+-Se traslado el archivo store_data a la carpeta use
 
 MENU____________________________________________________________
 -La carpeta con los componentes de menu se paso para la carpeta templates.
@@ -16,10 +18,25 @@ Los componentes shotingStar HomeScreen y Asteoroids animation se pasaron a la ca
 
 AUDIOS__________________________________________________________
 -Los audios de la carpeta global se pasaron a la carpeta effects.
--Los audios usados especificamente en store y menu se pasaron con las carpetas nombradas especificamente al apartado audios.
+-Los audios usados especificamente en store, menu, coin changer se pasaron con las carpetas nombradas especificamente al apartado audios.
 
 IMAGENES________________________________________________________
--Las imagenes de la carpeta globals, menu y store se pasaron respectivamente con sus carpetas a imagenes.
+-Las imagenes de la carpeta globals, menu, store, coin changer y draw activity se pasaron respectivamente con sus carpetas a imagenes.
 
 STORE___________________________________________________________
 -Store se movio a templates tambien
+
+COIN CHANGER____________________________________________________
+-Se paso la carpeta de coin changer a la carpeta activities ademas se creo el componente CoinChangerMain para dentro de el abrir con los requisitos y props.
+
+DRAW ACTIVITY___________________________________________________
+-Se paso el conjunto de draw activity a la carpeta activities.
+
+
+OTROS___________________________________________________________
+-Se importo import '@fontsource/julius-sans-one'; fuente de algunos componentes.
+
+
+DUDAS___________________________________________________________
+-Como agregar las otras fuentes sino se estan en fontsource.
+
