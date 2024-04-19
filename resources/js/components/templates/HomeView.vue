@@ -12,7 +12,7 @@ const props = defineProps({
   asset_images: {type: String, required: true},
   asset_audio: {type: String, required: true},
   levels_route: {type: String, required: true}
-})
+});
 
 
 </script>

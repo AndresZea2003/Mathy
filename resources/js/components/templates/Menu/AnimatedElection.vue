@@ -3,7 +3,7 @@
 import { onBeforeMount, ref } from 'vue';
 
 //Sonidos
-import coheteSound from '../../../../../public/audios/effects/audio-cohete.mp3';
+import coheteSound from '../../../../../public/audios/effects/audioRocket.mp3';
 
 //Importacion de los datos de la nave
 import { store_data } from '../../../use/store_data';
@@ -107,7 +107,7 @@ const shipSoundEffect = () => {
 <style scoped>
 
 .animated-election__div--container {
-    background: url('../../img/menu/stars.png');
+    background-image: url('../../../../../public/images/menu/stars.png');
     background-size: cover;
     background-position: center;
     animation: launchAnimationBackground 5s linear;

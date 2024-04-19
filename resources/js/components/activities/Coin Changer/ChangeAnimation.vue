@@ -12,8 +12,8 @@ import planet from '../../../../../public/images/coin-change/planet.png';
 
 
 //Importacion de sonidos
-import hoverEffect from '../../../../../public/audios/effects/audio-hover-standard.mp3';
-import clickEffect from '../../../../../public/audios/effects/audio-click-standard.mp3';
+import hoverEffect from '../../../../../public/audios/effects/audioHoverStandard.mp3';
+import clickEffect from '../../../../../public/audios/effects/audioClickStandard.mp3';
 
 
 //Props

@@ -8,7 +8,7 @@ import padlock from '../../../../../public/images/store/padlock.png';
 
 //Importacion de sonidos
 import gravitySound from '../../../../../public/audios/store/gravity-ship-2.mp3';
-import clickSound from '../../../../../public/audios/effects/audio-click-standard.mp3';
+import clickSound from '../../../../../public/audios/effects/audioClickStandard.mp3';
 
 
 

@@ -7,7 +7,7 @@ import BackTo from "./BackTo.vue";
 import AnimatedElection from './AnimatedElection.vue';
 
 //importacion de sonidos
-import clickMenuSound from '../../../../../public/audios/effects/audio-click-standard.mp3';
+import clickMenuSound from '../../../../../public/audios/effects/audioClickStandard.mp3';
 
 
 //Props

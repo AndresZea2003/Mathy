@@ -25,8 +25,8 @@ import depositCoinSound from '../../../../../public/audios/coin-changer/coin-dep
 import coinMovementSound from '../../../../../public/audios/coin-changer/coin-movement.mp3';
 import splendorSound1 from '../../../../../public/audios/coin-changer/splendor-effect-sound1.mp3';
 import splendorSound2 from '../../../../../public/audios/coin-changer/splendor-effect-sound2.mp3';
-import hoverEffectSound from '../../../../../public/audios/effects/audio-hover-standard.mp3';
-import clickEffectSound from '../../../../../public/audios/effects/audio-click-standard.mp3';
+import hoverEffectSound from '../../../../../public/audios/effects/audioHoverStandard.mp3';
+import clickEffectSound from '../../../../../public/audios/effects/audioClickStandard.mp3';
 import tunnelEffectSound from '../../../../../public/audios/coin-changer/tunel-animation-sound.mp3';
 import tunnelEffectSound2 from '../../../../../public/audios/coin-changer/tunel-animation-sound2.mp3';
 import spawnCoinEffectSound from '../../../../../public/audios/coin-changer/spawn-coin-sound.mp3';

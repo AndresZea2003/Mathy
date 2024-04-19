@@ -6,8 +6,8 @@ import BackTo from '../Menu/BackTo.vue';
 import AnimatedElection from './AnimatedElection.vue';
 
 //Importacion sonidos
-import hoverMenuSound from '../../../../../public/audios/effects/audio-hover-standard.mp3';
-import clickMenuSound from '../../../../../public/audios/effects/audio-click-standard.mp3';
+import hoverMenuSound from '../../../../../public/audios/effects/audioHoverStandard.mp3';
+import clickMenuSound from '../../../../../public/audios/effects/audioClickStandard.mp3';
 
 
 //Props

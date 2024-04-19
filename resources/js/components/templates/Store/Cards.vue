@@ -2,8 +2,8 @@
 import { onBeforeMount, onUpdated, ref, watchEffect } from 'vue';
 
 //Importacion de sonidos
-import hoverAudio from '../../../../../public/audios/effects/audio-hover-standard.mp3';
-import clickAudio from '../../../../../public/audios/effects/audio-click-standard.mp3';
+import hoverAudio from '../../../../../public/audios/effects/audioHoverStandard.mp3';
+import clickAudio from '../../../../../public/audios/effects/audioClickStandard.mp3';
 
 
 //Importacion de imagenes
