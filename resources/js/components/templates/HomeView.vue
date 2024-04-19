@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
 import PlanetMoon from "@/components/ui/PlanetMoon.vue";
-import SpaceBg from "@/components/ui/SpaceBg.vue";
+import SpaceBg from "@/components/background/SpaceBg.vue";
 import ButtonStar from "@/components/ui/ButtonStar.vue";
 import {localHost} from "@/use/index.js";
 
