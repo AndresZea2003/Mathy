@@ -294,7 +294,6 @@ const expandImage = () => {
 <template>
     <div class="template-draw__div--container">
 
-      <button class="cursor-test p-6 bg-red-500">TEST CURSOR</button>
         <FinishedLevel v-if="finishedLevelActivate" :finishedLevels="finishedLevels"/>
         <div
             class="template-draw__div--main-div w-full h-full fixed m-auto overflow-hidden xl:absolute xl:top-1/2 xl:left-1/2">
@@ -322,7 +321,7 @@ const expandImage = () => {
                     @touchmove.prevent="touchMove" @touchend.prevent="touchEnd" @mouseup="mouseUp"
                     @mouseenter="canvasLocation(props.drawActivity.colorParts[index], props.drawActivity.correctPercentage[index])"
                     @mousedown="mouseDown($event, `${index}`)" @mousemove="mouseMoving($event, `${index}`)" :key="index"
-                    :id="`${index}`" class="w-full"
+                    :id="`${index}`" class="template-draw__div--cursor w-full"
                     :style="{ height: `${canvas}%`, backgroundColor: '#D9D9D9' }"></canvas>
                 <div
                     class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none" :style="{backgroundImage: `url(${props.drawActivity.drawImage})`}">
@@ -612,6 +611,11 @@ const expandImage = () => {
     animation: canvasAnimation 2s linear;
 }
 
+.template-draw__div--cursor {
+    cursor: url('../../../../../public/images/draw-image/mouse-brush.png') 5 35, auto;
+}
+
+
 @media screen and (min-width: 900px) {
     .template__div--draw-container-canvas {
         width: 480px;
@@ -763,9 +767,5 @@ const expandImage = () => {
     }
 }
 
-.cursor-test {
-    /* Reemplaza 'path_to_your_image' con la ruta a tu imagen de brush */
-  cursor: url(https://abs.twimg.com/emoji/v2/72x72/1f525.png) 36 36, auto;
-}
 
 </style>

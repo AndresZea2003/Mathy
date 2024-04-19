@@ -1,14 +1,14 @@
 //Importacion de las imagenes de las naves.
 import ship0 from '../../../public/images/store/standard-ship.png';
 // import ship1 from '../img/nave.png';
-import ship1 from '../../../public/images/globals/Cohetes-01.svg';
-import ship2 from '../../../public/images/globals/Cohetes-10.svg';
-import ship3 from '../../../public/images/globals/Cohetes-11.svg';
-import ship4 from '../../../public/images/globals/Cohetes-12.svg';
-import ship5 from '../../../public/images/globals/Cohetes-13.svg';
-import ship6 from '../../../public/images/globals/Cohetes-14.svg';
-import ship7 from '../../../public/images/globals/Cohetes-15.svg';
-import ship8 from '../../../public/images/globals/Cohetes-16.svg';
+import ship1 from '../../../public/images/rockets/Cohetes-01.svg';
+import ship2 from '../../../public/images/rockets/Cohetes-10.svg';
+import ship3 from '../../../public/images/rockets/Cohetes-11.svg';
+import ship4 from '../../../public/images/rockets/Cohetes-12.svg';
+import ship5 from '../../../public/images/rockets/Cohetes-13.svg';
+import ship6 from '../../../public/images/rockets/Cohetes-14.svg';
+import ship7 from '../../../public/images/rockets/Cohetes-15.svg';
+import ship8 from '../../../public/images/rockets/Cohetes-16.svg';
 
 //Importacion de el humo de cada tier
 import smoke1 from '../../../public/images/store/smoke-tier-1.png';

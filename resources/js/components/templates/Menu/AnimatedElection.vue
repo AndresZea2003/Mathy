@@ -10,7 +10,7 @@ import { store_data } from '../../../use/store_data';
 
 
 //Gif imprtado prueba
-import gifNave from '../../../../../public/images/globals/Cohetes-13.gif';
+import gifNave from '../../../../../public/images/rockets/Cohetes-13.gif';
 
 //Props
 const props = defineProps({

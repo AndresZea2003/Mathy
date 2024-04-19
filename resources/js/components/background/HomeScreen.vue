@@ -1,11 +1,11 @@
 <script setup>
 
 //Importacion de imagenes
-import planet1 from '../../../../public/images/globals/planet-1.png';
-import planet2 from '../../../../public/images/globals/planet-2.png';
-import planet3 from '../../../../public/images/globals/planet-3.png';
-import exoplanet1 from '../../../../public/images/globals/exoplanet-1.png';
-import exoplanet2 from '../../../../public/images/globals/exoplanet-2.png';
+import planet1 from '../../../../public/images/planets/planet-1.png';
+import planet2 from '../../../../public/images/planets/planet-2.png';
+import planet3 from '../../../../public/images/planets/planet-3.png';
+import exoplanet1 from '../../../../public/images/planets/exoplanet-1.png';
+import exoplanet2 from '../../../../public/images/planets/exoplanet-2.png';
 import asteroid from '../../../../public/images/globals/asteroid.png';
 
 
