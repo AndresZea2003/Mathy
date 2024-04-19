@@ -51,9 +51,7 @@ const closeScreenHome = (event) => {
 // Llamar a la función al cargar la página y cuando se redimensiona la ventana
 window.addEventListener('resize', ajustarAnchoDePantalla);
 
-
-////
-
+console.log("Prueba");
 
 let testArrayAccess = [
     {
@@ -176,8 +174,13 @@ let testArrayAccess = [
         <ShotingStar/>
         <!-- componente asteroides -->
         <Asteroids/>
+<<<<<<< Updated upstream
         <div class="menu__div--mati-motas-colores border-4 border-cyan-600 w-full mx-auto relative top-5 rounded rounded-4 h-24 sm:w-72 flex flex-col items-center justify-center text-center">
             <p class="menu__p--salva-los p-2 font-zcool">Salva los</p>
+=======
+        <div class="menu__div--mati-motas-colores border-4 border-cyan-600 w-full mx-auto relative top-5 rounded rounded-xl h-24 sm:w-72 flex flex-col items-center justify-center text-center">
+            <p class="menu__p--salva-los p-2">Salva los</p>
+>>>>>>> Stashed changes
             <div class="menu__div--container-colores flex items-center Class text-xl">
                 <p class="c text-red-500">C</p><p class="o text-blue-500">O</p><p class="l text-green-500">L</p><p class="o text-yellow-500">O</p><p class="r text-red-500">R</p><p class="e text-violet-500">E</p><p class="s text-green-500">S</p>
             </div>
@@ -200,7 +203,7 @@ let testArrayAccess = [
 
 /* Estilos de la imagen del fondo */
 .store__div--space-background {
-    background-image: url('../../img/menu/space-menu.png');
+    background-image: url('../../../../../public/images/menu/space-menu.png');
 }
 
 

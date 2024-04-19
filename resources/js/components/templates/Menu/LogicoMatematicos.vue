@@ -4,7 +4,7 @@ import ship from '../../../../../public/images/globals/nave.png';
 </script>
 
 <template>
-    <div class="logico-matematicas__div--container w-80 mx-auto relative flex justify-content-center align-items-center flex-col">
+    <div class="logico-matematicas__div--container w-80 mx-auto relative flex justify-center items-center flex-col">
         <p class="logico-matematicas__p--experiencias text-4xl">EXPERIENCIAS</p>
         <p class="logico-matematicas__p--logico-matematicas text-lg">LOGICO MATEMATICAS</p>
         <img class="logico-matematicas__img--ship w-20 absolute" :src="ship"  alt="ship"/>
