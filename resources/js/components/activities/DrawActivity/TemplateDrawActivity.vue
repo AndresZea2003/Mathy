@@ -293,6 +293,8 @@ const expandImage = () => {
 
 <template>
     <div class="template-draw__div--container">
+
+      <button class="cursor-test p-6 bg-red-500">TEST CURSOR</button>
         <FinishedLevel v-if="finishedLevelActivate" :finishedLevels="finishedLevels"/>
         <div
             class="template-draw__div--main-div w-full h-full fixed m-auto overflow-hidden xl:absolute xl:top-1/2 xl:left-1/2">
@@ -761,7 +763,9 @@ const expandImage = () => {
     }
 }
 
-
-
+.cursor-test {
+    /* Reemplaza 'path_to_your_image' con la ruta a tu imagen de brush */
+  cursor: url(https://abs.twimg.com/emoji/v2/72x72/1f525.png) 36 36, auto;
+}
 
 </style>
