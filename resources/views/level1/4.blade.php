@@ -18,6 +18,7 @@
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
+        :fake_items="[3]"
     ></paint-pattern>
 
 @endsection
