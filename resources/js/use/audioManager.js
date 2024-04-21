@@ -1,4 +1,4 @@
-import {localHost} from './';
+import {getTalk, localHost, talk} from './';
 
 export const playAudio = (audioPath) => {
     let audio = new Audio(audioPath);
@@ -47,4 +47,21 @@ export const resolveAudio = (text, name, path, speed) => {
   }).then(response => {
     console.log(response.data)
   })
+}
+
+export const playSuccessShortRandom = () => {
+  if (getTalk()) {
+    return;
+  }
+
+  let chance = Math.random();
+  if (chance < 0.8) {
+    let random = Math.floor(Math.random() * 10) + 1;
+    talk(true);
+    let successAudio = playAudio(`${localHost}/audios/successes/shorts/${random}.m4a`, true);
+
+    setOnEnded(successAudio, () => {
+      talk(false);
+    });
+  }
 }

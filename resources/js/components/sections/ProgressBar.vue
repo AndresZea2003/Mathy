@@ -20,7 +20,7 @@ let totalActivities = 12
 </script>
 
 <template>
-  <div id="progressBar" class="bg-space px-5 rounded-md border-black border-2 flex-col items-center justify-center">
+  <div id="progressBar" class="bg-space px-5 rounded-md border-black border-2 flex-col items-center justify-center h-full">
     <div class="grid grid-cols-1">
       <div class="flex justify-center">
         <span class="font-bold text-white">PROGRESO DEL VIAJE</span>
@@ -58,7 +58,7 @@ let totalActivities = 12
     </div>
   </div>
 
-  <div id="animatedRocket" class="bg-space px-5 rounded-md border-black border-2 flex items-center justify-start hidden">
+  <div id="animatedRocket" class="bg-space px-5 rounded-md border-black border-2 flex items-center justify-start h-full hidden">
     <img class="rocket-travel" :src="props.rocket"
          width="100" alt="">
   </div>

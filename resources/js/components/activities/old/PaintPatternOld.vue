@@ -1,9 +1,9 @@
 <script setup>
-import "../sections/HelpCharacter.vue";
-import HelpCharacter from "../sections/HelpCharacter.vue";
-import ItemPalette from "../sections/ItemPalette.vue";
-import ProgressBar from "../sections/ProgressBar.vue";
-import WinView from "../templates/WinView.vue";
+import "../../sections/HelpCharacter.vue";
+import HelpCharacter from "../../sections/HelpCharacter.vue";
+import ItemPalette from "../../sections/ItemPalette.vue";
+import ProgressBar from "../../sections/ProgressBar.vue";
+import WinView from "../../templates/WinView.vue";
 import {
   types,
   localHost,
@@ -14,10 +14,10 @@ import {
   paintItem,
   errorPaint,
   updateCoins, getCoins
-} from '../../use';
+} from '../../../use/index.js';
 import {onMounted, ref} from "vue";
-import IconArrowRight from "../icons/IconArrowRight.vue"
-import IconPaintBrush from "../icons/IconPaintBrush.vue"
+import IconArrowRight from "../../icons/IconArrowRight.vue"
+import IconPaintBrush from "../../icons/IconPaintBrush.vue"
 import Swal from "sweetalert2";
 
 const props = defineProps({

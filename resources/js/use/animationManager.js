@@ -17,26 +17,45 @@ export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio) 
     let currentBgClass = 'bg-gray-200';
 
     let i = 0;
+    let countAudiosPlayed = 0;
 
     let jumpIterations = 0;
+
+    const hasEraser = items.some(item => item.type === types.eraser);
+
+    // Si hay un item de tipo 'eraser', no ejecutar la función
+    if (hasEraser) {
+        console.log('Hay un item de tipo eraser, no se ejecutará la función')
+        jumpIterations++;
+    }
+
     const playNextAudio = () => {
         // Ejecuta una itereacion por cada item
         if (i < items.length) {
 
             if (fakeItems) {
                 jumpIterations = fakeItems.length;
+            }
+            if (fakeItems && fakeItems.includes(i)) {
 
-                if (fakeItems.includes(i)) {
-                    i++;
-                    playNextAudio();
-                    return;
-                }
+                i++;
+                playNextAudio();
+                return;
+            }
 
+            if (items[i].type === types.eraser) {
+                i++;
+                playNextAudio();
+                return;
             }
 
             let audio = null;
 
-            if (i === (items.length - jumpIterations) - 1) {
+            countAudiosPlayed++;
+
+            console.log(countAudiosPlayed)
+            if (countAudiosPlayed === (items.length - jumpIterations)) {
+
                 console.log('Ultimo item');
 
                 let item = items[i];
@@ -93,7 +112,7 @@ export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio) 
             //Fin de la presentacion de items
 
             if (onEndedAudio) {
-                let audio3 = playAudio(`${localHost}/audios/start/pattern/3.m4a`);
+                let audio3 = playAudio(onEndedAudio);
                 box.classList.add('hidden')
                 setOnEnded(audio3, () => {
                     talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
@@ -108,4 +127,42 @@ export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio) 
 
     }
     playNextAudio();
+}
+
+export const getIcon = () => {
+    return JSON.parse(localStorage.getItem('icon'))
+}
+
+export const icon = (bool) => {
+    localStorage.setItem('icon', JSON.stringify(bool))
+}
+
+export const showCheckIcon = () => {
+    if (getIcon()) {
+        return;
+    }
+    icon(true);
+    let iconCheck = document.getElementById('icon-check')
+
+    iconCheck.classList.replace('opacity-0', 'opacity-100')
+
+    setTimeout(() => {
+        iconCheck.classList.replace('opacity-100', 'opacity-0')
+        icon(false);
+    }, 1000)
+}
+
+export const showErrorIcon = () => {
+    if (getIcon()) {
+        return;
+    }
+    icon(true);
+    let iconCheck = document.getElementById('icon-error')
+
+    iconCheck.classList.replace('opacity-0', 'opacity-100')
+
+    setTimeout(() => {
+        icon(false);
+        iconCheck.classList.replace('opacity-100', 'opacity-0')
+    }, 1000)
 }

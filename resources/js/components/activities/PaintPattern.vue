@@ -16,7 +16,10 @@ import {
   setOnEnded,
   showItemsPresentation,
   verifyFileExistence,
-  resolveAudio
+  resolveAudio,
+  playSuccessShortRandom,
+  showCheckIcon,
+  showErrorIcon
 } from '../../use';
 import {onMounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
@@ -53,6 +56,24 @@ const showInitialAlert = () => {
     prepareActivity()
   });
 }
+
+// Inicializacion de la actividad
+
+let boxSize = ref(0)
+onMounted(() => {
+  showInitialAlert()
+
+  // Calcular tamaño de las cajas
+  if (props.size[0] * props.size[1] < 5) {
+    boxSize.value = 36
+  } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 10) {
+    boxSize.value = 24
+  } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 26) {
+    boxSize.value = 20
+  } else if (props.size[0] * props.size[1] > 26) {
+    boxSize.value = 12
+  }
+})
 
 const intro = (phase) => {
 
@@ -99,7 +120,7 @@ const intro = (phase) => {
   }
   talk(false)
 
-   // Comienza a reproducir el audio inicial
+  // Comienza a reproducir el audio inicial
   let audio1 = playAudio(audio1Route);
   talkBool.value = true
 
@@ -137,54 +158,9 @@ const generateAudios = (audioNumber) => {
 }
 
 // resolveAudio('¡Espectacular!', 9, 'successes/shorts', '0.9');
-const playSuccessShortRandom = () => {
-  if (talkBool.value) {
-    return;
-  }
-  let chance = Math.random();
-  if (chance < 0.8) {
-    let random = Math.floor(Math.random() * 10) + 1;
-    talkBool.value = true;
-    let successAudio = playAudio(`${localHost}/audios/successes/shorts/${random}.m4a`, true);
-
-    setOnEnded(successAudio, () => {
-      talkBool.value = false;
-    });
-  }
-
-  showCheckIcon()
-}
 
 let showIcon = ref(false)
-const showCheckIcon = () => {
-  if (showIcon.value) {
-    return;
-  }
-  showIcon.value = true;
-  let iconCheck = document.getElementById('icon-check')
 
-  iconCheck.classList.replace('opacity-0', 'opacity-100')
-
-  setTimeout(() => {
-    showIcon.value = false;
-    iconCheck.classList.replace('opacity-100', 'opacity-0')
-  }, 1000)
-}
-
-const showErrorIcon = () => {
-  if (showIcon.value) {
-    return;
-  }
-  showIcon.value = true;
-  let iconCheck = document.getElementById('icon-error')
-
-  iconCheck.classList.replace('opacity-0', 'opacity-100')
-
-  setTimeout(() => {
-    showIcon.value = false;
-    iconCheck.classList.replace('opacity-100', 'opacity-0')
-  }, 1000)
-}
 
 verifyAudiosNumber(3)
 
@@ -288,24 +264,6 @@ const showHelp = () => {
   }, 4000);
 };
 
-// Inicializacion de la actividad
-
-let boxSize = ref(0)
-onMounted(() => {
-  showInitialAlert()
-
-  // Calcular tamaño de las cajas
-  if (props.size[0] * props.size[1] < 5) {
-    boxSize.value = 36
-  } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 10) {
-    boxSize.value = 24
-  } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 26) {
-    boxSize.value = 20
-  } else if (props.size[0] * props.size[1] > 26) {
-    boxSize.value = 12
-  }
-})
-
 const prepareActivity = () => {
   let orderArray = []
   for (let i = 0; i <= props.fill_sample.length - 1; i++) {
@@ -352,6 +310,7 @@ const paintBox = (id) => {
     bubble.play()
 
     playSuccessShortRandom()
+    showCheckIcon()
 
     document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
 
@@ -379,13 +338,19 @@ const paintBox = (id) => {
 
     boxes.value[id - 1] = false
 
-    let element = document.getElementById(id);
-    let span = document.createElement('span');
-    span.innerText = 'X';
-    if (props.rotate) {
-      span.classList.add('-rotate-45')
+    if (itemSelected.type === types.color) {
+      let element = document.getElementById(id);
+      let span = document.createElement('span');
+      span.innerText = 'X';
+      if (props.rotate) {
+        span.classList.add('-rotate-45')
+      }
+      element.appendChild(span);
+    } else if (itemSelected.type === types.letter || itemSelected.type === types.number) {
+      let element = document.getElementById(id);
+      element.classList.add('text-red-500')
     }
-    element.appendChild(span);
+
     document.getElementById(id).classList.add('animate-pulse', 'scale-95', 'zoom-box')
 
     setTimeout(function () {
