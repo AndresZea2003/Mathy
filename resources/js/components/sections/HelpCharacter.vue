@@ -8,11 +8,11 @@ const props = defineProps({
     image_2: {type: String},
 })
 
-let showImage = ref(props.image)
+let showImage = ref(props.image);
 
 </script>
 <template>
-    <div class="bg-rose-300 h-full grid grid-row-2">
+    <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full grid grid-row-2 ">
         <div class="flex justify-center items-center">
             <div id="itemPresentation" class="h-36 w-36 bg-gray-200 flex justify-center items-center text-8xl font-bold shadow-xl hidden">
             </div>

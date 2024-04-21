@@ -19,6 +19,7 @@ import {onMounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
 import IconPaintBrush from "../icons/IconPaintBrush.vue"
 import Swal from "sweetalert2";
+import BackgroundActivities from "../background/BackgroundActivities.vue";
 
 const props = defineProps({
   size: {type: Array},
@@ -736,12 +737,14 @@ const showItemsPresentation = () => {
 
 "></div>
 
+  <BackgroundActivities/>
+
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
 
-  <div class="flex flex-col min-h-screen bg-blue-300">
+  <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
-      <div class="flex bg-blue-500 p-6 w-full gap-5 rounded-md">
-        <div class="w-[16%] bg-red-200">
+      <div class="flex  p-6 w-full gap-5 rounded-md">
+        <div class="w-[16%] ">
           <HelpCharacter @click="showHelp()"
                          :image="`${localHost}/images/characters/robot/normal.png`"
                          :image_2="`${localHost}/images/characters/robot/talk.gif`"
