@@ -19,6 +19,10 @@
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="true"
+        :fake_items="[2,3]"
+        create_audio_1=""
+        create_audio_2=""
+        create_audio_3=""
     ></paint-pattern>
 
 @endsection

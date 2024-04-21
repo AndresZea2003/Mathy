@@ -10,12 +10,14 @@
             ['name' => 'Rosa', 'type' => 'COLOR', 'content' => 'bg-rose-400', 'hex' => '#fb7185' , 'group' => 'Color'],
         ])}}"
         :size="{{18}}"
-        :solution="[1,1,1]"
+        :solution="[4,2]"
         :fill_sample="[
         4,2,4,2,4,2,4,2,
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
+        :fake_items="[0,2]"
+        :phase="{{ 1 }}"
     ></line-paint-pattern>
 
 @endsection

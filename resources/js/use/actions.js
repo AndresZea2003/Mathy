@@ -128,6 +128,7 @@ export const updateCoins = (addCoin) => {
     return coins + addCoin
 }
 
+
 //Creacion de variables en el local storage
 localStorage.setItem("unlockedLevels", [1, 2, 3, 4]);
 
@@ -138,21 +139,21 @@ export const unlockedShips = [1, 2, 3, 4, 5];
 //Se crea la variable en el localStorage sobre la nave elegida en caso de no existir se crea y selecciona la numero 1 si ya existe la variable en el localstorage se ignora.
 if(!localStorage.getItem("shipSelected")){
     localStorage.setItem("shipSelected", 1);
-};
+}
 
 
 //Logica de variables de cada moneda en el local storage.
 if(!localStorage.getItem("goldCoins")){
     localStorage.setItem("goldCoins", 1);
-};
+}
 
 if(!localStorage.getItem("silverCoins")){
     localStorage.setItem("silverCoins", 1);
-};
+}
 
 if(!localStorage.getItem("bronzeCoins")){
     localStorage.setItem("bronzeCoins", 1);
-};
+}
 
 
 

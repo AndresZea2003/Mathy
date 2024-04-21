@@ -10,12 +10,14 @@
             ['name' => 'Rojo', 'type' => 'COLOR', 'content' => 'bg-red-600', 'hex' => '#dc2626' , 'group' => 'Color'],
         ])}}"
         :size="{{18}}"
-        :solution="[1,1,1]"
+        :solution="[4,2]"
         :fill_sample="[
         4,2,4,2,4,2,4,2,
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
+        :fake_items="[0,2]"
+        :phase="{{ null }}"
     ></line-paint-pattern>
 
 @endsection

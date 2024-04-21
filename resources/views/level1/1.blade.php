@@ -17,6 +17,10 @@
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
+        :fake_items="[]"
+        create_audio_1="¡Bienvenidos al emocionante viaje por el espacio! ,  ¡Vamos a empezar con algo divertido!, "
+        create_audio_2=""
+        create_audio_3=""
     ></paint-pattern>
 
 @endsection
