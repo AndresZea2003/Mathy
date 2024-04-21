@@ -96,11 +96,11 @@ const pause = () => {
             Swal.fire("Changes are not saved", "", "info");
         }
     });
-}
+};
 
 </script>
 <template>
-    <div class="flex items-center justify-between justify-center bg-rose-400 h-full">
+    <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md flex items-center justify-between justify-center h-full">
 
         <div class="w-full flex justify-center">
             <div class="grid grid-cols-2 gap-4 w-full">

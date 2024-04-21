@@ -4,7 +4,7 @@ import {
   localHost,
 } from '../../use';
 
-import SpaceBg from "@/components/ui/SpaceBg.vue";
+import SpaceBg from "@/components/background/SpaceBg.vue";
 import PerfectHusky from "@/components/ui/PerfectHusky.vue";
 import CardRadar from "@/components/ui/CardRadar.vue";
 import CardPlanet from "@/components/ui/CardPlanet.vue";
