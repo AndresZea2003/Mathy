@@ -745,7 +745,7 @@ const showItemsPresentation = (showFocus) => {
     }
 
     return time
-}
+};
 
 </script>
 <template>

@@ -8,14 +8,14 @@ const props = defineProps({
   image_2: {type: String},
 })
 
-let showImage = ref(props.image)
+let showImage = ref(props.image);
 
 import IconCheck from "../icons/IconCheck.vue";
 import IconError from "../icons/IconError.vue";
 
 </script>
 <template>
-  <div class="bg-rose-300 h-full grid grid-row-2">
+  <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full grid grid-row-2 ">
     <div class="flex justify-center items-center">
       <IconCheck id="icon-check" class="absolute duration-300 opacity-0" hex="#166534"></IconCheck>
       <IconError id="icon-error" class="absolute duration-300 opacity-0" hex="#dc2626"></IconError>

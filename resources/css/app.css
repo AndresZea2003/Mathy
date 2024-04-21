@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lakki+Reddy&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,4 +21,10 @@
 
 .font-luckiest-guy {
   font-family: 'Luckiest Guy', system-ui;
+}
+
+.font-zcool {
+  font-family: "ZCOOL KuaiLe", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
