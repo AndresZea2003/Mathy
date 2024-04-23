@@ -4,6 +4,8 @@ import { onMounted, onUpdated, ref } from 'vue';
 //Importacion componentes
 import AnimatedStars from './AnimatedStars.vue';
 import FinishedLevel from './FinishedLevel.vue';
+import BackgroundActivities from '../../background/BackgroundActivities.vue';
+
 
 //Importacion de imagenes
 import line1 from '../../../../../public/images/draw-image/line1.png';
@@ -58,11 +60,18 @@ let isDrawing = false;
 //variables creadas para indicar la ubicacion en donde se comienza a pintar
 let initialX, initialY;
 
+//Importacion configuracion de niveles
+import { drawingDataFill } from '../../../use/drawingData';
+
+let drawingData = drawingDataFill[props.level - 1];
+
+
+
 
 //onMounted que se ejecuta en el momento de montarse para crear el ref con los distintos niveles
 onMounted(() => {
-    for (let i = 0; i < props.drawActivity.colorParts.length; i++) {
-        finishedLevels.value.push({ id: props.drawActivity.colorParts[i], state: false });
+    for (let i = 0; i < drawingData.colorParts.length; i++) {
+        finishedLevels.value.push({ id: drawingData.colorParts[i], state: false });
     }
 });
 
@@ -217,7 +226,7 @@ const verificarSuperficie = (ctx) => {
 
 //Props
 const props = defineProps({
-    drawActivity: Object
+    level: Number
 });
 
 
@@ -293,7 +302,7 @@ const expandImage = () => {
 
 <template>
     <div class="template-draw__div--container">
-
+        <BackgroundActivities/>
         <FinishedLevel v-if="finishedLevelActivate" :finishedLevels="finishedLevels"/>
         <div
             class="template-draw__div--main-div w-full h-full fixed m-auto overflow-hidden xl:absolute xl:top-1/2 xl:left-1/2">
@@ -316,15 +325,15 @@ const expandImage = () => {
 
             <!-- Codigo del pintado en canvas -->
             <div class="template__div--draw-container-canvas m-auto absolute inset-x-0 z-30 xl:m-auto xl:bottom-9">
-                <canvas v-for="canvas, index in props.drawActivity.canvas"
-                    @touchstart.prevent="touchStart($event, props.drawActivity.colorParts[index], props.drawActivity.correctPercentage[index])"
+                <canvas v-for="canvas, index in drawingData.canvas"
+                    @touchstart.prevent="touchStart($event, drawingData.colorParts[index], drawingData.correctPercentage[index])"
                     @touchmove.prevent="touchMove" @touchend.prevent="touchEnd" @mouseup="mouseUp"
-                    @mouseenter="canvasLocation(props.drawActivity.colorParts[index], props.drawActivity.correctPercentage[index])"
+                    @mouseenter="canvasLocation(drawingData.colorParts[index], drawingData.correctPercentage[index])"
                     @mousedown="mouseDown($event, `${index}`)" @mousemove="mouseMoving($event, `${index}`)" :key="index"
                     :id="`${index}`" class="template-draw__div--cursor w-full"
                     :style="{ height: `${canvas}%`, backgroundColor: '#D9D9D9' }"></canvas>
                 <div
-                    class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none" :style="{backgroundImage: `url(${props.drawActivity.drawImage})`}">
+                    class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none" :style="{backgroundImage: `url(${drawingData.drawImage})`}">
                 </div>
             </div>
 
@@ -335,7 +344,7 @@ const expandImage = () => {
                     :style="{ width: mobileExpandImage ? ('300px') : ('100px'), height: mobileExpandImage ? ('300px') : ('100px'), transform: mobileExpandImage ? ('rotate(0deg)') : ('rotate(-30deg)') }">
                     <img v-if="mobileExpandImage" class="w-10 h-10 absolute top-1 right-1 z-50" :src="close"
                         alt="close" />
-                    <img class="absolute" :src="props.drawActivity.exampleImage" alt="example-image-mobile" />
+                    <img class="absolute" :src="drawingData.exampleImage" alt="example-image-mobile" />
                 </button>
 
             </div>
@@ -348,12 +357,12 @@ const expandImage = () => {
             :style="!responsiveScreen ? ({ border: `solid ${brushColor} 5px`, borderRadius: '10px' }) : ({})">
 
             <img v-if="responsiveScreen900px" class="w-36 bg-white rounded-xl absolute bottom-48 mx-1.5 "
-                :src="props.drawActivity.exampleImage" alt="example" />
+                :src="drawingData.exampleImage" alt="example" />
 
             <img v-if="responsiveScreen" class="w-48 bg-white rounded-xl relative bottom-28"
-                :src="props.drawActivity.exampleImage" alt="example" />
+                :src="drawingData.exampleImage" alt="example" />
             <div class="template-draw__div--container-size-brush-color-button flex items-center justify-around rounded-xl">
-                <button v-for="color, index in props.drawActivity.colorPalette" :key="index"
+                <button v-for="color, index in drawingData.colorPalette" :key="index"
                     class="template-draw__button--color hover:scale-110"
                     :style="{ backgroundColor: color, border: brushColor === color ? ('solid 5px white') : ('solid 3px white') }"
                     @click="colorBrushFunction(color, false)"></button>
@@ -766,6 +775,10 @@ const expandImage = () => {
         top: 110px;
     }
 }
-
+/* 
+encontrando color */
+.fjshfjsf {
+    color: rgb(255, 255, 255);
+}
 
 </style>

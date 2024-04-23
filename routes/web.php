@@ -29,3 +29,5 @@ Route::view('/store', 'store')->name('store');
 Route::view('/coin-changer', 'coin-changer')->name('coin-changer');
 
 Route::view('/draw-activity', 'draw-activity')->name('draw-activity');
+
+Route::view('/drawing', 'drawing')->name('drawing');
