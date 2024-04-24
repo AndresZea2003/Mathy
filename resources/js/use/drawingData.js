@@ -138,36 +138,36 @@ let drawingDataFree = [
 
 
 let drawingDataFill = [
-    {
+    {//1
         colorPalette: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
         exampleImage: drawingFillA2,
-        canvas: [ 62, 38,],
+        canvas: [ 62, 38],
         colorParts: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
         correctPercentage: [0.21, 0.40],
         drawImage: drawingFillA1
     },
-    {
-        colorPalette: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
+    {//2
+        colorPalette: ['rgb(255, 255, 0)', 'rgb(128, 128, 128)'],
         exampleImage: drawingFillB2,
-        canvas: [ 62, 38,],
-        colorParts: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
-        correctPercentage: [0.21, 0.40],
+        canvas: [ 72, 28],
+        colorParts: ['rgb(255, 255, 0)', 'rgb(128, 128, 128)'],
+        correctPercentage: [0.15, 0.05],
         drawImage: drawingFillB1
     },
-    {
-        colorPalette: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
+    {//3
+        colorPalette: ['rgb(106, 203, 109)', 'rgb(203, 128, 96)'],
         exampleImage: drawingFillC2,
-        canvas: [ 62, 38,],
-        colorParts: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
-        correctPercentage: [0.21, 0.40],
+        canvas: [ 50, 50],
+        colorParts: ['rgb(106, 203, 109)', 'rgb(203, 128, 96)'],
+        correctPercentage: [0.11, 0.20],
         drawImage: drawingFillC1
     },
-    {
-        colorPalette: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
+    {//4
+        colorPalette: ['rgb(239, 163, 53)', 'rgb(252, 78, 81)', 'rgb(252, 207, 63)', 'rgb(145, 44, 44)'],
         exampleImage: drawingFillD2,
-        canvas: [ 62, 38,],
-        colorParts: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
-        correctPercentage: [0.21, 0.40],
+        canvas: [ 40, 10, 8, 11, 31],
+        colorParts: ['rgb(239, 163, 53)', 'rgb(252, 78, 81)', 'rgb(252, 207, 63)', 'rgb(145, 44, 44)', 'rgb(239, 163, 53)'],
+        correctPercentage: [0.10, 0.13, 0.16, 0.30, 0.09],
         drawImage: drawingFillD1
     },
     {

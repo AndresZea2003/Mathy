@@ -316,7 +316,7 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
                 :src="mainBorder" alt="main-border" />
 
         </div>
-        <div class="template-draw__div--right-column absolute m-auto inset-x-0 flex items-center justify-center flex-col"
+        <div class="template-draw__div--right-column absolute m-auto inset-x-0 flex items-center justify-center flex-col backdrop-blur-sm border-2 border-blue-900 rounded-md"
             :style="!responsiveScreen ? ({ border: `solid ${brushColor} 5px`, borderRadius: '10px' }) : ({})">
 
 
@@ -689,7 +689,7 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 
 .template-draw__div--right-column {
-    background-color: rgb(0, 18, 80);
+    /* background-color: rgb(0, 18, 80); */
     height: 150px;
     width: 90%;
     top: 510px;

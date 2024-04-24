@@ -9,6 +9,7 @@ const props = defineProps({
     finishedLevels: Array
 });
 
+console.log("finished levels", props.finishedLevels);
 </script>
 
 <template>
