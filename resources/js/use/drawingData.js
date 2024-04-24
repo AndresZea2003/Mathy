@@ -65,7 +65,7 @@ let drawingDataFree = [
     {
         colorPalette: ['rgb(237, 237, 237)', 'rgb(145, 0, 207)', 'rgb(1, 0, 84)', 'rgb(117, 117, 117)', 'rgb(248, 50, 255)', 'rgb(103, 255, 123)', 'rgb(41, 44, 255)'],
         drawImage: drawingFree3,
-        correctPercentage: [0.70],
+        correctPercentage: [0.80],
     },
     {
         colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)', 'rgb(0, 168, 22)', 'rgb(255, 35, 35)', 'rgb(255, 174, 0)', 'rgb(0, 251, 255)', 'rgb(128, 0, 255)', 'rgb(255, 0, 234)'],

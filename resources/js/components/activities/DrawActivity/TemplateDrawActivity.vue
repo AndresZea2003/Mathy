@@ -57,6 +57,9 @@ const finishedLevels = ref([]);
 //Indica si se esta pintando en ese momento
 let isDrawing = false;
 
+//Ref que controla la paleta de colores para movil retractil
+const openColor = ref(false);
+
 //variables creadas para indicar la ubicacion en donde se comienza a pintar
 let initialX, initialY;
 
@@ -284,6 +287,9 @@ onUpdated(() => {
 
 //Funcion para cambiar el color de la brocha
 const colorBrushFunction = (color, eraser) => {
+    setTimeout(() => {
+        exitColorFunction();
+    }, 100);
     brushColor.value = color;
     eraserSelect.value = eraser;
 };
@@ -295,6 +301,21 @@ const expandImage = () => {
     } else if (!mobileExpandImage.value) {
         mobileExpandImage.value = true;
     }
+};
+
+//Funcion para abrir la paleta de colores en movil
+const openColorFunction = () => {
+    if(responsiveExampleMobile.value){
+        openColor.value = true;
+        console.log("verificando 900", responsiveExampleMobile.value);
+        console.log("Entrando abrir");
+    };
+};
+
+const exitColorFunction = () => {
+    if(responsiveExampleMobile.value){
+        openColor.value = false;
+    };
 };
 
 
@@ -361,16 +382,30 @@ const expandImage = () => {
 
             <img v-if="responsiveScreen" class="w-48 bg-white rounded-xl relative bottom-28"
                 :src="drawingData.exampleImage" alt="example" />
-            <div class="template-draw__div--container-size-brush-color-button flex items-center justify-around rounded-xl">
+
+                <div
+                @click="openColorFunction()"
+                class="template-draw__div--container-color-button rounded-xl relative justify-around items-center"
+                :style="{
+                    display: openColor || !responsiveExampleMobile ? ('grid'):('flex'),
+                    gridTemplateColumns: 'auto auto auto auto',
+                    height: openColor || !responsiveExampleMobile ? ('200px'):('50px'),
+                    bottom:  openColor || !responsiveExampleMobile ? ('150px'):('auto'),
+                    position: openColor ? ('absolute'):('relative')
+                }"
+            >
+                <button class="template-draw__button--color hover:scale-110"
+                    @click="colorBrushFunction('rgb(255, 255, 255)', true)" :style="{pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"><img class="rounded-full" :src="eraser"
+                        alt="eraser"
+                        :style="{ border: eraserSelect ? ('solid 5px white') : ('solid 3px white') }" /></button>
                 <button v-for="color, index in drawingData.colorPalette" :key="index"
                     class="template-draw__button--color hover:scale-110"
-                    :style="{ backgroundColor: color, border: brushColor === color ? ('solid 5px white') : ('solid 3px white') }"
+                    :style="{ backgroundColor: color, border: brushColor === color ? ('solid 5px white') : ('solid 3px white'), pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"
                     @click="colorBrushFunction(color, false)"></button>
-                <button class="template-draw__button--color hover:scale-110"
-                    @click="colorBrushFunction('#D9D9D9', true)"><img class="rounded-full" :src="eraser" alt="eraser"
-                        :style="{ border: eraserSelect ? ('solid 5px white') : ('solid 3px white') }" /></button>
             </div>
-            <div class="template-draw__div--container-size-brush-color-button flex items-center justify-around rounded-xl">
+
+
+            <div class="template-draw__div--container-size-brush flex items-center justify-around rounded-xl">
                 <button @click="sizeBrushSelection(5)"
                     class="w-10 h-10 bg-black rounded-full border-inherit border-8 hover:scale-110"></button>
                 <button @click="sizeBrushSelection(10)"
@@ -378,6 +413,7 @@ const expandImage = () => {
                 <button @click="sizeBrushSelection(20)"
                     class="w-10 h-10 bg-black rounded-full border-inherit border-2 hover:scale-110"></button>
             </div>
+
             <div v-if="responsiveScreen"
                 class="w-11/12 h-12 relative top-36 rounded-xl flex justify-center items-center"
                 :style="{ backgroundColor: brushColor }">
@@ -761,7 +797,8 @@ const expandImage = () => {
 
 
 
-.template-draw__div--container-size-brush-color-button {
+
+.template-draw__div--container-size-brush{
     background-color: rgba(0, 0, 0, 0.522);
     width: 90%;
     height: 50px;
@@ -770,9 +807,25 @@ const expandImage = () => {
 
 
 @media screen and (min-width: 900px) {
-    .template-draw__div--container-size-brush-color-button {
+    .template-draw__div--container-size-brush {
         position: relative;
-        top: 110px;
+        top: 50px;
+    }
+}
+
+.template-draw__div--container-color-button {
+    background-color: rgba(0, 0, 0, 0.522);
+    width: 90%;
+    height: 50px;
+    margin: 5px 0;
+    transition: ease-in-out .5s;
+}
+
+@media screen and (min-width: 900px) {
+    .template-draw__div--container-color-button {
+        position: relative;
+        top: 50px;
+        grid-template-columns: auto auto auto auto;
     }
 }
 

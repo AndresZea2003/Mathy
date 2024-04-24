@@ -332,12 +332,12 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
                 }"
             >
                 <button class="template-draw__button--color hover:scale-110"
-                    @click="colorBrushFunction('rgb(255, 255, 255)', true)" :style="{pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto')}"><img class="rounded-full" :src="eraser"
+                    @click="colorBrushFunction('rgb(255, 255, 255)', true)" :style="{pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"><img class="rounded-full" :src="eraser"
                         alt="eraser"
                         :style="{ border: eraserSelect ? ('solid 5px white') : ('solid 3px white') }" /></button>
                 <button v-for="color, index in drawingData.colorPalette" :key="index"
                     class="template-draw__button--color hover:scale-110"
-                    :style="{ backgroundColor: color, border: brushColor === color ? ('solid 5px white') : ('solid 3px white'), pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto') }"
+                    :style="{ backgroundColor: color, border: brushColor === color ? ('solid 5px white') : ('solid 3px white'), pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"
                     @click="colorBrushFunction(color, false)"></button>
             </div>
 
