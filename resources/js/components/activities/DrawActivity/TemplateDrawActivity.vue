@@ -775,10 +775,5 @@ const expandImage = () => {
         top: 110px;
     }
 }
-/* 
-encontrando color */
-.fjshfjsf {
-    color: rgb(255, 255, 255);
-}
 
 </style>

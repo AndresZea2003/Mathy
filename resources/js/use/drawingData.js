@@ -53,82 +53,83 @@ import drawingFillM2 from "../../../public/images/draw-image/color-drawing/drawi
 
 let drawingDataFree = [
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)', 'rgb(255, 245, 0)', 'rgb(255, 245, 0)', 'rgb(255, 245, 0)', 'rgb(255, 245, 0)', 'rgb(255, 245, 0)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)', 'rgb(227, 0, 0)'],
         drawImage: drawingFree1,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)', 'rgb(0, 10, 253)'],
+        colorPalette: ['rgb(237, 237, 237)', 'rgb(0, 154, 8)', 'rgb(1, 0, 84)', 'rgb(117, 117, 117)', 'rgb(248, 50, 255)', 'rgb(0, 154, 54)', 'rgb(41, 44, 255)'],
         drawImage: drawingFree2,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(237, 237, 237)', 'rgb(145, 0, 207)', 'rgb(1, 0, 84)', 'rgb(117, 117, 117)', 'rgb(248, 50, 255)', 'rgb(103, 255, 123)', 'rgb(41, 44, 255)'],
         drawImage: drawingFree3,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)', 'rgb(0, 168, 22)', 'rgb(255, 35, 35)', 'rgb(255, 174, 0)', 'rgb(0, 251, 255)', 'rgb(128, 0, 255)', 'rgb(255, 0, 234)'],
         drawImage: drawingFree4,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(231, 231, 231)', 'rgb(0, 0, 0)', 'rgb(0, 33, 197)', 'rgb(255, 187, 60)', 'rgb(180, 117, 0)', 'rgb(89, 58, 0)', 'rgb(224, 3, 3)', 'rgb(0, 130, 13)', 'rgb(0, 106, 130)', 'rgb(85, 73, 255)'],
         drawImage: drawingFree5,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)', 'rgb(85, 73, 255)', 'rgb(206, 0, 0)', 'rgb(189, 0, 206)', 'rgb(0, 175, 206)', 'rgb(206, 127, 0)'],
         drawImage: drawingFree6,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(231, 231, 231)', 'rgb(0, 0, 0)', 'rgb(0, 33, 197)', 'rgb(0, 206, 27)', 'rgb(0, 30, 73)', 'rgb(101, 0, 69)', 'rgb(224, 3, 3)', 'rgb(0, 130, 13)', 'rgb(0, 106, 130)', 'rgb(234, 255, 0)'],
         drawImage: drawingFree7,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(162, 0, 255)', 'rgb(0, 0, 0)', 'rgb(0, 33, 197)', 'rgb(224, 3, 3)', 'rgb(0, 255, 26)', 'rgb(0, 106, 130)', 'rgb(234, 255, 0)'],
         drawImage: drawingFree8,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(255, 245, 0)', 'rgb(76, 0, 255)', 'rgb(0, 208, 255)', 'rgb(255, 0, 0)', 'rgb(255, 208, 0)', 'rgb(0, 255, 51)'],
         drawImage: drawingFree9,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(221, 221, 221)', 'rgb(254, 0, 0)', 'rgb(254, 165, 0)', 'rgb(241, 254, 0)', 'rgb(0, 254, 59)', 'rgb(0, 250, 254)', 'rgb(8, 0, 254)', 'rgb(224, 0, 254)', 'rgb(254, 0, 148)', 'rgb(0, 4, 115)', 'rgb(80, 115, 255)'],
         drawImage: drawingFree10,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(221, 221, 221)', 'rgb(254, 0, 0)', 'rgb(254, 165, 0)', 'rgb(241, 254, 0)', 'rgb(0, 254, 59)', 'rgb(0, 250, 254)', 'rgb(8, 0, 254)', 'rgb(224, 0, 254)', 'rgb(254, 0, 148)', 'rgb(0, 4, 115)', 'rgb(80, 115, 255)'],
         drawImage: drawingFree11,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(80, 115, 255)', 'rgb(0, 31, 153)', 'rgb(251, 255, 0)', 'rgb(0, 251, 255)', 'rgb(255, 0, 55)', 'rgb(255, 174, 0)', 'rgb(170, 0, 255)'],
         drawImage: drawingFree12,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(222, 222, 222)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)', 'rgb(15, 0, 112)', 'rgb(0, 164, 179)', 'rgb(113, 0, 179)', 'rgb(127, 127, 127)', 'rgb(210, 0, 0)', 'rgb(0, 138, 32)'],
         drawImage: drawingFree13,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+
+        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 236, 90)', 'rgb(0, 91, 35)', 'rgb(0, 3, 91)', 'rgb(217, 0, 0)', 'rgb(236, 255, 28)', 'rgb(51, 28, 255)'],
         drawImage: drawingFree14,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(228, 228, 228)', 'rgb(31, 31, 31)', 'rgb(236, 130, 0)', 'rgb(0, 193, 236)', 'rgb(255, 253, 126)', 'rgb(255, 215, 37)', 'rgb(255, 115, 0)', 'rgb(217, 0, 134', 'rgb(0, 217, 141)'],
         drawImage: drawingFree15,
         correctPercentage: [0.70],
     },
     {
-        colorPalette: ['rgb(0, 255, 10)', 'rgb(0, 10, 253)', 'rgb(255, 245, 0)'],
+        colorPalette: ['rgb(221, 221, 221)', 'rgb(254, 0, 0)', 'rgb(254, 165, 0)', 'rgb(241, 254, 0)', 'rgb(0, 254, 59)', 'rgb(0, 250, 254)', 'rgb(8, 0, 254)', 'rgb(224, 0, 254)', 'rgb(254, 0, 148)', 'rgb(0, 4, 115)', 'rgb(80, 115, 255)'],
         drawImage: drawingFree16,
         correctPercentage: [0.70],
     }

@@ -304,7 +304,7 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
                     @touchmove.prevent="touchMove" @touchend.prevent="touchEnd" @mouseup="mouseUp"
                     @mouseenter="canvasLocation('rgb(0, 0, 0)', drawingData.correctPercentage)" @mousedown="mouseDown($event, `draw`)"
                     @mousemove="mouseMoving($event, `draw`)" :id="`draw`"
-                    class="w-full h-full" :style="{backgroundColor: 'rgb(255, 255, 255)'}"></canvas>
+                    class="template-draw__div--cursor w-full h-full" :style="{backgroundColor: 'rgb(255, 255, 255)'}"></canvas>
                 <div
                     class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none" :style="{backgroundImage: `url(${drawingData.drawImage})`}">
                 </div>
@@ -618,6 +618,11 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
     }
 }
 
+.template-draw__div--cursor {
+    cursor: url('../../../../../public/images/draw-image/mouse-brush.png') 5 35, auto;
+}
+
+
 @keyframes canvasAnimation {
     0% {
         opacity: 0%;
@@ -744,4 +749,6 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
         grid-template-columns: auto auto auto auto;
     }
 }
+
+
 </style>
