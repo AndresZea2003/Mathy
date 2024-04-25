@@ -17,6 +17,7 @@ import {
 } from '../../use';
 import {onMounted, ref} from "vue";
 import Swal from "sweetalert2";
+import BackgroundActivities from "../background/BackgroundActivities.vue";
 
 const props = defineProps({
     size: {type: Number, required: true},
@@ -753,13 +754,13 @@ const showItemsPresentation = (showFocus) => {
     grid-cols-6 grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11 grid-cols-12
      ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`
 "></div>
-
+    <BackgroundActivities/>
     <WinView id="winView" class="hidden opacity-0 duration-300"/>
 
-    <div class="flex flex-col min-h-screen bg-orange-300">
+    <div class="flex flex-col min-h-screen">
         <div class="mx-auto flex-1 container flex justify-center">
-            <div class="flex bg-orange-600 p-6 w-full gap-5 rounded-md">
-                <div class="w-[16%] bg-red-200">
+            <div class="flex p-6 w-full gap-5 rounded-md">
+                <div class="w-[16%]">
                     <HelpCharacter :image="`${localHost}/images/characters/robot/normal.png`"
                                    :image_2="`${localHost}/images/characters/robot/talk.gif`"
                                    bg=""
@@ -787,7 +788,7 @@ const showItemsPresentation = (showFocus) => {
                     </div>
                 </div>
 
-                <div class="w-[16%] bg-red-200">
+                <div class="w-[16%]">
                     <ItemPalette :level="props.level" :items="items"/>
                 </div>
             </div>

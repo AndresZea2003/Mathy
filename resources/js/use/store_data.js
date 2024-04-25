@@ -38,7 +38,7 @@ import elipse4g from '../../../public/images/store/elipse-g-tier-4.png';
 
 let store_data = [
     {
-        name: "T-01",//Nombre
+        name: "Cometín",//Nombre
         id: 1,//id
         img: ship1,//Imagen de la nave
         tier: 1,//Tier de la nave
@@ -51,7 +51,7 @@ let store_data = [
         unlocked: false//Boleano que indica si la nave esta bloqueada o desbloqueada
     },
     {
-        name: "T-02",
+        name: "Chispa",
         id: 2,
         img: ship2,
         tier: 1,
@@ -64,7 +64,7 @@ let store_data = [
         unlocked: false
     },
     {
-        name: "T-03",
+        name: "Nova",
         id: 3,
         img: ship3,
         tier: 2,
@@ -77,7 +77,7 @@ let store_data = [
         unlocked: false
     },
     {
-        name: "T-04",
+        name: "Astro",
         id: 4,
         img: ship4,
         tier: 2,
@@ -90,7 +90,7 @@ let store_data = [
         unlocked: false
     },
     {
-        name: "T-05",
+        name: "Láctea",
         id: 5,
         img: ship5,
         tier: 3,
@@ -103,7 +103,7 @@ let store_data = [
         unlocked: false
     },
     {
-        name: "T-06",
+        name: "Nómada",
         id: 6,
         img: ship6,
         tier: 3,
@@ -116,7 +116,7 @@ let store_data = [
         unlocked: false
     },
     {
-        name: "T-07",
+        name: "Express",
         id: 7,
         img: ship7,
         tier: 3,
@@ -129,7 +129,7 @@ let store_data = [
         unlocked: false
     },
     {
-        name: "T-08",
+        name: "Centella",
         id: 8,
         img: ship8,
         tier: 4,
