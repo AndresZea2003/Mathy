@@ -22,6 +22,8 @@ import background14 from '../../../../public/images/backgrounds/background-14.pn
 import AsteroidsAnimation from './AsteroidsAnimation.vue';
 import ShotingStar from './ShotingStar.vue';
 import AlienShip from './AlienShip.vue';
+import OrbitingPlanet from './OrbitingPlanet.vue';
+import BackgroundAnimationShip from './BackgroundAnimationShip.vue';
 
 
 
@@ -35,7 +37,7 @@ const backgroundSelect = () => {
 };
 
 //Logica para poner las animaciones
-let animationComponents = [AsteroidsAnimation, ShotingStar, AlienShip];
+let animationComponents = [AsteroidsAnimation, ShotingStar, AlienShip, BackgroundAnimationShip, OrbitingPlanet];
 
 
 const animationRandom = computed(() => {

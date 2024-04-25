@@ -16,7 +16,6 @@ const props = defineProps({
     guide: Boolean
 });
 
-console.log("storageSilver", props.storageSilver);
 
 const silverCoins = ref(localStorage.getItem(props.storageSilver));
 const bronzeCoins = ref(localStorage.getItem(props.storageBronze));
