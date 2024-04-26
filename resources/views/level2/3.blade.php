@@ -17,7 +17,6 @@
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
-        :phase="{{ null }}"
     ></line-paint-pattern>
 
 @endsection

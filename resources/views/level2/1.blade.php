@@ -17,7 +17,6 @@
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
         :fake_items="[0,2]"
-        :phase="{{ null }}"
     ></line-paint-pattern>
 
 @endsection
