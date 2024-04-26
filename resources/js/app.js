@@ -25,7 +25,9 @@ import TestNaraket from "./components/activities/TestNaraket.vue"
 import MenuTest from "./components/templates/Menu/Menu.vue";
 import StoreMain from "./components/templates/Store/Store.vue";
 import CoinChanger from "./components/activities/Coin Changer/CoinChangerMain.vue";
-import DrawActivity from "./components/activities/DrawActivity/DrawActivityMain.vue";
+import TemplateDrawActivity from "./components/activities/DrawActivity/TemplateDrawActivity.vue";
+import TemplateDrawActivityFree from "./components/activities/DrawActivity/TemplateDrawActivityFree.vue";
+
 
 
 createApp({
@@ -48,8 +50,8 @@ createApp({
         'menu-test': MenuTest,
         'store-main': StoreMain,
         'coin-changer': CoinChanger,
-        'draw-activity': DrawActivity
-
+        'draw-activity': TemplateDrawActivity,
+        'draw-activity-free':TemplateDrawActivityFree
 
     }
 }).mount("#app");

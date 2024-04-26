@@ -684,6 +684,7 @@ import {
 import {onMounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
 import Swal from "sweetalert2";
+import BackgroundActivities from "../background/BackgroundActivities.vue";
 
 const props = defineProps({
   size: {type: Number},
@@ -1333,7 +1334,7 @@ const win = () => {
       document.getElementById('nextLevelButton').classList.remove('hidden')
     }, 2000)
   }, 2600)
-}
+};
 
 </script>
 <template>
@@ -1343,16 +1344,18 @@ const win = () => {
 
   <!--"></div>-->
 
+  <BackgroundActivities/>
+
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
 
   <div id="blackScreen" class="bg-black h-screen w-screen fixed opacity-0 duration-300 hidden"></div>
 
-  <div class="flex flex-col min-h-screen bg-green-300">
+  <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
-      <div class="flex bg-green-500 p-6 w-full gap-5 rounded-md grid grid-cols-5 ">
+      <div class="flex  p-6 w-full gap-5 rounded-md grid grid-cols-5 ">
 
 
-        <div class="col-span-5 bg-red-200 ">
+        <div class="col-span-5">
           <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
@@ -1377,7 +1380,7 @@ const win = () => {
         </div>
 
 
-        <div class="col-span-5 bg-red-200">
+        <div class="col-span-5">
           <HorizontalItemPalette :level="props.level" :items="items"></HorizontalItemPalette>
         </div>
 

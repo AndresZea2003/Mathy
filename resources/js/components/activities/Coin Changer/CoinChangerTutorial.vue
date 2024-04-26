@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onUpdated, ref } from 'vue';
 
 
 //Imagenes
@@ -20,6 +20,8 @@ const props = defineProps({
 const capsuleCoins = ref(props.capsuleCoins);
 const silverArray = ref(props.silverArray);
 const bronzeArray = ref(props.bronzeArray);
+const goldenExchange = ref(props.goldenExchange);
+const silverExchange = ref(props.silverExchange);
 
 
 
@@ -29,13 +31,23 @@ const bronzeArray = ref(props.bronzeArray);
 const coinShow = ref("");
 
 
-if (capsuleCoins.value.length === 0 && bronzeArray.value.length > 0 && silverArray.value.length > 0 && silverArray.value.length >= props.goldenExchange && bronzeArray.value.length >= props.silverExchange) {
+// if (capsuleCoins.value.length === 0 && bronzeArray.value.length > 0 && silverArray.value.length > 0 && silverArray.value.length >= props.goldenExchange && bronzeArray.value.length >= props.silverExchange) {
+//     coinShow.value = "both";
+// } else if (bronzeArray.value.length === 0 && capsuleCoins.value.length === 0 || capsuleCoins.value.length > 0 && capsuleCoins.value[0].type === "silver" || bronzeArray.value.length < props.silverExchange) {
+//     coinShow.value = "silver";
+// } else if (silverArray.value.length === 0 && capsuleCoins.value.length === 0 || props.bronzeArray.length !== 0 || capsuleCoins.value.length > 0 && capsuleCoins.value[0].type === "bronze" || silverArray.value.length < props.goldenExchange) {
+//     coinShow.value = "bronze";
+// }
+
+
+
+if(capsuleCoins.value.length === 0 && silverArray.value.length >= goldenExchange.value && bronzeArray.value.length >= silverExchange.value){
     coinShow.value = "both";
-} else if (bronzeArray.value.length === 0 && capsuleCoins.value.length === 0 || capsuleCoins.value.length > 0 && capsuleCoins.value[0].type === "silver" || bronzeArray.value.length < props.silverExchange) {
+}else if(capsuleCoins.value.length > 0 && capsuleCoins.value[0].type === "silver" && capsuleCoins.value.length + silverArray.value.length >= goldenExchange.value || capsuleCoins.value.length === 0 && silverArray.value.length >= goldenExchange.value && bronzeArray.value.length < silverExchange.value){
     coinShow.value = "silver";
-} else if (silverArray.value.length === 0 && capsuleCoins.value.length === 0 || props.bronzeArray.length !== 0 || capsuleCoins.value.length > 0 && capsuleCoins.value[0].type === "bronze" || silverArray.value.length < props.goldenExchange) {
+}else if(capsuleCoins.value.length > 0 && capsuleCoins.value[0].type === "bronze" && capsuleCoins.value.length + bronzeArray.value.length >= silverExchange.value || capsuleCoins.value.length === 0 && bronzeArray.value.length >= silverExchange.value && silverArray.value.length < goldenExchange.value){
     coinShow.value = "bronze";
-}
+};
 
 
 

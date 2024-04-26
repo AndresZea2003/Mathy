@@ -23,15 +23,34 @@ import {
   ArrowRightCircleIcon,
   ChevronDoubleUpIcon,
   ChevronDoubleDownIcon
-} from '@heroicons/vue/24/solid'
+} from '@heroicons/vue/24/solid';
+
 
 const up = () => {
   document.querySelector('.bg-pattern1').scrollBy(0, -100); // Cambia -100 a la cantidad de píxeles que deseas desplazar hacia arriba
-}
+};
 
 const down = () => {
   document.querySelector('.bg-pattern1').scrollBy(0, 100); // Cambia 100 a la cantidad de píxeles que deseas desplazar hacia abajo
-}
+};
+
+
+//Funcion para que te lleve al menu inicial
+const returnHome = () => {
+  window.location = `${localHost}/levels`;
+};
+
+//Funcion para que te lleve al nivel anterior
+const previousLevel = () => {
+  window.location = `${localHost}/levels/${props.level[0] - 1}`;
+};
+
+//Funcion para que te lleve al siguiente nivel
+const nextLevel = () => {
+  window.location = `${localHost}/levels/${props.level[0] + 1}`;
+};
+
+
 </script>
 <template>
 
@@ -41,20 +60,20 @@ const down = () => {
     <div class="flex bg-blue-800 p-2 rounded  w-full m-12 container justify-center">
 
       <div class="flex justify-between fixed gap-x-10 translate-y-[-50px]">
-        <div class="flex">
-          <button class="hover:scale-125 duration-300">
+        <div v-if="props.level[0] !== 1" class="flex">
+          <button @click="previousLevel()" class="hover:scale-125 duration-300">
             <ArrowLeftCircleIcon class="w-10 text-white hover:text-white duration-300"></ArrowLeftCircleIcon>
           </button>
         </div>
 
         <div class="flex">
-          <button class="hover:scale-125 duration-300">
+          <button @click="returnHome()" class="hover:scale-125 duration-300">
             <HomeIcon class="w-10 text-white hover:text-white duration-300"></HomeIcon>
           </button>
         </div>
 
         <div class="flex">
-          <button class="hover:scale-125 duration-300">
+          <button @click="nextLevel()" class="hover:scale-125 duration-300">
             <ArrowRightCircleIcon class="w-10 text-white hover:text-white duration-300"></ArrowRightCircleIcon>
           </button>
         </div>
@@ -77,7 +96,7 @@ const down = () => {
 
         <div
             class="bg-pattern1 col-span-3 border-4 border-black h-[600px] overflow-auto grid grid-cols-4 p-12 gap-6 relative">
-          <div :id="i" v-for="i in props.level[1]" class="flex justify-center">
+          <div :id="i" v-for="i, index in props.level[1]" :key="index" class="flex justify-center">
             <a :href="`${localHost}/level${props.level[0]}/${i}`" :key="i">
               <PerfectHusky :activity="i" :color="color_card"></PerfectHusky>
             </a>
