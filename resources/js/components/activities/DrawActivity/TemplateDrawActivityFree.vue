@@ -4,6 +4,7 @@ import { onMounted, onUpdated, ref } from 'vue';
 //Importacion componentes
 import AnimatedStars from './AnimatedStars.vue';
 import FinishedLevel from './FinishedLevel.vue';
+import BackgroundActivities from '../../background/BackgroundActivities.vue';
 
 //Importacion de imagenes
 import line1 from '../../../../../public/images/draw-image/line1.png';
@@ -27,7 +28,6 @@ const widthRef = ref(null);
 const eraserSelect = ref(false);
 
 
-
 //Ref que controlan directamente el pintado
 
 //Color de la brocha
@@ -48,11 +48,19 @@ const finishedLevelActivate = ref(false);
 //Ref que controla si el letrero de nivel pasado se activa de nuevo
 const finishedLevel = ref(false);
 
+//Ref que controla la paleta de colores para movil retractil
+const openColor = ref(false);
+
 //Indica si se esta pintando en ese momento
 let isDrawing = false;
 
 //variables creadas para indicar la ubicacion en donde se comienza a pintar
 let initialX, initialY;
+
+//Importacion configuracion de niveles
+import { drawingDataFree } from '../../../use/drawingData';
+
+let drawingData = drawingDataFree[props.level - 1];
 
 
 //funcion que controla el tamaño de brocha
@@ -185,7 +193,7 @@ const verificarSuperficie = (ctx) => {
 
 //Props
 const props = defineProps({
-    drawActivity: Object
+    level: Number
 });
 
 
@@ -243,16 +251,35 @@ onUpdated(() => {
 
 //Funcion para cambiar el color de la brocha
 const colorBrushFunction = (color, eraser) => {
+    setTimeout(() => {
+        exitColorFunction();
+    }, 100);
     brushColor.value = color;
     eraserSelect.value = eraser;
 };
 
 
+//Funcion para abrir la paleta de colores en movil
+const openColorFunction = () => {
+    if(responsiveExampleMobile.value){
+        openColor.value = true;
+        console.log("verificando 900", responsiveExampleMobile.value);
+        console.log("Entrando abrir");
+    };
+};
 
+const exitColorFunction = () => {
+    if(responsiveExampleMobile.value){
+        openColor.value = false;
+    };
+};
+
+console.log("reponsiveScreen", responsiveExampleMobile.value);
 </script>
 
 <template>
     <div class="template-draw__div--container">
+        <BackgroundActivities/>
         <FinishedLevel v-if="finishedLevelActivate" :finishedLevels="false"/>
         <div
             class="template-draw__div--main-div w-full h-full fixed m-auto overflow-hidden xl:absolute xl:top-1/2 xl:left-1/2">
@@ -273,13 +300,13 @@ const colorBrushFunction = (color, eraser) => {
 
             <!-- Codigo del pintado en canvas -->
             <div class="template__div--draw-container-canvas m-auto absolute inset-x-0 z-30 xl:m-auto xl:bottom-9">
-                <canvas @touchstart.prevent="touchStart($event, 'rgb(0, 0, 0)', props.drawActivity.correctPercentage)"
+                <canvas @touchstart.prevent="touchStart($event, 'rgb(0, 0, 0)', drawingData.correctPercentage)"
                     @touchmove.prevent="touchMove" @touchend.prevent="touchEnd" @mouseup="mouseUp"
-                    @mouseenter="canvasLocation('rgb(0, 0, 0)', props.drawActivity.correctPercentage)" @mousedown="mouseDown($event, `draw`)"
-                    @mousemove="mouseMoving($event, `draw`)" :key="index" :id="`draw`"
-                    class="w-full h-full" :style="{backgroundColor: 'rgb(255, 255, 255)'}"></canvas>
+                    @mouseenter="canvasLocation('rgb(0, 0, 0)', drawingData.correctPercentage)" @mousedown="mouseDown($event, `draw`)"
+                    @mousemove="mouseMoving($event, `draw`)" :id="`draw`"
+                    class="template-draw__div--cursor w-full h-full" :style="{backgroundColor: 'rgb(255, 255, 255)'}"></canvas>
                 <div
-                    class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none" :style="{backgroundImage: `url(${props.drawActivity.drawImage})`}">
+                    class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none" :style="{backgroundImage: `url(${drawingData.drawImage})`}">
                 </div>
             </div>
 
@@ -289,23 +316,34 @@ const colorBrushFunction = (color, eraser) => {
                 :src="mainBorder" alt="main-border" />
 
         </div>
-        <div class="template-draw__div--right-column absolute m-auto inset-x-0 flex items-center justify-center flex-col"
+        <div class="template-draw__div--right-column absolute m-auto inset-x-0 flex items-center justify-center flex-col backdrop-blur-sm border-2 border-blue-900 rounded-md"
             :style="!responsiveScreen ? ({ border: `solid ${brushColor} 5px`, borderRadius: '10px' }) : ({})">
 
 
             <div
-                class="template-draw__div--container-size-brush-color-button flex items-center justify-around rounded-xl">
-                <button v-for="color, index in props.drawActivity.colorPalette" :key="index"
-                    class="template-draw__button--color hover:scale-110"
-                    :style="{ backgroundColor: color, border: brushColor === color ? ('solid 5px white') : ('solid 3px white') }"
-                    @click="colorBrushFunction(color, false)"></button>
+                @click="openColorFunction()"
+                class="template-draw__div--container-color-button rounded-xl relative justify-around items-center"
+                :style="{
+                    display: openColor || !responsiveExampleMobile ? ('grid'):('flex'),
+                    gridTemplateColumns: 'auto auto auto auto',
+                    height: openColor || !responsiveExampleMobile ? ('200px'):('50px'),
+                    bottom:  openColor || !responsiveExampleMobile ? ('150px'):('auto'),
+                    position: openColor ? ('absolute'):('relative')
+                }"
+            >
                 <button class="template-draw__button--color hover:scale-110"
-                    @click="colorBrushFunction('rgb(255, 255, 255)', true)"><img class="rounded-full" :src="eraser"
+                    @click="colorBrushFunction('rgb(255, 255, 255)', true)" :style="{pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"><img class="rounded-full" :src="eraser"
                         alt="eraser"
                         :style="{ border: eraserSelect ? ('solid 5px white') : ('solid 3px white') }" /></button>
+                <button v-for="color, index in drawingData.colorPalette" :key="index"
+                    class="template-draw__button--color hover:scale-110"
+                    :style="{ backgroundColor: color, border: brushColor === color ? ('solid 5px white') : ('solid 3px white'), pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"
+                    @click="colorBrushFunction(color, false)"></button>
             </div>
+
+
             <div
-                class="template-draw__div--container-size-brush-color-button flex items-center justify-around rounded-xl">
+                class="template-draw__div--container-size-brush flex items-center justify-around rounded-xl">
                 <button @click="sizeBrushSelection(5)"
                     class="w-10 h-10 bg-black rounded-full border-inherit border-8 hover:scale-110"></button>
                 <button @click="sizeBrushSelection(10)"
@@ -580,6 +618,11 @@ const colorBrushFunction = (color, eraser) => {
     }
 }
 
+.template-draw__div--cursor {
+    cursor: url('../../../../../public/images/draw-image/mouse-brush.png') 5 35, auto;
+}
+
+
 @keyframes canvasAnimation {
     0% {
         opacity: 0%;
@@ -646,7 +689,7 @@ const colorBrushFunction = (color, eraser) => {
 
 
 .template-draw__div--right-column {
-    background-color: rgb(0, 18, 80);
+    /* background-color: rgb(0, 18, 80); */
     height: 150px;
     width: 90%;
     top: 510px;
@@ -676,7 +719,7 @@ const colorBrushFunction = (color, eraser) => {
 
 
 
-.template-draw__div--container-size-brush-color-button {
+.template-draw__div--container-size-brush{
     background-color: rgba(0, 0, 0, 0.522);
     width: 90%;
     height: 50px;
@@ -685,9 +728,27 @@ const colorBrushFunction = (color, eraser) => {
 
 
 @media screen and (min-width: 900px) {
-    .template-draw__div--container-size-brush-color-button {
+    .template-draw__div--container-size-brush {
         position: relative;
-        top: 110px;
+        top: 50px;
     }
 }
+
+.template-draw__div--container-color-button {
+    background-color: rgba(0, 0, 0, 0.522);
+    width: 90%;
+    height: 50px;
+    margin: 5px 0;
+    transition: ease-in-out .5s;
+}
+
+@media screen and (min-width: 900px) {
+    .template-draw__div--container-color-button {
+        position: relative;
+        top: 50px;
+        grid-template-columns: auto auto auto auto;
+    }
+}
+
+
 </style>

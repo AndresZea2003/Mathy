@@ -530,7 +530,7 @@ const changeAnimationEffectSounds = () => {
 const blockDragCoins = (array, props, type) => {
 
     let result;
-    if(array.length < props){
+    if(array.length < props && capsuleCoins.value.length === 0){
         result = true;
     }else if(capsuleCoins.value.length > 0){
         if(capsuleCoins.value[0].type !== type){

@@ -99,12 +99,12 @@ const pause = () => {
       Swal.fire("Changes are not saved", "", "info");
     }
   });
-}
+};
 
 </script>
 <template>
 
-  <div class="bg-stone-600 h-full flex justify-center items-center px-12">
+  <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full flex justify-center items-center px-12">
 
     <div class="absolute translate-x-[-450px] border-b-4 border-dashed drop-shadow-2xl">
       <HelpCharacterOnly :image="`${localHost}/images/characters/robot/normal.png`"
@@ -119,7 +119,7 @@ const pause = () => {
           <img v-if="itemImg" :src="itemImg" alt="" :width="itemSize">
         </div>
       </div>
-      <div @click="selectItemPalette(item)" v-for="item in props.items"
+      <div @click="selectItemPalette(item)" v-for="item, index in props.items" :key="index"
            class="flex justify-center items-center w-full h-full">
         <button
             :class="['bg-gray-100 shadow-md rounded-lg hover:opacity-75 hover:scale-95 duration-300 select-none font-bold' +

@@ -24,6 +24,8 @@ const levelSelectedAnimation = ref("");
 
 //Funcion que se ejcuta al elegir el nivel.
 const levelSelected = (link, level) => {
+
+
     levelSelectedClick.value = true;
     levelSelectedAnimation.value = level;
 
@@ -31,9 +33,12 @@ const levelSelected = (link, level) => {
 
     setTimeout(() => {
         //Logica de acceso al nivel usando el parametro link de la funcion
-        console.log("Entrando al nivel");
         levelSelectedClick.value = false;
     }, 5000);
+
+    setTimeout(() => {
+        window.location = link;
+    }, 4800);
 };
 
 //Traemos del store los niveles desbloqueados

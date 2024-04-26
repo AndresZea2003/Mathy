@@ -1,6 +1,7 @@
 <script setup>
 
 import {onMounted, ref} from "vue";
+import { store_data } from "../../use/store_data";
 
 const props = defineProps({
   rocket: {type: String},
@@ -9,14 +10,18 @@ const props = defineProps({
   activity_number: {type: Number},
 })
 
-let activityNumber = ref(0)
+let activityNumber = ref(0);
+const currentShip = ref(0);
 
 onMounted(() => {
+  currentShip.value = store_data[localStorage.getItem('shipSelected') - 1].img;
   activityNumber.value = props.activity_number
 });
 
 
-let totalActivities = 12
+let totalActivities = 12;
+
+
 </script>
 
 <template>
@@ -50,8 +55,7 @@ let totalActivities = 12
              :style="`grid-template-columns: repeat(${totalActivities}, minmax(0, 1fr));`">
           <div id="naveDiv" :style="`grid-column: ${activityNumber};`"
                class="flex justify-center duration-300">
-            <img id="nave" class="" :src="props.rocket"
-                 width="100" alt="">
+            <img id="nave" class="rotate-45" :src="currentShip" width="100" alt="rocket">
           </div>
         </div>
       </div>

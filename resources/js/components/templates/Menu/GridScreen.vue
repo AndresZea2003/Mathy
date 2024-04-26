@@ -35,6 +35,10 @@ const levelSelected = (link, level) => {
         //Logica de acceso al nivel usando el parametro link de la funcion
         levelSelectedClick.value = false;
     }, 5000);
+
+    setTimeout(() => {
+        window.location = link;
+    }, 4800);
 };
 
 

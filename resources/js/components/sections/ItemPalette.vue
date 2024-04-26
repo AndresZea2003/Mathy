@@ -9,6 +9,9 @@ let itemSelected = ref()
 let itemImg = ref()
 let itemSize = ref()
 
+//Ref que controla
+const goldCoins = ref(null);
+
 const props = defineProps({
     level: {type: Array},
     items: {type: Object},
@@ -16,6 +19,7 @@ const props = defineProps({
 
 
 onMounted(() => {
+    goldCoins.value = localStorage.getItem('goldCoins');
     localStorage.setItem('itemSelected', null)
     itemSelected.value = getSelectItem()
 });
@@ -60,7 +64,6 @@ const selectItemPalette = (item) => {
         } else if (item.size === sizes.big) {
             itemSize.value = 50
         }
-
     }
 }
 
@@ -97,6 +100,7 @@ const pause = () => {
         }
     });
 };
+
 
 </script>
 <template>
@@ -184,7 +188,7 @@ const pause = () => {
 
 
 
-                        <span id="coinsCount" class="text-white font-bold text-4xl">x 0</span>
+                        <span id="coinsCount" class="text-white font-bold text-4xl">{{ `X ${goldCoins}` }}</span>
 
                     </div>
 
