@@ -63,6 +63,9 @@ let isDrawing = false;
 //Ref que controla la paleta de colores para movil retractil
 const openColor = ref(false);
 
+//Ref que controla el puntero entre borrador y brocha
+const mouseImage = ref("template-draw__div--cursor");
+
 //variables creadas para indicar la ubicacion en donde se comienza a pintar
 let initialX, initialY;
 
@@ -296,6 +299,12 @@ const colorBrushFunction = (color, eraser) => {
     }, 100);
     brushColor.value = color;
     eraserSelect.value = eraser;
+
+    if(eraser){
+        mouseImage.value = "template-draw__div--eraser";
+    } else if(!eraser){
+        mouseImage.value = "template-draw__div--cursor";
+    };
 };
 
 //Funcion para activar animacion del dibujo en ejemplo para pantallas moviles
@@ -355,10 +364,10 @@ const exitColorFunction = () => {
                     @touchmove.prevent="touchMove" @touchend.prevent="touchEnd" @mouseup="mouseUp"
                     @mouseenter="canvasLocation(drawingData.colorParts[index], drawingData.correctPercentage[index], index)"
                     @mousedown="mouseDown($event, `${index}`)" @mousemove="mouseMoving($event, `${index}`)" :key="index"
-                    :id="`${index}`" class="template-draw__div--cursor w-full"
+                    :id="`${index}`" :class="`${mouseImage} w-full`"
                     :style="{ height: `${canvas}%`, backgroundColor: '#D9D9D9' }"></canvas>
                 <div
-                    class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none" :style="{backgroundImage: `url(${drawingData.drawImage})`}">
+                    class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none select-none" :style="{backgroundImage: `url(${drawingData.drawImage})`}">
                 </div>
             </div>
 
@@ -384,7 +393,7 @@ const exitColorFunction = () => {
             <img v-if="responsiveScreen900px" class="w-36 bg-white rounded-xl absolute bottom-48 mx-1.5 "
                 :src="drawingData.exampleImage" alt="example" />
 
-            <img v-if="responsiveScreen" class="w-48 bg-white rounded-xl relative bottom-10"
+            <img v-if="responsiveScreen" class="w-3/4 bg-white rounded-xl relative bottom-10"
                 :src="drawingData.exampleImage" alt="example" />
 
                 <div
@@ -399,9 +408,10 @@ const exitColorFunction = () => {
                 }"
             >
                 <button class="template-draw__button--color hover:scale-110"
-                    @click="colorBrushFunction('rgb(257, 217, 217)', true)" :style="{pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"><img class="rounded-full" :src="eraser"
+                    @click="colorBrushFunction('rgb(217, 217, 217)', true)" :style="{pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"><img class="rounded-full" :src="eraser"
                         alt="eraser"
                         :style="{ border: eraserSelect ? ('solid 5px white') : ('solid 3px white') }" /></button>
+
                 <button v-for="color, index in drawingData.colorPalette" :key="index"
                     class="template-draw__button--color hover:scale-110"
                     :style="{ backgroundColor: color, border: brushColor === color ? ('solid 5px white') : ('solid 3px white'), pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"
@@ -436,14 +446,10 @@ const exitColorFunction = () => {
     .template-draw__div--main-div {
         background-color: rgb(0, 18, 80);
         width: 60%;
-        height: 700px;
+        height: 95%;
         transform: translate(-50%, -50%);
     }
 }
-
-
-
-
 
 
 .template__img--line1 {
@@ -664,6 +670,10 @@ const exitColorFunction = () => {
     cursor: url('../../../../../public/images/draw-image/mouse-brush.png') 5 35, auto;
 }
 
+.template-draw__div--eraser {
+    cursor: url('../../../../../public/images/draw-image/mouse-eraser.png') -50 0, auto;
+}
+
 
 @media screen and (min-width: 900px) {
     .template__div--draw-container-canvas {
@@ -683,12 +693,24 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template__div--draw-container-canvas {
-        width: 540px;
-        height: 73%;
+        width: 59%;
+        height: 74%;
         left: 0;
         right: 0;
-        top: 170px;
-        transform: translateY(0);
+        bottom: 0px;
+        transform: translateY(-150px);
+        animation: canvasAnimation 6s linear;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .template__div--draw-container-canvas {
+        width: 58%;
+        height: 65%;
+        left: 0;
+        right: 0;
+        bottom: 100px;
+        transform: translateY(-150px);
         animation: canvasAnimation 6s linear;
     }
 }
@@ -745,13 +767,25 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template-draw__img--main-border {
-        width: 595px;
+        width: 66%;
         left: 0;
         right: 0;
         margin: auto;
-        top: 130px;
-        bottom: 0;
-        transform: translateY(0);
+        bottom: 20px;
+        transform: translateY(-150px);
+        pointer-events: none;
+        animation: canvasAnimation 6s linear;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .template-draw__img--main-border {
+        width: 66%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        bottom: 130px;
+        transform: translateY(-150px);
         pointer-events: none;
         animation: canvasAnimation 6s linear;
     }
@@ -792,7 +826,7 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template-draw__div--right-column {
-        height: 700px;
+        height: 94%;
         width: 18%;
         top: 50%;
         right: 20px;
