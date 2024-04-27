@@ -638,6 +638,7 @@ const updateBoxSize = () => {
   // }
   console.log(props.size[0] * props.size[1])
 
+    console.log('window.innerWidth', window.innerWidth)
   if (window.innerWidth <= 1024) {
     // Para pantallas menores a 1024px
     boxSize.value = 48
@@ -653,12 +654,12 @@ const updateBoxSize = () => {
     }
   } else if (window.innerWidth <= 1440 && window.innerWidth > 1024) {
     // Para pantallas mayores a 1024px y menor igual a 1440px
-    boxSize.value = 50
+    boxSize.value = 60
     arrowSize.value = 50;
     if (props.size[0] * props.size[1] < 31) {
       arrowSize.value = arrowSize.value + 10
     } else if (props.size[0] * props.size[1] > 31 && props.size[0] * props.size[1] < 65) {
-      arrowSize.value = arrowSize.value - 20
+      arrowSize.value = arrowSize.value - 10
       boxSize.value = boxSize.value - 18
     } else if (props.size[0] * props.size[1] > 65) {
       arrowSize.value = arrowSize.value - 30
