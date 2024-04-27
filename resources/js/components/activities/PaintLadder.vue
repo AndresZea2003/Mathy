@@ -587,15 +587,15 @@ import ItemPalette from "../sections/ItemPalette.vue";
 import ProgressBar from "../sections/ProgressBar.vue";
 import WinView from "../templates/WinView.vue";
 import {
-    types,
-    localHost,
-    sizes,
-    getSelectItem,
-    talk,
-    talkCharacter,
-    paintItem,
-    errorPaint,
-    updateCoins, getCoins
+  types,
+  localHost,
+  sizes,
+  getSelectItem,
+  talk,
+  talkCharacter,
+  paintItem,
+  errorPaint,
+  updateCoins, getCoins
 } from '../../use';
 import {onMounted, ref, onUnmounted} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
@@ -603,14 +603,14 @@ import Swal from "sweetalert2";
 import BackgroundActivities from "../background/BackgroundActivities.vue";
 
 const props = defineProps({
-    size: {type: Array},
-    fill_sample: {type: Array},
-    solution: {type: Array},
-    level: {type: Array},
-    items: {type: Array},
-    rotate: {type: Boolean},
-    order_to_resolve: {type: Array},
-    select_cols: {type: Array},
+  size: {type: Array},
+  fill_sample: {type: Array},
+  solution: {type: Array},
+  level: {type: Array},
+  items: {type: Array},
+  rotate: {type: Boolean},
+  order_to_resolve: {type: Array},
+  select_cols: {type: Array},
 })
 
 const showInitialAlert = () => {
@@ -628,6 +628,7 @@ const showInitialAlert = () => {
 // Inicializacion de la actividad
 
 let boxSize = ref(0)
+let arrowSize = ref(0)
 
 const updateBoxSize = () => {
   // if (window.innerWidth < 1000) {
@@ -635,12 +636,47 @@ const updateBoxSize = () => {
   // } else {
   //   boxSize.value = 70;
   // }
+  console.log(props.size[0] * props.size[1])
+
   if (window.innerWidth <= 1024) {
-    boxSize.value = 40
+    // Para pantallas menores a 1024px
+    boxSize.value = 48
+    arrowSize.value = 50;
+    if (props.size[0] * props.size[1] < 31) {
+      arrowSize.value = arrowSize.value + 10
+    } else if (props.size[0] * props.size[1] > 31 && props.size[0] * props.size[1] < 65) {
+      arrowSize.value = arrowSize.value - 24
+      boxSize.value = boxSize.value - 16
+    } else if (props.size[0] * props.size[1] > 65) {
+      arrowSize.value = arrowSize.value - 28
+      boxSize.value = boxSize.value - 24
+    }
   } else if (window.innerWidth <= 1440 && window.innerWidth > 1024) {
-    boxSize.value = 60
+    // Para pantallas mayores a 1024px y menor igual a 1440px
+    boxSize.value = 50
+    arrowSize.value = 50;
+    if (props.size[0] * props.size[1] < 31) {
+      arrowSize.value = arrowSize.value + 10
+    } else if (props.size[0] * props.size[1] > 31 && props.size[0] * props.size[1] < 65) {
+      arrowSize.value = arrowSize.value - 20
+      boxSize.value = boxSize.value - 18
+    } else if (props.size[0] * props.size[1] > 65) {
+      arrowSize.value = arrowSize.value - 30
+      boxSize.value = boxSize.value - 24
+    }
   } else {
+    // Para pantallas mayores a 1440px
     boxSize.value = 70;
+    arrowSize.value = 70;
+    if (props.size[0] * props.size[1] < 31) {
+      arrowSize.value = arrowSize.value + 40
+    } else if (props.size[0] * props.size[1] > 31 && props.size[0] * props.size[1] < 65) {
+      arrowSize.value = arrowSize.value + 20
+      boxSize.value = boxSize.value - 20
+    } else if (props.size[0] * props.size[1] > 65) {
+      arrowSize.value = arrowSize.value - 30
+      boxSize.value = boxSize.value - 30
+    }
   }
 
 }
@@ -678,101 +714,103 @@ onUnmounted(() => {
 
 </script>
 <template>
-    <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden w-10 h-10 w-9 h-9 w-8 h-8
+  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden w-10 h-10 w-9 h-9 w-8 h-8
     grid-cols-6 grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11 grid-cols-12
      ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`
 
 "></div>
-    <BackgroundActivities/>
+  <BackgroundActivities/>
 
-    <WinView id="winView" class="hidden opacity-0 duration-300"/>
+  <WinView id="winView" class="hidden opacity-0 duration-300"/>
 
-    <div class="flex flex-col min-h-screen">
-        <div class="mx-auto flex-1 container flex justify-center">
-            <div class="flex p-6 w-full gap-5 rounded-md">
-                <div class="w-[16%] ">
-                    <HelpCharacter @click="showHelp()"
-                                   :image="`${localHost}/images/characters/robot/normal.png`"
-                                   :image_2="`${localHost}/images/characters/robot/talk.gif`"
-                    />
-                </div>
-                <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
-                    <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
-                                 :planet_2="`${localHost}/images/planets/rojo.svg`"
-                                 :rocket="`${localHost}/images/rockets/1.svg`"
-                                 :activity_number="props.level[1]"
-                    />
-
-                    <div class="row-span-3 flex justify-center items-center">
-                        <div>
-                            <div class="my-6 flex justify-center items-center gap-5 ">
-
-                                <div id="fig1" :class="`grid grid-cols-${props.size[0]} gap-x-2 flex items-center justify-center duration-300`">
-                                    <div :id="`sample-${i}`" @click="validateOrder(i)"
-                                         v-for="i in (props.size[0] * props.size[1])" :key="i"
-                                         :class="`bg-white border border-black hover:opacity-75
-                                          flex justify-center items-center font-bold text-6xl select-none`"
-                                          :style="`width: ${boxSize}px; height: ${boxSize}px;`">
-                                    </div>
-                                </div>
-
-                                <div id="arrow" class="flex items-center duration-300">
-                                    <IconArrowRight/>
-                                </div>
-
-                                <div id="fig2" :class="`grid grid-cols-${props.size[0]} gap-x-2 flex items-center justify-center duration-300`">
-                                    <div :id="i" @click="validateOrder(i)" v-for="i in (props.size[0] * props.size[1])"
-                                         :key="i"
-                                         :class="`bg-white border border-black hover:opacity-75
-                                          flex justify-center items-center font-bold text-6xl select-none`"
-                                    :style="`width: ${boxSize}px; height: ${boxSize}px;`">
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="w-[16%]">
-                    <ItemPalette :level="props.level" :items="items"/>
-                </div>
-            </div>
+  <div class="flex flex-col min-h-screen">
+    <div class="mx-auto flex-1 container flex justify-center">
+      <div class="flex p-6 w-full gap-5 rounded-md">
+        <div class="w-[16%] ">
+          <HelpCharacter @click="showHelp()"
+                         :image="`${localHost}/images/characters/robot/normal.png`"
+                         :image_2="`${localHost}/images/characters/robot/talk.gif`"
+          />
         </div>
+        <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
+          <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
+                       :planet_2="`${localHost}/images/planets/rojo.svg`"
+                       :rocket="`${localHost}/images/rockets/1.svg`"
+                       :activity_number="props.level[1]"
+          />
+
+          <div class="row-span-3 flex justify-center items-center">
+            <div>
+              <div class="my-6 flex justify-center items-center gap-5 ">
+
+                <div id="fig1"
+                     :class="`grid grid-cols-${props.size[0]} gap-x-2 flex items-center justify-center duration-300`">
+                  <div :id="`sample-${i}`" @click="validateOrder(i)"
+                       v-for="i in (props.size[0] * props.size[1])" :key="i"
+                       :class="`bg-white border border-black hover:opacity-75
+                                          flex justify-center items-center font-bold text-6xl select-none duration-300`"
+                       :style="`width: ${boxSize}px; height: ${boxSize}px;`">
+                  </div>
+                </div>
+
+                <div id="arrow" class="flex items-center duration-300" :style="`width: ${arrowSize}px; height: ${arrowSize}px;`">
+                  <IconArrowRight/>
+                </div>
+
+                <div id="fig2"
+                     :class="`grid grid-cols-${props.size[0]} gap-x-2 flex items-center justify-center duration-300`">
+                  <div :id="i" @click="validateOrder(i)" v-for="i in (props.size[0] * props.size[1])"
+                       :key="i"
+                       :class="`bg-white border border-black hover:opacity-75
+                                          flex justify-center items-center font-bold text-6xl select-none duration-300`"
+                       :style="`width: ${boxSize}px; height: ${boxSize}px;`">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="w-[16%]">
+          <ItemPalette :level="props.level" :items="items"/>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <style>
 .brush-fail {
-    animation: move-right 100ms linear infinite;
-    fill: red;
+  animation: move-right 100ms linear infinite;
+  fill: red;
 }
 
 @keyframes move-right {
-    0% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(10px);
-    }
-    100% {
-        transform: translateX(0);
-    }
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .zoom-box {
-    animation: zoom-out 1500ms linear infinite;
+  animation: zoom-out 1500ms linear infinite;
 }
 
 @keyframes zoom-out {
-    /*0% {*/
-    /*    transform: scale(.1);*/
-    /*}*/
-    50% {
-        transform: scale(.75);
-    }
-    /*100% {*/
-    /*    transform: scale(.1);*/
-    /*}*/
+  /*0% {*/
+  /*    transform: scale(.1);*/
+  /*}*/
+  50% {
+    transform: scale(.75);
+  }
+  /*100% {*/
+  /*    transform: scale(.1);*/
+  /*}*/
 }
 </style>
