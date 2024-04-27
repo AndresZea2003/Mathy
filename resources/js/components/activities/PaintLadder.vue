@@ -1,4 +1,587 @@
 <script setup>
+
+
+//
+//
+// // Inicio
+//
+//
+// // setTimeout(function () {
+// //     Swal.fire({
+// //         title: `Actividad ${props.level[1]}`,
+// //         text: 'Llegamos a los Sudokus! Aqui veremos un poco de pensamiento combinatorio, filas y muchos colores!',
+// //         icon: 'warning',
+// //         confirmButtonText: 'Comenzar'
+// //     }).then((result) => {
+// //         // if (result.isConfirmed) {
+// //         //     initialAudio();
+// //         //     prepareSudoku()
+// //         // }
+// //         intro();
+// //         prepareSudoku()
+// //     });
+// // }, 500)
+//
+// setTimeout(function () {
+//     // intro();
+//     prepare()
+// }, 500)
+//
+// const intro = () => {
+//     showFocusBox(props.order_to_resolve[0])
+// }
+//
+// const prepare = () => {
+//     const orderArray = getOrderArray();
+//     const ladderIds = getLadderIds();
+//     const time = 2000; // Declarado como constante
+//
+//     const ladderArray = convertInArray(ladderIds, props.size[1], props.size[0]);
+//     const rowsAndCols = getRowsAndCols(ladderArray);
+//
+//     const eraser = {
+//         "name": "Borrador",
+//         "type": "ERASER",
+//         "content": '/images/items/tools/eraser.png',
+//         "size": "BIG",
+//         "group": "Borrador"
+//     }
+//
+//     prepareItems(orderArray, rowsAndCols, eraser);
+// }
+//
+// const getOrderArray = () => {
+//     const orderArray = [];
+//     for (let i = 0; i <= props.fill_sample.length - 1; i++) {
+//         let order = props.fill_sample[i] - 1
+//         orderArray.push(order)
+//     }
+//     return orderArray;
+// }
+//
+// const getLadderIds = () => {
+//     const ladderIds = [];
+//     for (let i = 1; i <= (props.size[1] * props.size[0]); i++) {
+//         ladderIds.push(i)
+//     }
+//     return ladderIds;
+// }
+//
+// const prepareItems = (orderArray, rowsAndCols, eraser) => {
+//     for (let i = 0; i <= orderArray.length - 1; i++) {
+//         if (orderArray[i] === -1) {
+//             continue
+//         }
+//         let item = items[orderArray[i]]
+//         localStorage.setItem('itemSelected', JSON.stringify(item))
+//
+//         paintItem(`sample-${i + 1}`, items)
+//         paintItem(`${i + 1}`, items)
+//
+//         prepareColumns(rowsAndCols, i);
+//
+//         localStorage.setItem('itemSelected', null)
+//     }
+// }
+//
+// const prepareColumns = (rowsAndCols, i) => {
+//     for (let colIndex = 0; colIndex <= props.select_cols.length - 1; colIndex++) {
+//         focusCols.value.push(rowsAndCols[1][props.select_cols[colIndex] - 1])
+//
+//         for (let i = 0; i <= rowsAndCols[1][props.select_cols[colIndex] - 1].length - 1; i++) {
+//             try {
+//                 prepareCell(rowsAndCols, colIndex, i);
+//             } catch (error) {
+//                 console.error("Error al preparar la celda: ", error);
+//             }
+//         }
+//     }
+// }
+//
+// const prepareCell = (rowsAndCols, colIndex, i) => {
+//     const cell = document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]);
+//     cell.classList.remove('bg-white')
+//     cell.classList.replace(getSelectItem().content, 'bg-white')
+//     cell.innerText = null
+//     cell.classList.add('bg-gray-200', 'border-dashed')
+// }
+//
+//
+//
+// let talkBool = ref(false)
+//
+// let boxSize = ref(0)
+//
+// let boxes = ref([])
+//
+// onMounted(() => {
+//     // validateAudiosOfPositions(props.selectors)
+//
+//     setBoxSize()
+//     // console.log('props.size', props.size[0] * props.size[1])
+//     // if (props.size[0] * props.size[1] < 5) {
+//     //     boxSize.value = 36
+//     // } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 31) {
+//     //     boxSize.value = '64px'
+//     // } else if (props.size[0] * props.size[1] > 31 && props.size[0] * props.size[1] < 65) {
+//     //     boxSize.value = '48px'
+//     // } else if (props.size[0] * props.size[1] > 65) {
+//     //     boxSize.value = '38px'
+//     // }
+//     //
+//     // document.getElementById('coinsCount').innerText = `x ${getCoins()}`
+//     // talk(false)
+//     //
+//     for (let i = 0; i < props.size[0] * props.size[1]; i++) {
+//         boxes.value.push(false)
+//     }
+//
+//     //
+//     // for (let i = 0; i < items.length; i++) {
+//     //     const item = items[i];
+//     //
+//     //     let audioPath = `${localHost}/audios/items/${item.name}.m4a`;
+//     //
+//     //     verificarExistenciaArchivo(audioPath, function (exist) {
+//     //         if (exist) {
+//     //             console.log('El archivo existe.');
+//     //         } else {
+//     //             resolveAudio(item.name, item.name, 'items', '0.8')
+//     //             console.log('El archivo no existe.');
+//     //         }
+//     //     });
+//     // }
+// });
+//
+// const setBoxSize = () => {
+//     const totalSize = props.size[0] * props.size[1];
+//     const sizeMapping = [
+//         { limit: 5, value: '36px' },
+//         { limit: 31, value: '64px' },
+//         { limit: 65, value: '48px' },
+//         { limit: Infinity, value: '38px' }
+//     ];
+//
+//     for (const size of sizeMapping) {
+//         if (totalSize < size.limit) {
+//             boxSize.value = size.value;
+//             break;
+//         }
+//     }
+// };
+//
+// const resolveAudio = (text, name, path, speed) => {
+//     axios.post(`${localHost}/loadAudio`, {
+//         text: text,
+//         name: name,
+//         path: path,
+//         speed: speed,
+//     }).then(response => {
+//         console.log(response.data)
+//     })
+//
+// }
+//
+//
+// function verificarExistenciaArchivo(url, callback) {
+//     let xhr = new XMLHttpRequest();
+//     xhr.open('HEAD', url, true);
+//
+//     xhr.onreadystatechange = function () {
+//         if (xhr.readyState === 4) {
+//             // 200 OK indica que el archivo existe
+//             if (xhr.status === 200) {
+//                 callback(true);
+//             } else {
+//                 callback(false);
+//             }
+//         }
+//     };
+//
+//     xhr.send();
+// }
+//
+//
+// const items = props.items
+//
+// let paintImage = ref(false)
+//
+//
+//
+// const showFocusBox = (id) => {
+//     document.getElementById(id).classList.add('animate-pulse', 'zoom-box')
+//
+//     setTimeout(function () {
+//         document.getElementById(id).classList.remove('zoom-box')
+//     }, 3000)
+// }
+//
+//
+// let focusCols = ref([])
+//
+//
+//
+//
+// let step = ref(0)
+// let focusBox = ref()
+//
+//
+// const validateOrder = (id) => {
+//
+//     console.log('Boxes', boxes.value)
+//
+//     if (props.solution.includes(id)) {
+//         console.log('NICE')
+//         paintItem(id, items)
+//         let bubble = new Audio()
+//         bubble.src = `${localHost}/audios/effects/soapBubble.wav`
+//         bubble.play()
+//
+//         step.value++
+//
+//         if (step.value === props.solution.length){
+//             win()
+//         }
+//     } else {
+//         console.log('BAD')
+//         // document.getElementById(id).classList.add('animate-pulse', 'scale-95')
+//         errorPaint(id)
+//         let wood = new Audio()
+//         wood.src = `${localHost}/audios/effects/wood.wav`
+//         wood.play()
+//     }
+// }
+//
+//
+// const win = (coinAdd) => {
+//
+//     if (coinAdd) {
+//         let winView = document.getElementById('winView')
+//
+//         winView.classList.remove('hidden')
+//
+//         setTimeout(function () {
+//             winView.classList.replace('opacity-0', 'opacity-100')
+//         }, 500)
+//
+//         setTimeout(function () {
+//             winView.classList.replace('opacity-100', 'opacity-0')
+//         }, 3000)
+//
+//         setTimeout(function () {
+//             winView.classList.add('hidden')
+//         }, 3500)
+//         setTimeout(function () {
+//             addCoinWin()
+//             setTimeout(function () {
+//                 document.getElementById('nextLevelButton').classList.remove('hidden')
+//             }, 2800)
+//         }, 3600)
+//     } else {
+//         let winView = document.getElementById('winView')
+//
+//         winView.classList.remove('hidden')
+//
+//         setTimeout(function () {
+//             winView.classList.replace('opacity-0', 'opacity-100')
+//         }, 500)
+//
+//         setTimeout(function () {
+//             winView.classList.replace('opacity-100', 'opacity-0')
+//         }, 3000)
+//
+//         setTimeout(function () {
+//             winView.classList.add('hidden')
+//         }, 3500)
+//         setTimeout(function () {
+//             document.getElementById('nextLevelButton').classList.remove('hidden')
+//         }, 2000)
+//     }
+//
+//
+//     const addCoinWin = () => {
+//         let coinSound = new Audio(`${localHost}/audios/effects/simpleCoin.wav`)
+//         coinSound.play()
+//
+//         document.getElementById('coins').classList.add('opacity-0')
+//
+//         setTimeout(function () {
+//             document.getElementById('coins').classList.add('hidden')
+//             document.getElementById('addCoin').classList.remove('hidden')
+//         }, 300)
+//
+//         setTimeout(function () {
+//             document.getElementById('addCoin').classList.replace('opacity-0', 'opacity-100')
+//         }, 400)
+//
+//         setTimeout(function () {
+//             document.getElementById('addCoin').classList.replace('opacity-100', 'opacity-0')
+//         }, 2000)
+//
+//         setTimeout(function () {
+//             document.getElementById('addCoin').classList.add('hidden')
+//             document.getElementById('coins').classList.remove('hidden')
+//         }, 2600)
+//
+//         setTimeout(function () {
+//             document.getElementById('coins').classList.replace('opacity-0', 'opacity-100')
+//         }, 2700)
+//
+//         setTimeout(function () {
+//             document.getElementById('coinsCount').innerText = `x ${updateCoins(1)}`
+//         }, 2700)
+//     }
+// }
+//
+// function convertInArray(ladderIds, rows, cols) {
+//     let array = [];
+//     for (let i = 0; i < rows; i++) {
+//         let row = [];
+//         for (let j = 0; j < cols; j++) {
+//             row.push(ladderIds[i * cols + j]);
+//         }
+//         array.push(row);
+//     }
+//     return array;
+// }
+//
+//
+// function getRowsAndCols(ladderIds) {
+//
+//     let getRows = ladderIds.length;
+//     let getCol = ladderIds[0].length;
+//
+//     let rows = []
+//     let cols = []
+//
+//     for (let i = 0; i < getRows; i++) {
+//         rows.push(ladderIds[i])
+//     }
+//
+//     for (let j = 0; j < getCol; j++) {
+//         let col = [];
+//         for (let i = 0; i < getRows; i++) {
+//             col.push(ladderIds[i][j]);
+//         }
+//         cols.push(col)
+//     }
+//
+//     return [rows, cols]
+// }
+//
+// const validateAudiosOfPositions = (selector) => {
+//
+//     for (let i = 0; i < items.length; i++) {
+//
+//         let nextFocus = `${localHost}/audios/explanations/nextPositionFocus/${items[i].group}.m4a`;
+//
+//         let oration = `Sigamos, que ${items[i].group} debe ir en el siguiente Lugar`
+//
+//         verificarExistenciaArchivo(nextFocus, function (exist) {
+//             if (exist) {
+//                 console.log(`El nextFocus existe.`);
+//             } else {
+//
+//                 resolveAudio(oration, items[i].group, 'explanations/nextPositionFocus', '0.8')
+//                 console.log(`El nextFocus no existe.`);
+//             }
+//         });
+//     }
+//
+//     for (let i = 0; i < selector.length; i++) {
+//
+//         let row = selector[i][0]
+//         let col = selector[i][1]
+//
+//         let rowPath = `${localHost}/audios/positions/rows/${row}.m4a`;
+//         let colPath = `${localHost}/audios/positions/cols/${col}.m4a`;
+//         let colExtPath = `${localHost}/audios/positions/cols/extensions/${col}.m4a`;
+//
+//         let rowText = [
+//             'La primera fila',
+//             'La Segunda fila',
+//             'La tercera fila',
+//             'La cuarta fila',
+//             'La quinta fila',
+//             'La sexta fila'
+//         ]
+//
+//         let colText = [
+//             'La primera columna',
+//             'La Segunda columna',
+//             'La tercera columna',
+//             'La cuarta columna',
+//             'La quinta columna',
+//             'La sexta columna'
+//         ]
+//
+//         if (row !== 0) {
+//             verificarExistenciaArchivo(rowPath, function (exist) {
+//                 if (exist) {
+//                     console.log(`El ROW ${row} existe.`);
+//                 } else {
+//
+//
+//                     resolveAudio(rowText[row - 1], row, 'positions/rows', '0.8')
+//                     console.log(`El ROW ${row} no existe.`);
+//                 }
+//             });
+//
+//             if (col !== 0) {
+//                 verificarExistenciaArchivo(colExtPath, function (exist) {
+//                     if (exist) {
+//                         console.log(`El COL ${col} existe.`);
+//                     } else {
+//
+//                         resolveAudio('y ' + colText[col - 1], col, 'positions/cols/extensions', '0.8')
+//                         console.log(`El COL ${row} no existe.`);
+//                     }
+//                 });
+//             }
+//         } else {
+//             if (col !== 0) {
+//                 verificarExistenciaArchivo(colPath, function (exist) {
+//                     if (exist) {
+//                         console.log(`El COL ${col} existe.`);
+//                     } else {
+//
+//                         resolveAudio(colText[col - 1], col, 'positions/cols', '0.8')
+//                         console.log(`El COL ${row} no existe.`);
+//                     }
+//                 });
+//             }
+//         }
+//
+//     }
+// }
+//
+// const showItemsPresentation = () => {
+//     let box = document.getElementById('itemPresentation')
+//
+//     box.classList.remove('hidden')
+//
+//     for (let i = 0; i < items.length; i++) {
+//         let time = 0
+//
+//         if (i === 1) {
+//             time = 2000
+//         } else if (i === 2) {
+//             time = time + 4000
+//         } else if (i === 3) {
+//             time = time + 6000
+//         } else if (i === 4) {
+//             time = time + 8000
+//         } else if (i === 5) {
+//             time = time + 10000
+//         }
+//
+//         let itemSound = new Audio(`${localHost}/audios/items/${items[i].name}.m4a`)
+//
+//         if (items[i].type === types.image) {
+//
+//             setTimeout(function () {
+//                 itemSound.play()
+//                 box = document.getElementById('itemPresentation');
+//
+//                 let img = document.createElement('img');
+//
+//                 img.src = items[i].content;
+//                 img.alt = 'Descripción de la imagen';
+//
+//                 box.appendChild(img);
+//             }, time)
+//
+//             setTimeout(function () {
+//                 let imgExt = box.getElementsByTagName('img')[0];
+//
+//                 if (imgExt) {
+//                     box.removeChild(imgExt);
+//                 }
+//             }, time + 2000)
+//
+//         } else if (items[i].type === types.letter || items[i].type === types.number) {
+//
+//             let imgExt = box.getElementsByTagName('img')[0];
+//
+//             if (imgExt) {
+//                 box.removeChild(imgExt);
+//             }
+//
+//             setTimeout(function () {
+//                 itemSound.play()
+//                 box.innerText = items[i].name
+//             }, time)
+//
+//             setTimeout(function () {
+//                 box.innerText = null
+//             }, time + 2000)
+//         } else if (items[i].type === types.color) {
+//
+//             let imgExt = box.getElementsByTagName('img')[0];
+//
+//             if (imgExt) {
+//                 box.removeChild(imgExt);
+//             }
+//
+//             setTimeout(function () {
+//                 itemSound.play()
+//                 box.classList.replace('bg-gray-200', items[i].content)
+//             }, time)
+//
+//             setTimeout(function () {
+//                 box.classList.replace(items[i].content, 'bg-gray-200')
+//             }, time + 2000)
+//         } else if (items[i].type === types.eraser) {
+//             setTimeout(function () {
+//                 box.classList.add('hidden')
+//             }, time)
+//             continue
+//         }
+//
+//         if (i === items.length - 1) {
+//             setTimeout(function () {
+//                 box.classList.add('hidden')
+//             }, time + 2000)
+//
+//         }
+//     }
+// }
+//
+// const showHelp = () => {
+//
+//     if (talkBool.value) {
+//         return
+//     }
+//
+//     talkBool.value = true
+//     let indication1 = new Audio(`${localHost}/audios/start/pattern/help/observa-colorea.m4a`)
+//     indication1.play()
+//
+//     indication1.onended = function () {
+//         talkBool.value = false
+//     }
+//
+//     document.getElementById('fig1').classList.add('animate-pulse')
+//     document.getElementById('arrow').classList.add('scale-50')
+//     document.getElementById('fig2').classList.add('scale-50')
+//
+//     setTimeout(function () {
+//         document.getElementById('fig1').classList.remove('animate-pulse')
+//         document.getElementById('arrow').classList.remove('scale-50')
+//         document.getElementById('fig2').classList.remove('scale-50')
+//
+//         document.getElementById('fig2').classList.add('animate-pulse')
+//         document.getElementById('fig1').classList.add('scale-50')
+//         document.getElementById('arrow-right').style.fill = 'green';
+//
+//         setTimeout(function () {
+//             document.getElementById('fig2').classList.remove('animate-pulse')
+//             document.getElementById('fig1').classList.remove('scale-50')
+//             document.getElementById('arrow-right').style.fill = '#9ca3af';
+//         }, 2000)
+//         }, 2000)
+// }
+
 import HelpCharacter from "../sections/HelpCharacter.vue";
 import ItemPalette from "../sections/ItemPalette.vue";
 import ProgressBar from "../sections/ProgressBar.vue";
@@ -14,7 +597,7 @@ import {
     errorPaint,
     updateCoins, getCoins
 } from '../../use';
-import {onMounted, ref} from "vue";
+import {onMounted, ref, onUnmounted} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
 import Swal from "sweetalert2";
 import BackgroundActivities from "../background/BackgroundActivities.vue";
@@ -30,586 +613,68 @@ const props = defineProps({
     select_cols: {type: Array},
 })
 
-
-
-// Inicio
-
-
-// setTimeout(function () {
-//     Swal.fire({
-//         title: `Actividad ${props.level[1]}`,
-//         text: 'Llegamos a los Sudokus! Aqui veremos un poco de pensamiento combinatorio, filas y muchos colores!',
-//         icon: 'warning',
-//         confirmButtonText: 'Comenzar'
-//     }).then((result) => {
-//         // if (result.isConfirmed) {
-//         //     initialAudio();
-//         //     prepareSudoku()
-//         // }
-//         intro();
-//         prepareSudoku()
-//     });
-// }, 500)
-
-setTimeout(function () {
-    // intro();
-    prepare()
-}, 500)
-
-const intro = () => {
-    showFocusBox(props.order_to_resolve[0])
+const showInitialAlert = () => {
+  Swal.fire({
+    title: `Actividad ${props.level[1]}`,
+    text: 'Descripcion para el nivel 1',
+    icon: 'warning',
+    confirmButtonText: 'Comenzar'
+  }).then((result) => {
+    // intro(props.phase);
+    // prepareActivity()
+  });
 }
 
-const prepare = () => {
-    const orderArray = getOrderArray();
-    const ladderIds = getLadderIds();
-    const time = 2000; // Declarado como constante
-
-    const ladderArray = convertInArray(ladderIds, props.size[1], props.size[0]);
-    const rowsAndCols = getRowsAndCols(ladderArray);
-
-    const eraser = {
-        "name": "Borrador",
-        "type": "ERASER",
-        "content": '/images/items/tools/eraser.png',
-        "size": "BIG",
-        "group": "Borrador"
-    }
-
-    prepareItems(orderArray, rowsAndCols, eraser);
-}
-
-const getOrderArray = () => {
-    const orderArray = [];
-    for (let i = 0; i <= props.fill_sample.length - 1; i++) {
-        let order = props.fill_sample[i] - 1
-        orderArray.push(order)
-    }
-    return orderArray;
-}
-
-const getLadderIds = () => {
-    const ladderIds = [];
-    for (let i = 1; i <= (props.size[1] * props.size[0]); i++) {
-        ladderIds.push(i)
-    }
-    return ladderIds;
-}
-
-const prepareItems = (orderArray, rowsAndCols, eraser) => {
-    for (let i = 0; i <= orderArray.length - 1; i++) {
-        if (orderArray[i] === -1) {
-            continue
-        }
-        let item = items[orderArray[i]]
-        localStorage.setItem('itemSelected', JSON.stringify(item))
-
-        paintItem(`sample-${i + 1}`, items)
-        paintItem(`${i + 1}`, items)
-
-        prepareColumns(rowsAndCols, i);
-
-        localStorage.setItem('itemSelected', null)
-    }
-}
-
-const prepareColumns = (rowsAndCols, i) => {
-    for (let colIndex = 0; colIndex <= props.select_cols.length - 1; colIndex++) {
-        focusCols.value.push(rowsAndCols[1][props.select_cols[colIndex] - 1])
-
-        for (let i = 0; i <= rowsAndCols[1][props.select_cols[colIndex] - 1].length - 1; i++) {
-            try {
-                prepareCell(rowsAndCols, colIndex, i);
-            } catch (error) {
-                console.error("Error al preparar la celda: ", error);
-            }
-        }
-    }
-}
-
-const prepareCell = (rowsAndCols, colIndex, i) => {
-    const cell = document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]);
-    cell.classList.remove('bg-white')
-    cell.classList.replace(getSelectItem().content, 'bg-white')
-    cell.innerText = null
-    cell.classList.add('bg-gray-200', 'border-dashed')
-}
-
-
-
-let talkBool = ref(false)
+// Inicializacion de la actividad
 
 let boxSize = ref(0)
 
-let boxes = ref([])
+const updateBoxSize = () => {
+  // if (window.innerWidth < 1000) {
+  //   boxSize.value = 20;
+  // } else {
+  //   boxSize.value = 70;
+  // }
+  if (window.innerWidth <= 1024) {
+    boxSize.value = 40
+  } else if (window.innerWidth <= 1440 && window.innerWidth > 1024) {
+    boxSize.value = 60
+  } else {
+    boxSize.value = 70;
+  }
+
+}
+
+// onMounted(() => {
+//   // showInitialAlert()
+//
+//   // Calcular tamaño de las cajas
+//   // if (props.size[0] * props.size[1] < 5) {
+//   //   boxSize.value = 74
+//   // } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 10) {
+//   //   boxSize.value = 60
+//   // } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 26) {
+//   //   boxSize.value = 40
+//   // } else if (props.size[0] * props.size[1] > 26) {
+//   //   boxSize.value = 46
+//   // }
+//
+//   // if (window.innerWidth < 1000) {
+//   //   boxSize.value = 20;
+//   // } else {
+//   //   boxSize.value = 70;
+//   // }
+//
+// })
 
 onMounted(() => {
-    // validateAudiosOfPositions(props.selectors)
-
-    setBoxSize()
-    // console.log('props.size', props.size[0] * props.size[1])
-    // if (props.size[0] * props.size[1] < 5) {
-    //     boxSize.value = 36
-    // } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 31) {
-    //     boxSize.value = '64px'
-    // } else if (props.size[0] * props.size[1] > 31 && props.size[0] * props.size[1] < 65) {
-    //     boxSize.value = '48px'
-    // } else if (props.size[0] * props.size[1] > 65) {
-    //     boxSize.value = '38px'
-    // }
-    //
-    // document.getElementById('coinsCount').innerText = `x ${getCoins()}`
-    // talk(false)
-    //
-    for (let i = 0; i < props.size[0] * props.size[1]; i++) {
-        boxes.value.push(false)
-    }
-
-    //
-    // for (let i = 0; i < items.length; i++) {
-    //     const item = items[i];
-    //
-    //     let audioPath = `${localHost}/audios/items/${item.name}.m4a`;
-    //
-    //     verificarExistenciaArchivo(audioPath, function (exist) {
-    //         if (exist) {
-    //             console.log('El archivo existe.');
-    //         } else {
-    //             resolveAudio(item.name, item.name, 'items', '0.8')
-    //             console.log('El archivo no existe.');
-    //         }
-    //     });
-    // }
-});
-
-const setBoxSize = () => {
-    const totalSize = props.size[0] * props.size[1];
-    const sizeMapping = [
-        { limit: 5, value: '36px' },
-        { limit: 31, value: '64px' },
-        { limit: 65, value: '48px' },
-        { limit: Infinity, value: '38px' }
-    ];
-
-    for (const size of sizeMapping) {
-        if (totalSize < size.limit) {
-            boxSize.value = size.value;
-            break;
-        }
-    }
-};
-
-const resolveAudio = (text, name, path, speed) => {
-    axios.post(`${localHost}/loadAudio`, {
-        text: text,
-        name: name,
-        path: path,
-        speed: speed,
-    }).then(response => {
-        console.log(response.data)
-    })
-
-}
-
-
-function verificarExistenciaArchivo(url, callback) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('HEAD', url, true);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            // 200 OK indica que el archivo existe
-            if (xhr.status === 200) {
-                callback(true);
-            } else {
-                callback(false);
-            }
-        }
-    };
-
-    xhr.send();
-}
-
-
-const items = props.items
-
-let paintImage = ref(false)
-
-
-
-const showFocusBox = (id) => {
-    document.getElementById(id).classList.add('animate-pulse', 'zoom-box')
-
-    setTimeout(function () {
-        document.getElementById(id).classList.remove('zoom-box')
-    }, 3000)
-}
-
-
-let focusCols = ref([])
-
-
-
-
-let step = ref(0)
-let focusBox = ref()
-
-
-const validateOrder = (id) => {
-
-    console.log('Boxes', boxes.value)
-
-    if (props.solution.includes(id)) {
-        console.log('NICE')
-        paintItem(id, items)
-        let bubble = new Audio()
-        bubble.src = `${localHost}/audios/effects/soapBubble.wav`
-        bubble.play()
-
-        step.value++
-
-        if (step.value === props.solution.length){
-            win()
-        }
-    } else {
-        console.log('BAD')
-        // document.getElementById(id).classList.add('animate-pulse', 'scale-95')
-        errorPaint(id)
-        let wood = new Audio()
-        wood.src = `${localHost}/audios/effects/wood.wav`
-        wood.play()
-    }
-}
-
-
-const win = (coinAdd) => {
-
-    if (coinAdd) {
-        let winView = document.getElementById('winView')
-
-        winView.classList.remove('hidden')
-
-        setTimeout(function () {
-            winView.classList.replace('opacity-0', 'opacity-100')
-        }, 500)
-
-        setTimeout(function () {
-            winView.classList.replace('opacity-100', 'opacity-0')
-        }, 3000)
-
-        setTimeout(function () {
-            winView.classList.add('hidden')
-        }, 3500)
-        setTimeout(function () {
-            addCoinWin()
-            setTimeout(function () {
-                document.getElementById('nextLevelButton').classList.remove('hidden')
-            }, 2800)
-        }, 3600)
-    } else {
-        let winView = document.getElementById('winView')
-
-        winView.classList.remove('hidden')
-
-        setTimeout(function () {
-            winView.classList.replace('opacity-0', 'opacity-100')
-        }, 500)
-
-        setTimeout(function () {
-            winView.classList.replace('opacity-100', 'opacity-0')
-        }, 3000)
-
-        setTimeout(function () {
-            winView.classList.add('hidden')
-        }, 3500)
-        setTimeout(function () {
-            document.getElementById('nextLevelButton').classList.remove('hidden')
-        }, 2000)
-    }
-
-
-    const addCoinWin = () => {
-        let coinSound = new Audio(`${localHost}/audios/effects/simpleCoin.wav`)
-        coinSound.play()
-
-        document.getElementById('coins').classList.add('opacity-0')
-
-        setTimeout(function () {
-            document.getElementById('coins').classList.add('hidden')
-            document.getElementById('addCoin').classList.remove('hidden')
-        }, 300)
-
-        setTimeout(function () {
-            document.getElementById('addCoin').classList.replace('opacity-0', 'opacity-100')
-        }, 400)
-
-        setTimeout(function () {
-            document.getElementById('addCoin').classList.replace('opacity-100', 'opacity-0')
-        }, 2000)
-
-        setTimeout(function () {
-            document.getElementById('addCoin').classList.add('hidden')
-            document.getElementById('coins').classList.remove('hidden')
-        }, 2600)
-
-        setTimeout(function () {
-            document.getElementById('coins').classList.replace('opacity-0', 'opacity-100')
-        }, 2700)
-
-        setTimeout(function () {
-            document.getElementById('coinsCount').innerText = `x ${updateCoins(1)}`
-        }, 2700)
-    }
-}
-
-function convertInArray(ladderIds, rows, cols) {
-    let array = [];
-    for (let i = 0; i < rows; i++) {
-        let row = [];
-        for (let j = 0; j < cols; j++) {
-            row.push(ladderIds[i * cols + j]);
-        }
-        array.push(row);
-    }
-    return array;
-}
-
-
-function getRowsAndCols(ladderIds) {
-
-    let getRows = ladderIds.length;
-    let getCol = ladderIds[0].length;
-
-    let rows = []
-    let cols = []
-
-    for (let i = 0; i < getRows; i++) {
-        rows.push(ladderIds[i])
-    }
-
-    for (let j = 0; j < getCol; j++) {
-        let col = [];
-        for (let i = 0; i < getRows; i++) {
-            col.push(ladderIds[i][j]);
-        }
-        cols.push(col)
-    }
-
-    return [rows, cols]
-}
-
-const validateAudiosOfPositions = (selector) => {
-
-    for (let i = 0; i < items.length; i++) {
-
-        let nextFocus = `${localHost}/audios/explanations/nextPositionFocus/${items[i].group}.m4a`;
-
-        let oration = `Sigamos, que ${items[i].group} debe ir en el siguiente Lugar`
-
-        verificarExistenciaArchivo(nextFocus, function (exist) {
-            if (exist) {
-                console.log(`El nextFocus existe.`);
-            } else {
-
-                resolveAudio(oration, items[i].group, 'explanations/nextPositionFocus', '0.8')
-                console.log(`El nextFocus no existe.`);
-            }
-        });
-    }
-
-    for (let i = 0; i < selector.length; i++) {
-
-        let row = selector[i][0]
-        let col = selector[i][1]
-
-        let rowPath = `${localHost}/audios/positions/rows/${row}.m4a`;
-        let colPath = `${localHost}/audios/positions/cols/${col}.m4a`;
-        let colExtPath = `${localHost}/audios/positions/cols/extensions/${col}.m4a`;
-
-        let rowText = [
-            'La primera fila',
-            'La Segunda fila',
-            'La tercera fila',
-            'La cuarta fila',
-            'La quinta fila',
-            'La sexta fila'
-        ]
-
-        let colText = [
-            'La primera columna',
-            'La Segunda columna',
-            'La tercera columna',
-            'La cuarta columna',
-            'La quinta columna',
-            'La sexta columna'
-        ]
-
-        if (row !== 0) {
-            verificarExistenciaArchivo(rowPath, function (exist) {
-                if (exist) {
-                    console.log(`El ROW ${row} existe.`);
-                } else {
-
-
-                    resolveAudio(rowText[row - 1], row, 'positions/rows', '0.8')
-                    console.log(`El ROW ${row} no existe.`);
-                }
-            });
-
-            if (col !== 0) {
-                verificarExistenciaArchivo(colExtPath, function (exist) {
-                    if (exist) {
-                        console.log(`El COL ${col} existe.`);
-                    } else {
-
-                        resolveAudio('y ' + colText[col - 1], col, 'positions/cols/extensions', '0.8')
-                        console.log(`El COL ${row} no existe.`);
-                    }
-                });
-            }
-        } else {
-            if (col !== 0) {
-                verificarExistenciaArchivo(colPath, function (exist) {
-                    if (exist) {
-                        console.log(`El COL ${col} existe.`);
-                    } else {
-
-                        resolveAudio(colText[col - 1], col, 'positions/cols', '0.8')
-                        console.log(`El COL ${row} no existe.`);
-                    }
-                });
-            }
-        }
-
-    }
-}
-
-const showItemsPresentation = () => {
-    let box = document.getElementById('itemPresentation')
-
-    box.classList.remove('hidden')
-
-    for (let i = 0; i < items.length; i++) {
-        let time = 0
-
-        if (i === 1) {
-            time = 2000
-        } else if (i === 2) {
-            time = time + 4000
-        } else if (i === 3) {
-            time = time + 6000
-        } else if (i === 4) {
-            time = time + 8000
-        } else if (i === 5) {
-            time = time + 10000
-        }
-
-        let itemSound = new Audio(`${localHost}/audios/items/${items[i].name}.m4a`)
-
-        if (items[i].type === types.image) {
-
-            setTimeout(function () {
-                itemSound.play()
-                box = document.getElementById('itemPresentation');
-
-                let img = document.createElement('img');
-
-                img.src = items[i].content;
-                img.alt = 'Descripción de la imagen';
-
-                box.appendChild(img);
-            }, time)
-
-            setTimeout(function () {
-                let imgExt = box.getElementsByTagName('img')[0];
-
-                if (imgExt) {
-                    box.removeChild(imgExt);
-                }
-            }, time + 2000)
-
-        } else if (items[i].type === types.letter || items[i].type === types.number) {
-
-            let imgExt = box.getElementsByTagName('img')[0];
-
-            if (imgExt) {
-                box.removeChild(imgExt);
-            }
-
-            setTimeout(function () {
-                itemSound.play()
-                box.innerText = items[i].name
-            }, time)
-
-            setTimeout(function () {
-                box.innerText = null
-            }, time + 2000)
-        } else if (items[i].type === types.color) {
-
-            let imgExt = box.getElementsByTagName('img')[0];
-
-            if (imgExt) {
-                box.removeChild(imgExt);
-            }
-
-            setTimeout(function () {
-                itemSound.play()
-                box.classList.replace('bg-gray-200', items[i].content)
-            }, time)
-
-            setTimeout(function () {
-                box.classList.replace(items[i].content, 'bg-gray-200')
-            }, time + 2000)
-        } else if (items[i].type === types.eraser) {
-            setTimeout(function () {
-                box.classList.add('hidden')
-            }, time)
-            continue
-        }
-
-        if (i === items.length - 1) {
-            setTimeout(function () {
-                box.classList.add('hidden')
-            }, time + 2000)
-
-        }
-    }
-}
-
-const showHelp = () => {
-
-    if (talkBool.value) {
-        return
-    }
-
-    talkBool.value = true
-    let indication1 = new Audio(`${localHost}/audios/start/pattern/help/observa-colorea.m4a`)
-    indication1.play()
-
-    indication1.onended = function () {
-        talkBool.value = false
-    }
-
-    document.getElementById('fig1').classList.add('animate-pulse')
-    document.getElementById('arrow').classList.add('scale-50')
-    document.getElementById('fig2').classList.add('scale-50')
-
-    setTimeout(function () {
-        document.getElementById('fig1').classList.remove('animate-pulse')
-        document.getElementById('arrow').classList.remove('scale-50')
-        document.getElementById('fig2').classList.remove('scale-50')
-
-        document.getElementById('fig2').classList.add('animate-pulse')
-        document.getElementById('fig1').classList.add('scale-50')
-        document.getElementById('arrow-right').style.fill = 'green';
-
-        setTimeout(function () {
-            document.getElementById('fig2').classList.remove('animate-pulse')
-            document.getElementById('fig1').classList.remove('scale-50')
-            document.getElementById('arrow-right').style.fill = '#9ca3af';
-        }, 2000)
-        }, 2000)
-}
+  updateBoxSize();
+  window.addEventListener('resize', updateBoxSize);
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateBoxSize);
+})
 
 </script>
 <template>
@@ -647,7 +712,7 @@ const showHelp = () => {
                                          v-for="i in (props.size[0] * props.size[1])" :key="i"
                                          :class="`bg-white border border-black hover:opacity-75
                                           flex justify-center items-center font-bold text-6xl select-none`"
-                                          :style="`width: ${boxSize}; height: ${boxSize};`">
+                                          :style="`width: ${boxSize}px; height: ${boxSize}px;`">
                                     </div>
                                 </div>
 
@@ -660,7 +725,7 @@ const showHelp = () => {
                                          :key="i"
                                          :class="`bg-white border border-black hover:opacity-75
                                           flex justify-center items-center font-bold text-6xl select-none`"
-                                    :style="`width: ${boxSize}; height: ${boxSize};`">
+                                    :style="`width: ${boxSize}px; height: ${boxSize}px;`">
                                     </div>
                                 </div>
 
