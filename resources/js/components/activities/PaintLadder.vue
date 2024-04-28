@@ -595,7 +595,14 @@ import {
   talkCharacter,
   paintItem,
   errorPaint,
-  updateCoins, getCoins
+  updateCoins,
+  getCoins,
+  playAudio,
+  setOnEnded,
+  showItemsPresentation,
+  showCheckIcon,
+  playSuccessShortRandom,
+  showErrorIcon,
 } from '../../use';
 import {onMounted, ref, onUnmounted} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
@@ -611,7 +618,13 @@ const props = defineProps({
   rotate: {type: Boolean},
   order_to_resolve: {type: Array},
   select_cols: {type: Array},
+  fake_items: {type: Array},
 })
+
+const items = props.items
+const talkBool = ref(false)
+const levelComplete = ref(false)
+const inTutorial = ref(false)
 
 const showInitialAlert = () => {
   Swal.fire({
@@ -620,7 +633,7 @@ const showInitialAlert = () => {
     icon: 'warning',
     confirmButtonText: 'Comenzar'
   }).then((result) => {
-    // intro(props.phase);
+    intro(3);
     // prepareActivity()
   });
 }
@@ -631,14 +644,6 @@ let boxSize = ref(0)
 let arrowSize = ref(0)
 
 const updateBoxSize = () => {
-  // if (window.innerWidth < 1000) {
-  //   boxSize.value = 20;
-  // } else {
-  //   boxSize.value = 70;
-  // }
-  console.log(props.size[0] * props.size[1])
-
-    console.log('window.innerWidth', window.innerWidth)
   if (window.innerWidth <= 1024) {
     // Para pantallas menores a 1024px
     boxSize.value = 48
@@ -682,30 +687,9 @@ const updateBoxSize = () => {
 
 }
 
-// onMounted(() => {
-//   // showInitialAlert()
-//
-//   // Calcular tamaño de las cajas
-//   // if (props.size[0] * props.size[1] < 5) {
-//   //   boxSize.value = 74
-//   // } else if (props.size[0] * props.size[1] > 5 && props.size[0] * props.size[1] < 10) {
-//   //   boxSize.value = 60
-//   // } else if (props.size[0] * props.size[1] > 10 && props.size[0] * props.size[1] < 26) {
-//   //   boxSize.value = 40
-//   // } else if (props.size[0] * props.size[1] > 26) {
-//   //   boxSize.value = 46
-//   // }
-//
-//   // if (window.innerWidth < 1000) {
-//   //   boxSize.value = 20;
-//   // } else {
-//   //   boxSize.value = 70;
-//   // }
-//
-// })
-
 onMounted(() => {
   updateBoxSize();
+  showInitialAlert();
   window.addEventListener('resize', updateBoxSize);
 })
 
@@ -713,6 +697,326 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateBoxSize);
 })
 
+const intro = (phase) => {
+
+  let audio1Route = `${localHost}/audios/start/linePattern/1.m4a`
+  let audio2Route = `${localHost}/audios/start/linePattern/2.m4a`
+  let audio3Route = `${localHost}/audios/start/linePattern/3.m4a`
+  let audio4Route = `${localHost}/audios/start/linePattern/4.m4a`
+
+  console.log(audio2Route)
+
+  if (props.type === 'number') {
+    audio1Route = `${localHost}/audios/start/linePattern/numbers/1.m4a`
+    audio2Route = `${localHost}/audios/start/linePattern/numbers/2.m4a`
+    audio3Route = `${localHost}/audios/start/linePattern/numbers/3.m4a`
+    audio4Route = `${localHost}/audios/start/linePattern/numbers/4.m4a`
+  } else if (props.type === 'figures') {
+    audio1Route = `${localHost}/audios/start/linePattern/figures/1.m4a`
+    audio2Route = `${localHost}/audios/start/linePattern/figures/2.m4a`
+    audio3Route = `${localHost}/audios/start/linePattern/figures/3.m4a`
+    audio4Route = `${localHost}/audios/start/linePattern/figures/4.m4a`
+  } else if (props.type === 'letters') {
+    audio1Route = `${localHost}/audios/start/linePattern/letters/1.m4a`
+    audio2Route = `${localHost}/audios/start/linePattern/letters/2.m4a`
+    audio3Route = `${localHost}/audios/start/linePattern/letters/3.m4a`
+    audio4Route = `${localHost}/audios/start/linePattern/letters/4.m4a`
+  } else if (props.type === 'colors') {
+    audio1Route = `${localHost}/audios/start/linePattern/colors/1.m4a`
+    audio2Route = `${localHost}/audios/start/linePattern/colors/2.m4a`
+    audio3Route = `${localHost}/audios/start/linePattern/colors/3.m4a`
+    audio4Route = `${localHost}/audios/start/linePattern/colors/4.m4a`
+  } else if (props.type === 'animals') {
+    audio1Route = `${localHost}/audios/start/linePattern/animals/1.m4a`
+    audio2Route = `${localHost}/audios/start/linePattern/animals/2.m4a`
+    audio3Route = `${localHost}/audios/start/linePattern/animals/3.m4a`
+    audio4Route = `${localHost}/audios/start/linePattern/animals/4.m4a`
+  } else if (props.type === 'fruits') {
+    audio1Route = `${localHost}/audios/start/linePattern/fruits/1.m4a`
+    audio2Route = `${localHost}/audios/start/linePattern/fruits/2.m4a`
+    audio3Route = `${localHost}/audios/start/linePattern/fruits/3.m4a`
+    audio4Route = `${localHost}/audios/start/linePattern/fruits/4.m4a`
+  }
+
+  if (props.create_audio_1) {
+    audio1Route = `${localHost}/audios/start/linePattern/personalized/level_${props.level[0]}-${props.level[1]}/1.m4a`
+  }
+  if (props.create_audio_2) {
+    audio2Route = `${localHost}/audios/start/linePattern/personalized/level_${props.level[0]}-${props.level[1]}/2.m4a`
+  }
+  if (props.create_audio_3) {
+    audio3Route = `${localHost}/audios/start/linePattern/personalized/level_${props.level[0]}-${props.level[1]}/3.m4a`
+  }
+  if (props.create_audio_4) {
+    audio4Route = `${localHost}/audios/start/linePattern/personalized/level_${props.level[0]}-${props.level[1]}/4.m4a`
+  }
+
+  if (phase === 1) {
+    inTutorial.value = true
+    // showBlackScreen()
+    // showIntroductionHelp()
+    return;
+  }
+
+  if (phase === 2) {
+    // prepareActivity()
+    talkBool.value = true
+    talkCharacter(
+        `${localHost}/images/characters/robot/normal.png`,
+        `${localHost}/images/characters/robot/talk.gif`
+    );
+    // showBlackScreen()
+    let audio2 = playAudio(audio2Route)
+    setOnEnded(audio2, () => {
+      showItemsPresentation(items, removeBlackScreen, props.fake_items, audio4Route);
+    });
+    return;
+  }
+
+  if (phase === 3) {
+    prepare()
+    return;
+  }
+
+  if (phase === -1) {
+    // win()
+    return;
+  }
+  talk(false)
+
+  // Comienza a reproducir el audio inicial
+  inTutorial.value = true
+  let audio1 = playAudio(audio1Route);
+  talkBool.value = true
+
+  // Muestra el personaje hablando
+  talkCharacter(
+      `${localHost}/images/characters/robot/normal.png`,
+      `${localHost}/images/characters/robot/talk.gif`
+  );
+
+  // Cuando el audio 1 termina, reproduce el audio 2
+  let audio2 = new Audio(audio2Route);
+
+
+  // SetOnEnded es una funcion que se encarga de ejecutar una funcion cuando el audio termina el primer parametro es
+  // el audio y el segundo es la funcion a ejecutar
+
+  setOnEnded(audio1, () => {
+    audio2.play();
+    // showBlackScreen();
+  });
+  // setOnEnded(audio2, showItemsPresentation(items, showHelp));
+  setOnEnded(audio2, () => {
+    talkBool.value = false;
+    showItemsPresentation(items, showIntroductionHelp, props.fake_items, audio3Route);
+  });
+}
+
+const showIntroductionHelp = () => {
+
+}
+
+const prepare = () => {
+  const orderArray = getOrderArray();
+  const ladderIds = getLadderIds();
+  const time = 2000; // Declarado como constante
+
+  const ladderArray = convertInArray(ladderIds, props.size[1], props.size[0]);
+  const rowsAndCols = getRowsAndCols(ladderArray);
+
+  const eraser = {
+    "name": "Borrador",
+    "type": "ERASER",
+    "content": '/images/items/tools/eraser.png',
+    "size": "BIG",
+    "group": "Borrador"
+  }
+
+  prepareItems(orderArray, rowsAndCols, eraser);
+}
+
+const getOrderArray = () => {
+  const orderArray = [];
+  for (let i = 0; i <= props.fill_sample.length - 1; i++) {
+    let order = props.fill_sample[i] - 1
+    orderArray.push(order)
+  }
+  return orderArray;
+}
+
+const getLadderIds = () => {
+  const ladderIds = [];
+  for (let i = 1; i <= (props.size[1] * props.size[0]); i++) {
+    ladderIds.push(i)
+  }
+  return ladderIds;
+}
+
+function convertInArray(ladderIds, rows, cols) {
+  let array = [];
+  for (let i = 0; i < rows; i++) {
+    let row = [];
+    for (let j = 0; j < cols; j++) {
+      row.push(ladderIds[i * cols + j]);
+    }
+    array.push(row);
+  }
+  return array;
+}
+
+
+function getRowsAndCols(ladderIds) {
+
+  let getRows = ladderIds.length;
+  let getCol = ladderIds[0].length;
+
+  let rows = []
+  let cols = []
+
+  for (let i = 0; i < getRows; i++) {
+    rows.push(ladderIds[i])
+  }
+
+  for (let j = 0; j < getCol; j++) {
+    let col = [];
+    for (let i = 0; i < getRows; i++) {
+      col.push(ladderIds[i][j]);
+    }
+    cols.push(col)
+  }
+
+  return [rows, cols]
+}
+
+const prepareItems = (orderArray, rowsAndCols, eraser) => {
+  for (let i = 0; i <= orderArray.length - 1; i++) {
+    if (orderArray[i] === -1) {
+      continue
+    }
+    let item = items[orderArray[i]]
+    localStorage.setItem('itemSelected', JSON.stringify(item))
+
+    paintItem(`sample-${i + 1}`, items)
+    paintItem(`${i + 1}`, items)
+
+    prepareColumns(rowsAndCols, i);
+
+    localStorage.setItem('itemSelected', null)
+  }
+}
+
+let focusCols = ref([])
+const prepareColumns = (rowsAndCols, i) => {
+  for (let colIndex = 0; colIndex <= props.select_cols.length - 1; colIndex++) {
+    focusCols.value.push(rowsAndCols[1][props.select_cols[colIndex] - 1])
+
+    for (let i = 0; i <= rowsAndCols[1][props.select_cols[colIndex] - 1].length - 1; i++) {
+      try {
+        prepareCell(rowsAndCols, colIndex, i);
+      } catch (error) {
+        console.error("Error al preparar la celda: ", error);
+      }
+    }
+  }
+}
+
+const prepareCell = (rowsAndCols, colIndex, i) => {
+  const cell = document.getElementById(rowsAndCols[1][props.select_cols[colIndex] - 1][i]);
+  cell.classList.remove('bg-white')
+  cell.classList.replace(getSelectItem().content, 'bg-white')
+  cell.innerText = null
+  cell.classList.add('bg-gray-200', 'border-dashed')
+}
+
+let boxes = ref([])
+let step = ref(0)
+
+const paintBox = (id) => {
+  if (levelComplete.value) {
+    playAudio(`${localHost}/audios/effects/wood.wav`)
+    return
+  }
+
+  let itemSelected = getSelectItem()
+
+  if (itemSelected.type === types.eraser) {
+    errorPaint(id)
+    return
+  }
+
+  console.log(items[(props.fill_sample[id - 1]) - 1])
+
+  //Validar si el id esta en props.solution
+
+  if (!props.solution.includes(id)) {
+    if (document.getElementById(id).classList.contains('border-dashed')) {
+      console.log('error')
+      paintItem(id, items)
+
+      showErrorIcon()
+
+      let bubble = new Audio()
+      bubble.src = `${localHost}/audios/effects/wood.wav`
+      bubble.play()
+
+      boxes.value[id - 1] = false
+
+      if (itemSelected.type === types.color) {
+        let element = document.getElementById(id);
+        let span = document.createElement('span');
+        span.innerText = 'X';
+        if (props.rotate) {
+          span.classList.add('-rotate-45')
+        }
+        element.appendChild(span);
+      } else if (itemSelected.type === types.letter || itemSelected.type === types.number) {
+        let element = document.getElementById(id);
+        element.classList.add('text-red-500')
+      }
+
+      document.getElementById(id).classList.add('animate-pulse', 'scale-95', 'zoom-box')
+
+      setTimeout(function () {
+        document.getElementById(id).classList.remove('zoom-box')
+      }, 3000)
+    } else {
+      document.getElementById(id).classList.add('scale-50')
+      setTimeout(function () {
+        document.getElementById(id).classList.remove('scale-50')
+      }, 2000)
+      showErrorIcon()
+      let wood = new Audio()
+      wood.src = `${localHost}/audios/effects/wood.wav`
+      wood.play()
+    }
+  } else {
+    paintItem(id, items)
+
+    let bubble = new Audio()
+    bubble.src = `${localHost}/audios/effects/soapBubble.wav`
+    bubble.play()
+
+    playSuccessShortRandom()
+    showCheckIcon()
+
+    document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
+
+    boxes.value[id - 1] = true
+
+    for (let i = 0; i < props.size[0] * props.size[1]; i++) {
+      if (boxes.value[i] === true) {
+        step.value++
+      }
+    }
+
+    if (step.value === props.size[0] * props.size[1]) {
+      win()
+    }
+    step.value = 0
+
+  }
+}
 </script>
 <template>
   <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden w-10 h-10 w-9 h-9 w-8 h-8
@@ -754,13 +1058,14 @@ onUnmounted(() => {
                   </div>
                 </div>
 
-                <div id="arrow" class="flex items-center duration-300" :style="`width: ${arrowSize}px; height: ${arrowSize}px;`">
+                <div id="arrow" class="flex items-center duration-300"
+                     :style="`width: ${arrowSize}px; height: ${arrowSize}px;`">
                   <IconArrowRight/>
                 </div>
 
                 <div id="fig2"
                      :class="`grid grid-cols-${props.size[0]} gap-x-2 flex items-center justify-center duration-300`">
-                  <div :id="i" @click="validateOrder(i)" v-for="i in (props.size[0] * props.size[1])"
+                  <div :id="i" @click="paintBox(i)" v-for="i in (props.size[0] * props.size[1])"
                        :key="i"
                        :class="`bg-white border border-black hover:opacity-75
                                           flex justify-center items-center font-bold text-6xl select-none duration-300`"

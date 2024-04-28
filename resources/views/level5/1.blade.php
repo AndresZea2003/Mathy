@@ -23,6 +23,7 @@
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
+        :fake_items="[1,2,3]"
     ></paint-ladder>
 
 {{--    <paint-ladder--}}

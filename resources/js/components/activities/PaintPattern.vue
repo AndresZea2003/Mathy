@@ -39,6 +39,7 @@ const props = defineProps({
   create_audio_1: {type: String},
   create_audio_2: {type: String},
   create_audio_3: {type: String},
+  phase: {type: Number}
 })
 
 const items = props.items
@@ -53,7 +54,7 @@ const showInitialAlert = () => {
     icon: 'warning',
     confirmButtonText: 'Comenzar'
   }).then((result) => {
-    intro();
+    intro(props.phase);
     prepareActivity()
   });
 }
@@ -112,6 +113,7 @@ const intro = (phase) => {
   }
 
   if (phase === 3) {
+    talk(false)
     return
   }
 
@@ -246,20 +248,23 @@ const showHelp = () => {
     talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`);
   };
 
-  animateElement('fig1', 'animate-pulse', 0);
+  // animateElement('fig1', 'animate-pulse', 0);
   animateElement('arrow', 'scale-50', 0);
-  animateElement('fig2', 'scale-50', 0);
+  animateElement('fig2', 'opacity-20', 0);
 
-  removeAnimationFromElement('fig1', 'animate-pulse', 2000);
+  // removeAnimationFromElement('fig1', 'animate-pulse', 2000);
   removeAnimationFromElement('arrow', 'scale-50', 2000);
-  removeAnimationFromElement('fig2', 'scale-50', 2000);
+  removeAnimationFromElement('fig2', 'opacity-20', 2000);
 
-  animateElement('fig2', 'animate-pulse', 2000);
-  animateElement('fig1', 'scale-50', 2000);
-  document.getElementById('arrow-right').style.fill = 'green';
+  // animateElement('fig2', 'animate-pulse', 2000);
+  animateElement('fig1', 'opacity-20', 2000);
+  setTimeout(function () {
+    document.getElementById('arrow-right').style.fill = 'green';
+  }, 2000)
 
-  removeAnimationFromElement('fig2', 'animate-pulse', 4000);
-  removeAnimationFromElement('fig1', 'scale-50', 4000);
+
+  // removeAnimationFromElement('fig2', 'animate-pulse', 4000);
+  removeAnimationFromElement('fig1', 'opacity-20', 4000);
   setTimeout(() => {
     document.getElementById('arrow-right').style.fill = '#9ca3af';
   }, 4000);
