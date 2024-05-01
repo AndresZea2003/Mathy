@@ -13,6 +13,7 @@ import DullShrimp from "@/components/ui/DullShrimp.vue";
 const props = defineProps({
   level: {type: Array},
   planet: {type: String},
+  color_text: {type: String},
   color_card: {type: String},
   planet_name: {type: String}
 })
@@ -54,32 +55,32 @@ const nextLevel = () => {
 </script>
 <template>
 
-  <SpaceBg></SpaceBg>
+<!--  <SpaceBg></SpaceBg>-->
 
-  <div class="fixed h-full w-full flex justify-center items-center">
-    <div class="flex bg-blue-800 p-2 rounded  w-full m-12 container justify-center">
+  <div :class="[`fixed h-full w-full flex justify-center items-center`, color_card]" style="background-position: center; background-size: cover;">
+    <div :class="[`flex rounded-lg shadow-2xl w-full container justify-center`]" style="background-size: cover;">
 
       <div class="flex justify-between fixed gap-x-10 translate-y-[-50px]">
         <div v-if="props.level[0] !== 1" class="flex">
           <button @click="previousLevel()" class="hover:scale-125 duration-300">
-            <ArrowLeftCircleIcon class="w-10 text-white hover:text-white duration-300"></ArrowLeftCircleIcon>
+            <ArrowLeftCircleIcon :class="[`w-10 hover:text-white duration-300`, props.color_text]"></ArrowLeftCircleIcon>
           </button>
         </div>
 
         <div class="flex">
           <button @click="returnHome()" class="hover:scale-125 duration-300">
-            <HomeIcon class="w-10 text-white hover:text-white duration-300"></HomeIcon>
+            <HomeIcon :class="[`w-10 hover:text-white duration-300`, props.color_text]"></HomeIcon>
           </button>
         </div>
 
         <div class="flex">
           <button @click="nextLevel()" class="hover:scale-125 duration-300">
-            <ArrowRightCircleIcon class="w-10 text-white hover:text-white duration-300"></ArrowRightCircleIcon>
+            <ArrowRightCircleIcon :class="[`w-10 hover:text-white duration-300`, props.color_text]"></ArrowRightCircleIcon>
           </button>
         </div>
       </div>
 
-      <div class="grid grid-cols-5">
+      <div class="grid grid-cols-5 w-full bg-gray-700 p-4 rounded-3xl shadow-2xl">
         <div class="bg-pattern2 flex justify-center p-4">
           <div class="text-center">
             <span class="font-luckiest-guy text-gray-300 text-3xl">Planeta {{ props.planet_name }}</span>
@@ -98,7 +99,7 @@ const nextLevel = () => {
             class="bg-pattern1 col-span-3 border-4 border-black h-[600px] overflow-auto grid grid-cols-4 p-12 gap-6 relative">
           <div :id="i" v-for="i, index in props.level[1]" :key="index" class="flex justify-center">
             <a :href="`${localHost}/level${props.level[0]}/${i}`" :key="i">
-              <PerfectHusky :activity="i" :color="color_card"></PerfectHusky>
+              <PerfectHusky :activity="i" :color="color_card" :textColor="props.color_text"></PerfectHusky>
             </a>
           </div>
         </div>

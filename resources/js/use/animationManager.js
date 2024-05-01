@@ -8,7 +8,7 @@ import {
     types
 } from './';
 
-export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio) => {
+export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio, currentAudio) => {
 
     let box = document.getElementById('itemPresentation')
 
@@ -94,6 +94,11 @@ export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio) 
             } else {
                 audio = playAudio(`${localHost}/audios/items/${items[i].name}.m4a`);
             }
+
+            if (currentAudio) {
+                currentAudio.value = audio;
+            }
+
             setOnEnded(audio, playNextAudio);
             const cleanBox = () => {
                 let imgExt = box.getElementsByTagName('img')[0];
@@ -135,6 +140,9 @@ export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio) 
 
             if (onEndedAudio) {
                 let audio3 = playAudio(onEndedAudio);
+                if (currentAudio) {
+                    currentAudio.value = audio3;
+                }
                 box.classList.add('hidden')
                 setOnEnded(audio3, () => {
                     talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)

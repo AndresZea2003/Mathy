@@ -77,11 +77,15 @@ onMounted(() => {
   }
 })
 
+let currentAudio = ref(null);
+
 const intro = (phase) => {
 
   let audio1Route = `${localHost}/audios/start/pattern/1.m4a`
   let audio2Route = `${localHost}/audios/start/pattern/2.m4a`
   let audio3Route = `${localHost}/audios/start/pattern/3.m4a`
+
+
   if (props.create_audio_1) {
     audio1Route = `${localHost}/audios/start/pattern/personalized/level_${props.level[0]}-${props.level[1]}/1.m4a`
   }
@@ -97,7 +101,7 @@ const intro = (phase) => {
         `${localHost}/images/characters/robot/normal.png`,
         `${localHost}/images/characters/robot/talk.gif`
     );
-    showItemsPresentation(items, showHelp, props.fake_items, audio3Route)
+    showItemsPresentation(items, showHelp, props.fake_items, audio3Route, currentAudio)
     return
   }
 
@@ -125,6 +129,7 @@ const intro = (phase) => {
 
   // Comienza a reproducir el audio inicial
   let audio1 = playAudio(audio1Route);
+  currentAudio.value = audio1;
   talkBool.value = true
 
   // Muestra el personaje hablando
@@ -138,11 +143,14 @@ const intro = (phase) => {
 
   // SetOnEnded es una funcion que se encarga de ejecutar una funcion cuando el audio termina el primer parametro es
   // el audio y el segundo es la funcion a ejecutar
-  setOnEnded(audio1, () => audio2.play());
+  setOnEnded(audio1, () => {
+    audio2.play();
+    currentAudio.value = audio2;
+  });
   // setOnEnded(audio2, showItemsPresentation(items, showHelp));
   setOnEnded(audio2, () => {
     talkBool.value = false;
-    showItemsPresentation(items, showHelp, props.fake_items, audio3Route);
+    showItemsPresentation(items, showHelp, props.fake_items, audio3Route, currentAudio);
   });
 }
 
@@ -219,6 +227,7 @@ function verifyAudiosNumber(number) {
 const playAudioAndAnimateCharacter = (audioPath, characterImg, characterImgTalk) => {
   let audio = new Audio(audioPath);
   audio.play();
+  currentAudio.value = null;
   talkCharacter(characterImg, characterImgTalk);
   return audio;
 };
@@ -401,6 +410,8 @@ const win = () => {
     }, 2000)
   }, 2600)
 }
+// Función para pausar todos los audios
+
 </script>
 <template>
   <!--  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden-->
@@ -409,6 +420,7 @@ const win = () => {
 
   <!--"></div>-->
 
+<!--  <button @click="handleButtonClick">dada</button>-->
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
@@ -483,7 +495,7 @@ const win = () => {
         </div>
 
         <div class="w-[16%]">
-          <ItemPalette :level="props.level" :items="items"/>
+          <ItemPalette :level="props.level" :items="items" :currentAudio="currentAudio"/>
         </div>
       </div>
     </div>

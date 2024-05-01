@@ -116,6 +116,20 @@ export const errorPaint = (id) => {
     }, 500)
 }
 
+export const cleanBox = (box, items) => {
+  let imgExt = box.getElementsByTagName('img')[0];
+
+  if (imgExt) {
+    box.removeChild(imgExt);
+  }
+
+  box.innerText = null;
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    box.classList.remove(item.content)
+  }
+}
+
 export const getCoins = () => {
     return JSON.parse(localStorage.getItem('coins'))
 }

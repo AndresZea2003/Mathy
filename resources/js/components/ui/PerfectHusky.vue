@@ -1,6 +1,7 @@
 <script setup>
 import DullShrimp from "@/components/ui/DullShrimp.vue";
 import LightBars from "@/components/ui/LightBars.vue";
+import {localHost, playAudio} from "../../use/index.js";
 
 const props = defineProps({
   activity: {type: Number, required: true},
@@ -10,14 +11,18 @@ const props = defineProps({
   hoverTextColor: {type: String, default: "text-white"},
 })
 
+const playHoverSound = () => {
+  playAudio(`${localHost}/audios/effects/happyPop.mp3`)
+}
+
 </script>
 <template>
-<div :class="[`card`, props.hoverColor]">
-  <div :class="[`first-content`, props.color]">
-    <div>
-      <span :class="textColor">Actividad {{ props.activity }}</span>
+<div :class="[`card`, props.hoverColor]" @mouseenter="playHoverSound()">
+  <div :class="[`first-content`, props.color]" style="background-position: center;">
+    <div class="text-center">
+      <span :class="textColor">Reto {{ props.activity }}</span>
       <div class="flex justify-center items-center">
-        <LightBars class=""></LightBars>
+<!--        <LightBars class=""></LightBars>-->
       </div>
     </div>
   </div>

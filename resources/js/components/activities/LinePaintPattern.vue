@@ -50,6 +50,7 @@ const items = props.items
 const talkBool = ref(false)
 const levelComplete = ref(false)
 const inTutorial = ref(false)
+let currentAudio = ref(null);
 
 const showInitialAlert = () => {
   Swal.fire({
@@ -67,7 +68,7 @@ const showInitialAlert = () => {
 
 let boxSize = ref(0)
 onMounted(() => {
-  showInitialAlert()
+  // showInitialAlert()
 
   if (props.size < 19) {
     boxSize.value = 74
@@ -134,6 +135,7 @@ const showIntroductionHelp = () => {
       }
       setOnEnded(audio, playNextAudio);
 
+      currentAudio.value = audio;
 
       i++;
     } else {
@@ -159,11 +161,13 @@ const showIntroductionHelp = () => {
       }
 
       let audio4 = playAudio(audio4Route);
+      currentAudio.value = audio4;
 
       setOnEnded(audio4, () => {
         talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
         talkBool.value = false
         inTutorial.value = false
+        currentAudio.value = null;
       });
 
       prepareActivity()
@@ -247,7 +251,7 @@ const intro = (phase) => {
     showBlackScreen()
     let audio2 = playAudio(audio2Route)
     setOnEnded(audio2, () => {
-      showItemsPresentation(items, removeBlackScreen, props.fake_items, audio4Route);
+      showItemsPresentation(items, removeBlackScreen, props.fake_items, audio4Route, currentAudio);
     });
     return;
   }
@@ -266,6 +270,7 @@ const intro = (phase) => {
   // Comienza a reproducir el audio inicial
   inTutorial.value = true
   let audio1 = playAudio(audio1Route);
+  currentAudio.value = audio1;
   talkBool.value = true
 
   // Muestra el personaje hablando
@@ -283,12 +288,13 @@ const intro = (phase) => {
 
   setOnEnded(audio1, () => {
     audio2.play();
+    currentAudio.value = audio2;
     showBlackScreen();
   });
   // setOnEnded(audio2, showItemsPresentation(items, showHelp));
   setOnEnded(audio2, () => {
     talkBool.value = false;
-    showItemsPresentation(items, showIntroductionHelp, props.fake_items, audio3Route);
+    showItemsPresentation(items, showIntroductionHelp, props.fake_items, audio3Route, currentAudio);
   });
 }
 let boxes = ref([])
@@ -737,7 +743,7 @@ const win = () => {
         </div>
 
         <div class="col-span-5">
-          <HorizontalItemPalette :level="props.level" :items="items"></HorizontalItemPalette>
+          <HorizontalItemPalette :level="props.level" :items="items" :currentAudio="currentAudio"></HorizontalItemPalette>
         </div>
 
       </div>
