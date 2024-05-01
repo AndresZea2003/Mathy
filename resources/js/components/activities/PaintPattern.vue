@@ -49,15 +49,58 @@ const levelComplete = ref(false)
 // Alerta inicial
 const showInitialAlert = () => {
   Swal.fire({
-    title: `Actividad ${props.level[1]}`,
     text: 'Descripcion para el nivel 1',
-    icon: 'warning',
-    confirmButtonText: 'Comenzar'
+    showConfirmButton: false,
+    html: swalHtml,
+    width: "30rem",
   }).then((result) => {
     intro(props.phase);
     prepareActivity()
   });
 }
+
+// <div class="flex justify-center">
+//                       <div
+//                           class="px-4 py-2 mt-4 font-press-start bg-gray-300 font-press-start rounded shadow-2xl border-4 border-gray-500 border-dashed">
+//                         Reto ${props.level[1]}
+//                       </div>
+//                     </div>
+
+const swalHtml = `
+    <div class="flex justify-center items-center text-center">
+                  <div>
+
+                    <div
+                        class="bg-space font-press-start rounded shadow-2xl border-4 border-yellow-700 border-dashed my-6 py-12" style="background-position: center; background-size: cover;">
+                        <span class="border-4 border-yellow-700 border-dashed py-4 bg-yellow-500 pl-4 pr-4 text-yellow-800">RETO ${props.level[1]}</span> <br> <br> <br>
+                      <span class="text-yellow-400">Pinta</span>
+                      <span class="text-blue-400"> y </span>
+                      <span class="text-red-400">Completa</span>
+                      <br>
+                      <br>
+                      <span class="text-gray-200">¡Haz Brillar el Cuadro!</span>
+                    </div>
+                    <button onmouseenter="playHoverSound('svgPlay')" onmouseleave="leaveMouse('svgPlay')"
+                            onclick="Swal.clickConfirm()" class="btn-frog"><i class="animation"></i>
+                      <div class="translate-x-[10px]">
+                        Comenzar
+                      </div>
+                      <div>
+                        <svg id="svgPlay" width="20px" fill="#fff" viewBox="0 0 32 32" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg">
+                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier"><title>play</title>
+                            <path
+                                d="M5.92 24.096q0 1.088 0.928 1.728 0.512 0.288 1.088 0.288 0.448 0 0.896-0.224l16.16-8.064q0.48-0.256 0.8-0.736t0.288-1.088-0.288-1.056-0.8-0.736l-16.16-8.064q-0.448-0.224-0.896-0.224-0.544 0-1.088 0.288-0.928 0.608-0.928 1.728v16.16z"></path>
+                          </g>
+                        </svg>
+                      </div>
+                      <i class="animation"></i>
+                    </button>
+                  </div>
+                </div>
+  `;
 
 // Inicializacion de la actividad
 
@@ -420,7 +463,8 @@ const win = () => {
 
   <!--"></div>-->
 
-<!--  <button @click="handleButtonClick">dada</button>-->
+  <!--  <button @click="handleButtonClick">dada</button>-->
+
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>

@@ -91,6 +91,9 @@ const nextLevel = () => {
             <CardPlanet :planetUrl="localHost + `/images/planets/templates/${props.planet}`"
                         class="scale-75"></CardPlanet>
 
+            <div class="flex justify-center border-b border-dashed">
+              <img :src="localHost + '/images/characters/robot/stay1.gif'" width="160" alt="">
+            </div>
 
           </div>
         </div>
