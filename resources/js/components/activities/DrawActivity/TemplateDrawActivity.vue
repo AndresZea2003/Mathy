@@ -199,23 +199,25 @@ const verificarSuperficie = (ctx) => {
         const pixelColor = `rgb(${data[i]}, ${data[i + 1]}, ${data[i + 2]})`;
         if (pixelColor === bgColor) {
             bgColorCount++;
-        }
-    }
+        };
+    };
 
     const totalPixels = data.length / 4;
 
-    // console.log("porcentaje de pintado hecho", bgColorCount,"/", totalPixels, "/",bgColorCount / totalPixels);
+    console.log("porcentaje de pintado hecho", bgColorCount,"/", totalPixels, "/",bgColorCount / totalPixels);
 
 
     if (bgColorCount / totalPixels >= porcentajePintado.value) {
         for (let i = 0; i < finishedLevels.value.length; i++) {
             if (finishedLevels.value[i].color === bgColor && idCanvas.value === finishedLevels.value[i].id) {
                 if (!finishedLevels.value[i].state) {
-                    finishedLevels.value[i].state = true;
-                    finishedLevelActivate.value = true;
                     setTimeout(() => {
-                        finishedLevelActivate.value = false;
-                    }, 6000);
+                        finishedLevels.value[i].state = true;
+                        finishedLevelActivate.value = true;
+                        setTimeout(() => {
+                            finishedLevelActivate.value = false;
+                        }, 6000);
+                    }, 15000);
                 }
             }
         };
@@ -341,7 +343,7 @@ const dragCancelImages = (event) => {
 
 <template>
     <div class="template-draw__div--container">
-        <BackgroundActivities/>
+        <BackgroundActivities v-if="responsiveScreen"/>
         <FinishedLevel v-if="finishedLevelActivate" :finishedLevels="finishedLevels"/>
         <div
             class="template-draw__div--main-div w-full h-full fixed m-auto overflow-hidden xl:absolute xl:top-1/2 xl:left-1/2">
@@ -464,8 +466,8 @@ const dragCancelImages = (event) => {
     left: 20%;
     top: 40%;
     transform: translate(-50%, -50%) scale(1.5);
-    filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
-    animation: line1Animation 10s infinite;
+    filter: invert(21%) sepia(100%) saturate(6245%) hue-rotate(295deg) brightness(118%) contrast(117%) drop-shadow(0 0 10px rgb(250, 0, 255));
+    /* animation: line1Animation 10s infinite; */
 }
 
 @media screen and (min-width: 600px) {
@@ -490,7 +492,6 @@ const dragCancelImages = (event) => {
 @keyframes line1Animation {
     0% {
         filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%) drop-shadow(0 0 10px rgb(0, 255, 255));
-
     }
 
     50% {
@@ -506,8 +507,8 @@ const dragCancelImages = (event) => {
     left: 20%;
     top: 40%;
     transform: translate(-50%, -50%) scale(1.5);
-    filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
-    animation: line2Animation 10s infinite;
+    filter: invert(26%) sepia(83%) saturate(7484%) hue-rotate(221deg) brightness(107%) contrast(101%) drop-shadow(0 0 10px rgb(0, 87, 255));
+    /* animation: line2Animation 10s infinite; */
 }
 
 @media screen and (min-width: 600px) {
@@ -550,8 +551,8 @@ const dragCancelImages = (event) => {
     left: 0%;
     top: 55%;
     transform: translate(-50%, -50%) scale(1.9);
-    filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
-    animation: line3Animation 10s infinite;
+    filter: invert(33%) sepia(56%) saturate(2675%) hue-rotate(114deg) brightness(136%) contrast(129%) drop-shadow(0 0 10px rgb(0, 255, 10));
+    /* animation: line3Animation 10s infinite; */
 }
 
 @media screen and (min-width: 600px) {
@@ -606,8 +607,8 @@ const dragCancelImages = (event) => {
     left: 20%;
     top: 50%;
     transform: translate(-50%, -50%) scale(1.5);
-    filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
-    animation: line4Animation 10s infinite;
+    filter: invert(29%) sepia(26%) saturate(6627%) hue-rotate(239deg) brightness(101%) contrast(101%) drop-shadow(0 0 10px rgb(104, 80, 255));
+    /* animation: line4Animation 10s infinite; */
 }
 
 @media screen and (min-width: 600px) {

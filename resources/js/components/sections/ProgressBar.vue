@@ -3,6 +3,8 @@
 import {onMounted, ref} from "vue";
 import { store_data } from "../../use/store_data";
 
+//importacion de prueba nave gif
+import naveGIF from '../../../../public/images/rockets/Cohetes-13.gif';
 const props = defineProps({
   rocket: {type: String},
   planet_1: {type: String},
@@ -63,7 +65,7 @@ let totalActivities = 12;
   </div>
 
   <div id="animatedRocket" class="bg-space px-5 rounded-md border-black border-2 flex items-center justify-start h-full hidden">
-    <img class="rocket-travel rotate-45" :src="currentShip"
+    <img class="rocket-travel" :src="naveGIF"
           width="100" alt="rocket">
   </div>
 </template>
@@ -76,19 +78,19 @@ let totalActivities = 12;
 
 @keyframes rocketMoveCombined {
   0% {
-    transform: translateX(0) translateY(0) rotate(45deg);
+    transform: translateX(0) translateY(0) rotate(90deg);
   }
   25% {
-    transform: translateX(300px) translateY(-20px) rotate(45deg);
+    transform: translateX(300px) translateY(-20px) rotate(90deg);
   }
   50% {
-    transform: translateX(800px) translateY(0) rotate(45deg);
+    transform: translateX(800px) translateY(0) rotate(90deg);
   }
   75% {
-    transform: translateX(800px) translateY(-10px) rotate(45deg);
+    transform: translateX(800px) translateY(-10px) rotate(90deg);
   }
   100% {
-    transform: translateX(800px) translateY(0) rotate(45deg);
+    transform: translateX(800px) translateY(0) rotate(90deg);
   }
 }
 </style>

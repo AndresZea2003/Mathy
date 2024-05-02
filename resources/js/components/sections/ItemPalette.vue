@@ -1,25 +1,52 @@
 <script setup>
-import IconShoppingCart from "../icons/IconShoppingCart.vue"
-import IconPaintBrush from "../icons/IconPaintBrush.vue"
+
 import {ref, onMounted} from "vue";
 import {types, sizes, localHost, getSelectItem} from '../../use';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
-let itemSelected = ref()
-let itemImg = ref()
-let itemSize = ref()
+let itemSelected = ref();
+let itemImg = ref();
+let itemSize = ref();
 
-//Ref que controla
+//Importacion de imagenes
+import IconShoppingCart from "../icons/IconShoppingCart.vue";
+import IconPaintBrush from "../icons/IconPaintBrush.vue";
+import IconGoldCoin from "../../../../public/images/globals/gold-coin.png";
+import IconSilverCoin from "../../../../public/images/globals/silver-coin.png";
+import IconBronzeCoin from "../../../../public/images/globals/bronze-coin.png";
+
+//Ref que controla el numero de monedas de oro
 const goldCoins = ref(null);
+const silverCoins = ref(null);
+const bronzeCoins = ref(null);
+
 
 const props = defineProps({
     level: {type: Array},
     items: {type: Object},
-})
+});
 
 
 onMounted(() => {
-    goldCoins.value = localStorage.getItem('goldCoins');
+    //Valido si las monedas de oro son 5 o mas de 5 en caso de ser mas de 5 va a devolver solo 5 y si es menos devolvera la cantidad que se tiene
+    if(parseInt(localStorage.getItem('goldCoins')) > 5){
+        goldCoins.value = 5;
+    }else if(parseInt(localStorage.getItem('goldCoins')) < 5){
+        goldCoins.value = parseInt(localStorage.getItem('goldCoins'));
+    }
+
+    if(parseInt(localStorage.getItem('silverCoins')) > 5){
+        silverCoins.value = 5;
+    }else if(parseInt(localStorage.getItem('silverCoins')) < 5){
+        silverCoins.value = parseInt(localStorage.getItem('silverCoins'));
+    }
+
+    if(parseInt(localStorage.getItem('bronzeCoins')) > 5){
+        bronzeCoins.value = 5;
+    }else if(parseInt(localStorage.getItem('bronzeCoins')) < 5){
+        bronzeCoins.value = parseInt(localStorage.getItem('bronzeCoins'));
+    }
+
     localStorage.setItem('itemSelected', null)
     itemSelected.value = getSelectItem()
 });
@@ -139,9 +166,9 @@ const pause = () => {
                 </div>
 
 
-                <div class="flex justify-center col-span-2 items-center h-16">
-                    <div id="coins" class="flex gap-2 duration-300">
-                        <svg height="50px" width="50px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                <div class="flex justify-center col-span-2 items-center h-52">
+                    <div id="coins" class="flex flex-col justify-center items-center gap-2  duration-300">
+                        <!-- <svg height="50px" width="50px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                              xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"
                              fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -158,7 +185,7 @@ const pause = () => {
                                 <g> <path style="fill:#F28618;"
                                           d="M317.217,300.522c0,27.937-18.922,51.534-44.522,58.88v7.903c0,9.238-7.456,16.696-16.696,16.696 v-55.652c15.36,0,27.826-12.466,27.826-27.826c0-0.779-0.111-1.224-0.223-1.558c-1.336-8.682-13.802-16.473-27.603-24.042v-37.843 c2.56,1.336,5.231,2.783,7.791,4.118C287.612,253.774,317.217,269.468,317.217,300.522z"></path>
                                     <path style="fill:#F28618;"
-                                          d="M283.826,211.478c0,9.223,7.479,16.696,16.696,16.696c9.217,0,16.696-7.473,16.696-16.696 c0-27.961-18.869-51.551-44.522-58.843v-7.939c0-9.223-7.479-16.696-16.696-16.696v55.652 C271.348,183.652,283.826,196.136,283.826,211.478z"></path> </g> </g></svg>
+                                          d="M283.826,211.478c0,9.223,7.479,16.696,16.696,16.696c9.217,0,16.696-7.473,16.696-16.696 c0-27.961-18.869-51.551-44.522-58.843v-7.939c0-9.223-7.479-16.696-16.696-16.696v55.652 C271.348,183.652,283.826,196.136,283.826,211.478z"></path> </g> </g></svg> -->
 
 
 <!--                        <svg height="50px" width="50px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 488 488" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle style="fill:#F0F7F7;" cx="244" cy="244" r="244"></circle> <path style="fill:#B2CECE;" d="M488,244c0,134.4-109.6,244-244,244S0,378.4,0,244"></path> <path style="fill:#D1E7E8;" d="M488,244c0,134.4-109.6,228.8-244,228.8S0,378.4,0,244S109.6,15.2,244,15.2S488,109.6,488,244z"></path> <g> <path style="fill:#BFDBDB;" d="M244,15.2c134.4,0,244,93.6,244,228.8c0,134.4-109.6,228.8-244,228.8"></path> <path style="fill:#BFDBDB;" d="M428,244c0,101.6-82.4,172.8-184,172.8S60,345.6,60,244S142.4,58.4,244,58.4S428,142.4,428,244z"></path> <path style="fill:#BFDBDB;" d="M428,244c0,101.6-82.4,188-184,188S60,345.6,60,244S142.4,71.2,244,71.2S428,142.4,428,244z"></path> </g> <path style="fill:#DAEFEF;" d="M428,244c0,101.6-82.4,172.8-184,172.8S60,345.6,60,244S142.4,71.2,244,71.2S428,142.4,428,244z"></path> <path style="fill:#C5E2E2;" d="M244,71.2c101.6,0,184,71.2,184,172.8s-82.4,172.8-184,172.8"></path> <path style="fill:#F0F7F7;" d="M244,379.2c-81.6,0-142.4-57.6-142.4-133.6S162.4,111.2,244,111.2s142.4,57.6,142.4,133.6 S325.6,379.2,244,379.2z M244,126.4c-72.8,0-127.2,51.2-127.2,118.4c0,68,54.4,119.2,127.2,119.2s127.2-51.2,127.2-118.4 C371.2,177.6,316.8,126.4,244,126.4z"></path> <path style="fill:#E7F7F6;" d="M371.2,245.6c0,67.2-54.4,118.4-127.2,118.4v15.2c81.6,0,142.4-57.6,142.4-133.6 S325.6,111.2,244,111.2v15.2C316.8,126.4,371.2,177.6,371.2,245.6z"></path> </g></svg>-->
@@ -187,8 +214,22 @@ const pause = () => {
 
 
 
+<!--
+                        <span id="coinsCount" class="text-white font-bold text-4xl">{{ `X ${goldCoins}` }}</span> -->
 
-                        <span id="coinsCount" class="text-white font-bold text-4xl">{{ `X ${goldCoins}` }}</span>
+
+
+                        <!-- Codigo nuevo para monedas -->
+                        <div class="w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400">
+                            <img class="w-10" v-for="index in goldCoins" :key="index" :src="IconGoldCoin" alt="golden-coin"/>
+                        </div>
+                        <div class="w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400">
+                            <img class="w-10" v-for="index in silverCoins" :key="index" :src="IconSilverCoin" alt="golden-coin"/>
+                        </div>
+                        <div class="w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400">
+                            <img class="w-10" v-for="index in bronzeCoins" :key="index" :src="IconBronzeCoin" alt="golden-coin"/>
+                        </div>
+
 
                     </div>
 
@@ -200,11 +241,11 @@ const pause = () => {
                     </div>
                 </div>
 
-
+<!-- 
                 <div
                     class="bg-red-100 col-span-2 flex justify-center m-3 p-2 rounded-md border-orange-400 border-4 border-dashed">
                     <span class="font-semibold text-xl text-center">Paleta de colores</span>
-                </div>
+                </div> -->
                 <div @click="selectItemPalette(item)" v-for="item in props.items"
                      class="flex justify-center items-center w-full h-full">
                     <button
