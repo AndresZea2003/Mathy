@@ -1427,4 +1427,4 @@ const blockDragCoins = (array, props, type) => {
     width: 70px;
     height: 130px;
 }
-</style>import { space } from 'postcss/lib/list';
+</style>

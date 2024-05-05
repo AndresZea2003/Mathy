@@ -4,6 +4,8 @@ import {ref, onMounted} from "vue";
 import {types, sizes, localHost, getSelectItem} from '../../use';
 import Swal from 'sweetalert2';
 
+
+
 let itemSelected = ref();
 let itemImg = ref();
 let itemSize = ref();
@@ -14,17 +16,22 @@ import IconPaintBrush from "../icons/IconPaintBrush.vue";
 import IconGoldCoin from "../../../../public/images/globals/gold-coin.png";
 import IconSilverCoin from "../../../../public/images/globals/silver-coin.png";
 import IconBronzeCoin from "../../../../public/images/globals/bronze-coin.png";
+import IconChanger from "../../../../public/images/globals/icon-change.png";
+import CoinChangerVortexVue from "../activities/Coin Changer/CoinChangerVortex.vue";
 
 //Ref que controla el numero de monedas de oro
 const goldCoins = ref(null);
 const silverCoins = ref(null);
 const bronzeCoins = ref(null);
 
-
+//Props
 const props = defineProps({
     level: {type: Array},
     items: {type: Object},
 });
+
+//Emits
+const emit = defineEmits(['closeAnimation', 'openAnimation']);
 
 
 onMounted(() => {
@@ -129,6 +136,17 @@ const pause = () => {
 };
 
 
+//Emits que controlan el cierre y la apertura de la animacion vortex.
+const closeAnimation = () => {
+    emit('closeAnimation', false);
+};
+
+const openAnimation = () => {
+    console.log("hover funcional");
+    emit('openAnimation', true);
+};
+
+
 </script>
 <template>
     <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md flex items-center justify-between justify-center h-full">
@@ -220,14 +238,17 @@ const pause = () => {
 
 
                         <!-- Codigo nuevo para monedas -->
-                        <div class="w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400">
-                            <img class="w-10" v-for="index in goldCoins" :key="index" :src="IconGoldCoin" alt="golden-coin"/>
+                        <div class="item-palette-gold__div--container w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-yellow-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300" @mouseenter="openAnimation()" @mouseleave="closeAnimation()">
+                            <img class="item-palette-gold__img--gold-coin w-10 duration-300 ease-in-out" v-for="index in goldCoins" :key="index" :src="IconGoldCoin" alt="golden-coin"/>
+                            <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
                         </div>
-                        <div class="w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400">
-                            <img class="w-10" v-for="index in silverCoins" :key="index" :src="IconSilverCoin" alt="golden-coin"/>
+                        <div class="item-palette-silver__div--container w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-gray-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300" @mouseenter="openAnimation()" @mouseleave="closeAnimation()">
+                            <img class="item-palette-silver__img--silver-coin w-10 duration-300 ease-in-out" v-for="index in silverCoins" :key="index" :src="IconSilverCoin" alt="silver-coin"/>
+                            <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
                         </div>
-                        <div class="w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400">
-                            <img class="w-10" v-for="index in bronzeCoins" :key="index" :src="IconBronzeCoin" alt="golden-coin"/>
+                        <div class="item-palette-bronze__div--container w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-amber-700 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300" @mouseenter="openAnimation()" @mouseleave="closeAnimation()">
+                            <img class="item-palette-bronze__img--bronze-coin w-10 duration-300 ease-in-out" v-for="index in bronzeCoins" :key="index" :src="IconBronzeCoin" alt="bronze-coin"/>
+                            <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
                         </div>
 
 
@@ -359,5 +380,70 @@ const pause = () => {
         transform: rotate(45deg) translate(20px, 20px);
     }
 }
+
+.item-palette-gold__div--container {
+    -webkit-box-shadow: inset 0px 0px 20px -1px rgba(233,245,0,1);
+    -moz-box-shadow: inset 0px 0px 20px -1px rgba(233,245,0,1);
+    box-shadow: inset 0px 0px 20px -1px rgba(233,245,0,1);
+}
+
+/* @keyframes backgroundCoins {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    50% {
+        background-position: 100% 100%;
+    }
+
+    100% {
+        background-position: 0% 0%;
+    }
+} */
+
+/* .item-palette-silver__div--container {
+
+}
+
+.item-palette-bronze__div--container {
+
+} */
+/* .item-palette-gold__div--container:hover {
+    background-color: #facc15;
+    border: ;
+} */
+
+
+.item-palette-gold__div--container:hover .item-palette-gold__img--gold-coin {
+    width: 0px;
+}
+
+.item-palette-gold__div--container:hover .item-palette__img--changer-icon {
+    width: 40px;
+}
+
+
+.item-palette-gold__img--gold-coin {
+    filter: drop-shadow(10px 10px 5px rgba(0, 0, 0, 0.5));
+}
+
+.item-palette-silver__div--container:hover .item-palette-silver__img--silver-coin {
+    width: 0px;
+}
+
+.item-palette-silver__div--container:hover .item-palette__img--changer-icon {
+    width: 40px;
+}
+
+.item-palette-bronze__div--container:hover .item-palette-bronze__img--bronze-coin {
+    width: 0px;
+}
+
+.item-palette-bronze__div--container:hover .item-palette__img--changer-icon {
+    width: 40px;
+}
+
+
+
 
 </style>

@@ -27,6 +27,7 @@ import IconPaintBrush from "../icons/IconPaintBrush.vue"
 import Swal from "sweetalert2";
 import {defineProps} from 'vue';
 import BackgroundActivities from "../background/BackgroundActivities.vue";
+import CoinChangerVortex from "./Coin Changer/CoinChangerVortex.vue";
 
 const props = defineProps({
   size: {type: Array},
@@ -41,9 +42,11 @@ const props = defineProps({
   create_audio_3: {type: String},
 })
 
-const items = props.items
-const talkBool = ref(false)
-const levelComplete = ref(false)
+const items = props.items;
+const talkBool = ref(false);
+const levelComplete = ref(false);
+const coinChangerVortexRef = ref(false);
+
 
 // Alerta inicial
 const showInitialAlert = () => {
@@ -395,7 +398,11 @@ const win = () => {
       document.getElementById('nextLevelButton').classList.remove('hidden')
     }, 2000)
   }, 2600)
-}
+};
+
+const coinChangerVortexActivate = (event) => {
+  coinChangerVortexRef.value = event;
+};
 </script>
 <template>
   <!--  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden-->
@@ -407,6 +414,7 @@ const win = () => {
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
+  <CoinChangerVortex v-if="coinChangerVortexRef"/>
 
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
@@ -478,7 +486,12 @@ const win = () => {
         </div>
 
         <div class="w-[16%]">
-          <ItemPalette :level="props.level" :items="items"/>
+          <ItemPalette
+            :level="props.level"
+            :items="items"
+            @closeAnimation="coinChangerVortexActivate"
+            @openAnimation="coinChangerVortexActivate"
+          />
         </div>
       </div>
     </div>

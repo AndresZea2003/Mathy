@@ -143,7 +143,7 @@ let drawingDataFill = [
         exampleImage: drawingFillA2,
         canvas: [ 62, 38],
         colorParts: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
-        correctPercentage: [0.19, 0.42],
+        correctPercentage: [0.12, 0.42],
         drawImage: drawingFillA1
     },
     {//2

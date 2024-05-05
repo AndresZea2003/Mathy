@@ -211,8 +211,8 @@ const verificarSuperficie = (ctx) => {
         for (let i = 0; i < finishedLevels.value.length; i++) {
             if (finishedLevels.value[i].color === bgColor && idCanvas.value === finishedLevels.value[i].id) {
                 if (!finishedLevels.value[i].state) {
+                    finishedLevels.value[i].state = true;
                     setTimeout(() => {
-                        finishedLevels.value[i].state = true;
                         finishedLevelActivate.value = true;
                         setTimeout(() => {
                             finishedLevelActivate.value = false;
