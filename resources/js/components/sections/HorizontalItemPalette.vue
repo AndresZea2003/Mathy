@@ -19,10 +19,15 @@ const props = defineProps({
 })
 
 let isPlaying = ref(true)
-
-onMounted(() => {
+let nextUrl = ref(`${localHost}/level${props.level[0]}/${props.level[1] + 1}`)
+onMounted(async () => {
   localStorage.setItem('itemSelected', null)
   itemSelected.value = getSelectItem()
+
+  const response = await axios.get('/activityCount/' + props.level[0]);
+  if (props.level[1] === response.data) {
+    nextUrl.value = `${localHost}/levels/${props.level[0]}`;
+  }
 });
 
 const selectItemPalette = (item) => {
@@ -179,21 +184,22 @@ const handlePauseButton = () => {
   <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full flex justify-center items-center px-12">
 
     <div class="absolute translate-x-[-450px] border-b-4 border-dashed drop-shadow-2xl">
-      <HelpCharacterOnly :image="`${localHost}/images/characters/robot/normal.png`"
-                         :image_2="`${localHost}/images/characters/robot/talk.gif`"></HelpCharacterOnly>
+      <HelpCharacterOnly :image="`${localHost}/images/characters/robot/robot.png`"
+                         :image_2="`${localHost}/images/characters/robot/robot.png`"></HelpCharacterOnly>
     </div>
 
-    <div class="grid grid-cols-4 gap-2 mx-12">
-      <div class="col-span-4 m-3">
+    <div class="px-2">
+      <div class="my-2 w-[380px]">
         <div id="itemScreen"
-             :class="`border-2 border-black h-14 col-span-2 shadow-xl rounded-md flex justify-center font-bold text-5xl bg-white`">
+             :class="`border-2 border-black h-14 shadow-xl rounded-md flex justify-center font-bold text-5xl bg-white`">
           {{ itemSelected ? itemSelected.name : null }}
           <img v-if="itemImg" :src="itemImg" alt="" :width="itemSize">
         </div>
       </div>
-      <div @click="selectItemPalette(item)" v-for="item, index in props.items" :key="index"
-           class="flex justify-center items-center w-full h-full">
-        <button
+      <div class="grid gap-2" :class="`grid-cols-${props.items.length}`">
+        <div v-for="item, index in props.items" :key="index"
+           class="flex justify-center items-center w-full h-full" :class="``">
+        <button @click="selectItemPalette(item)"
             :class="['bg-gray-100 shadow-md rounded-lg hover:opacity-75 hover:scale-95 duration-300 select-none font-bold' +
            ' text-6xl w-20 h-20 flex justify-center items-center']">
 
@@ -209,6 +215,7 @@ const handlePauseButton = () => {
                                  {'w-[50px]' : item.size === sizes.big} ]">
 
         </button>
+      </div>
       </div>
 
       <div class="flex justify-center gap-4 left-20 col-span-4 mt-2">
@@ -251,7 +258,7 @@ const handlePauseButton = () => {
         </div>
       </div>
 
-      <a :href="`${localHost}/level${props.level[0]}/${props.level[1] + 1}`">
+      <a :href="nextUrl">
         <button id="nextLevelButton"
                 class="bg-yellow-infinite py-8 px-16 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden">
 

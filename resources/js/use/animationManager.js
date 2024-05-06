@@ -8,7 +8,7 @@ import {
     types
 } from './';
 
-export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio, currentAudio) => {
+export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio, currentAudio, newCharacter) => {
 
     let box = document.getElementById('itemPresentation')
 
@@ -145,7 +145,11 @@ export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio, 
                 }
                 box.classList.add('hidden')
                 setOnEnded(audio3, () => {
-                    talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
+                    if (newCharacter) {
+                        talkCharacter(`${localHost}/images/characters/robot/${newCharacter}`, `${localHost}/images/characters/robot/${newCharacter}`)
+                    } else {
+                        talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
+                    }
 
                     if (callback) {
                         callback();

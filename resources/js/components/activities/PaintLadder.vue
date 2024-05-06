@@ -104,7 +104,6 @@ const updateBoxSize = () => {
       boxSize.value = boxSize.value - 30
     }
   }
-
 }
 
 onMounted(() => {
@@ -369,7 +368,6 @@ let focusCols = ref([])
 const prepareColumns = (rowsAndCols, i) => {
   for (let colIndex = 0; colIndex <= props.select_cols.length - 1; colIndex++) {
     focusCols.value.push(rowsAndCols[1][props.select_cols[colIndex] - 1])
-
     for (let i = 0; i <= rowsAndCols[1][props.select_cols[colIndex] - 1].length - 1; i++) {
       try {
         prepareCell(rowsAndCols, colIndex, i);
@@ -546,11 +544,11 @@ const win = () => {
 }
 </script>
 <template>
-  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden w-10 h-10 w-9 h-9 w-8 h-8
-    grid-cols-6 grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11 grid-cols-12
-     ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`
+<!--  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden w-10 h-10 w-9 h-9 w-8 h-8-->
+<!--    grid-cols-6 grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11 grid-cols-12-->
+<!--     ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`-->
 
-"></div>
+<!--"></div>-->
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
@@ -568,7 +566,7 @@ const win = () => {
           <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
-                       :activity_number="props.level[1]"
+                       :level="props.level"
           />
 
           <div class="row-span-3 flex justify-center items-center">
@@ -594,7 +592,7 @@ const win = () => {
                      :class="`grid grid-cols-${props.size[0]} gap-x-2 flex items-center justify-center duration-300`">
                   <div :id="i" @click="paintBox(i)" v-for="i in (props.size[0] * props.size[1])"
                        :key="i"
-                       :class="`bg-white border border-black hover:opacity-75
+                       :class="`bg-white border border-black hover:opacity-75 cursor-cell
                                           flex justify-center items-center font-bold text-6xl select-none duration-300`"
                        :style="`width: ${boxSize}px; height: ${boxSize}px;`">
                     <div v-if="props.show_ids" class="text-2xl">{{ i }}</div>

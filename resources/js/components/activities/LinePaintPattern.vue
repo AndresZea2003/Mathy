@@ -25,7 +25,7 @@ import {
   showCheckIcon,
   showErrorIcon
 } from '../../use';
-import {onMounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
 import Swal from "sweetalert2";
 import BackgroundActivities from "../background/BackgroundActivities.vue";
@@ -54,31 +54,91 @@ let currentAudio = ref(null);
 
 const showInitialAlert = () => {
   Swal.fire({
-    title: `Actividad ${props.level[1]}`,
-    text: 'Descripcion para el nivel 1',
-    icon: 'warning',
-    confirmButtonText: 'Comenzar'
+    showConfirmButton: false,
+    html: swalHtml,
+    width: "30rem",
   }).then((result) => {
     intro(props.phase);
     // prepareActivity()
   });
 }
 
+const swalHtml = `
+    <div class="flex justify-center items-center text-center">
+                  <div>
+
+                    <div
+                        class="bg-[url('https://cdn.pixabay.com/photo/2020/09/28/16/29/leaves-5610361_640.png')] font-press-start rounded shadow-2xl border-4 border-yellow-700 border-dashed my-6 py-12 px-4" style="background-position: center; background-size: cover;">
+                        <span class="border-4 border-yellow-700 border-dashed py-4 bg-yellow-500 pl-4 pr-4 text-yellow-800">RETO ${props.level[1]}</span> <br> <br> <br>
+                      <span class="text-yellow-400">Patrones</span>
+                      <span class="text-blue-400"> en la </span>
+                      <span class="text-red-400">Cinta</span>
+                      <br>
+                      <br>
+                      <span class="text-gray-200">¡Completa y Crea!</span>
+                    </div>
+                    <button onmouseenter="playHoverSound('svgPlay')" onmouseleave="leaveMouse('svgPlay')"
+                            onclick="Swal.clickConfirm()" class="btn-frog"><i class="animation"></i>
+                      <div class="translate-x-[10px]">
+                        Comenzar
+                      </div>
+                      <div>
+                        <svg id="svgPlay" width="20px" fill="#fff" viewBox="0 0 32 32" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg">
+                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier"><title>play</title>
+                            <path
+                                d="M5.92 24.096q0 1.088 0.928 1.728 0.512 0.288 1.088 0.288 0.448 0 0.896-0.224l16.16-8.064q0.48-0.256 0.8-0.736t0.288-1.088-0.288-1.056-0.8-0.736l-16.16-8.064q-0.448-0.224-0.896-0.224-0.544 0-1.088 0.288-0.928 0.608-0.928 1.728v16.16z"></path>
+                          </g>
+                        </svg>
+                      </div>
+                      <i class="animation"></i>
+                    </button>
+                  </div>
+                </div>
+  `;
+
+
 // Inicializacion de la actividad
 
 let boxSize = ref(0)
-onMounted(() => {
-  // showInitialAlert()
 
-  if (props.size < 19) {
-    boxSize.value = 74
-  } else if (props.size > 17 && props.size < 24) {
-    boxSize.value = 60
-  } else if (props.size > 24 && props.size < 37) {
-    boxSize.value = 40
-  } else if (props.size > 36) {
-    boxSize.value = 36
+const updateBoxSize = () => {
+  if (window.innerWidth <= 1024) {
+    // Para pantallas menores a 1024px
+    boxSize.value = 48
+    if (props.size >= 30) {
+      boxSize.value = 24
+    }
+  } else if (window.innerWidth <= 1440 && window.innerWidth > 1024) {
+    // Para pantallas mayores a 1024px y menor igual a 1440px
+    boxSize.value = 66
+
+    if (props.size >= 30) {
+      boxSize.value = 30
+    }
+  } else {
+    // Para pantallas mayores a 1440px
+
+    if (props.size <= 18) {
+      boxSize.value = 80;
+    } else if (props.size < 30) {
+      boxSize.value = 72
+    } else if (props.size >= 30) {
+      boxSize.value = 36
+    }
   }
+}
+onMounted(() => {
+  showInitialAlert()
+
+  updateBoxSize();
+  window.addEventListener('resize', updateBoxSize);
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateBoxSize);
 })
 
 const showBlackScreen = () => {
@@ -100,8 +160,8 @@ const showIntroductionHelp = () => {
 
   talkBool.value = true
   talkCharacter(
-      `${localHost}/images/characters/robot/normal.png`,
-      `${localHost}/images/characters/robot/talk.gif`
+      `${localHost}/images/characters/robot/robot.png`,
+      `${localHost}/images/characters/robot/robot.png`
   );
 
   let i = 0;
@@ -164,7 +224,7 @@ const showIntroductionHelp = () => {
       currentAudio.value = audio4;
 
       setOnEnded(audio4, () => {
-        talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
+        talkCharacter(`${localHost}/images/characters/robot/robot.png`, `${localHost}/images/characters/robot/robot.png`)
         talkBool.value = false
         inTutorial.value = false
         currentAudio.value = null;
@@ -242,16 +302,18 @@ const intro = (phase) => {
   }
 
   if (phase === 2) {
-    prepareActivity()
+    // prepareActivity()
+    inTutorial.value = true
     talkBool.value = true
     talkCharacter(
-        `${localHost}/images/characters/robot/normal.png`,
-        `${localHost}/images/characters/robot/talk.gif`
+        `${localHost}/images/characters/robot/robot.png`,
+        `${localHost}/images/characters/robot/robot.png`
     );
     showBlackScreen()
     let audio2 = playAudio(audio2Route)
     setOnEnded(audio2, () => {
-      showItemsPresentation(items, removeBlackScreen, props.fake_items, audio4Route, currentAudio);
+      showItemsPresentation(items, showIntroductionHelp, props.fake_items, audio3Route, currentAudio);
+      // showItemsPresentation(items, removeBlackScreen, props.fake_items, audio4Route, currentAudio, 'robot.png');
     });
     return;
   }
@@ -275,8 +337,8 @@ const intro = (phase) => {
 
   // Muestra el personaje hablando
   talkCharacter(
-      `${localHost}/images/characters/robot/normal.png`,
-      `${localHost}/images/characters/robot/talk.gif`
+      `${localHost}/images/characters/robot/robot.png`,
+      `${localHost}/images/characters/robot/robot.png`
   );
 
   // Cuando el audio 1 termina, reproduce el audio 2
@@ -512,7 +574,7 @@ function verifyAudiosNumber(number) {
         }
       });
     }
-  } else if (props.type === 'letters'){
+  } else if (props.type === 'letters') {
     for (let i = 1; i <= number; i++) {
       verifyFileExistence(`${localHost}/audios/start/linePattern/letters/${i}.m4a`, function (exist) {
         if (exist) {
@@ -523,7 +585,7 @@ function verifyAudiosNumber(number) {
         }
       });
     }
-  } else if (props.type === 'colors'){
+  } else if (props.type === 'colors') {
     for (let i = 1; i <= number; i++) {
       verifyFileExistence(`${localHost}/audios/start/linePattern/colors/${i}.m4a`, function (exist) {
         if (exist) {
@@ -534,7 +596,7 @@ function verifyAudiosNumber(number) {
         }
       });
     }
-  } else if (props.type === 'animals'){
+  } else if (props.type === 'animals') {
     for (let i = 1; i <= number; i++) {
       verifyFileExistence(`${localHost}/audios/start/linePattern/animals/${i}.m4a`, function (exist) {
         if (exist) {
@@ -545,7 +607,7 @@ function verifyAudiosNumber(number) {
         }
       });
     }
-  } else if (props.type === 'fruits'){
+  } else if (props.type === 'fruits') {
     for (let i = 1; i <= number; i++) {
       verifyFileExistence(`${localHost}/audios/start/linePattern/fruits/${i}.m4a`, function (exist) {
         if (exist) {
@@ -588,7 +650,7 @@ const paintBox = (id) => {
     bubble.src = `${localHost}/audios/effects/soapBubble.wav`
     bubble.play()
 
-    playSuccessShortRandom(talkBool.value)
+    // playSuccessShortRandom(talkBool.value)
     showCheckIcon()
 
     document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
@@ -613,12 +675,12 @@ const paintBox = (id) => {
       element.classList.remove('text-red-500')
     } else if (itemSelected.type === types.image) {
       let element = document.getElementById(id);
-      element.classList.remove( 'bg-red-500')
-      element.classList.remove( 'bg-white')
+      element.classList.remove('bg-red-500')
+      element.classList.remove('bg-white')
       element.classList.add('bg-green-300')
       setTimeout(function () {
         element.classList.replace('bg-green-300', 'bg-white')
-      },1000)
+      }, 1000)
     }
 
   } else {
@@ -660,6 +722,7 @@ const paintBox = (id) => {
 }
 
 const win = () => {
+  // playSuccessShortRandom(talkBool.value)
 
   levelComplete.value = true
   let progressBar = document.getElementById('progressBar')
@@ -722,7 +785,7 @@ const win = () => {
           <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
-                       :activity_number="props.level[1]"
+                       :level="props.level"
           />
         </div>
 
@@ -733,8 +796,9 @@ const win = () => {
                 <div id="sample-img" :class="`flex`">
                   <div :id="`${i}`" @click="paintBox(i)"
                        v-for="i in props.size" :key="i" :style="`width: ${boxSize}px; height: ${boxSize}px;`"
-                       :class="`bg-white border border-black hover:opacity-75 z-10 cursor-cell
-                                          flex justify-center items-center font-bold text-6xl select-none duration-300`">
+                       :class="[`bg-white border border-black hover:opacity-75 z-10 cursor-cell flex
+                       justify-center items-center font-bold select-none duration-300`,
+                       items[0].type === types.color ? 'text-xl' : 'text-6xl' ]">
                   </div>
                 </div>
               </div>
@@ -743,7 +807,8 @@ const win = () => {
         </div>
 
         <div class="col-span-5">
-          <HorizontalItemPalette :level="props.level" :items="items" :currentAudio="currentAudio"></HorizontalItemPalette>
+          <HorizontalItemPalette :level="props.level" :items="items"
+                                 :currentAudio="currentAudio"></HorizontalItemPalette>
         </div>
 
       </div>

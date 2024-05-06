@@ -1,7 +1,7 @@
 <script setup>
 import DullShrimp from "@/components/ui/DullShrimp.vue";
 import LightBars from "@/components/ui/LightBars.vue";
-import {localHost, playAudio} from "../../use/index.js";
+import {localHost, playAudio, setOnEnded} from "@/use/index.js";
 
 const props = defineProps({
   activity: {type: Number, required: true},
@@ -11,42 +11,49 @@ const props = defineProps({
   hoverTextColor: {type: String, default: "text-white"},
 })
 
+let popSound = false
 const playHoverSound = () => {
-  playAudio(`${localHost}/audios/effects/happyPop.mp3`)
+  if (!popSound) {
+    let audioPop = playAudio(`${localHost}/audios/effects/happyPop.mp3`)
+    popSound = true
+    setOnEnded(audioPop, () => {
+      popSound = false
+    })
+  }
 }
 
 </script>
 <template>
-<div :class="[`card`, props.hoverColor]" @mouseenter="playHoverSound()">
-  <div :class="[`first-content`, props.color]" style="background-position: center;">
-    <div class="text-center">
-      <span :class="textColor">Reto {{ props.activity }}</span>
-      <div class="flex justify-center items-center">
-<!--        <LightBars class=""></LightBars>-->
+  <div :class="[`card`, props.hoverColor]">
+    <div :class="[`first-content`, props.color]" style="background-position: center;">
+      <div class="text-center">
+        <span :class="textColor" @mouseenter="playHoverSound()">Reto {{ props.activity }}</span>
+        <div class="flex justify-center items-center">
+          <!--        <LightBars class=""></LightBars>-->
+        </div>
       </div>
     </div>
-  </div>
-  <div class="second-content">
-    <span :class="[``, props.hoverTextColor]">Jugar!</span>
-    <div class="fixed">
-<!--      <DullShrimp class="absolute -z-10"></DullShrimp>-->
-      <DullShrimp class="absolute scale-50 -z-10"></DullShrimp>
-      <DullShrimp class="absolute scale-50 -z-10"></DullShrimp>
+    <div class="second-content">
+      <span :class="[`z-10`, props.hoverTextColor]" @mouseenter="playHoverSound()">Jugar!</span>
+      <div class="fixed">
+        <!--      <DullShrimp class="absolute -z-10"></DullShrimp>-->
+        <DullShrimp class="absolute scale-50 -z-10"></DullShrimp>
+        <DullShrimp class="absolute scale-50 -z-10"></DullShrimp>
+      </div>
+
     </div>
 
+
   </div>
-
-
-</div>
 </template>
 <style scoped>
 .card {
   width: 150px;
-  height: 224px;
+  height: 160px;
   //background: rgb(103, 225, 255);
   transition: all 0.4s;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 5px  rgba(0, 0, 0, 0.705);
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.705);
   font-size: 20px;
   font-weight: 900;
 }
@@ -55,7 +62,7 @@ const playHoverSound = () => {
   border-radius: 15px;
   cursor: pointer;
   transform: scale(.9);
-  box-shadow: 0px 0px 10px 5px  rgba(0, 0, 0, 0.705);
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.705);
   //background: rgb(103, 151, 255);
 }
 

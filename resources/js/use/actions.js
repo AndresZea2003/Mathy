@@ -144,7 +144,7 @@ export const updateCoins = (addCoin) => {
 
 
 //Creacion de variables en el local storage
-localStorage.setItem("unlockedLevels", [1, 2, 3, 4]);
+localStorage.setItem("unlockedLevels", [1]);
 
 //Naves desbloqueadas en la store al principio de la partida
 export const unlockedShips = [1, 2, 3, 4, 5];

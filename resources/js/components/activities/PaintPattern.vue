@@ -39,17 +39,18 @@ const props = defineProps({
   create_audio_1: {type: String},
   create_audio_2: {type: String},
   create_audio_3: {type: String},
-  phase: {type: Number}
+  phase: {type: Number},
+  show_help: {type: Number}
 })
 
 const items = props.items
 const talkBool = ref(false)
 const levelComplete = ref(false)
+const inTutorial = ref(false)
 
 // Alerta inicial
 const showInitialAlert = () => {
   Swal.fire({
-    text: 'Descripcion para el nivel 1',
     showConfirmButton: false,
     html: swalHtml,
     width: "30rem",
@@ -59,19 +60,12 @@ const showInitialAlert = () => {
   });
 }
 
-// <div class="flex justify-center">
-//                       <div
-//                           class="px-4 py-2 mt-4 font-press-start bg-gray-300 font-press-start rounded shadow-2xl border-4 border-gray-500 border-dashed">
-//                         Reto ${props.level[1]}
-//                       </div>
-//                     </div>
-
 const swalHtml = `
     <div class="flex justify-center items-center text-center">
                   <div>
 
                     <div
-                        class="bg-space font-press-start rounded shadow-2xl border-4 border-yellow-700 border-dashed my-6 py-12" style="background-position: center; background-size: cover;">
+                        class="bg-[url('https://cdn.pixabay.com/photo/2020/09/28/16/29/leaves-5610361_640.png')] font-press-start rounded shadow-2xl border-4 border-yellow-700 border-dashed my-6 py-12" style="background-position: center; background-size: cover;">
                         <span class="border-4 border-yellow-700 border-dashed py-4 bg-yellow-500 pl-4 pr-4 text-yellow-800">RETO ${props.level[1]}</span> <br> <br> <br>
                       <span class="text-yellow-400">Pinta</span>
                       <span class="text-blue-400"> y </span>
@@ -144,7 +138,7 @@ const intro = (phase) => {
         `${localHost}/images/characters/robot/normal.png`,
         `${localHost}/images/characters/robot/talk.gif`
     );
-    showItemsPresentation(items, showHelp, props.fake_items, audio3Route, currentAudio)
+    showItemsPresentation(items, () => showHelp(props.show_help), props.fake_items, audio3Route, currentAudio)
     return
   }
 
@@ -154,7 +148,7 @@ const intro = (phase) => {
         `${localHost}/images/characters/robot/normal.png`,
         `${localHost}/images/characters/robot/talk.gif`
     );
-    showHelp()
+    showHelp(props.show_help)
 
     return
   }
@@ -171,6 +165,7 @@ const intro = (phase) => {
   talk(false)
 
   // Comienza a reproducir el audio inicial
+  inTutorial.value = true
   let audio1 = playAudio(audio1Route);
   currentAudio.value = audio1;
   talkBool.value = true
@@ -187,13 +182,23 @@ const intro = (phase) => {
   // SetOnEnded es una funcion que se encarga de ejecutar una funcion cuando el audio termina el primer parametro es
   // el audio y el segundo es la funcion a ejecutar
   setOnEnded(audio1, () => {
+    if (props.show_help === 3) {
+      talkBool.value = false;
+      inTutorial.value = false;
+      talkCharacter(
+          `${localHost}/images/characters/robot/normal.png`,
+          `${localHost}/images/characters/robot/talk.gif`
+      );
+      return;
+    }
+
     audio2.play();
     currentAudio.value = audio2;
   });
   // setOnEnded(audio2, showItemsPresentation(items, showHelp));
   setOnEnded(audio2, () => {
     talkBool.value = false;
-    showItemsPresentation(items, showHelp, props.fake_items, audio3Route, currentAudio);
+    showItemsPresentation(items, () => showHelp(props.show_help), props.fake_items, audio3Route, currentAudio);
   });
 }
 
@@ -287,18 +292,40 @@ const removeAnimationFromElement = (elementId, animationClass, delay) => {
   }, delay);
 };
 
-const showHelp = () => {
+// resolveAudio('Colorea... Colorea.', 'colorea',`start/pattern/help`, '0.9');
+const showHelp = (showHelp) => {
+
   if (talkBool.value) {
     return;
   }
 
+  let indication1 = ""
+
+  if (showHelp === 1) {
+    indication1 = playAudioAndAnimateCharacter(`${localHost}/audios/start/pattern/help/colorea.m4a`, `${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`);
+  } else if (showHelp === 2) {
+    return;
+  } else {
+    indication1 = playAudioAndAnimateCharacter(`${localHost}/audios/start/pattern/help/observa-colorea.m4a`, `${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`);
+  }
+
   talkBool.value = true;
-  let indication1 = playAudioAndAnimateCharacter(`${localHost}/audios/start/pattern/help/observa-colorea.m4a`, `${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`);
 
   indication1.onended = function () {
     talkBool.value = false;
     talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`);
+    inTutorial.value = false;
   };
+
+  if (showHelp === 1) {
+    animateElement('fig1', 'opacity-20', 0);
+    removeAnimationFromElement('fig1', 'opacity-20', 2000);
+    document.getElementById('arrow-right').style.fill = 'green';
+    setTimeout(function () {
+      document.getElementById('arrow-right').style.fill = '#9ca3af';
+    }, 2000)
+    return;
+  }
 
   // animateElement('fig1', 'animate-pulse', 0);
   animateElement('arrow', 'scale-50', 0);
@@ -348,7 +375,7 @@ let boxes = ref([])
 let step = ref(0)
 
 const paintBox = (id) => {
-  if (levelComplete.value) {
+  if (levelComplete.value || inTutorial.value) {
     playAudio(`${localHost}/audios/effects/wood.wav`)
     return
   }
@@ -367,7 +394,7 @@ const paintBox = (id) => {
     bubble.src = `${localHost}/audios/effects/soapBubble.wav`
     bubble.play()
 
-    playSuccessShortRandom()
+    // playSuccessShortRandom()
     showCheckIcon()
 
     document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
@@ -482,7 +509,7 @@ const win = () => {
           <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
-                       :activity_number="props.level[1]"
+                       :level="props.level"
           />
 
           <div class="row-span-3 flex justify-center items-center">
@@ -526,7 +553,7 @@ const win = () => {
                     <div :id="i" @click="paintBox(i)"
                          v-for="i in (props.size[0] * props.size[1])"
                          :key="i"
-                         :class="`bg-white border border-black hover:opacity-75 flex justify-center
+                         :class="`bg-white border border-black hover:opacity-75 flex justify-center cursor-cell
                          items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
                     </div>
                   </div>
