@@ -16,15 +16,90 @@
 }
 
 .font-bangers {
-  font-family: 'Bangers', system-ui;
+    font-family: 'Bangers', system-ui;
 }
 
 .font-luckiest-guy {
-  font-family: 'Luckiest Guy', system-ui;
+    font-family: 'Luckiest Guy', system-ui;
 }
 
 .font-zcool {
-  font-family: "ZCOOL KuaiLe", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "ZCOOL KuaiLe", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
+
+.btn-frog {
+    outline: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #40B3A2;
+    min-width: 200px;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+    box-sizing: border-box;
+    padding: 16px 20px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.btn-frog:hover {
+    opacity: .95;
+    background: #d37676;
+    color: #000;
+}
+
+.btn-frog .animation {
+    border-radius: 100%;
+    animation: ripple 0.6s linear infinite;
+}
+
+@keyframes ripple {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1), 0 0 0 20px rgba(255, 255, 255, 0.1), 0 0 0 40px rgba(255, 255, 255, 0.1), 0 0 0 60px rgba(255, 255, 255, 0.1);
+    }
+
+    100% {
+        box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.1), 0 0 0 40px rgba(255, 255, 255, 0.1), 0 0 0 60px rgba(255, 255, 255, 0.1), 0 0 0 80px rgba(255, 255, 255, 0);
+    }
+}
+
+.btn-little-frog {
+    background-color: #00BFA6;
+    min-width: 200px;
+    font-size: 12px;
+    padding: 16px 20px;
+    color: #fff;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    transition: .4s;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    height: 50px;
+}
+
+.btn-little-frog span:last-child {
+    display: none;
+}
+
+.btn-little-frog:hover {
+    transition: .4s;
+    /*border: 2px dashed #00BFA6;*/
+    background-color: #D37676FF;
+    color: #000;
+}
+
+.btn-little-frog:active {
+    background-color: #87dbd0;
+}
+

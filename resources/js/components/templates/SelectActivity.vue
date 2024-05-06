@@ -1,7 +1,7 @@
 <script setup>
 import CurvesColor from "../loaders/CurvesColor.vue";
 import {
-  localHost,
+  localHost, playAudio,
 } from '../../use';
 
 import SpaceBg from "@/components/background/SpaceBg.vue";
@@ -13,6 +13,7 @@ import DullShrimp from "@/components/ui/DullShrimp.vue";
 const props = defineProps({
   level: {type: Array},
   planet: {type: String},
+  color_text: {type: String},
   color_card: {type: String},
   planet_name: {type: String}
 })
@@ -50,36 +51,38 @@ const nextLevel = () => {
   window.location = `${localHost}/levels/${props.level[0] + 1}`;
 };
 
-
 </script>
 <template>
 
-  <SpaceBg></SpaceBg>
+  <!--  <SpaceBg></SpaceBg>-->
 
-  <div class="fixed h-full w-full flex justify-center items-center">
-    <div class="flex bg-blue-800 p-2 rounded  w-full m-12 container justify-center">
+  <div :class="[`fixed h-full w-full flex justify-center items-center`, color_card]"
+       style="background-position: center; background-size: cover;">
+    <div :class="[`flex rounded-lg shadow-2xl w-full container justify-center`]" style="background-size: cover;">
 
       <div class="flex justify-between fixed gap-x-10 translate-y-[-50px]">
         <div v-if="props.level[0] !== 1" class="flex">
           <button @click="previousLevel()" class="hover:scale-125 duration-300">
-            <ArrowLeftCircleIcon class="w-10 text-white hover:text-white duration-300"></ArrowLeftCircleIcon>
+            <ArrowLeftCircleIcon
+                :class="[`w-10 hover:text-white duration-300`, props.color_text]"></ArrowLeftCircleIcon>
           </button>
         </div>
 
         <div class="flex">
           <button @click="returnHome()" class="hover:scale-125 duration-300">
-            <HomeIcon class="w-10 text-white hover:text-white duration-300"></HomeIcon>
+            <HomeIcon :class="[`w-10 hover:text-white duration-300`, props.color_text]"></HomeIcon>
           </button>
         </div>
 
         <div class="flex">
           <button @click="nextLevel()" class="hover:scale-125 duration-300">
-            <ArrowRightCircleIcon class="w-10 text-white hover:text-white duration-300"></ArrowRightCircleIcon>
+            <ArrowRightCircleIcon
+                :class="[`w-10 hover:text-white duration-300`, props.color_text]"></ArrowRightCircleIcon>
           </button>
         </div>
       </div>
 
-      <div class="grid grid-cols-5">
+      <div class="grid grid-cols-5 w-full bg-gray-700 p-4 rounded-3xl shadow-2xl">
         <div class="bg-pattern2 flex justify-center p-4">
           <div class="text-center">
             <span class="font-luckiest-guy text-gray-300 text-3xl">Planeta {{ props.planet_name }}</span>
@@ -90,15 +93,19 @@ const nextLevel = () => {
             <CardPlanet :planetUrl="localHost + `/images/planets/templates/${props.planet}`"
                         class="scale-75"></CardPlanet>
 
+            <div class="flex justify-center border-b border-dashed">
+              <img :src="localHost + '/images/characters/robot/stay1.gif'" width="160" alt="">
+            </div>
 
           </div>
         </div>
 
         <div
             class="bg-pattern1 col-span-3 border-4 border-black h-[600px] overflow-auto grid grid-cols-4 p-12 gap-6 relative">
-          <div :id="i" v-for="i, index in props.level[1]" :key="index" class="flex justify-center">
+          <div :id="i" v-for="i, index in props.level[1]" :key="index" class="flex justify-center"
+          >
             <a :href="`${localHost}/level${props.level[0]}/${i}`" :key="i">
-              <PerfectHusky :activity="i" :color="color_card"></PerfectHusky>
+              <PerfectHusky :activity="i" :color="color_card" :textColor="props.color_text"></PerfectHusky>
             </a>
           </div>
         </div>
@@ -106,50 +113,53 @@ const nextLevel = () => {
         <div class="bg-pattern2 relative ">
 
           <div class="absolute w-[40px] top-0 py-2 h-full rounded-3xl ">
-            <div :class="[`bg-orange-800 h-full rounded-3xl translate-x-[-40px] w-[36px] -z-10`, props.level[1] > 4 ? 'hidden' : '']">
 
+            <div
+                :class="[`bg-orange-800 h-full rounded-3xl translate-x-[-40px] w-[36px] -z-10`, props.level[1] > 12 ? 'hidden' : '']">
             </div>
 
-            <button @click="up" id="scrollUp" class="bg-yellow-400 border-4 border-yellow-600 absolute translate-x-[-40px] w-[36px] top-0 py-2 rounded-t-xl translate-y-[4px]">
+
+            <button @click="up" id="scrollUp"
+                    class="bg-yellow-400 border-4 border-yellow-600 absolute translate-x-[-40px] w-[36px] top-0 py-2 rounded-t-xl translate-y-[4px]">
               <ChevronDoubleUpIcon class="w-7"></ChevronDoubleUpIcon>
             </button>
 
 
-
-          <button @click="down" id="scrollDown" class="bg-yellow-400 border-4 border-yellow-600 absolute translate-x-[-40px] w-[36px] bottom-0 py-2 rounded-b-xl translate-y-[-4px]">
-            <ChevronDoubleDownIcon class="w-7"></ChevronDoubleDownIcon>
-          </button>
+            <button @click="down" id="scrollDown"
+                    class="bg-yellow-400 border-4 border-yellow-600 absolute translate-x-[-40px] w-[36px] bottom-0 py-2 rounded-b-xl translate-y-[-4px]">
+              <ChevronDoubleDownIcon class="w-7"></ChevronDoubleDownIcon>
+            </button>
           </div>
 
           <div class="p-2">
             <div class="flex p-6 bg-stone-700 rounded border-2 border-stone-500">
-              <span class="font-luckiest-guy font-luckiest-guy text-gray-300 text-3xl">Bronze:</span>
-              <div :id="i" v-for="i in 5" :key="i" class="flex-col justify-start items-center gap-2 ">
-                <div class="fixed loader border-2 rounded-full border-yellow-800 bg-[#dca570]
+<!--              <span class="font-luckiest-guy font-luckiest-guy text-gray-300 text-3xl">Bronze:</span>-->
+              <div :id="i" v-for="i in 5" :key="i" class="flex justify-center items-center ">
+                <div class="loader border-2 rounded-full border-yellow-800 bg-[#dca570]
                   aspect-square w-8 flex justify-center items-center text-yellow-800"
-                     :style="{transform: `translateX(${20 * i}px)`}">$
+                     :style="{transform: `translateX(${5 * i}px)`}">$
                 </div>
               </div>
             </div>
 
 
             <div class="flex p-6 bg-gray-800 rounded border-2 border-gray-500 my-2">
-              <span class="font-luckiest-guy font-luckiest-guy text-gray-300 text-3xl">Plata:</span>
-              <div :id="i" v-for="i in 3" :key="i" class="flex-col justify-start items-center gap-2 ">
-                <div class="fixed loader border-2 rounded-full border-gray-700 bg-gray-300
+<!--              <span class="font-luckiest-guy font-luckiest-guy text-gray-300 text-3xl">Plata:</span>-->
+              <div :id="i" v-for="i in 3" :key="i" class="flex-col justify-start items-center ">
+                <div class=" loader border-2 rounded-full border-gray-700 bg-gray-300
                   aspect-square w-8 flex justify-center items-center text-gray-700"
-                     :style="{transform: `translateX(${20 * i}px)`}">$
+                     :style="{transform: `translateX(${5 * i}px)`}">$
                 </div>
               </div>
 
             </div>
 
             <div class="flex p-6 bg-yellow-900 rounded border-2 border-yellow-500">
-              <span class="font-luckiest-guy font-luckiest-guy text-gray-300 text-3xl">Oro:</span>
-              <div :id="i" v-for="i in 1" :key="i" class="flex-col justify-start items-center gap-2">
-                <div class="fixed loader border-2 rounded-full border-yellow-700 bg-yellow-300
+<!--              <span class="font-luckiest-guy font-luckiest-guy text-gray-300 text-3xl">Oro:</span>-->
+              <div :id="i" v-for="i in 1" :key="i" class="flex-col justify-start items-center">
+                <div class="loader border-2 rounded-full border-yellow-700 bg-yellow-300
                   aspect-square w-8 flex justify-center items-center text-yellow-700"
-                     :style="{transform: `translateX(${20 * i}px)`}">$
+                     :style="{transform: `translateX(${5 * i}px)`}">$
                 </div>
               </div>
             </div>
@@ -185,14 +195,14 @@ const nextLevel = () => {
 }
 
 .bg-pattern1::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	border-radius: 10px;
-	background-color: #F5F5F5;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  background-color: #F5F5F5;
   transition-duration: 300ms;
 }
 
 .bg-pattern1::-webkit-scrollbar-thumb {
-  border-radius: 10px;
+  border-radius: 14px;
   background: #9a3412; /* Color del deslizador */
   transition-duration: 300ms;
 }
