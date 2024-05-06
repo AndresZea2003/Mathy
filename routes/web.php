@@ -22,6 +22,8 @@ Route::post('/loadAudio', [ActivityController::class, 'loadAudio'])->name('loadA
 
 Route::get('level{levelNumber}/{activityNumber}', [ActivityController::class, 'showActivity']);
 
+Route::get('/activityCount/{levelNumber}', [ActivityController::class, 'getActivityCount']);
+
 Route::view('/levels', 'levels')->name('levels');
 
 Route::view('/store', 'store')->name('store');

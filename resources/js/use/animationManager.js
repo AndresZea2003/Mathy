@@ -8,7 +8,7 @@ import {
     types
 } from './';
 
-export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio) => {
+export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio, currentAudio, newCharacter) => {
 
     let box = document.getElementById('itemPresentation')
 
@@ -54,24 +54,51 @@ export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio) 
             countAudiosPlayed++;
 
             console.log(countAudiosPlayed)
+
             if (countAudiosPlayed === (items.length - jumpIterations)) {
 
                 console.log('Ultimo item');
 
+                console.log(countAudiosPlayed, 'ESTS ES EL COUNT AUDIO PLAYED')
                 let item = items[i];
-                verifyFileExistence(`${localHost}/audios/items/and/${item.name}.m4a`, function (exist) {
-                    if (exist) {
-                        console.log(`Ultimo item con Audio`);
-                    } else {
-                        console.log(item)
-                        resolveAudio(`y ${item.name}`, `${item.name}`, 'items/and', '0.9');
-                    }
-                });
+                if (countAudiosPlayed === 1) {
+                    verifyFileExistence(`${localHost}/audios/items/theType/${item.name}.m4a`, function (exist) {
+                        if (exist) {
+                            console.log(`Ultimo item con Audio`);
+                        } else {
+                            console.log(item)
+                            if (item.type === types.color) {
+                                resolveAudio(`el color ${item.name}`, `${item.name}`, 'items/theType', '0.9');
+                            } else if (item.type === types.letter) {
+                                resolveAudio(`la letra ${item.name}`, `${item.name}`, 'items/theType', '0.9');
+                            } else if (item.type === types.number) {
+                                resolveAudio(`el número ${item.name}`, `${item.name}`, 'items/theType', '0.9');
+                            }
+                        }
+                    });
 
-                audio = playAudio(`${localHost}/audios/items/and/${items[i].name}.m4a`);
+                    audio = playAudio(`${localHost}/audios/items/theType/${items[i].name}.m4a`);
+                } else {
+                    verifyFileExistence(`${localHost}/audios/items/and/${item.name}.m4a`, function (exist) {
+                        if (exist) {
+                            console.log(`Ultimo item con Audio`);
+                        } else {
+                            console.log(item)
+                            resolveAudio(`y ${item.name}`, `${item.name}`, 'items/and', '0.9');
+                        }
+                    });
+
+                    audio = playAudio(`${localHost}/audios/items/and/${items[i].name}.m4a`);
+                }
+
             } else {
                 audio = playAudio(`${localHost}/audios/items/${items[i].name}.m4a`);
             }
+
+            if (currentAudio) {
+                currentAudio.value = audio;
+            }
+
             setOnEnded(audio, playNextAudio);
             const cleanBox = () => {
                 let imgExt = box.getElementsByTagName('img')[0];
@@ -113,9 +140,16 @@ export const showItemsPresentation = (items, callback, fakeItems, onEndedAudio) 
 
             if (onEndedAudio) {
                 let audio3 = playAudio(onEndedAudio);
+                if (currentAudio) {
+                    currentAudio.value = audio3;
+                }
                 box.classList.add('hidden')
                 setOnEnded(audio3, () => {
-                    talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
+                    if (newCharacter) {
+                        talkCharacter(`${localHost}/images/characters/robot/${newCharacter}`, `${localHost}/images/characters/robot/${newCharacter}`)
+                    } else {
+                        talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
+                    }
 
                     if (callback) {
                         callback();

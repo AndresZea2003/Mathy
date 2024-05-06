@@ -21,12 +21,14 @@ import '@fontsource/julius-sans-one';
 
 import TestPermutations from "./components/activities/TestPermutations.vue"
 import TestNaraket from "./components/activities/TestNaraket.vue"
+import CacheTest from "./components/activities/old/cacheTest.vue";
 
 import MenuTest from "./components/templates/Menu/Menu.vue";
 import StoreMain from "./components/templates/Store/Store.vue";
 import CoinChanger from "./components/activities/Coin Changer/CoinChangerMain.vue";
 import TemplateDrawActivity from "./components/activities/DrawActivity/TemplateDrawActivity.vue";
 import TemplateDrawActivityFree from "./components/activities/DrawActivity/TemplateDrawActivityFree.vue";
+
 
 
 
@@ -46,6 +48,7 @@ createApp({
 
         'test-permutations': TestPermutations,
         'test-naraket': TestNaraket,
+        'cache-test': CacheTest,
 
         'menu-test': MenuTest,
         'store-main': StoreMain,
