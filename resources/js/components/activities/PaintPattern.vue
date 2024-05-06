@@ -46,7 +46,14 @@ const items = props.items;
 const talkBool = ref(false);
 const levelComplete = ref(false);
 const coinChangerVortexRef = ref(false);
+const vortexType = ref("");
+const selectedLevelVortex = ref(false);
 
+
+//Establecemos la ubicacion actual del software en el storage
+localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
+
+// console.log("propsleve", );
 
 // Alerta inicial
 const showInitialAlert = () => {
@@ -400,9 +407,20 @@ const win = () => {
   }, 2600)
 };
 
+//Funcion que controla los emits que activan el vortice
 const coinChangerVortexActivate = (event) => {
   coinChangerVortexRef.value = event;
 };
+
+//Funcion que controla el tipo de vortice si es a coin changer o a la store
+const vortexTypeFunction = (event) => {
+  vortexType.value = event;
+};
+
+const selectedLevelVortexFunction= (event) => {
+  selectedLevelVortex.value = event;
+};
+
 </script>
 <template>
   <!--  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden-->
@@ -414,7 +432,7 @@ const coinChangerVortexActivate = (event) => {
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
-  <CoinChangerVortex v-if="coinChangerVortexRef"/>
+  <CoinChangerVortex v-if="coinChangerVortexRef" :type="vortexType" :selected="selectedLevelVortex"/>
 
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
@@ -491,6 +509,8 @@ const coinChangerVortexActivate = (event) => {
             :items="items"
             @closeAnimation="coinChangerVortexActivate"
             @openAnimation="coinChangerVortexActivate"
+            @vortexType="vortexTypeFunction"
+            @selected="selectedLevelVortexFunction"
           />
         </div>
       </div>

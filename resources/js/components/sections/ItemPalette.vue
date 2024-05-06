@@ -23,6 +23,9 @@ import CoinChangerVortexVue from "../activities/Coin Changer/CoinChangerVortex.v
 const goldCoins = ref(null);
 const silverCoins = ref(null);
 const bronzeCoins = ref(null);
+const goldCoinsChangeActive = ref("");
+const silverCoinsChangeActive = ref("");
+const bronzeCoinsChangeActive = ref("");
 
 //Props
 const props = defineProps({
@@ -31,7 +34,7 @@ const props = defineProps({
 });
 
 //Emits
-const emit = defineEmits(['closeAnimation', 'openAnimation']);
+const emit = defineEmits(['closeAnimation', 'openAnimation', 'vortexType', 'selected']);
 
 
 onMounted(() => {
@@ -53,6 +56,28 @@ onMounted(() => {
     }else if(parseInt(localStorage.getItem('bronzeCoins')) < 5){
         bronzeCoins.value = parseInt(localStorage.getItem('bronzeCoins'));
     }
+
+    //Controlamos si hay monedas suficientes para cambiar para darle efecto al boton de cambiar segun las monedas.
+    if(parseInt(localStorage.getItem('goldCoins')) > 0){
+        goldCoinsChangeActive.value = "item-palette-gold__div--container-active";
+    }else if(parseInt(localStorage.getItem('goldCoins')) === 0){
+        goldCoinsChangeActive.value = "";
+    };
+
+    if(parseInt(localStorage.getItem('silverCoins')) > 2){
+        silverCoinsChangeActive.value = "item-palette-gold__div--container-active";
+    }else if(parseInt(localStorage.getItem('silverCoins')) < 3){
+        silverCoinsChangeActive.value = "";
+    };
+
+    if(parseInt(localStorage.getItem('bronzeCoins')) > 2){
+        bronzeCoinsChangeActive.value = "item-palette-gold__div--container-active";
+    }else if(parseInt(localStorage.getItem('bronzeCoins')) > 3){
+        bronzeCoinsChangeActive.value = "";
+    };
+
+
+
 
     localStorage.setItem('itemSelected', null)
     itemSelected.value = getSelectItem()
@@ -141,9 +166,17 @@ const closeAnimation = () => {
     emit('closeAnimation', false);
 };
 
-const openAnimation = () => {
-    console.log("hover funcional");
+const openAnimation = (type) => {
     emit('openAnimation', true);
+    emit('vortexType', type);
+};
+
+//Creamos una funcion que nos mandara a la ruta de la store
+const storeAccess = () => {
+    setTimeout(() => {
+        window.location = `${localHost}/store`;
+    }, 3000);
+    emit('selected', true);
 };
 
 
@@ -238,18 +271,30 @@ const openAnimation = () => {
 
 
                         <!-- Codigo nuevo para monedas -->
-                        <div class="item-palette-gold__div--container w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-yellow-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300" @mouseenter="openAnimation()" @mouseleave="closeAnimation()">
-                            <img class="item-palette-gold__img--gold-coin w-10 duration-300 ease-in-out" v-for="index in goldCoins" :key="index" :src="IconGoldCoin" alt="golden-coin"/>
-                            <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
+                        <div>
+                            <div v-if="goldCoins < 1" class="w-52 h-10 absolute z-20"></div>
+                            <div :class="`item-palette-gold__div--container ${goldCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-yellow-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`" @mouseenter="openAnimation('store')" @mouseleave="closeAnimation()" @click="storeAccess()">
+                                <img class="item-palette-gold__img--gold-coin w-10 duration-300 ease-in-out" v-for="index in goldCoins" :key="index" :src="IconGoldCoin" alt="golden-coin"/>
+                                <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
+                            </div>
                         </div>
-                        <div class="item-palette-silver__div--container w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-gray-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300" @mouseenter="openAnimation()" @mouseleave="closeAnimation()">
-                            <img class="item-palette-silver__img--silver-coin w-10 duration-300 ease-in-out" v-for="index in silverCoins" :key="index" :src="IconSilverCoin" alt="silver-coin"/>
-                            <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
+
+                        <div>
+                            <div v-if="silverCoins < 3" class="w-52 h-10 absolute z-20"></div>
+                            <div :class="`item-palette-silver__div--container ${silverCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-gray-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`" @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()">
+                                <img class="item-palette-silver__img--silver-coin w-10 duration-300 ease-in-out" v-for="index in silverCoins" :key="index" :src="IconSilverCoin" alt="silver-coin"/>
+                                <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
+                            </div>
                         </div>
-                        <div class="item-palette-bronze__div--container w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-amber-700 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300" @mouseenter="openAnimation()" @mouseleave="closeAnimation()">
-                            <img class="item-palette-bronze__img--bronze-coin w-10 duration-300 ease-in-out" v-for="index in bronzeCoins" :key="index" :src="IconBronzeCoin" alt="bronze-coin"/>
-                            <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
+
+                        <div>
+                            <div v-if="bronzeCoins < 3" class="w-52 h-10 absolute z-20"></div>
+                            <div :class="`item-palette-bronze__div--container ${bronzeCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-amber-700 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`" @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()">
+                                <img class="item-palette-bronze__img--bronze-coin w-10 duration-300 ease-in-out" v-for="index in bronzeCoins" :key="index" :src="IconBronzeCoin" alt="bronze-coin"/>
+                                <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
+                            </div>
                         </div>
+                        
 
 
                     </div>
@@ -267,7 +312,7 @@ const openAnimation = () => {
                     class="bg-red-100 col-span-2 flex justify-center m-3 p-2 rounded-md border-orange-400 border-4 border-dashed">
                     <span class="font-semibold text-xl text-center">Paleta de colores</span>
                 </div> -->
-                <div @click="selectItemPalette(item)" v-for="item in props.items"
+                <div @click="selectItemPalette(item)" v-for="item , index in props.items" :key="index"
                      class="flex justify-center items-center w-full h-full">
                     <button
                         :class="['bg-gray-100 shadow-md rounded-lg hover:opacity-75 hover:scale-95 duration-300 select-none font-bold text-6xl w-20 h-20 flex justify-center items-center' ,
@@ -387,32 +432,6 @@ const openAnimation = () => {
     box-shadow: inset 0px 0px 20px -1px rgba(233,245,0,1);
 }
 
-/* @keyframes backgroundCoins {
-    0% {
-        background-position: 0% 0%;
-    }
-
-    50% {
-        background-position: 100% 100%;
-    }
-
-    100% {
-        background-position: 0% 0%;
-    }
-} */
-
-/* .item-palette-silver__div--container {
-
-}
-
-.item-palette-bronze__div--container {
-
-} */
-/* .item-palette-gold__div--container:hover {
-    background-color: #facc15;
-    border: ;
-} */
-
 
 .item-palette-gold__div--container:hover .item-palette-gold__img--gold-coin {
     width: 0px;
@@ -422,6 +441,29 @@ const openAnimation = () => {
     width: 40px;
 }
 
+.item-palette-gold__div--container-active {
+    animation: changerActive 2s infinite;
+}
+
+@keyframes changerActive {
+    0% {
+        -webkit-box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
+        -moz-box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
+        box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
+    }
+
+    50% {
+        -webkit-box-shadow: 0px 0px 20px -3px rgba(255,255,255,1);
+        -moz-box-shadow: 0px 0px 20px -3px rgba(255,255,255,1);
+        box-shadow: 0px 0px 20px -3px rgba(255,255,255,1);
+    }
+
+    100% {
+        -webkit-box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
+        -moz-box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
+        box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
+    }
+}
 
 .item-palette-gold__img--gold-coin {
     filter: drop-shadow(10px 10px 5px rgba(0, 0, 0, 0.5));

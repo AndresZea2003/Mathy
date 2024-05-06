@@ -54,9 +54,11 @@ const selectedShip = (event) => {
     selectedShipRef.value = event;
 };
 
+console.log();
+
 //Funcion para volver atras
 const backTo = () => {
-    console.log("volver atras");
+    window.location = localStorage.getItem('currentLocation');
 };
 
 
