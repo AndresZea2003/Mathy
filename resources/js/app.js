@@ -27,6 +27,7 @@ import StoreMain from "./components/templates/Store/Store.vue";
 import CoinChanger from "./components/activities/Coin Changer/CoinChangerMain.vue";
 import TemplateDrawActivity from "./components/activities/DrawActivity/TemplateDrawActivity.vue";
 import TemplateDrawActivityFree from "./components/activities/DrawActivity/TemplateDrawActivityFree.vue";
+import HomeAccess from "./components/templates/HomeView/HomeAccess.vue";
 
 
 
@@ -51,7 +52,8 @@ createApp({
         'store-main': StoreMain,
         'coin-changer': CoinChanger,
         'draw-activity': TemplateDrawActivity,
-        'draw-activity-free':TemplateDrawActivityFree
+        'draw-activity-free':TemplateDrawActivityFree,
+        'home-access': HomeAccess
 
     }
 }).mount("#app");
