@@ -28,6 +28,7 @@ import Swal from "sweetalert2";
 import {defineProps} from 'vue';
 import BackgroundActivities from "../background/BackgroundActivities.vue";
 import CoinChangerVortex from "./Coin Changer/CoinChangerVortex.vue";
+import CoinChanger from "./Coin Changer/CoinChanger.vue";
 
 const props = defineProps({
   size: {type: Array},
@@ -48,6 +49,8 @@ const levelComplete = ref(false);
 const coinChangerVortexRef = ref(false);
 const vortexType = ref("");
 const selectedLevelVortex = ref(false);
+const selectedCoinChanger = ref(false);
+const updateCoins = ref(false);
 
 
 //Establecemos la ubicacion actual del software en el storage
@@ -417,8 +420,25 @@ const vortexTypeFunction = (event) => {
   vortexType.value = event;
 };
 
+//Funcion que controla cuando el usuario da click para mostrar la animacion de la nave viajando al portal.
 const selectedLevelVortexFunction= (event) => {
   selectedLevelVortex.value = event;
+};
+
+//Funcion que controla si se abre el coinChanger
+const selectedCoinChangerFunction = (event) => {
+  selectedCoinChanger.value = event;
+};
+
+const coinChangerClose = (event) => {
+  selectedCoinChanger.value = event;
+  selectedLevelVortex.value = event;
+  coinChangerVortexRef.value = event;
+};
+
+const updateCoinsFunction = (event) => {
+  updateCoins.value = event;
+  console.log("updatecoins ejecutandose");
 };
 
 </script>
@@ -432,7 +452,7 @@ const selectedLevelVortexFunction= (event) => {
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
-  <CoinChangerVortex v-if="coinChangerVortexRef" :type="vortexType" :selected="selectedLevelVortex"/>
+  <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
 
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
@@ -443,13 +463,15 @@ const selectedLevelVortexFunction= (event) => {
                          :image_2="`${localHost}/images/characters/robot/talk.gif`"
           />
         </div>
-        <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
+        <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4 relative">
+          <div v-if="selectedCoinChanger" class="w-full h-full absolute top-0 left-0 z-30">
+            <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'" :goldenExchange="3" :silverExchange="3" :guide="true" @coinChangerClose="coinChangerClose" @updateCoins="updateCoinsFunction"/>
+          </div>
           <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
                        :activity_number="props.level[1]"
           />
-
           <div class="row-span-3 flex justify-center items-center">
             <div>
               <div class="my-6 flex justify-center gap-5">
@@ -507,10 +529,12 @@ const selectedLevelVortexFunction= (event) => {
           <ItemPalette
             :level="props.level"
             :items="items"
+            :updateCoins="updateCoins"
             @closeAnimation="coinChangerVortexActivate"
             @openAnimation="coinChangerVortexActivate"
             @vortexType="vortexTypeFunction"
             @selected="selectedLevelVortexFunction"
+            @selectedCoinChanger="selectedCoinChangerFunction"
           />
         </div>
       </div>

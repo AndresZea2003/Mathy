@@ -1,9 +1,8 @@
 <script setup>
 
-import {ref, onMounted} from "vue";
-import {types, sizes, localHost, getSelectItem} from '../../use';
+import {ref, onMounted, onUpdated} from "vue";
+import {types, sizes, localHost, getSelectItem, updateCoins} from '../../use';
 import Swal from 'sweetalert2';
-
 
 
 let itemSelected = ref();
@@ -17,7 +16,11 @@ import IconGoldCoin from "../../../../public/images/globals/gold-coin.png";
 import IconSilverCoin from "../../../../public/images/globals/silver-coin.png";
 import IconBronzeCoin from "../../../../public/images/globals/bronze-coin.png";
 import IconChanger from "../../../../public/images/globals/icon-change.png";
-import CoinChangerVortexVue from "../activities/Coin Changer/CoinChangerVortex.vue";
+
+//Importacion audio
+import hoverAudio from '../../../../public/audios/effects/audioHoverStandard.mp3';
+import clickAudio from '../../../../public/audios/effects/audioClickStandard.mp3';
+
 
 //Ref que controla el numero de monedas de oro
 const goldCoins = ref(null);
@@ -27,17 +30,22 @@ const goldCoinsChangeActive = ref("");
 const silverCoinsChangeActive = ref("");
 const bronzeCoinsChangeActive = ref("");
 
+
 //Props
 const props = defineProps({
     level: {type: Array},
     items: {type: Object},
+    updateCoins: {type: Boolean}
 });
 
+
+const updateCoinsRef = ref(props.updateCoins);
+
 //Emits
-const emit = defineEmits(['closeAnimation', 'openAnimation', 'vortexType', 'selected']);
+const emit = defineEmits(['closeAnimation', 'openAnimation', 'vortexType', 'selected', 'selectedCoinChanger']);
 
 
-onMounted(() => {
+const storageCoinUpdated = () => {
     //Valido si las monedas de oro son 5 o mas de 5 en caso de ser mas de 5 va a devolver solo 5 y si es menos devolvera la cantidad que se tiene
     if(parseInt(localStorage.getItem('goldCoins')) > 5){
         goldCoins.value = 5;
@@ -72,18 +80,28 @@ onMounted(() => {
 
     if(parseInt(localStorage.getItem('bronzeCoins')) > 2){
         bronzeCoinsChangeActive.value = "item-palette-gold__div--container-active";
-    }else if(parseInt(localStorage.getItem('bronzeCoins')) > 3){
+    }else if(parseInt(localStorage.getItem('bronzeCoins')) < 3){
         bronzeCoinsChangeActive.value = "";
     };
+};
+
+onUpdated(() => {
+    if(props.updateCoins){
+        storageCoinUpdated();
+    };
+});
 
 
 
+onMounted(() => {
+    storageCoinUpdated();
 
-    localStorage.setItem('itemSelected', null)
-    itemSelected.value = getSelectItem()
+    localStorage.setItem('itemSelected', null);
+    itemSelected.value = getSelectItem();
 });
 
 const selectItemPalette = (item) => {
+    storageCoinUpdated();
     let selectSound = new Audio()
     selectSound.src = `${localHost}/audios/effects/bubble.wav`
     selectSound.play()
@@ -169,16 +187,39 @@ const closeAnimation = () => {
 const openAnimation = (type) => {
     emit('openAnimation', true);
     emit('vortexType', type);
+    hoverButtonAudio();
 };
 
 //Creamos una funcion que nos mandara a la ruta de la store
 const storeAccess = () => {
+    clickButtonAudio();
     setTimeout(() => {
         window.location = `${localHost}/store`;
     }, 3000);
     emit('selected', true);
 };
 
+const openCoinChanger = () => {
+    setTimeout(() => {
+        emit('selectedCoinChanger', true);
+    }, 4000);
+    emit('selected', true);
+};
+
+//Funciones para los sonidos
+const hoverButtonAudio = () => {
+    const hoverAudioEffect = new Audio(hoverAudio);
+
+    hoverAudioEffect.play();
+    hoverAudioEffect.volume = 0.5;
+};
+
+const clickButtonAudio = () => {
+    const clickAudioEffect = new Audio(clickAudio);
+
+    clickAudioEffect.play();
+    clickAudioEffect.volume = 0.5;
+};
 
 </script>
 <template>
@@ -281,7 +322,7 @@ const storeAccess = () => {
 
                         <div>
                             <div v-if="silverCoins < 3" class="w-52 h-10 absolute z-20"></div>
-                            <div :class="`item-palette-silver__div--container ${silverCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-gray-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`" @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()">
+                            <div :class="`item-palette-silver__div--container ${silverCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-gray-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`" @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()" @click="openCoinChanger()">
                                 <img class="item-palette-silver__img--silver-coin w-10 duration-300 ease-in-out" v-for="index in silverCoins" :key="index" :src="IconSilverCoin" alt="silver-coin"/>
                                 <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
                             </div>
@@ -289,7 +330,7 @@ const storeAccess = () => {
 
                         <div>
                             <div v-if="bronzeCoins < 3" class="w-52 h-10 absolute z-20"></div>
-                            <div :class="`item-palette-bronze__div--container ${bronzeCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-amber-700 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`" @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()">
+                            <div :class="`item-palette-bronze__div--container ${bronzeCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-amber-700 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`" @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()" @click="openCoinChanger()">
                                 <img class="item-palette-bronze__img--bronze-coin w-10 duration-300 ease-in-out" v-for="index in bronzeCoins" :key="index" :src="IconBronzeCoin" alt="bronze-coin"/>
                                 <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger" alt="changer"/>
                             </div>

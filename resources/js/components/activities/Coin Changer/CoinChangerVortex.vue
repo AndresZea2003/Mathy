@@ -1,7 +1,22 @@
 <script setup>
+
+//Imagenes
 import coinChangerImage from '../../../../../public/images/coin-change/coin-changer-image.png';
 import storeImage from '../../../../../public/images/coin-change/store-img.png';
+
+//Librerias
 import { store_data } from '../../../use/store_data';
+
+
+//Sonidos
+import vortexSound from '../../../../../public/audios/coin-changer/vortex-sound.mp3';
+import audioRocket from '../../../../../public/audios/effects/audioRocket.mp3';
+
+
+
+import { onBeforeUnmount, onUpdated } from 'vue';
+
+
 
 const props = defineProps({
     type: {type: Array},
@@ -13,6 +28,26 @@ const currentShip = () => {
 
     return store_data[currentShip - 1].img;
 };
+
+const vortexSoundEffect = new Audio(vortexSound);
+const audioRocketEffect = new Audio(audioRocket);
+
+vortexSoundEffect.play();
+vortexSoundEffect.volume = 0.05;
+
+onBeforeUnmount(() => {
+    vortexSoundEffect.pause();
+    vortexSoundEffect.currentTime = 0;
+});
+
+
+onUpdated(() => {
+    if(props.selected){
+        audioRocketEffect.play();
+        // audioRocketEffect.volume = 0.5;
+    };
+});
+
 
 </script>
 
