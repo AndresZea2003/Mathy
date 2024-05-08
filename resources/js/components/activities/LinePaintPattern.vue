@@ -130,7 +130,11 @@ const updateBoxSize = () => {
     }
   }
 }
-onMounted(() => {
+let totalActivities = ref(0)
+onMounted(async () => {
+  await axios.get('/activityCount/' + props.level[0])
+      .then(response => totalActivities.value = response.data);
+
   showInitialAlert()
 
   updateBoxSize();
@@ -721,47 +725,104 @@ const paintBox = (id) => {
   }
 }
 
-const win = () => {
-  // playSuccessShortRandom(talkBool.value)
+// const win = () => {
+//   // playSuccessShortRandom(talkBool.value)
+//
+//   levelComplete.value = true
+//   let progressBar = document.getElementById('progressBar')
+//
+//   let animated = document.getElementById('animatedRocket')
+//
+//   document.getElementById('icon-check').classList.add('hidden')
+//   document.getElementById('icon-error').classList.add('hidden')
+//
+//   progressBar.classList.add('hidden')
+//   animated.classList.remove('hidden')
+//
+//   setTimeout(function () {
+//     let winView = document.getElementById('winView')
+//
+//     winView.classList.remove('hidden')
+//
+//     setTimeout(function () {
+//       winView.classList.replace('opacity-0', 'opacity-100')
+//     }, 500)
+//
+//     setTimeout(function () {
+//       progressBar.classList.remove('hidden')
+//       animated.classList.add('hidden')
+//     }, 1000)
+//
+//     setTimeout(function () {
+//       winView.classList.replace('opacity-100', 'opacity-0')
+//     }, 3000)
+//
+//     setTimeout(function () {
+//       winView.classList.add('hidden')
+//     }, 3500)
+//     setTimeout(function () {
+//       document.getElementById('nextLevelButton').classList.remove('hidden')
+//     }, 2000)
+//   }, 2600)
+// };
 
+let level = ref(props.level)
+let showProgressBar = ref(true)
+const win = async () => {
   levelComplete.value = true
+  playAudio(`${localHost}/audios/effects/levelUp.mp3`)
   let progressBar = document.getElementById('progressBar')
 
-  let animated = document.getElementById('animatedRocket')
+  let staticBar = document.getElementById('staticBar')
 
-  document.getElementById('icon-check').classList.add('hidden')
-  document.getElementById('icon-error').classList.add('hidden')
+  let animated = document.getElementById('test2')
 
-  progressBar.classList.add('hidden')
-  animated.classList.remove('hidden')
+  let station = document.getElementById('station')
+
+  let board = document.getElementById('board')
+
+  let winView = document.getElementById('winView')
+
+  staticBar.classList.replace('opacity-100', 'opacity-0')
+  progressBar.classList.replace('border-black', 'border-yellow-400')
+  animated.classList.replace('opacity-0', 'opacity-100')
+  station.classList.add('moveLeftInOut')
+
+  board.classList.replace('bg-red-200', 'bg-green-300')
+
+  let button = document.getElementById('nextLevelButton')
+
+  if (totalActivities.value === level.value[1]) {
+
+    return
+  }
+
+
+  winView.classList.remove('hidden')
 
   setTimeout(function () {
-    let winView = document.getElementById('winView')
-
-    winView.classList.remove('hidden')
-
-    setTimeout(function () {
-      winView.classList.replace('opacity-0', 'opacity-100')
-    }, 500)
+    board.classList.replace('bg-green-300', 'bg-red-200')
+    winView.classList.replace('opacity-0', 'opacity-100')
 
     setTimeout(function () {
-      progressBar.classList.remove('hidden')
-      animated.classList.add('hidden')
+      staticBar.classList.replace('opacity-0', 'opacity-100')
+      animated.classList.replace('opacity-100', 'opacity-0')
+      button.classList.remove('hidden')
+      showProgressBar.value = false
+      level.value[1] = level.value[1] + 1
+      setTimeout(function () {
+        showProgressBar.value = true
+      }, 100)
     }, 1000)
+  }, 2000)
 
-    setTimeout(function () {
-      winView.classList.replace('opacity-100', 'opacity-0')
-    }, 3000)
-
+  setTimeout(function () {
+    winView.classList.replace('opacity-100', 'opacity-0')
     setTimeout(function () {
       winView.classList.add('hidden')
-    }, 3500)
-    setTimeout(function () {
-      document.getElementById('nextLevelButton').classList.remove('hidden')
-    }, 2000)
-  }, 2600)
-};
-
+    }, 200)
+  }, 4000)
+}
 </script>
 <template>
   <!--  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden-->
@@ -782,14 +843,14 @@ const win = () => {
 
 
         <div class="col-span-5">
-          <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
+          <ProgressBar v-if="showProgressBar" :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
                        :level="props.level"
           />
         </div>
 
-        <div class="col-span-5 flex justify-center bg-rose-200">
+        <div id="board" class="col-span-5 flex justify-center bg-red-200">
           <div class="col-span-4 flex justify-center items-center">
             <div>
               <div class="my-6 flex justify-center gap-5">
