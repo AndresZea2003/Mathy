@@ -120,7 +120,7 @@ onMounted(async () => {
 
 #test2 {
   position: absolute;
-  left: 64%;
+  left: 70%;
   padding-top: 80px;
   transform: translate(-64%);
 }
