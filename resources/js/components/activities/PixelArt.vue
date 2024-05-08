@@ -216,12 +216,14 @@ const paintRow = (rowNumber, item, guide) => {
 
 };
 
-import {cat, mouse, heart} from '../../use';
+import {cat, mouse, heart, turtle, hat} from '../../use';
 
 const drawOptions = {
   cat: cat,
   mouse: mouse,
-  heart: heart
+  heart: heart,
+  turtle: turtle,
+  hat: hat
 };
 
 let totalPixels = ref((drawOptions[props.draw].length / 2) * 9)
@@ -233,43 +235,6 @@ setTimeout(function () {
     paintRow(row, color, guide);
   });
 }, 500);
-
-// const win = () => {
-//
-//   levelComplete.value = true
-//   let progressBar = document.getElementById('progressBar')
-//
-//   let animated = document.getElementById('animatedRocket')
-//
-//   progressBar.classList.add('hidden')
-//   animated.classList.remove('hidden')
-//
-//   setTimeout(function () {
-//     let winView = document.getElementById('winView')
-//
-//     winView.classList.remove('hidden')
-//
-//     setTimeout(function () {
-//       winView.classList.replace('opacity-0', 'opacity-100')
-//     }, 500)
-//
-//     setTimeout(function () {
-//       progressBar.classList.remove('hidden')
-//       animated.classList.add('hidden')
-//     }, 1000)
-//
-//     setTimeout(function () {
-//       winView.classList.replace('opacity-100', 'opacity-0')
-//     }, 3000)
-//
-//     setTimeout(function () {
-//       winView.classList.add('hidden')
-//     }, 3500)
-//     setTimeout(function () {
-//       document.getElementById('nextLevelButton').classList.remove('hidden')
-//     }, 2000)
-//   }, 2600)
-// }
 
 let level = ref(props.level)
 let showProgressBar = ref(true)
