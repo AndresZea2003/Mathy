@@ -216,11 +216,12 @@ const paintRow = (rowNumber, item, guide) => {
 
 };
 
-import {cat, mouse} from '../../use';
+import {cat, mouse, heart} from '../../use';
 
 const drawOptions = {
   cat: cat,
-  mouse: mouse
+  mouse: mouse,
+  heart: heart
 };
 
 let totalPixels = ref((drawOptions[props.draw].length / 2) * 9)

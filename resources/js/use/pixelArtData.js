@@ -577,3 +577,85 @@ export const mouse = [
     {row: 92, color: 1, guide: false},
     {row: 94, color: 1, guide: false},
 ]
+
+export const heart = [
+    {row: 15, color: 0, guide: true},
+    {row: 16, color: 0, guide: true},
+    {row: 18, color: 0, guide: true},
+    {row: 19, color: 0, guide: true},
+
+    {row: 25, color: 0, guide: true},
+    {row: 27, color: 0, guide: true},
+    {row: 28, color: 0, guide: true},
+    {row: 29, color: 0, guide: true},
+    {row: 30, color: 0, guide: true},
+    {row: 31, color: 0, guide: true},
+
+    {row: 36, color: 0, guide: true},
+    {row: 37, color: 0, guide: true},
+    {row: 39, color: 0, guide: true},
+    {row: 40, color: 0, guide: true},
+    {row: 41, color: 0, guide: true},
+    {row: 42, color: 0, guide: true},
+
+    {row: 47, color: 0, guide: true},
+    {row: 48, color: 0, guide: true},
+    {row: 49, color: 0, guide: true},
+    {row: 50, color: 0, guide: true},
+    {row: 51, color: 0, guide: true},
+    {row: 52, color: 0, guide: true},
+    {row: 53, color: 0, guide: true},
+
+    {row: 59, color: 0, guide: true},
+    {row: 60, color: 0, guide: true},
+    {row: 61, color: 0, guide: true},
+    {row: 62, color: 0, guide: true},
+    {row: 63, color: 0, guide: true},
+
+    {row: 71, color: 0, guide: true},
+    {row: 72, color: 0, guide: true},
+    {row: 73, color: 0, guide: true},
+
+    {row: 83, color: 0, guide: true},
+
+    ///////////////////////////////
+
+    {row: 15, color: 0, guide: false},
+    {row: 16, color: 0, guide: false},
+    {row: 18, color: 0, guide: false},
+    {row: 19, color: 0, guide: false},
+
+    {row: 25, color: 0, guide: false},
+    {row: 27, color: 0, guide: false},
+    {row: 28, color: 0, guide: false},
+    {row: 29, color: 0, guide: false},
+    {row: 30, color: 0, guide: false},
+    {row: 31, color: 0, guide: false},
+
+    {row: 36, color: 0, guide: false},
+    {row: 37, color: 0, guide: false},
+    {row: 39, color: 0, guide: false},
+    {row: 40, color: 0, guide: false},
+    {row: 41, color: 0, guide: false},
+    {row: 42, color: 0, guide: false},
+
+    {row: 47, color: 0, guide: false},
+    {row: 48, color: 0, guide: false},
+    {row: 49, color: 0, guide: false},
+    {row: 50, color: 0, guide: false},
+    {row: 51, color: 0, guide: false},
+    {row: 52, color: 0, guide: false},
+    {row: 53, color: 0, guide: false},
+
+    {row: 59, color: 0, guide: false},
+    {row: 60, color: 0, guide: false},
+    {row: 61, color: 0, guide: false},
+    {row: 62, color: 0, guide: false},
+    {row: 63, color: 0, guide: false},
+
+    {row: 71, color: 0, guide: false},
+    {row: 72, color: 0, guide: false},
+    {row: 73, color: 0, guide: false},
+
+    {row: 83, color: 0, guide: false},
+];
