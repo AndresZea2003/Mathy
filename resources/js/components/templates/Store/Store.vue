@@ -54,7 +54,6 @@ const selectedShip = (event) => {
     selectedShipRef.value = event;
 };
 
-console.log();
 
 //Funcion para volver atras
 const backTo = () => {
@@ -166,6 +165,4 @@ let responsiveScreen = ajustarAnchoDePantalla();
         grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 }
-</style>import { unlockedShips } from '../../../../use/actions';import { unlockedShips } from
-'../../../../use/actions';
-import { unlockedShips } from '../../../../use/actions';
+</style>

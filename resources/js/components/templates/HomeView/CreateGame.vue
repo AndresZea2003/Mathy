@@ -1,8 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-import logo from '../../../../../public/images/globals/nave.png';
+
+//Imagenes
+import logo from '../../../../../public/images/globals/main-logo.png';
 
 const inputName = ref('');
+//Emits
+const emit = defineEmits(['introAnimationActive']);
 
 const createGame = () => {
     let templateObject = {
@@ -20,6 +24,7 @@ const createGame = () => {
     localStorageContent.push(templateObject);
 
     localStorage.setItem('games', JSON.stringify(localStorageContent));
+    emit('introAnimationActive', true);
 };
 
 </script>
@@ -27,10 +32,12 @@ const createGame = () => {
 
 <template>
     <div class="w-64 h-80 flex justify-center items-center flex-col xl:bottom-9 z-10">
-        <img class="w-12 my-3" :src="logo" alt="logo"/>
-        <label for="text-input" class="create-game__font--julius text-white text-xl mt-20 xl:text-2xl">NOMBRE</label>
-        <input class="create-game__font--julius w-64 bg-blue-950 border-white border rounded-2xl h-8 text-center text-white" id="text-input" v-model="inputName" type="text" placeholder="Nombre">
-        <button class="create-game__font--julius bg-blue-950 w-40 h-8 text-white border-white border rounded-md mt-20 xl:w-52 xl:h-10 hover:bg-white hover:text-black xl:" @click="createGame">
+        <img class="w-48 absolute top-24" :src="logo" alt="logo"/>
+        <div class="flex justify-center items-center flex-col relative top-7">
+            <label for="text-input" class="create-game__font--julius text-white text-xl mt-20 xl:text-2xl">NOMBRE</label>
+            <input class="create-game__font--julius w-64 bg-blue-950 border-white border rounded-2xl h-8 text-center text-white" id="text-input" v-model="inputName" type="text" placeholder="Nombre">
+        </div>
+        <button class="create-game__font--julius bg-blue-950 w-40 h-8 text-white border-white relative top-7 border rounded-md mt-20 xl:w-52 xl:h-10 hover:bg-white hover:text-black xl:" @click="createGame">
             Continuar
         </button>
 

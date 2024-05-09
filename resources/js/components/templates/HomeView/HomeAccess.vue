@@ -1,27 +1,53 @@
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, onUpdated, ref } from "vue";
+
+//Components
 import ChoiceGame from "./ChoiceGame.vue";
 import CreateGame from "./CreateGame.vue";
 import PlanetsFooter from "./PlanetsFooter.vue";
+import IntroAnimationSpace from "./IntroAnimationSpace.vue";
 
 const gamesVerify = ref();
+const createAccount = ref(false);
+const introAnimationActive = ref(false);
 
-onBeforeMount(() => {
-    if(JSON.parse(localStorage.getItem('games')).length > 0){
-        gamesVerify.value = true;
+const choiceOrCreateAccess = () => {
+    if(createAccount.value === true){
+        gamesVerify.value = false;
     }else if(!localStorage.getItem('games')){
         gamesVerify.value = false;
         localStorage.setItem('games', JSON.stringify([]));
+    }else if(JSON.parse(localStorage.getItem('games')).length > 0){
+        gamesVerify.value = true;
+    }else if(JSON.parse(localStorage.getItem('games')).length === 0){
+        gamesVerify.value = false;
     }
+};
+
+onBeforeMount(() => {
+    choiceOrCreateAccess();
 });
+
+
+//Componente traido del emit.
+const createGameComponent = (event) => {
+    createAccount.value = event;
+    choiceOrCreateAccess();
+};
+
+//Funcion que activa el intro
+const introAnimationFunction = (event) => {
+    introAnimationActive.value = event
+};
 
 </script>
 
 <template>
     <div class="home-access__div--container w-full h-screen flex justify-center items-center">
-        <ChoiceGame v-if="gamesVerify"/>
-        <CreateGame v-else/>
-        <PlanetsFooter/>
+        <ChoiceGame v-if="gamesVerify && !introAnimationActive" @createGameComponent="createGameComponent" @introAnimationActive="introAnimationFunction"/>
+        <CreateGame v-if="!gamesVerify && !introAnimationActive" @introAnimationActive="introAnimationFunction"/>
+        <IntroAnimationSpace v-if="introAnimationActive"/>
+        <PlanetsFooter v-if="!introAnimationActive"/>
     </div>
 </template>
 
