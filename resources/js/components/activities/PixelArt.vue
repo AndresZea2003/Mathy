@@ -39,6 +39,12 @@ let isMouseDown = ref(false);
 let calibrateSound = ref(false);
 let calibrateSoundBlom = ref(false);
 
+let totalActivities = ref(0)
+onMounted(async () => {
+  await axios.get('/activityCount/' + props.level[0])
+      .then(response => totalActivities.value = response.data);
+});
+
 const playPaintSound = () => {
   if (calibrateSound.value) {
     return;
@@ -94,7 +100,7 @@ let nicePaint = ref('Sin pintar');
 let pixelsCompleted = ref([]);
 let pixelsError = ref([]);
 const paint = (id, hex) => {
-  if (!isMouseDown.value) {
+  if (!isMouseDown.value || levelComplete.value) {
     return;
   }
 
@@ -210,11 +216,14 @@ const paintRow = (rowNumber, item, guide) => {
 
 };
 
-import {cat, mouse} from '../../use';
+import {cat, mouse, heart, turtle, hat} from '../../use';
 
 const drawOptions = {
   cat: cat,
-  mouse: mouse
+  mouse: mouse,
+  heart: heart,
+  turtle: turtle,
+  hat: hat
 };
 
 let totalPixels = ref((drawOptions[props.draw].length / 2) * 9)
@@ -227,41 +236,62 @@ setTimeout(function () {
   });
 }, 500);
 
-const win = () => {
-
+let level = ref(props.level)
+let showProgressBar = ref(true)
+const win = async () => {
   levelComplete.value = true
+  playAudio(`${localHost}/audios/effects/levelUp.mp3`)
   let progressBar = document.getElementById('progressBar')
 
-  let animated = document.getElementById('animatedRocket')
+  let staticBar = document.getElementById('staticBar')
 
-  progressBar.classList.add('hidden')
-  animated.classList.remove('hidden')
+  let animated = document.getElementById('test2')
+
+  let station = document.getElementById('station')
+
+  let board = document.getElementById('board')
+
+  let winView = document.getElementById('winView')
+
+  staticBar.classList.replace('opacity-100', 'opacity-0')
+  progressBar.classList.replace('border-black', 'border-yellow-400')
+  animated.classList.replace('opacity-0', 'opacity-100')
+  station.classList.add('moveLeftInOut')
+
+  board.classList.replace('bg-red-200', 'bg-green-300')
+
+  let button = document.getElementById('nextLevelButton')
+
+  if (totalActivities.value === level.value[1]) {
+    button.classList.remove('hidden')
+    return
+  }
+
+
+  winView.classList.remove('hidden')
 
   setTimeout(function () {
-    let winView = document.getElementById('winView')
-
-    winView.classList.remove('hidden')
-
-    setTimeout(function () {
-      winView.classList.replace('opacity-0', 'opacity-100')
-    }, 500)
+    board.classList.replace('bg-green-300', 'bg-red-200')
+    winView.classList.replace('opacity-0', 'opacity-100')
 
     setTimeout(function () {
-      progressBar.classList.remove('hidden')
-      animated.classList.add('hidden')
+      staticBar.classList.replace('opacity-0', 'opacity-100')
+      animated.classList.replace('opacity-100', 'opacity-0')
+      button.classList.remove('hidden')
+      showProgressBar.value = false
+      level.value[1] = level.value[1] + 1
+      setTimeout(function () {
+        showProgressBar.value = true
+      }, 100)
     }, 1000)
+  }, 2000)
 
-    setTimeout(function () {
-      winView.classList.replace('opacity-100', 'opacity-0')
-    }, 3000)
-
+  setTimeout(function () {
+    winView.classList.replace('opacity-100', 'opacity-0')
     setTimeout(function () {
       winView.classList.add('hidden')
-    }, 3500)
-    setTimeout(function () {
-      document.getElementById('nextLevelButton').classList.remove('hidden')
-    }, 2000)
-  }, 2600)
+    }, 200)
+  }, 4000)
 }
 </script>
 <template>
@@ -274,9 +304,9 @@ const win = () => {
     <div class="mx-auto flex-1 container flex justify-center">
       <div class="flex  p-6 w-full gap-5 rounded-md">
 
-        <div id="dat" class="w-[84%] bg-red-200 bg-opacity-70 h-[100%] p-5 grid">
+        <div id="board" class="w-[84%] bg-red-200 bg-opacity-70 h-[100%] p-5 grid">
           <div style="height: 150px;">
-            <ProgressBar class="select-none" :planet_1="`${localHost}/images/planets/tierra.svg`"
+            <ProgressBar v-if="showProgressBar" class="select-none" :planet_1="`${localHost}/images/planets/tierra.svg`"
                          :planet_2="`${localHost}/images/planets/rojo.svg`"
                          :rocket="`${localHost}/images/rockets/1.svg`"
                          :level="props.level"

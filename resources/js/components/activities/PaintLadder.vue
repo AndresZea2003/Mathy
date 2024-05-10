@@ -105,8 +105,10 @@ const updateBoxSize = () => {
     }
   }
 }
-
-onMounted(() => {
+let totalActivities = ref(0)
+onMounted(async () => {
+  await axios.get('/activityCount/' + props.level[0])
+      .then(response => totalActivities.value = response.data);
   updateBoxSize();
   window.addEventListener('resize', updateBoxSize);
   if (props.show_ids) {
@@ -124,7 +126,6 @@ onMounted(() => {
 
       localStorage.setItem('itemSelected', null)
     }
-
 
 
     props.solution.forEach(id => {
@@ -506,41 +507,100 @@ const validateWin = () => {
   }
 }
 
-const win = () => {
+// const win = () => {
+//
+//   levelComplete.value = true
+//   let progressBar = document.getElementById('progressBar')
+//
+//   let animated = document.getElementById('animatedRocket')
+//
+//   progressBar.classList.add('hidden')
+//   animated.classList.remove('hidden')
+//
+//   setTimeout(function () {
+//     let winView = document.getElementById('winView')
+//
+//     winView.classList.remove('hidden')
+//
+//     setTimeout(function () {
+//       winView.classList.replace('opacity-0', 'opacity-100')
+//     }, 500)
+//
+//     setTimeout(function () {
+//       progressBar.classList.remove('hidden')
+//       animated.classList.add('hidden')
+//     }, 1000)
+//
+//     setTimeout(function () {
+//       winView.classList.replace('opacity-100', 'opacity-0')
+//     }, 3000)
+//
+//     setTimeout(function () {
+//       winView.classList.add('hidden')
+//     }, 3500)
+//     setTimeout(function () {
+//       document.getElementById('nextLevelButton').classList.remove('hidden')
+//     }, 2000)
+//   }, 2600)
+// }
 
+let level = ref(props.level)
+let showProgressBar = ref(true)
+const win = async () => {
   levelComplete.value = true
+  playAudio(`${localHost}/audios/effects/levelUp.mp3`)
+
   let progressBar = document.getElementById('progressBar')
 
-  let animated = document.getElementById('animatedRocket')
+  let staticBar = document.getElementById('staticBar')
 
-  progressBar.classList.add('hidden')
-  animated.classList.remove('hidden')
+  let animated = document.getElementById('test2')
+
+  let station = document.getElementById('station')
+
+  let board = document.getElementById('board')
+
+  let winView = document.getElementById('winView')
+
+  staticBar.classList.replace('opacity-100', 'opacity-0')
+  progressBar.classList.replace('border-black', 'border-yellow-400')
+  animated.classList.replace('opacity-0', 'opacity-100')
+  station.classList.add('moveLeftInOut')
+
+  board.classList.replace('bg-red-200', 'bg-green-300')
+
+  let button = document.getElementById('nextLevelButton')
+
+  if (totalActivities.value === level.value[1]) {
+    button.classList.remove('hidden')
+    return
+  }
+
+
+  winView.classList.remove('hidden')
 
   setTimeout(function () {
-    let winView = document.getElementById('winView')
-
-    winView.classList.remove('hidden')
-
-    setTimeout(function () {
-      winView.classList.replace('opacity-0', 'opacity-100')
-    }, 500)
+    board.classList.replace('bg-green-300', 'bg-red-200')
+    winView.classList.replace('opacity-0', 'opacity-100')
 
     setTimeout(function () {
-      progressBar.classList.remove('hidden')
-      animated.classList.add('hidden')
+      staticBar.classList.replace('opacity-0', 'opacity-100')
+      animated.classList.replace('opacity-100', 'opacity-0')
+      button.classList.remove('hidden')
+      showProgressBar.value = false
+      level.value[1] = level.value[1] + 1
+      setTimeout(function () {
+        showProgressBar.value = true
+      }, 100)
     }, 1000)
+  }, 2000)
 
-    setTimeout(function () {
-      winView.classList.replace('opacity-100', 'opacity-0')
-    }, 3000)
-
+  setTimeout(function () {
+    winView.classList.replace('opacity-100', 'opacity-0')
     setTimeout(function () {
       winView.classList.add('hidden')
-    }, 3500)
-    setTimeout(function () {
-      document.getElementById('nextLevelButton').classList.remove('hidden')
-    }, 2000)
-  }, 2600)
+    }, 200)
+  }, 4000)
 }
 </script>
 <template>
@@ -562,8 +622,8 @@ const win = () => {
                          :image_2="`${localHost}/images/characters/robot/talk.gif`"
           />
         </div>
-        <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
-          <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
+        <div id="board" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
+          <ProgressBar v-if="showProgressBar" :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
                        :level="props.level"
