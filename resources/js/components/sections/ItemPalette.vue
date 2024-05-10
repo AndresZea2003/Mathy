@@ -446,7 +446,7 @@ const clickButtonAudio = () => {
                             class="bg-red-100 col-span-2 flex justify-center m-3 p-2 rounded-md border-orange-400 border-4 border-dashed">
                             <span class="font-semibold text-xl text-center">Paleta de colores</span>
                         </div> -->
-        <div @click="selectItemPalette(item)" v-for="item , index in props.items" :key="index"
+        <div @click="selectItemPalette(item)" v-for="item, index in props.items" :key="index"
              class="flex justify-center items-center w-full h-full">
           <button
               :class="['bg-gray-100 shadow-md rounded-lg hover:opacity-75 hover:scale-95 duration-300 select-none font-bold text-6xl w-20 h-20 flex justify-center items-center' ,
@@ -464,7 +464,7 @@ const clickButtonAudio = () => {
 
             <img v-if="item.type === types.image || item.type === types.figure || item.type === types.eraser"
                  :src="item.content" alt=""
-                 :class="['non-draggable'
+                 :class="['non-draggable',
                                  {'w-[30px]' : item.size === sizes.small},
                                  {'w-[40px]' : item.size === sizes.normal},
                                  {'w-[50px]' : item.size === sizes.big} ]">
