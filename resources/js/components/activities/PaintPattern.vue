@@ -41,6 +41,8 @@ const props = defineProps({
   create_audio_1: {type: String},
   create_audio_2: {type: String},
   create_audio_3: {type: String},
+  phase: {type: Number},
+  show_help: {type: Number}
 })
 
 const items = props.items;
@@ -51,7 +53,7 @@ const vortexType = ref("");
 const selectedLevelVortex = ref(false);
 const selectedCoinChanger = ref(false);
 const updateCoins = ref(false);
-
+const inTutorial = ref(false)
 
 //Establecemos la ubicacion actual del software en el storage
 localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
@@ -61,15 +63,50 @@ localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${p
 // Alerta inicial
 const showInitialAlert = () => {
   Swal.fire({
-    title: `Actividad ${props.level[1]}`,
-    text: 'Descripcion para el nivel 1',
-    icon: 'warning',
-    confirmButtonText: 'Comenzar'
+    showConfirmButton: false,
+    html: swalHtml,
+    width: "30rem",
   }).then((result) => {
-    intro();
+    intro(props.phase);
     prepareActivity()
   });
 }
+
+const swalHtml = `
+    <div class="flex justify-center items-center text-center">
+                  <div>
+
+                    <div
+                        class="bg-[url('https://cdn.pixabay.com/photo/2020/09/28/16/29/leaves-5610361_640.png')] font-press-start rounded shadow-2xl border-4 border-yellow-700 border-dashed my-6 py-12" style="background-position: center; background-size: cover;">
+                        <span class="border-4 border-yellow-700 border-dashed py-4 bg-yellow-500 pl-4 pr-4 text-yellow-800">RETO ${props.level[1]}</span> <br> <br> <br>
+                      <span class="text-yellow-400">Pinta</span>
+                      <span class="text-blue-400"> y </span>
+                      <span class="text-red-400">Completa</span>
+                      <br>
+                      <br>
+                      <span class="text-gray-200">¡Haz Brillar el Cuadro!</span>
+                    </div>
+                    <button onmouseenter="playHoverSound('svgPlay')" onmouseleave="leaveMouse('svgPlay')"
+                            onclick="Swal.clickConfirm()" class="btn-frog"><i class="animation"></i>
+                      <div class="translate-x-[10px]">
+                        Comenzar
+                      </div>
+                      <div>
+                        <svg id="svgPlay" width="20px" fill="#fff" viewBox="0 0 32 32" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg">
+                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier"><title>play</title>
+                            <path
+                                d="M5.92 24.096q0 1.088 0.928 1.728 0.512 0.288 1.088 0.288 0.448 0 0.896-0.224l16.16-8.064q0.48-0.256 0.8-0.736t0.288-1.088-0.288-1.056-0.8-0.736l-16.16-8.064q-0.448-0.224-0.896-0.224-0.544 0-1.088 0.288-0.928 0.608-0.928 1.728v16.16z"></path>
+                          </g>
+                        </svg>
+                      </div>
+                      <i class="animation"></i>
+                    </button>
+                  </div>
+                </div>
+  `;
 
 // Inicializacion de la actividad
 
@@ -89,11 +126,15 @@ onMounted(() => {
   }
 })
 
+let currentAudio = ref(null);
+
 const intro = (phase) => {
 
   let audio1Route = `${localHost}/audios/start/pattern/1.m4a`
   let audio2Route = `${localHost}/audios/start/pattern/2.m4a`
   let audio3Route = `${localHost}/audios/start/pattern/3.m4a`
+
+
   if (props.create_audio_1) {
     audio1Route = `${localHost}/audios/start/pattern/personalized/level_${props.level[0]}-${props.level[1]}/1.m4a`
   }
@@ -109,7 +150,7 @@ const intro = (phase) => {
         `${localHost}/images/characters/robot/normal.png`,
         `${localHost}/images/characters/robot/talk.gif`
     );
-    showItemsPresentation(items, showHelp, props.fake_items, audio3Route)
+    showItemsPresentation(items, () => showHelp(props.show_help), props.fake_items, audio3Route, currentAudio)
     return
   }
 
@@ -119,12 +160,13 @@ const intro = (phase) => {
         `${localHost}/images/characters/robot/normal.png`,
         `${localHost}/images/characters/robot/talk.gif`
     );
-    showHelp()
+    showHelp(props.show_help)
 
     return
   }
 
   if (phase === 3) {
+    talk(false)
     return
   }
 
@@ -135,7 +177,9 @@ const intro = (phase) => {
   talk(false)
 
   // Comienza a reproducir el audio inicial
+  inTutorial.value = true
   let audio1 = playAudio(audio1Route);
+  currentAudio.value = audio1;
   talkBool.value = true
 
   // Muestra el personaje hablando
@@ -149,11 +193,24 @@ const intro = (phase) => {
 
   // SetOnEnded es una funcion que se encarga de ejecutar una funcion cuando el audio termina el primer parametro es
   // el audio y el segundo es la funcion a ejecutar
-  setOnEnded(audio1, () => audio2.play());
+  setOnEnded(audio1, () => {
+    if (props.show_help === 3) {
+      talkBool.value = false;
+      inTutorial.value = false;
+      talkCharacter(
+          `${localHost}/images/characters/robot/normal.png`,
+          `${localHost}/images/characters/robot/talk.gif`
+      );
+      return;
+    }
+
+    audio2.play();
+    currentAudio.value = audio2;
+  });
   // setOnEnded(audio2, showItemsPresentation(items, showHelp));
   setOnEnded(audio2, () => {
     talkBool.value = false;
-    showItemsPresentation(items, showHelp, props.fake_items, audio3Route);
+    showItemsPresentation(items, () => showHelp(props.show_help), props.fake_items, audio3Route, currentAudio);
   });
 }
 
@@ -230,6 +287,7 @@ function verifyAudiosNumber(number) {
 const playAudioAndAnimateCharacter = (audioPath, characterImg, characterImgTalk) => {
   let audio = new Audio(audioPath);
   audio.play();
+  currentAudio.value = null;
   talkCharacter(characterImg, characterImgTalk);
   return audio;
 };
@@ -246,33 +304,58 @@ const removeAnimationFromElement = (elementId, animationClass, delay) => {
   }, delay);
 };
 
-const showHelp = () => {
+// resolveAudio('Colorea... Colorea.', 'colorea',`start/pattern/help`, '0.9');
+const showHelp = (showHelp) => {
+
   if (talkBool.value) {
     return;
   }
 
+  let indication1 = ""
+
+  if (showHelp === 1) {
+    indication1 = playAudioAndAnimateCharacter(`${localHost}/audios/start/pattern/help/colorea.m4a`, `${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`);
+  } else if (showHelp === 2) {
+    return;
+  } else {
+    indication1 = playAudioAndAnimateCharacter(`${localHost}/audios/start/pattern/help/observa-colorea.m4a`, `${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`);
+  }
+
   talkBool.value = true;
-  let indication1 = playAudioAndAnimateCharacter(`${localHost}/audios/start/pattern/help/observa-colorea.m4a`, `${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`);
 
   indication1.onended = function () {
     talkBool.value = false;
     talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`);
+    inTutorial.value = false;
   };
 
-  animateElement('fig1', 'animate-pulse', 0);
+  if (showHelp === 1) {
+    animateElement('fig1', 'opacity-20', 0);
+    removeAnimationFromElement('fig1', 'opacity-20', 2000);
+    document.getElementById('arrow-right').style.fill = 'green';
+    setTimeout(function () {
+      document.getElementById('arrow-right').style.fill = '#9ca3af';
+    }, 2000)
+    return;
+  }
+
+  // animateElement('fig1', 'animate-pulse', 0);
   animateElement('arrow', 'scale-50', 0);
-  animateElement('fig2', 'scale-50', 0);
+  animateElement('fig2', 'opacity-20', 0);
 
-  removeAnimationFromElement('fig1', 'animate-pulse', 2000);
+  // removeAnimationFromElement('fig1', 'animate-pulse', 2000);
   removeAnimationFromElement('arrow', 'scale-50', 2000);
-  removeAnimationFromElement('fig2', 'scale-50', 2000);
+  removeAnimationFromElement('fig2', 'opacity-20', 2000);
 
-  animateElement('fig2', 'animate-pulse', 2000);
-  animateElement('fig1', 'scale-50', 2000);
-  document.getElementById('arrow-right').style.fill = 'green';
+  // animateElement('fig2', 'animate-pulse', 2000);
+  animateElement('fig1', 'opacity-20', 2000);
+  setTimeout(function () {
+    document.getElementById('arrow-right').style.fill = 'green';
+  }, 2000)
 
-  removeAnimationFromElement('fig2', 'animate-pulse', 4000);
-  removeAnimationFromElement('fig1', 'scale-50', 4000);
+
+  // removeAnimationFromElement('fig2', 'animate-pulse', 4000);
+  removeAnimationFromElement('fig1', 'opacity-20', 4000);
   setTimeout(() => {
     document.getElementById('arrow-right').style.fill = '#9ca3af';
   }, 4000);
@@ -304,7 +387,7 @@ let boxes = ref([])
 let step = ref(0)
 
 const paintBox = (id) => {
-  if (levelComplete.value) {
+  if (levelComplete.value || inTutorial.value) {
     playAudio(`${localHost}/audios/effects/wood.wav`)
     return
   }
@@ -323,7 +406,7 @@ const paintBox = (id) => {
     bubble.src = `${localHost}/audios/effects/soapBubble.wav`
     bubble.play()
 
-    playSuccessShortRandom()
+    // playSuccessShortRandom()
     showCheckIcon()
 
     document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
@@ -449,6 +532,8 @@ const updateCoinsFunction = (event) => {
 
   <!--"></div>-->
 
+  <!--  <button @click="handleButtonClick">dada</button>-->
+
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
@@ -470,7 +555,7 @@ const updateCoinsFunction = (event) => {
           <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
-                       :activity_number="props.level[1]"
+                       :level="props.level"
           />
           <div class="row-span-3 flex justify-center items-center">
             <div>
@@ -513,7 +598,7 @@ const updateCoinsFunction = (event) => {
                     <div :id="i" @click="paintBox(i)"
                          v-for="i in (props.size[0] * props.size[1])"
                          :key="i"
-                         :class="`bg-white border border-black hover:opacity-75 flex justify-center
+                         :class="`bg-white border border-black hover:opacity-75 flex justify-center cursor-cell
                          items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
                     </div>
                   </div>
@@ -535,6 +620,7 @@ const updateCoinsFunction = (event) => {
             @vortexType="vortexTypeFunction"
             @selected="selectedLevelVortexFunction"
             @selectedCoinChanger="selectedCoinChangerFunction"
+            :currentAudio="currentAudio"
           />
         </div>
       </div>

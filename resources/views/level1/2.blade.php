@@ -17,7 +17,9 @@
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="true"
-        create_audio_1="¡Vaya! Parece que el cuadrado se ha girado, pero sé que no será un impedimento para ti."
-        create_audio_2="Pero, como puedes apreciar, aunque el cuadro esté girado, sigue utilizando los colores."
+        create_audio_1="Parece que el cuadro inicial de la izquierda está girado. Colorea de forma idéntica el cuadro de la derecha"
+        create_audio_2="Sigue utilizando los colores."
+        create_audio_3="Para completar este reto"
+        :show_help="{{ 1 }}"
     ></paint-pattern>
 @endsection

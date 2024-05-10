@@ -17,7 +17,7 @@ import IconError from "../icons/IconError.vue";
 <template>
   <div class="h-full grid grid-row-2">
     <div class="flex justify-center items-end">
-      <img id="character" class="cursor-pointer" :src="showImage" width="120" alt="">
+      <img id="character" class="cursor-pointer" :src="showImage" width="220" alt="">
     </div>
   </div>
 </template>

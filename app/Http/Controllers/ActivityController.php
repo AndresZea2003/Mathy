@@ -9,6 +9,15 @@ use Illuminate\View\View;
 
 class ActivityController extends Controller
 {
+    public function getActivityCount($levelNumber)
+    {
+        // Aquí debes implementar la lógica para contar las vistas.
+        // Este es solo un ejemplo, debes adaptarlo a tu caso.
+        $count = count(glob(resource_path('views/level' . $levelNumber . '/*.blade.php')));
+
+        return response()->json($count);
+    }
+
     public function loadAudio(Request $request)
     {
 
@@ -29,11 +38,11 @@ class ActivityController extends Controller
             'Content-Type' => 'application/x-www-form-urlencoded',
             'x-api-key' => $apiKey,
             'accept' => 'application/octet-stream',
-            ])->post('https://api.narakeet.com/text-to-speech/m4a?voice=' . $voice . '&voice-speed=' . $voiceSpeed, $textToConvert);
+        ])->post('https://api.narakeet.com/text-to-speech/m4a?voice=' . $voice . '&voice-speed=' . $voiceSpeed, $textToConvert);
 
 
         try {
-            $outputFilePath = public_path('audios/'. $request->path .'/'. $request->name .'.m4a'); // Guarda el archivo en la carpeta pública
+            $outputFilePath = public_path('audios/' . $request->path . '/' . $request->name . '.m4a'); // Guarda el archivo en la carpeta pública
             file_put_contents($outputFilePath, $response->body());
             return 'Archivo descargado con éxito: ' . $outputFilePath;
         } catch (\Exception $e) {
