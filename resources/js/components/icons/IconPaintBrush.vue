@@ -2,7 +2,7 @@
 
 const props = defineProps({
     hex: {type: String},
-})
+});
 
 </script>
 

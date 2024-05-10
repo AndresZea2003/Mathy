@@ -19,6 +19,7 @@ import purplePanel from '../../../../../public/images/coin-change/purple-panel.p
 import panel1 from '../../../../../public/images/coin-change/panel1.png';
 import panel2 from '../../../../../public/images/coin-change/panel2.png';
 import arrow from '../../../../../public/images/coin-change/flecha.png';
+import close from '../../../../../public/images/globals/close.png';
 
 //Importacion de sonidos
 import depositCoinSound from '../../../../../public/audios/coin-changer/coin-deposit-sound.mp3';
@@ -32,6 +33,10 @@ import tunnelEffectSound2 from '../../../../../public/audios/coin-changer/tunel-
 import spawnCoinEffectSound from '../../../../../public/audios/coin-changer/spawn-coin-sound.mp3';
 import endChangeEffectSound from '../../../../../public/audios/coin-changer/end-change-sound.mp3';
 import endChangeButtonEffectSound from '../../../../../public/audios/coin-changer/end-button-sound.mp3'
+
+
+//Creando emits
+const emit = defineEmits(['closeCoinChanger', 'updateCoins']);
 
 
 
@@ -348,6 +353,12 @@ const changeCoins = () => {
     clickEffectSoundFunction();
     changeAnimationEffectSounds();
     returnCoins.value = false;
+    setTimeout(() => {
+        emit('updateCoins', true);
+        setTimeout(() => {
+            emit('updateCoins', false);
+        }, 2000);
+    }, 12000);
     if (changeReady.value === true) {
         if (capsuleCoins.value[0].type === "bronze") {
             coinTunnel.value = true;
@@ -543,11 +554,15 @@ const blockDragCoins = (array, props, type) => {
     return result;
 };
 
+const closeCoinChanger = () => {
+    emit('closeCoinChanger', false);
+};
+
 
 </script>
 
 <template>
-    <div class="z-40 relative w-full h-full">
+    <div class="coinChangerScreen__div--container z-40 relative w-full h-full">
         <CoinChangerTutorial v-if="tutorialAnimation && props.guide" :capsuleCoins="capsuleCoins" :bronzeArray="bronzeArray"
             :silverArray="silverArray" :goldenExchange="props.goldenExchange" :silverExchange="props.silverExchange"/>
         <ChangeError v-if="error" @closeWindowError="closeError" />
@@ -557,6 +572,9 @@ const blockDragCoins = (array, props, type) => {
             <h2 class="text-2xl">COHETELANDIA</h2>
             <img class="w-12 top-6 right-1 absolute transform -rotate-45" :src="naveIMG" alt="nave" />
             <img class="w-52 absolute top-11 right-18" :src="shotingStar" alt="shoting-star" />
+        </div>
+        <div>
+            <img @click="closeCoinChanger" class="w-12 absolute right-20 cursor-pointer hover:scale-110 transition-all" :src="close" alt="close"/>
         </div>
         <div class="coin-changer-screen__div--change-platform bg-center bg-no-repeat w-52 m-auto relative top-16">
             <div class="absolute top-10 inset-x-0 w-12 h-16 m-auto">
@@ -677,6 +695,21 @@ const blockDragCoins = (array, props, type) => {
 </template>
 
 <style scoped>
+.coinChangerScreen__div--container {
+    animation: opacityIntro 2s linear;
+}
+
+@keyframes opacityIntro {
+    0% {
+        opacity: 0%;
+    }
+
+
+    100% {
+        opacity: 100%;
+    }
+}
+
 /* Estilos titulo */
 .coin-changer-screen__div--container--title {
     font-family: 'Julius Sans One', sans-serif;
@@ -1427,4 +1460,4 @@ const blockDragCoins = (array, props, type) => {
     width: 70px;
     height: 130px;
 }
-</style>import { space } from 'postcss/lib/list';
+</style>

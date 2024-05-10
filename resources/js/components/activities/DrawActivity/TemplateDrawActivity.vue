@@ -63,6 +63,9 @@ let isDrawing = false;
 //Ref que controla la paleta de colores para movil retractil
 const openColor = ref(false);
 
+//Ref que controla el puntero entre borrador y brocha
+const mouseImage = ref("template-draw__div--cursor");
+
 //variables creadas para indicar la ubicacion en donde se comienza a pintar
 let initialX, initialY;
 
@@ -196,12 +199,12 @@ const verificarSuperficie = (ctx) => {
         const pixelColor = `rgb(${data[i]}, ${data[i + 1]}, ${data[i + 2]})`;
         if (pixelColor === bgColor) {
             bgColorCount++;
-        }
-    }
+        };
+    };
 
     const totalPixels = data.length / 4;
 
-
+    console.log("porcentaje de pintado hecho", bgColorCount,"/", totalPixels, "/",bgColorCount / totalPixels);
 
 
     if (bgColorCount / totalPixels >= porcentajePintado.value) {
@@ -209,10 +212,12 @@ const verificarSuperficie = (ctx) => {
             if (finishedLevels.value[i].color === bgColor && idCanvas.value === finishedLevels.value[i].id) {
                 if (!finishedLevels.value[i].state) {
                     finishedLevels.value[i].state = true;
-                    finishedLevelActivate.value = true;
                     setTimeout(() => {
-                        finishedLevelActivate.value = false;
-                    }, 6000);
+                        finishedLevelActivate.value = true;
+                        setTimeout(() => {
+                            finishedLevelActivate.value = false;
+                        }, 6000);
+                    }, 15000);
                 }
             }
         };
@@ -296,6 +301,12 @@ const colorBrushFunction = (color, eraser) => {
     }, 100);
     brushColor.value = color;
     eraserSelect.value = eraser;
+
+    if(eraser){
+        mouseImage.value = "template-draw__div--eraser";
+    } else if(!eraser){
+        mouseImage.value = "template-draw__div--cursor";
+    };
 };
 
 //Funcion para activar animacion del dibujo en ejemplo para pantallas moviles
@@ -322,12 +333,17 @@ const exitColorFunction = () => {
     };
 };
 
+//Funcion para evitar el arrastre de las imagenes del fondo
+const dragCancelImages = (event) => {
+    event.preventDefault();
+    console.log("Arratre activado imagenes");
+};
 
 </script>
 
 <template>
     <div class="template-draw__div--container">
-        <BackgroundActivities/>
+        <BackgroundActivities v-if="responsiveScreen"/>
         <FinishedLevel v-if="finishedLevelActivate" :finishedLevels="finishedLevels"/>
         <div
             class="template-draw__div--main-div w-full h-full fixed m-auto overflow-hidden xl:absolute xl:top-1/2 xl:left-1/2">
@@ -335,14 +351,17 @@ const exitColorFunction = () => {
 
 
             <!-- lineas del fondo -->
-            <img class="template__img--line4 w-full absolute pointer-events-none select-none" :src="line4" alt="line" />
-            <img class="template__img--line3 w-full absolute pointer-events-none select-none" :src="line3" alt="line" />
-            <img class="template__img--line2 w-full absolute pointer-events-none select-none" :src="line2" alt="line" />
-            <img class="template__img--line1 w-full absolute pointer-events-none select-none" :src="line1" alt="line" />
-            <!-- efecto y brocha animada -->
-            <div v-if="responsiveScreen" class="template__div--draw-effect absolute z-10 bottom-2.5 left-40"></div>
-            <img v-if="responsiveScreen" class="template__img--brush absolute z-10 bottom-6 pointer-events-none select-none" :src="brush"
-                alt="brush" />
+
+            <div @dragstart.prevent class="pointer-events-none select-none">
+                <img class="template__img--line4 w-full absolute pointer-events-none select-none" :src="line4" alt="line" @dragstart.prevent />
+                <img class="template__img--line3 w-full absolute pointer-events-none select-none" :src="line3" alt="line" @dragstart.prevent />
+                <img class="template__img--line2 w-full absolute pointer-events-none select-none" :src="line2" alt="line" @dragstart.prevent />
+                <img class="template__img--line1 w-full absolute pointer-events-none select-none" :src="line1" alt="line" @dragstart.prevent />
+                <!-- efecto y brocha animada -->
+                <div v-if="responsiveScreen" class="template__div--draw-effect absolute z-10 bottom-0 left-40" @dragstart.prevent ></div>
+                <img v-if="responsiveScreen" class="template__img--brush absolute z-10 pointer-events-none select-none" :src="brush" alt="brush" @dragstart.prevent />
+            </div>
+
 
 
 
@@ -355,10 +374,10 @@ const exitColorFunction = () => {
                     @touchmove.prevent="touchMove" @touchend.prevent="touchEnd" @mouseup="mouseUp"
                     @mouseenter="canvasLocation(drawingData.colorParts[index], drawingData.correctPercentage[index], index)"
                     @mousedown="mouseDown($event, `${index}`)" @mousemove="mouseMoving($event, `${index}`)" :key="index"
-                    :id="`${index}`" class="template-draw__div--cursor w-full"
+                    :id="`${index}`" :class="`${mouseImage} w-full`"
                     :style="{ height: `${canvas}%`, backgroundColor: '#D9D9D9' }"></canvas>
                 <div
-                    class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none" :style="{backgroundImage: `url(${drawingData.drawImage})`}">
+                    class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none select-none" :style="{backgroundImage: `url(${drawingData.drawImage})`}">
                 </div>
             </div>
 
@@ -381,10 +400,10 @@ const exitColorFunction = () => {
         <div class="template-draw__div--right-column absolute m-auto inset-x-0 flex items-center justify-center flex-col backdrop-blur-sm border-2 border-blue-900 rounded-md"
             :style="!responsiveScreen ? ({ border: `solid ${brushColor} 5px`, borderRadius: '10px' }) : ({})">
 
-            <img v-if="responsiveScreen900px" class="w-36 bg-white rounded-xl absolute bottom-48 mx-1.5 "
+            <img v-if="responsiveScreen900px" class="w-36 bg-white rounded-xl absolute bottom-0 top-4 mx-1.5 "
                 :src="drawingData.exampleImage" alt="example" />
 
-            <img v-if="responsiveScreen" class="w-48 bg-white rounded-xl relative bottom-10"
+            <img v-if="responsiveScreen" class="w-3/4 bg-white rounded-xl relative bottom-10"
                 :src="drawingData.exampleImage" alt="example" />
 
                 <div
@@ -399,9 +418,10 @@ const exitColorFunction = () => {
                 }"
             >
                 <button class="template-draw__button--color hover:scale-110"
-                    @click="colorBrushFunction('rgb(257, 217, 217)', true)" :style="{pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"><img class="rounded-full" :src="eraser"
+                    @click="colorBrushFunction('rgb(217, 217, 217)', true)" :style="{pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"><img class="rounded-full" :src="eraser"
                         alt="eraser"
                         :style="{ border: eraserSelect ? ('solid 5px white') : ('solid 3px white') }" /></button>
+
                 <button v-for="color, index in drawingData.colorPalette" :key="index"
                     class="template-draw__button--color hover:scale-110"
                     :style="{ backgroundColor: color, border: brushColor === color ? ('solid 5px white') : ('solid 3px white'), pointerEvents: !openColor && responsiveExampleMobile ? ('none'):('auto'), width: !openColor && responsiveExampleMobile ? ('20px'):('40px'), height: !openColor && responsiveExampleMobile ? ('20px'):('40px') }"
@@ -436,22 +456,18 @@ const exitColorFunction = () => {
     .template-draw__div--main-div {
         background-color: rgb(0, 18, 80);
         width: 60%;
-        height: 700px;
+        height: 95%;
         transform: translate(-50%, -50%);
     }
 }
-
-
-
-
 
 
 .template__img--line1 {
     left: 20%;
     top: 40%;
     transform: translate(-50%, -50%) scale(1.5);
-    filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
-    animation: line1Animation 10s infinite;
+    filter: invert(21%) sepia(100%) saturate(6245%) hue-rotate(295deg) brightness(118%) contrast(117%) drop-shadow(0 0 10px rgb(250, 0, 255));
+    /* animation: line1Animation 10s infinite; */
 }
 
 @media screen and (min-width: 600px) {
@@ -463,7 +479,7 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template__img--line1 {
-        width: 680px;
+        width: 74%;
         right: 40px;
         top: -160px;
         transform: translate(0%, 0%) scale(1);
@@ -473,11 +489,9 @@ const exitColorFunction = () => {
 }
 
 
-
 @keyframes line1Animation {
     0% {
         filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%) drop-shadow(0 0 10px rgb(0, 255, 255));
-
     }
 
     50% {
@@ -493,8 +507,8 @@ const exitColorFunction = () => {
     left: 20%;
     top: 40%;
     transform: translate(-50%, -50%) scale(1.5);
-    filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
-    animation: line2Animation 10s infinite;
+    filter: invert(26%) sepia(83%) saturate(7484%) hue-rotate(221deg) brightness(107%) contrast(101%) drop-shadow(0 0 10px rgb(0, 87, 255));
+    /* animation: line2Animation 10s infinite; */
 }
 
 @media screen and (min-width: 600px) {
@@ -506,9 +520,9 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template__img--line2 {
-        width: 680px;
+        width: 78%;
         right: 40px;
-        top: -65px;
+        top: -80px;
         filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
         transform: translate(0%, 0%) scale(1);
         animation: line2Animation 10s infinite;
@@ -537,8 +551,8 @@ const exitColorFunction = () => {
     left: 0%;
     top: 55%;
     transform: translate(-50%, -50%) scale(1.9);
-    filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
-    animation: line3Animation 10s infinite;
+    filter: invert(33%) sepia(56%) saturate(2675%) hue-rotate(114deg) brightness(136%) contrast(129%) drop-shadow(0 0 10px rgb(0, 255, 10));
+    /* animation: line3Animation 10s infinite; */
 }
 
 @media screen and (min-width: 600px) {
@@ -550,10 +564,22 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template__img--line3 {
-        width: 680px;
-        right: -25px;
+        width: 75%;
+        right: -15px;
         left: auto;
         top: -30px;
+        filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
+        transform: translate(0%, 0%) scale(1);
+        animation: line3Animation 10s infinite;
+    }
+}
+
+@media screen and (min-width: 1800px) {
+    .template__img--line3 {
+        width: 75%;
+        right: 25px;
+        left: auto;
+        top: -10px;
         filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
         transform: translate(0%, 0%) scale(1);
         animation: line3Animation 10s infinite;
@@ -581,8 +607,8 @@ const exitColorFunction = () => {
     left: 20%;
     top: 50%;
     transform: translate(-50%, -50%) scale(1.5);
-    filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
-    animation: line4Animation 10s infinite;
+    filter: invert(29%) sepia(26%) saturate(6627%) hue-rotate(239deg) brightness(101%) contrast(101%) drop-shadow(0 0 10px rgb(104, 80, 255));
+    /* animation: line4Animation 10s infinite; */
 }
 
 @media screen and (min-width: 600px) {
@@ -593,9 +619,9 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template__img--line4 {
-        width: 680px;
+        width: 75%;
         right: 55px;
-        top: -15px;
+        top: -12px;
         filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
         transform: translate(0%, 0%) scale(1);
         animation: line4Animation 10s infinite;
@@ -619,7 +645,7 @@ const exitColorFunction = () => {
 
 .template__div--draw-effect {
     width: 400px;
-    height: 100px;
+    height: 200px;
     background: linear-gradient(90deg, rgba(0, 18, 80, 1) 89%, rgba(0, 18, 80, 0) 100%);
     animation: drawEffectAnimation 4s linear;
     animation-fill-mode: forwards;
@@ -638,9 +664,16 @@ const exitColorFunction = () => {
 
 
 .template__img--brush {
-    width: 200px;
+    width: 300px;
+    bottom: 5px;
     left: 155px;
     animation: brushAnimation 4s linear;
+}
+
+@media screen and (min-width: 1800px) {
+    .template__img--brush {
+        bottom: 45px;
+    }
 }
 
 @keyframes brushAnimation {
@@ -664,6 +697,10 @@ const exitColorFunction = () => {
     cursor: url('../../../../../public/images/draw-image/mouse-brush.png') 5 35, auto;
 }
 
+.template-draw__div--eraser {
+    cursor: url('../../../../../public/images/draw-image/mouse-eraser.png') -50 0, auto;
+}
+
 
 @media screen and (min-width: 900px) {
     .template__div--draw-container-canvas {
@@ -683,13 +720,25 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template__div--draw-container-canvas {
-        width: 540px;
-        height: 73%;
+        width: 59%;
+        height: 74%;
         left: 0;
         right: 0;
-        top: 170px;
-        transform: translateY(0);
-        animation: canvasAnimation 6s linear;
+        bottom: 0px;
+        transform: translateY(-150px);
+        animation: canvasAnimation 5s linear;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .template__div--draw-container-canvas {
+        width: 58%;
+        height: 65%;
+        left: 0;
+        right: 0;
+        bottom: 100px;
+        transform: translateY(-150px);
+        animation: canvasAnimation 5s linear;
     }
 }
 
@@ -745,15 +794,27 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template-draw__img--main-border {
-        width: 595px;
+        width: 66%;
         left: 0;
         right: 0;
         margin: auto;
-        top: 130px;
-        bottom: 0;
-        transform: translateY(0);
+        bottom: 20px;
+        transform: translateY(-150px);
         pointer-events: none;
-        animation: canvasAnimation 6s linear;
+        animation: canvasAnimation 5s linear;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .template-draw__img--main-border {
+        width: 66%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        bottom: 130px;
+        transform: translateY(-150px);
+        pointer-events: none;
+        animation: canvasAnimation 5s linear;
     }
 }
 
@@ -779,7 +840,7 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 900px) {
     .template-draw__div--right-column {
-        height: 400px;
+        height: 470px;
         width: 200px;
         top: 62.5%;
         right: 10%;
@@ -792,7 +853,7 @@ const exitColorFunction = () => {
 
 @media screen and (min-width: 1300px) {
     .template-draw__div--right-column {
-        height: 700px;
+        height: 94%;
         width: 18%;
         top: 50%;
         right: 20px;
@@ -813,7 +874,13 @@ const exitColorFunction = () => {
 @media screen and (min-width: 900px) {
     .template-draw__div--container-size-brush {
         position: relative;
-        top: 50px;
+        top: 90px;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .template-draw__div--container-size-brush {
+        top: 30px;
     }
 }
 
@@ -828,8 +895,14 @@ const exitColorFunction = () => {
 @media screen and (min-width: 900px) {
     .template-draw__div--container-color-button {
         position: relative;
-        top: 50px;
+        top: 80px;
         grid-template-columns: auto auto auto auto;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .template-draw__div--container-color-button {
+        top: 20px;
     }
 }
 

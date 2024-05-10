@@ -16,6 +16,9 @@ const props = defineProps({
     guide: Boolean
 });
 
+//Creando emits
+const emit = defineEmits(['coinChangerClose', 'updateCoins']);
+
 
 const silverCoins = ref(localStorage.getItem(props.storageSilver));
 const bronzeCoins = ref(localStorage.getItem(props.storageBronze));
@@ -51,6 +54,19 @@ onMounted(() => {
 onUpdated(() => {
     calculatedResponsive();
 });
+
+
+//Funcion para cerrar el coinChanger
+const closeCoinChanger = (event) => {
+    emit('coinChangerClose', event);
+    console.log("Activando el emit");
+};
+
+//Emit para actualizar
+const updateCoins = (event) => {
+    emit('updateCoins', event);
+};
+
 </script>
 
 <template>
@@ -60,7 +76,7 @@ onUpdated(() => {
         </div>
         <ShotingStar />
         <CoinChangerScreen :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldenExchange="props.goldenExchange"
-            :silverExchange="props.silverExchange" :guide="props.guide" />
+            :silverExchange="props.silverExchange" :guide="props.guide"  @closeCoinChanger="closeCoinChanger" @updateCoins="updateCoins"/>
     </div>
 </template>
 

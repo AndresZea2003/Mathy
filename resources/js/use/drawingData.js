@@ -138,12 +138,12 @@ let drawingDataFree = [
 
 
 let drawingDataFill = [
-    {//1
-        colorPalette: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
+    {//1 OK
+        colorPalette: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)', 'rgb(255, 255, 0)', 'rgb(189, 0, 206)'],
         exampleImage: drawingFillA2,
         canvas: [ 62, 38],
         colorParts: ['rgb(136, 149, 162)', 'rgb(225, 115, 140)'],
-        correctPercentage: [0.21, 0.40],
+        correctPercentage: [0.12, 0.42],
         drawImage: drawingFillA1
     },
     {//2
@@ -151,7 +151,7 @@ let drawingDataFill = [
         exampleImage: drawingFillB2,
         canvas: [ 72, 28],
         colorParts: ['rgb(255, 255, 0)', 'rgb(128, 128, 128)'],
-        correctPercentage: [0.15, 0.05],
+        correctPercentage: [0.17, 0.05],
         drawImage: drawingFillB1
     },
     {//3
@@ -159,7 +159,7 @@ let drawingDataFill = [
         exampleImage: drawingFillC2,
         canvas: [ 50, 50],
         colorParts: ['rgb(106, 203, 109)', 'rgb(203, 128, 96)'],
-        correctPercentage: [0.11, 0.20],
+        correctPercentage: [0.060, 0.20],
         drawImage: drawingFillC1
     },
     {//4
