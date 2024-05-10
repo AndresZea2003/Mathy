@@ -148,7 +148,7 @@ onMounted(async () => {
   }
 }
 
-#progressBar2 {
+#progressBar {
   animation: moveRightLeft 60s linear infinite;
   background-repeat: repeat-x;
 }
