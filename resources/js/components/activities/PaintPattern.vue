@@ -456,42 +456,56 @@ const paintBox = (id) => {
   }
 }
 
+let level = ref(props.level)
+let showProgressBar = ref(true)
 const win = () => {
-
   levelComplete.value = true
+  playAudio(`${localHost}/audios/effects/levelUp.mp3`)
   let progressBar = document.getElementById('progressBar')
 
-  let animated = document.getElementById('animatedRocket')
+  let staticBar = document.getElementById('staticBar')
 
-  progressBar.classList.add('hidden')
-  animated.classList.remove('hidden')
+  let animated = document.getElementById('test2')
+
+  let station = document.getElementById('station')
+
+  let board = document.getElementById('board')
+
+  let winView = document.getElementById('winView')
+
+  staticBar.classList.replace('opacity-100', 'opacity-0')
+  progressBar.classList.replace('border-black','border-yellow-400')
+  animated.classList.replace('opacity-0', 'opacity-100')
+  station.classList.add('moveLeftInOut')
+
+  board.classList.replace('bg-red-200', 'bg-green-300')
+  winView.classList.remove('hidden')
+
+  let button = document.getElementById('nextLevelButton')
 
   setTimeout(function () {
-    let winView = document.getElementById('winView')
-
-    winView.classList.remove('hidden')
-
-    setTimeout(function () {
-      winView.classList.replace('opacity-0', 'opacity-100')
-    }, 500)
+    board.classList.replace('bg-green-300', 'bg-red-200')
+    winView.classList.replace('opacity-0', 'opacity-100')
 
     setTimeout(function () {
-      progressBar.classList.remove('hidden')
-      animated.classList.add('hidden')
-    }, 1000)
+      staticBar.classList.replace('opacity-0', 'opacity-100')
+      animated.classList.replace('opacity-100', 'opacity-0')
+      button.classList.remove('hidden')
+      showProgressBar.value = false
+      level.value[1] = level.value[1] + 1
+      setTimeout(function () {
+        showProgressBar.value = true
+      },100)
+    },1000)
+  }, 2000)
 
-    setTimeout(function () {
-      winView.classList.replace('opacity-100', 'opacity-0')
-    }, 3000)
-
+  setTimeout(function () {
+    winView.classList.replace('opacity-100', 'opacity-0')
     setTimeout(function () {
       winView.classList.add('hidden')
-    }, 3500)
-    setTimeout(function () {
-      document.getElementById('nextLevelButton').classList.remove('hidden')
-    }, 2000)
-  }, 2600)
-};
+    }, 200)
+  }, 4000)
+}
 
 //Funcion que controla los emits que activan el vortice
 const coinChangerVortexActivate = (event) => {
@@ -526,14 +540,6 @@ const updateCoinsFunction = (event) => {
 
 </script>
 <template>
-  <!--  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden-->
-  <!--    grid-cols-6 grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11 grid-cols-12-->
-  <!--     ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`-->
-
-  <!--"></div>-->
-
-  <!--  <button @click="handleButtonClick">dada</button>-->
-
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
@@ -548,14 +554,14 @@ const updateCoinsFunction = (event) => {
                          :image_2="`${localHost}/images/characters/robot/talk.gif`"
           />
         </div>
-        <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4 relative">
+        <div id="board" class="w-[68%] duration-300 bg-red-200 p-5 grid grid-rows-4">
           <div v-if="selectedCoinChanger" class="w-full h-full absolute top-0 left-0 z-30">
             <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'" :goldenExchange="3" :silverExchange="3" :guide="true" @coinChangerClose="coinChangerClose" @updateCoins="updateCoinsFunction"/>
           </div>
-          <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
+          <ProgressBar v-if="showProgressBar" :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
-                       :level="props.level"
+                       :level="level"
           />
           <div class="row-span-3 flex justify-center items-center">
             <div>
