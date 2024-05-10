@@ -27,6 +27,8 @@ import IconPaintBrush from "../icons/IconPaintBrush.vue"
 import Swal from "sweetalert2";
 import {defineProps} from 'vue';
 import BackgroundActivities from "../background/BackgroundActivities.vue";
+import CoinChangerVortex from "./Coin Changer/CoinChangerVortex.vue";
+import CoinChanger from "./Coin Changer/CoinChanger.vue";
 
 const props = defineProps({
   size: {type: Array},
@@ -43,10 +45,20 @@ const props = defineProps({
   show_help: {type: Number}
 })
 
-const items = props.items
-const talkBool = ref(false)
-const levelComplete = ref(false)
+const items = props.items;
+const talkBool = ref(false);
+const levelComplete = ref(false);
+const coinChangerVortexRef = ref(false);
+const vortexType = ref("");
+const selectedLevelVortex = ref(false);
+const selectedCoinChanger = ref(false);
+const updateCoins = ref(false);
 const inTutorial = ref(false)
+
+//Establecemos la ubicacion actual del software en el storage
+localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
+
+// console.log("propsleve", );
 
 // Alerta inicial
 const showInitialAlert = () => {
@@ -495,11 +507,43 @@ const win = () => {
   }, 4000)
 }
 
+//Funcion que controla los emits que activan el vortice
+const coinChangerVortexActivate = (event) => {
+  coinChangerVortexRef.value = event;
+};
+
+//Funcion que controla el tipo de vortice si es a coin changer o a la store
+const vortexTypeFunction = (event) => {
+  vortexType.value = event;
+};
+
+//Funcion que controla cuando el usuario da click para mostrar la animacion de la nave viajando al portal.
+const selectedLevelVortexFunction= (event) => {
+  selectedLevelVortex.value = event;
+};
+
+//Funcion que controla si se abre el coinChanger
+const selectedCoinChangerFunction = (event) => {
+  selectedCoinChanger.value = event;
+};
+
+const coinChangerClose = (event) => {
+  selectedCoinChanger.value = event;
+  selectedLevelVortex.value = event;
+  coinChangerVortexRef.value = event;
+};
+
+const updateCoinsFunction = (event) => {
+  updateCoins.value = event;
+  console.log("updatecoins ejecutandose");
+};
+
 </script>
 <template>
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
+  <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
 
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
@@ -511,12 +555,14 @@ const win = () => {
           />
         </div>
         <div id="board" class="w-[68%] duration-300 bg-red-200 p-5 grid grid-rows-4">
+          <div v-if="selectedCoinChanger" class="w-full h-full absolute top-0 left-0 z-30">
+            <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'" :goldenExchange="3" :silverExchange="3" :guide="true" @coinChangerClose="coinChangerClose" @updateCoins="updateCoinsFunction"/>
+          </div>
           <ProgressBar v-if="showProgressBar" :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
                        :level="level"
           />
-
           <div class="row-span-3 flex justify-center items-center">
             <div>
               <div class="my-6 flex justify-center gap-5">
@@ -571,7 +617,17 @@ const win = () => {
         </div>
 
         <div class="w-[16%]">
-          <ItemPalette :level="props.level" :items="items" :currentAudio="currentAudio"/>
+          <ItemPalette
+            :level="props.level"
+            :items="items"
+            :updateCoins="updateCoins"
+            @closeAnimation="coinChangerVortexActivate"
+            @openAnimation="coinChangerVortexActivate"
+            @vortexType="vortexTypeFunction"
+            @selected="selectedLevelVortexFunction"
+            @selectedCoinChanger="selectedCoinChangerFunction"
+            :currentAudio="currentAudio"
+          />
         </div>
       </div>
     </div>

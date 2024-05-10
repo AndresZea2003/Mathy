@@ -54,6 +54,9 @@ const openColor = ref(false);
 //Indica si se esta pintando en ese momento
 let isDrawing = false;
 
+//Ref que controla el puntero entre borrador y brocha
+const mouseImage = ref("template-draw__div--cursor");
+
 //variables creadas para indicar la ubicacion en donde se comienza a pintar
 let initialX, initialY;
 
@@ -256,6 +259,12 @@ const colorBrushFunction = (color, eraser) => {
     }, 100);
     brushColor.value = color;
     eraserSelect.value = eraser;
+
+    if(eraser){
+        mouseImage.value = "template-draw__div--eraser";
+    } else if(!eraser){
+        mouseImage.value = "template-draw__div--cursor";
+    };
 };
 
 
@@ -263,8 +272,6 @@ const colorBrushFunction = (color, eraser) => {
 const openColorFunction = () => {
     if(responsiveExampleMobile.value){
         openColor.value = true;
-        console.log("verificando 900", responsiveExampleMobile.value);
-        console.log("Entrando abrir");
     };
 };
 
@@ -274,7 +281,6 @@ const exitColorFunction = () => {
     };
 };
 
-console.log("reponsiveScreen", responsiveExampleMobile.value);
 </script>
 
 <template>
@@ -285,15 +291,16 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
             class="template-draw__div--main-div w-full h-full fixed m-auto overflow-hidden xl:absolute xl:top-1/2 xl:left-1/2">
             <AnimatedStars />
             <!-- lineas del fondo -->
-            <img class="template__img--line4 w-full absolute pointer-events-none select-none" :src="line4" alt="line" />
-            <img class="template__img--line3 w-full absolute pointer-events-none select-none" :src="line3" alt="line" />
-            <img class="template__img--line2 w-full absolute pointer-events-none select-none" :src="line2" alt="line" />
-            <img class="template__img--line1 w-full absolute pointer-events-none select-none" :src="line1" alt="line" />
-            <!-- efecto y brocha animada -->
-            <div v-if="responsiveScreen" class="template__div--draw-effect absolute z-10 bottom-2.5 left-40"></div>
-            <img v-if="responsiveScreen" class="template__img--brush absolute z-10 bottom-6 pointer-events-none select-none" :src="brush"
-                alt="brush" />
-
+            <div @dragstart.prevent class="pointer-events-none select-none">
+                <img class="template__img--line4 w-full absolute pointer-events-none select-none" :src="line4" alt="line" @dragstart.prevent/>
+                <img class="template__img--line3 w-full absolute pointer-events-none select-none" :src="line3" alt="line" @dragstart.prevent/>
+                <img class="template__img--line2 w-full absolute pointer-events-none select-none" :src="line2" alt="line" @dragstart.prevent/>
+                <img class="template__img--line1 w-full absolute pointer-events-none select-none" :src="line1" alt="line" @dragstart.prevent/>
+                <!-- efecto y brocha animada -->
+                <div v-if="responsiveScreen" class="template__div--draw-effect absolute z-10 bottom-0 left-40" @dragstart.prevent></div>
+                <img v-if="responsiveScreen" class="template__img--brush absolute z-10 pointer-events-none select-none" :src="brush"
+                    alt="brush" @dragstart.prevent/>
+            </div>
 
 
 
@@ -304,7 +311,7 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
                     @touchmove.prevent="touchMove" @touchend.prevent="touchEnd" @mouseup="mouseUp"
                     @mouseenter="canvasLocation('rgb(0, 0, 0)', drawingData.correctPercentage)" @mousedown="mouseDown($event, `draw`)"
                     @mousemove="mouseMoving($event, `draw`)" :id="`draw`"
-                    class="template-draw__div--cursor w-full h-full" :style="{backgroundColor: 'rgb(255, 255, 255)'}"></canvas>
+                    :class="`${mouseImage} w-full h-full`" :style="{backgroundColor: 'rgb(255, 255, 255)'}"></canvas>
                 <div
                     class="template__div--draw-image w-full h-full absolute top-0 left-0 bg-cover bg-center pointer-events-none" :style="{backgroundImage: `url(${drawingData.drawImage})`}">
                 </div>
@@ -369,11 +376,10 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
     .template-draw__div--main-div {
         background-color: rgb(0, 18, 80);
         width: 60%;
-        height: 700px;
+        height: 95%;
         transform: translate(-50%, -50%);
     }
 }
-
 
 
 .template__img--line1 {
@@ -393,7 +399,7 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 @media screen and (min-width: 1300px) {
     .template__img--line1 {
-        width: 680px;
+        width: 74%;
         right: 40px;
         top: -160px;
         transform: translate(0%, 0%) scale(1);
@@ -401,7 +407,6 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
         animation: line1Animation 10s infinite;
     }
 }
-
 
 
 @keyframes line1Animation {
@@ -436,9 +441,9 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 @media screen and (min-width: 1300px) {
     .template__img--line2 {
-        width: 680px;
+        width: 78%;
         right: 40px;
-        top: -65px;
+        top: -80px;
         filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
         transform: translate(0%, 0%) scale(1);
         animation: line2Animation 10s infinite;
@@ -480,10 +485,22 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 @media screen and (min-width: 1300px) {
     .template__img--line3 {
-        width: 680px;
-        right: -25px;
+        width: 75%;
+        right: -15px;
         left: auto;
         top: -30px;
+        filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
+        transform: translate(0%, 0%) scale(1);
+        animation: line3Animation 10s infinite;
+    }
+}
+
+@media screen and (min-width: 1800px) {
+    .template__img--line3 {
+        width: 75%;
+        right: 25px;
+        left: auto;
+        top: -10px;
         filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
         transform: translate(0%, 0%) scale(1);
         animation: line3Animation 10s infinite;
@@ -523,9 +540,9 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 @media screen and (min-width: 1300px) {
     .template__img--line4 {
-        width: 680px;
+        width: 75%;
         right: 55px;
-        top: -15px;
+        top: -12px;
         filter: invert(90%) sepia(87%) saturate(2210%) hue-rotate(105deg) brightness(103%) contrast(106%);
         transform: translate(0%, 0%) scale(1);
         animation: line4Animation 10s infinite;
@@ -549,7 +566,7 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 .template__div--draw-effect {
     width: 400px;
-    height: 100px;
+    height: 200px;
     background: linear-gradient(90deg, rgba(0, 18, 80, 1) 89%, rgba(0, 18, 80, 0) 100%);
     animation: drawEffectAnimation 4s linear;
     animation-fill-mode: forwards;
@@ -568,9 +585,16 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 
 .template__img--brush {
-    width: 200px;
+    width: 300px;
+    bottom: 5px;
     left: 155px;
     animation: brushAnimation 4s linear;
+}
+
+@media screen and (min-width: 1800px) {
+    .template__img--brush {
+        bottom: 45px;
+    }
 }
 
 @keyframes brushAnimation {
@@ -590,6 +614,15 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
     animation: canvasAnimation 2s linear;
 }
 
+.template-draw__div--cursor {
+    cursor: url('../../../../../public/images/draw-image/mouse-brush.png') 5 35, auto;
+}
+
+.template-draw__div--eraser {
+    cursor: url('../../../../../public/images/draw-image/mouse-eraser.png') -50 0, auto;
+}
+
+
 @media screen and (min-width: 900px) {
     .template__div--draw-container-canvas {
         width: 480px;
@@ -608,20 +641,27 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 @media screen and (min-width: 1300px) {
     .template__div--draw-container-canvas {
-        width: 540px;
-        height: 73%;
+        width: 59%;
+        height: 74%;
         left: 0;
         right: 0;
-        top: 170px;
-        transform: translateY(0);
-        animation: canvasAnimation 6s linear;
+        bottom: 0px;
+        transform: translateY(-150px);
+        animation: canvasAnimation 5s linear;
     }
 }
 
-.template-draw__div--cursor {
-    cursor: url('../../../../../public/images/draw-image/mouse-brush.png') 5 35, auto;
+@media screen and (min-width: 1700px) {
+    .template__div--draw-container-canvas {
+        width: 58%;
+        height: 65%;
+        left: 0;
+        right: 0;
+        bottom: 100px;
+        transform: translateY(-150px);
+        animation: canvasAnimation 5s linear;
+    }
 }
-
 
 @keyframes canvasAnimation {
     0% {
@@ -638,21 +678,33 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 }
 
 /* .template__div--draw-image {
-    background-image: url('../../img/Draw-image/draw-image-free.png');
+    background-image: url('../../img/Draw-image/draw-image.png');
 } */
 
 
+.template-draw__div--container-example-button {
+    width: 200px;
+}
+
+.template-draw__button--example-image-mobile {
+    top: -10px;
+    transform: rotate(-30deg);
+    left: -70px;
+    transition: ease-in-out 1s;
+    animation: canvasAnimation 2s linear;
+}
+
 .template-draw__img--main-border {
     width: 315px;
-    top: 205px;
+    top: 193px;
     animation: canvasAnimation 2s linear;
 }
 
 @media screen and (min-width: 900px) {
     .template-draw__img--main-border {
-        width: 542px;
+        width: 535px;
         margin: none;
-        left: 7.5%;
+        left: 8%;
         right: auto;
         top: 60%;
         transform: translateY(-50%);
@@ -663,15 +715,27 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 @media screen and (min-width: 1300px) {
     .template-draw__img--main-border {
-        width: 600px;
+        width: 66%;
         left: 0;
         right: 0;
         margin: auto;
-        top: 145px;
-        bottom: 0;
-        transform: translateY(0);
+        bottom: 20px;
+        transform: translateY(-150px);
         pointer-events: none;
-        animation: canvasAnimation 6s linear;
+        animation: canvasAnimation 5s linear;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .template-draw__img--main-border {
+        width: 66%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        bottom: 130px;
+        transform: translateY(-150px);
+        pointer-events: none;
+        animation: canvasAnimation 5s linear;
     }
 }
 
@@ -697,7 +761,7 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 @media screen and (min-width: 900px) {
     .template-draw__div--right-column {
-        height: 400px;
+        height: 470px;
         width: 200px;
         top: 62.5%;
         right: 10%;
@@ -710,12 +774,13 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 
 @media screen and (min-width: 1300px) {
     .template-draw__div--right-column {
-        height: 700px;
+        height: 94%;
         width: 18%;
         top: 50%;
         right: 20px;
     }
 }
+
 
 
 
@@ -730,7 +795,13 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 @media screen and (min-width: 900px) {
     .template-draw__div--container-size-brush {
         position: relative;
-        top: 50px;
+        top: 90px;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .template-draw__div--container-size-brush {
+        top: 30px;
     }
 }
 
@@ -745,8 +816,14 @@ console.log("reponsiveScreen", responsiveExampleMobile.value);
 @media screen and (min-width: 900px) {
     .template-draw__div--container-color-button {
         position: relative;
-        top: 50px;
+        top: 80px;
         grid-template-columns: auto auto auto auto;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .template-draw__div--container-color-button {
+        top: 20px;
     }
 }
 

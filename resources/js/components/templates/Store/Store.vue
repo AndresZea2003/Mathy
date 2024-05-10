@@ -54,9 +54,10 @@ const selectedShip = (event) => {
     selectedShipRef.value = event;
 };
 
+
 //Funcion para volver atras
 const backTo = () => {
-    console.log("volver atras");
+    window.location = localStorage.getItem('currentLocation');
 };
 
 
@@ -164,6 +165,4 @@ let responsiveScreen = ajustarAnchoDePantalla();
         grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 }
-</style>import { unlockedShips } from '../../../../use/actions';import { unlockedShips } from
-'../../../../use/actions';
-import { unlockedShips } from '../../../../use/actions';
+</style>
