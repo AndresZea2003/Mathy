@@ -31,7 +31,7 @@ const createGameComponent = () => {
         <img class="w-14 m-center" :src="save" alt="save"/>
         <div class="w-64 h-96 z-10 backdrop-blur-sm border-2 border-blue-900 rounded-md my-3 py-3 flex flex-col justify-center items-center xl:w-80 ">
             <div class="choice-game__div--scroll w-56 my-4 overflow-x-auto xl:w-72 flex items-center flex-col">
-                <button v-for="gamer, index in localStorageData" :key="index" @click="gamerSelected(gamer.name)" class="choice-game__font--julius w-52 h-14 rounded-lg border-white bg-blue-950 border my-1 m-auto text-white xl:w-64 hover:bg-white hover:text-black hover:font-bold hover:scale-90 transition">{{ gamer.name }}</button>
+                <button v-for="gamer, index in localStorageData" :key="index" @click="gamerSelected(gamer.name)" class="choice-game__font--julius w-52 h-14 rounded-lg border-white border my-1 m-auto font-bold text-white xl:w-64 hover:bg-white hover:text-black hover:font-bold hover:scale-90 transition" :style="{ background: gamer.inputColor.background, color: gamer.inputColor.text }">{{ gamer.name }}</button>
                 <button @click="createGameComponent()" class="choice-game__font--julius w-52 h-14 rounded-lg border-white bg-blue-950 border my-1 mx-auto text-white text-3xl xl:w-64 hover:bg-white hover:text-black hover:font-bold hover:scale-90 transition">+</button>
             </div>
         </div>
