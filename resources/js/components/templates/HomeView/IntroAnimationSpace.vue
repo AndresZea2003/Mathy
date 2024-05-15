@@ -25,6 +25,7 @@ const ship1Ref = ref(true);
 
 
 
+
 // //Desmontaje de animacion del logo
 // setTimeout(() => {
 //     logoAnimation.value = false;

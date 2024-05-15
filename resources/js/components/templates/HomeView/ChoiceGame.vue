@@ -50,22 +50,19 @@ const createGameComponent = () => {
     flex-grow: 0;
 }
 
-/* Estiliza la barra de desplazamiento en general */
 .choice-game__div--scroll::-webkit-scrollbar {
     width: 5px;
     position: absolute;
 }
 
-/* Estiliza la parte deslizante (thumb) de la barra de desplazamiento */
 .choice-game__div--scroll::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.5); /* Color blanco con transparencia */
-    border-radius: 10px; /* Bordes redondeados */
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
     position: absolute;
 }
 
-/* Estiliza el track (la pista) de la barra de desplazamiento */
 .choice-game__div--scroll::-webkit-scrollbar-track {
-    background: transparent; /* Fondo transparente */
+    background: transparent;
     position: absolute;
 }
 

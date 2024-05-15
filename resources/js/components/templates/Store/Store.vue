@@ -145,6 +145,22 @@ let responsiveScreen = ajustarAnchoDePantalla();
     background: linear-gradient(180deg, #001250 0%, #101112 100%);
 }
 
+.store__div--container-cards::-webkit-scrollbar {
+    width: 5px;
+    position: absolute;
+}
+
+.store__div--container-cards::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    position: absolute;
+}
+
+.store__div--container-cards::-webkit-scrollbar-track {
+    background: transparent;
+    position: absolute;
+}
+
 /* Estilos imagen de fondo con planetas y estrellas */
 .store__div--space-background {
     background-image: url('../../../../../public/images/store/space-store.png');
