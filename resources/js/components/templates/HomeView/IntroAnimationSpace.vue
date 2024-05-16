@@ -15,6 +15,7 @@ import ship from '../../../../../public/images/rockets/Cohetes-13.svg';
 //Componentes
 import AnimatedStars from '../../activities/DrawActivity/AnimatedStars.vue';
 import WelcomeName from './WelcomeName.vue';
+import LandingStart from './LandingStart.vue';
 
 //Ref
 const logoAnimation = ref(false); //true
@@ -54,20 +55,8 @@ const ship1Ref = ref(true);
     <div class="intro-animation__div--background w-full h-full flex justify-center items-center overflow-hidden">
         <!-- <h2 v-if="title" class="intro-animation__h2--title absolute text-white top-12 border border-white rounded-full px-4 text-2xl z-20">{{ titleText }}</h2> -->
         <img v-if="logoAnimation" class="intro-animation__img--logo" :src="mainLogo" alt="logo"/>
-        <WelcomeName/>
-        <div v-if="galaxyAnimationRef" class="intro-animation__img--galaxy w-full h-full overflow-hidden">
-            <AnimatedStars/>
-            <div class="intro-animation__div--robot-rocket w-60 absolute m-auto left-0 right-0">
-                <img class="intro-animation__img--conection w-28 absolute  bottom-14 left-10 xl:w-40" :src="conection" alt="conection"/>
-                <img class="intro-animation__img--ship w-60 absolute" :src="ship" alt="ship"/>
-                <img class="intro-animation__img--robot w-40 relative bottom-4 left-24 xl:w-60" :src="robot" alt="robot"/>
-            </div>
-
-            <img class="intro-animation__img--satelite w-16 absolute" :src="satelite" alt="satelite"/>
-
-            <img class="intro-animation__img--belt-asteroids overflow-hidden" :src="asteroidBelt" alt="asteroid-belt"/>
-            <!-- <img class="intro-animation__img--ship1 w-32 absolute top-6" v-if="ship1Ref" :src="ship1" alt="ship-1"/> -->
-        </div>
+        <WelcomeName v-if="galaxyAnimationRef"/>
+        <LandingStart/>
     </div>
 </template>
 
