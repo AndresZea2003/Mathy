@@ -17,48 +17,48 @@ const emit = defineEmits(['introAnimationActive']);
 
 let backgroundInputColors = [
     {
-        background: 'rgb(255, 0, 0)',
+        background: 'rgb(83, 57, 255)',
         text: 'rgb(255, 255, 255)'
     },
     {
-        background: 'rgb(255, 213, 0)',
-        text: 'rgb(47, 0, 255)'
-    },
-    {
-        background: 'rgb(96, 214, 0)',
-        text: 'rgb(47, 0, 255)'
-    },
-    {
-        background: 'rgb(0, 247, 255)',
-        text: 'rgb(47, 0, 255)'
-    },
-    {
-        background: 'rgb(145, 0, 0)',
+        background: 'rgb(255, 57, 57)',
         text: 'rgb(255, 255, 255)'
     },
     {
-        background: 'rgb(167, 0, 200)',
+        background: 'rgb(255, 163, 57)',
+        text: 'rgb(0, 0, 0)'
+    },
+    {
+        background: 'rgb(222, 255, 57)',
+        text: 'rgb(0, 0, 0)'
+    },
+    {
+        background: 'rgb(87, 255, 57)',
+        text: 'rgb(0, 0, 0)'
+    },
+    {
+        background: 'rgb(57, 255, 242)',
+        text: 'rgb(0, 0, 0)'
+    },
+    {
+        background: 'rgb(57, 149, 255)',
+        text: 'rgb(0, 0, 0)'
+    },
+    {
+        background: 'rgb(153, 57, 255)',
         text: 'rgb(255, 255, 255)'
     },
     {
-        background: 'rgb(123, 86, 255)',
-        text: 'rgb(255, 255, 255)'
+        background: 'rgb(57, 255, 176)',
+        text: 'rgb(0, 0, 0)'
     },
     {
-        background: 'rgb(29, 0, 132)',
-        text: 'rgb(255, 255, 255)'
+        background: 'rgb(255, 116, 57)',
+        text: 'rgb(0, 0, 0)',
     },
     {
-        background: 'rgb(91, 255, 85)',
-        text: 'rgb(16, 0, 123)'
-    },
-    {
-        background: 'rgb(153, 255, 0)',
-        text: 'rgb(16, 0, 123)',
-    },
-    {
-        background: 'rgb(255, 187, 0)',
-        text: 'rgb(16, 0, 123)',
+        background: 'rgb(173, 255, 57)',
+        text: 'rgb(0, 0, 0)',
     },
     {
         background: 'rgb(255, 98, 0)',
@@ -69,8 +69,8 @@ let backgroundInputColors = [
         text: 'rgb(0, 0, 0)',
     },
     {
-        background: 'rgb(0, 0, 0)',
-        text: 'rgb(255, 255, 255)',
+        background: 'rgb(57, 255, 133)',
+        text: 'rgb(0, 0, 0)',
     }
 ];
 
@@ -92,7 +92,6 @@ const randomSelectedColor = () => {
     console.log("Colores restantes",backgroundInputColors.length);
 
     if(backgroundInputColors.length === 0){
-        console.log("Se acabaron los colores");
         let randonNum = Math.floor(Math.random() * backgroundInputColorBackup.length);
         backgroundInputColorRef.value = backgroundInputColorBackup[randonNum];
     }else if(backgroundInputColors.length > 0){
@@ -153,8 +152,8 @@ const createGame = () => {
 }
 
 .create {
+    color: rgb(57, 255, 133);
     color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
 }
 
 </style>

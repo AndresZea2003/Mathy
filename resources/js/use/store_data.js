@@ -232,19 +232,6 @@ let store_data = [
     },
     {
         name: "Centella",
-        id: 13,
-        img: ship13,
-        tier: 4,
-        smoke: smoke4,
-        stars: stars4,
-        elipse: elipse4,
-        elipseg: elipse4g,
-        price: 2,
-        purchased: false,
-        unlocked: false
-    },
-    {
-        name: "Centella",
         id: 14,
         img: ship14,
         tier: 4,
