@@ -4,12 +4,18 @@ import Swal from "sweetalert2";
 
 let localStorageData = JSON.parse(localStorage.getItem('games'));
 
+//Librerias
+import {arrayIcons} from '../../../use/userIcons';
+
+
 //Imagenes
 import save from '../../../../../public/images/home/save.png';
 import logo from '../../../../../public/images/globals/main-logo.png';
 import deleteIMG from '../../../../../public/images/globals/delete.png';
 import closeIMG from '../../../../../public/images/globals/close.png';
 import closeDelete from '../../../../../public/images/globals/close-2.png';
+import allUsers from '../../../../../public/images/globals/all.png';
+
 
 //Emits
 const emit = defineEmits(['createGameComponent', 'introAnimationActive']);
@@ -94,11 +100,48 @@ const deleteFunction = () => {
 };
 
 
+//Borrar todos los usuarios
+const deleteAllUsers = () => {
+    Swal.fire({
+        title: "¿quieres borrar todos los usuarios?",
+        input: "text",
+        inputLabel: 'Escribe lo siguiente para borrar "Borrar usuarios"',
+        showCancelButton: true,
+        confirmButtonText: "Borrar",
+        confirmButtonColor: "red",
+
+        inputValidator: (value) => {
+                    if (!value) {
+                        return 'Necesitas escribir algo';
+                    }
+                }
+    }).then((result) => {
+        if (result.isConfirmed  && result.value.toUpperCase() === "BORRAR USUARIOS") {
+            //Ejecutando funcion para borrar al usuario
+            localStorage.removeItem('games');
+            users.value = [];
+            Swal.fire("Borrado con exito");
+        } else if (result.isConfirmed && result.value.toUpperCase() !== "BORRAR USUARIOS") {
+            Swal.fire("No se borraron los usuarios");
+        }else if(result.isDenied){
+            Swal.fire("No se borraron los usuarios");
+        }
+    });
+};
+
+
 //Funcion de continuar
 const continuarFunction = () => {
     if("IET" === input.value){
         deleteMode.value = true;
         deleteAuthorization.value = false;
+        //alerta si el modo borrado esta activado
+        Swal.fire({
+            position: 'top',
+            title: "Modo borrado activado",
+            timer: 3000,
+            timerProgressBar: true
+        });
     }else if("IET" !== input.value){
         deleteModeError.value = true;
         setTimeout(() => {
@@ -119,19 +162,25 @@ onUpdated(() => {
         classMainIconDelete.value = "choice-game__div--animation-icon-delete";
         mainIcon.value = deleteIMG;
         iconDelete.value = closeDelete;
-
-        //alerta si el modo borrado esta activado
-        Swal.fire({
-            position: 'top',
-            title: "Modo borrado activado",
-            timer: 3000,
-            timerProgressBar: true
-        });
     }else if(!deleteMode.value){
         mainIcon.value = save;
         classMainIconDelete.value = "";
     };
 });
+
+
+//Funcion para traer los iconos en cada etiqueta
+const getIcon = (name) => {
+    let result;
+
+    for (let i = 0; i < arrayIcons.length; i++) {
+        if(arrayIcons[i].name === name){
+            result = arrayIcons[i].img;
+        };
+    };
+
+    return result;
+};
 
 </script>
 
@@ -154,14 +203,24 @@ onUpdated(() => {
 
         <div class="w-64 h-96 z-10 backdrop-blur-sm border-2 border-blue-900 rounded-md my-3 py-3 flex flex-col justify-center items-center xl:w-80 ">
             <div class="choice-game__div--scroll w-56 my-4 overflow-x-auto xl:w-72 flex items-center flex-col">
-                <button v-for="gamer, index in users" :key="index" @click="gamerSelected(gamer.name)" class="choice-game__font--julius w-52 h-14 rounded-lg border-white border my-1 m-auto font-bold text-white xl:w-64 hover:bg-white hover:text-black hover:font-bold hover:scale-90 transition" :style="{ background: deleteMode ?('rgb(229, 62, 62)'):(gamer.inputColor.background) , color: deleteMode ? ('white'):(gamer.inputColor.text)  }">{{ gamer.name }}</button>
+                <button v-for="gamer, index in users" :key="index" @click="gamerSelected(gamer.name)" class="choice-game__font--julius w-52 h-14 rounded-lg border-white border my-1 m-auto font-bold text-white flex justify-between items-center xl:w-64 hover:bg-white hover:text-black hover:font-bold hover:scale-90 transition" :style="{ background: deleteMode ?('rgb(229, 62, 62)'):(gamer.inputColor.background) , color: deleteMode ? ('white'):(gamer.inputColor.text)  }">
+                    <img class="w-5 ml-5" :src="getIcon(gamer.icon)" alt="icon"/>
+                        {{ gamer.name }}
+                    <img class="w-5 mr-5" :src="getIcon(gamer.icon)" alt="icon"/>
+                </button>
                 <button @click="createGameComponent()" class="choice-game__font--julius w-52 h-14 rounded-lg border-white bg-blue-950 border my-1 mx-auto text-white text-3xl xl:w-64 hover:bg-white hover:text-black hover:font-bold hover:scale-90 transition">+</button>
             </div>
         </div>
         <img class="w-40 z-50" :src="logo" alt="logo"/>
 
-        <button @click="deleteFunction" class="rounded-full absolute top-3 right-3 bg-red-500 z-20">
-            <img class="w-10 p-2" :src="iconDelete" alt="delete"/>
+        <!-- Boton activar modo borrado -->
+        <button @click="deleteFunction" class="rounded-full absolute top-3 right-3 bg-red-500 z-20 xl:top-auto xl:bottom-10 xl:right-10 hover:transition-all hover:scale-90">
+            <img class="w-10 p-2 xl:w-16" :src="iconDelete" alt="delete"/>
+        </button>
+
+        <!-- boton borrar todo -->
+        <button v-if="deleteMode" @click="deleteAllUsers" class="rounded-full absolute top-3 left-3 bg-blue-800 z-20 xl:top-auto xl:bottom-10 xl:left-10 hover:transition-all hover:scale-90">
+            <img class="w-10 p-2 xl:w-16" :src="allUsers" alt="delete"/>
         </button>
     </div>
 </template>

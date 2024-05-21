@@ -169,5 +169,3 @@ if(!localStorage.getItem("bronzeCoins")){
     localStorage.setItem("bronzeCoins", 1);
 }
 
-
-
