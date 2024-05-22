@@ -13,7 +13,7 @@
 @section('main')
     <paint-permutations
         :items="{{ $items }}"
-        :gamemode="2"
+        :gamemode="1"
         type="colors"
         :boxes_for_group="3"
         :show_groups="6"
