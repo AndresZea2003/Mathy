@@ -34,7 +34,7 @@ const randomPlanetColor = () => {
 .planets-footer__div--planet {
   width: 3000px;
   height: 3000px;
-  bottom: -2600px;
+  bottom: -2850px;
   /* background-color: rgb(149, 0, 69); */
   background: radial-gradient(circle, rgba(0,0,0,1) 29%, rgba(5,0,255,1) 100%);
   -webkit-box-shadow: 0px 0px 55px -2px rgba(255,255,255,1);

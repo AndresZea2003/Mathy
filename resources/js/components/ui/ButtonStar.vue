@@ -1,6 +1,6 @@
 <template>
 <button>
-  <span class="font-press-start text-2xl">Comenzar</span>
+  <span class="font-press-start text-2xl z-10">Comenzar</span>
   <div class="star-1">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -130,8 +130,29 @@ button {
   border: 3px solid #10b981;
   border-radius: 8px;
   box-shadow: 0 0 0 #fec1958c;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s ease-in-out;
   cursor: pointer;
+  animation: buttonAnimation 5s infinite linear;
+}
+
+@keyframes buttonAnimation {
+    0% {
+      background-color: #00ac11;
+      color: #000064;
+      transform: scale(1);
+    }
+
+    50% {
+        background-color: #005105;
+        color: #ffffff;
+        transform: scale(.9);
+    }
+
+    100% {
+      background-color: #00ac11;
+      color: #000064;
+      transform: scale(1);
+    }
 }
 
 .star-1 {
@@ -143,6 +164,7 @@ button {
   filter: drop-shadow(0 0 0 #fffdef);
   z-index: -5;
   transition: all 1s cubic-bezier(0.05, 0.83, 0.43, 0.96);
+  opacity: 0%;
 }
 
 .star-2 {
@@ -154,6 +176,7 @@ button {
   filter: drop-shadow(0 0 0 #fffdef);
   z-index: -5;
   transition: all 1s cubic-bezier(0, 0.4, 0, 1.01);
+  opacity: 0%;
 }
 
 .star-3 {
@@ -165,6 +188,7 @@ button {
   filter: drop-shadow(0 0 0 #fffdef);
   z-index: -5;
   transition: all 1s cubic-bezier(0, 0.4, 0, 1.01);
+  opacity: 0%;
 }
 
 .star-4 {
@@ -176,6 +200,7 @@ button {
   filter: drop-shadow(0 0 0 #fffdef);
   z-index: -5;
   transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
+  opacity: 0%;
 }
 
 .star-5 {
@@ -187,6 +212,7 @@ button {
   filter: drop-shadow(0 0 0 #fffdef);
   z-index: -5;
   transition: all 0.6s cubic-bezier(0, 0.4, 0, 1.01);
+  opacity: 0%;
 }
 
 .star-6 {
@@ -198,12 +224,14 @@ button {
   filter: drop-shadow(0 0 0 #fffdef);
   z-index: -5;
   transition: all 0.8s ease;
+  opacity: 0%;
 }
 
 button:hover {
   background: transparent;
   color: #32CD32;
   box-shadow: 0 0 25px #32CD328c;
+  animation: none;
 }
 
 button:hover .star-1 {
@@ -214,6 +242,7 @@ button:hover .star-1 {
   height: auto;
   filter: drop-shadow(0 0 10px #fffdef);
   z-index: 2;
+  opacity: 100%;
 }
 
 button:hover .star-2 {
@@ -224,6 +253,7 @@ button:hover .star-2 {
   height: auto;
   filter: drop-shadow(0 0 10px #fffdef);
   z-index: 2;
+  opacity: 100%;
 }
 
 button:hover .star-3 {
@@ -234,6 +264,7 @@ button:hover .star-3 {
   height: auto;
   filter: drop-shadow(0 0 10px #fffdef);
   z-index: 2;
+  opacity: 100%;
 }
 
 button:hover .star-4 {
@@ -244,6 +275,7 @@ button:hover .star-4 {
   height: auto;
   filter: drop-shadow(0 0 10px #fffdef);
   z-index: 2;
+  opacity: 100%;
 }
 
 button:hover .star-5 {
@@ -254,6 +286,7 @@ button:hover .star-5 {
   height: auto;
   filter: drop-shadow(0 0 10px #fffdef);
   z-index: 2;
+  opacity: 100%;
 }
 
 button:hover .star-6 {
@@ -264,6 +297,7 @@ button:hover .star-6 {
   height: auto;
   filter: drop-shadow(0 0 10px #fffdef);
   z-index: 2;
+  opacity: 100%;
 }
 
 .fil0 {
