@@ -43,7 +43,7 @@ const introAnimationFunction = (event) => {
 </script>
 
 <template>
-    <div class="home-access__div--container w-full h-screen flex justify-center items-center">
+    <div class="home-access__div--container w-full h-screen flex justify-center items-center overflow-hidden">
         <ChoiceGame v-if="gamesVerify && !introAnimationActive" @createGameComponent="createGameComponent" @introAnimationActive="introAnimationFunction"/>
         <CreateGame v-if="!gamesVerify && !introAnimationActive" @introAnimationActive="introAnimationFunction"/>
         <IntroAnimationSpace v-if="introAnimationActive"/>
