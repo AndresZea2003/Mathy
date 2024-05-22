@@ -103,6 +103,8 @@ const clickEffectSound = () => {
     audio.play();
 };
 
+console.log("current", props.ship.id);
+
 </script>
 
 <template>
@@ -111,13 +113,13 @@ const clickEffectSound = () => {
         <div
             class="main__div--inside rounded-2xl flex items-center justify-center relative duration-300 hover:bg-indigo-800 transition-all">
             <img v-show="unlockedShip" class="w-8 absolute top-1" :src="unlockedShipImage" alt="unlocked-ship" />
-            <img v-show="currentShip" class="w-3/4" :src="selectedShipImage" alt="selected-ship" />
+            <img v-show="currentShip" class="w-3/4" :src="selectedShipImage" alt="selected-ship"/>
             <img class="main__img--elipse-g absolute w-5/6 mx-auto  transition-all duration-500 ease-in-out"
                 :src="props.ship.elipseg" alt="big-elipse" />
             <img class="main__img--elipse absolute w-5/6 mx-auto  transition-all duration-500 ease-in-out"
                 :src="props.ship.elipse" alt="elipse" />
-            <img class="main__img--ship absolute mx-auto .main__img--ship w-5/6" :src="props.ship.img" alt="ship" />
-            <p class="absolute bottom-1 text-green-500">{{ props.ship.name }}</p>
+            <img class="main__img--ship absolute mx-auto .main__img--ship w-5/6" :src="props.ship.img" alt="ship" :style="{transform: parseInt(props.ship.id) >= 17 ? ('rotate(-40deg)'):('')}"/>
+            <p class="absolute bottom-1 text-green-500"  >{{ props.ship.name }}</p>
         </div>
     </div>
 </template>
@@ -235,4 +237,6 @@ const clickEffectSound = () => {
         ;
     }
 }
+
+
 </style>

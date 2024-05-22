@@ -3,7 +3,7 @@ import Star from './Star.vue';
 </script>
 
 <template>
-    <div>
+    <div class="overflow-hidden">
         <Star/>
         <Star/>
         <Star/>

@@ -23,8 +23,9 @@ import IconError from "../icons/IconError.vue";
            class="duration-300 h-36 w-36 bg-gray-200 flex justify-center items-center text-8xl font-bold shadow-xl hidden">
       </div>
     </div>
-    <div class="flex justify-center items-end">
-      <img id="character" class="cursor-pointer" :src="showImage" width="160" alt="">
+    <div class="flex justify-center items-end" >
+      <img id="character" class="cursor-pointer" :src="showImage" alt="" style="width: 300px; height: 300px; object-fit: cover;">
+<!--      <img id="character" class="cursor-pointer" :src="showImage" width="160" alt="">-->
     </div>
   </div>
 </template>

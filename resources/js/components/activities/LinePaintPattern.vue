@@ -51,6 +51,7 @@ const talkBool = ref(false)
 const levelComplete = ref(false)
 const inTutorial = ref(false)
 let currentAudio = ref(null);
+let character = document.getElementById('character')
 
 const showInitialAlert = () => {
   Swal.fire({
@@ -164,8 +165,8 @@ const showIntroductionHelp = () => {
 
   talkBool.value = true
   talkCharacter(
-      `${localHost}/images/characters/robot/robot.png`,
-      `${localHost}/images/characters/robot/robot.png`
+      `${localHost}/images/characters/robot/v1/still/notFace.png`,
+      `${localHost}/images/characters/robot/v1/happyTalk.gif`
   );
 
   let i = 0;
@@ -228,7 +229,7 @@ const showIntroductionHelp = () => {
       currentAudio.value = audio4;
 
       setOnEnded(audio4, () => {
-        talkCharacter(`${localHost}/images/characters/robot/robot.png`, `${localHost}/images/characters/robot/robot.png`)
+        talkCharacter(`${localHost}/images/characters/robot/v1/still/notFace.png`, `${localHost}/images/characters/robot/v1/still/notFace.png`)
         talkBool.value = false
         inTutorial.value = false
         currentAudio.value = null;
@@ -310,8 +311,8 @@ const intro = (phase) => {
     inTutorial.value = true
     talkBool.value = true
     talkCharacter(
-        `${localHost}/images/characters/robot/robot.png`,
-        `${localHost}/images/characters/robot/robot.png`
+        `${localHost}/images/characters/robot/v1/still/notFace.png`,
+        `${localHost}/images/characters/robot/v1/still/notFace.png`
     );
     showBlackScreen()
     let audio2 = playAudio(audio2Route)
@@ -341,8 +342,8 @@ const intro = (phase) => {
 
   // Muestra el personaje hablando
   talkCharacter(
-      `${localHost}/images/characters/robot/robot.png`,
-      `${localHost}/images/characters/robot/robot.png`
+      `${localHost}/images/characters/robot/v1/still/notFace.png`,
+      `${localHost}/images/characters/robot/v1/talk.gif`
   );
 
   // Cuando el audio 1 termina, reproduce el audio 2
@@ -630,6 +631,7 @@ const showHelp = () => {
 }
 
 let step = ref(0)
+let showExpression = ref(false)
 
 const paintBox = (id) => {
   if (levelComplete.value || inTutorial.value) {
@@ -655,6 +657,24 @@ const paintBox = (id) => {
     bubble.play()
 
     // playSuccessShortRandom(talkBool.value)
+    // talkCharacter(`${localHost}/images/characters/robot/v1/still/notFace.png`, `${localHost}/images/characters/robot/v1/still/notFace.png`)
+    // setTimeout(function () {
+    //   talkCharacter(`${localHost}/images/characters/robot/v1/still/notFace.png`, `${localHost}/images/characters/robot/v1/still/notFace.png`)
+    // }, 5000)
+
+
+    character.src = `${localHost}/images/characters/robot/v1/still/happy.png`
+
+    // if (showExpression.value === false) {
+    //   showExpression.value = true
+    //   character.src = `${localHost}/images/characters/robot/v1/good.gif`
+    //   setTimeout(function () {
+    //     character.src = `${localHost}/images/characters/robot/v1/still/happy.png`
+    //     showExpression.value = false
+    //   }, 2800)
+    // }
+
+
     showCheckIcon()
 
     document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
@@ -697,9 +717,23 @@ const paintBox = (id) => {
     bubble.src = `${localHost}/audios/effects/wood.wav`
     bubble.play()
 
-    boxes.value[id - 1] = false
+    character.src = `${localHost}/images/characters/robot/v1/still/alert.png`
+    character.classList.add('brush-fail')
 
-    console.log(itemSelected.type)
+    setTimeout(function () {
+      character.classList.remove('brush-fail')
+    }, 500)
+
+    // if (showExpression.value === false) {
+    //   showExpression.value = true
+    //   character.src = `${localHost}/images/characters/robot/v1/still/alert.png`
+    //   setTimeout(function () {
+    //     character.src = `${localHost}/images/characters/robot/v1/still/alert.png`
+    //     showExpression.value = false
+    //   }, 2600)
+    // }
+
+    boxes.value[id - 1] = false
 
     if (itemSelected.type === types.color) {
       let element = document.getElementById(id);
@@ -724,47 +758,6 @@ const paintBox = (id) => {
     }, 3000)
   }
 }
-
-// const win = () => {
-//   // playSuccessShortRandom(talkBool.value)
-//
-//   levelComplete.value = true
-//   let progressBar = document.getElementById('progressBar')
-//
-//   let animated = document.getElementById('animatedRocket')
-//
-//   document.getElementById('icon-check').classList.add('hidden')
-//   document.getElementById('icon-error').classList.add('hidden')
-//
-//   progressBar.classList.add('hidden')
-//   animated.classList.remove('hidden')
-//
-//   setTimeout(function () {
-//     let winView = document.getElementById('winView')
-//
-//     winView.classList.remove('hidden')
-//
-//     setTimeout(function () {
-//       winView.classList.replace('opacity-0', 'opacity-100')
-//     }, 500)
-//
-//     setTimeout(function () {
-//       progressBar.classList.remove('hidden')
-//       animated.classList.add('hidden')
-//     }, 1000)
-//
-//     setTimeout(function () {
-//       winView.classList.replace('opacity-100', 'opacity-0')
-//     }, 3000)
-//
-//     setTimeout(function () {
-//       winView.classList.add('hidden')
-//     }, 3500)
-//     setTimeout(function () {
-//       document.getElementById('nextLevelButton').classList.remove('hidden')
-//     }, 2000)
-//   }, 2600)
-// };
 
 let level = ref(props.level)
 let showProgressBar = ref(true)
