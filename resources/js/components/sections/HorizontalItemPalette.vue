@@ -184,8 +184,8 @@ const handlePauseButton = () => {
   <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full flex justify-center items-center px-12">
 
     <div class="absolute translate-x-[-450px] border-b-4 border-dashed drop-shadow-2xl">
-      <HelpCharacterOnly :image="`${localHost}/images/characters/robot/robot.png`"
-                         :image_2="`${localHost}/images/characters/robot/robot.png`"></HelpCharacterOnly>
+      <HelpCharacterOnly :image="`${localHost}/images/characters/robot/v1/still/notFace.png`"
+                         :image_2="`${localHost}/images/characters/robot/v1/still/notFace.png`"></HelpCharacterOnly>
     </div>
 
     <div class="px-2">

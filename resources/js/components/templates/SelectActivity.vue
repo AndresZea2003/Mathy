@@ -94,7 +94,7 @@ const nextLevel = () => {
                         class="scale-75"></CardPlanet>
 
             <div class="flex justify-center border-b border-dashed">
-              <img :src="localHost + '/images/characters/robot/stay1.gif'" width="160" alt="">
+              <img class="translate-y-[12px]" :src="localHost + '/images/characters/robot/v1/still/happy.png'" width="230" alt="">
             </div>
 
           </div>
