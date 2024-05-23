@@ -169,3 +169,25 @@ if(!localStorage.getItem("bronzeCoins")){
     localStorage.setItem("bronzeCoins", 1);
 }
 
+//Logica de guardado de niveles
+export const saveCurrentLevel = (level, sublevel) => {
+    //Extraemos los datos del storage
+    let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
+    let localStorageDataGamer = localStorage.getItem('gamer');
+
+    let indiceGamer;
+
+    //Localizamos el usuario
+    for (let i = 0; i < localStorageDataGames.length; i++) {
+        if(localStorageDataGamer === localStorageDataGames[i].name){
+            indiceGamer = i;
+        }
+    }
+
+    //Actualizamos los datos del usuarios
+    localStorageDataGames[indiceGamer].currentLevel.level = level;
+    localStorageDataGames[indiceGamer].currentLevel.sublevel = sublevel;
+
+    //Los subimos al storage
+    localStorage.setItem('games', JSON.stringify(localStorageDataGames));
+};

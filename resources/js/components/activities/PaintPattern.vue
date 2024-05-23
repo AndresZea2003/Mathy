@@ -19,7 +19,8 @@ import {
   resolveAudio,
   playSuccessShortRandom,
   showCheckIcon,
-  showErrorIcon
+  showErrorIcon,
+  saveCurrentLevel
 } from '../../use';
 import {onMounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
@@ -57,6 +58,9 @@ const inTutorial = ref(false)
 
 //Establecemos la ubicacion actual del software en el storage
 localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
+
+//Se guarda el nivel actual en el perfil del jugador
+saveCurrentLevel(props.level[0], props.level[1]);
 
 // console.log("propsleve", );
 

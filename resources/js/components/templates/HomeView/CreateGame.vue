@@ -152,7 +152,7 @@ const createGame = () => {
             name: inputName.value,
             inputColor: {background: backgroundInputColorRef.value.background, text: backgroundInputColorRef.value.text},
             icon: iconRef.value,
-            currentLevel:[0, 0],
+            currentLevel: {level: 1, sublevel: 1},
             unlockedLevels: [1],
             shipSelected: 1,
             goldenCoins: 0,

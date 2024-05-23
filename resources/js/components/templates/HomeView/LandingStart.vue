@@ -10,16 +10,20 @@ import buttonStar from '../../ui/ButtonStar.vue';
 import shipGif from '../../../../../public/images/rockets/Cohetes-13.gif';
 import planetHome from '../../../../../public/images/home/planet-home.png';
 
+
 //Ref
 const interfaz = ref(false);
 const currentGamer = ref('');
 const arrayNameRef = ref([]);
 
+//Librerias
+import { localHost } from '../../../use';
 
 
-setTimeout(() => {
-    interfaz.value = true;
-}, 2000);
+
+// setTimeout(() => {
+//     interfaz.value = true;
+// }, 5000);
 
 let gamer = localStorage.getItem('gamer');
 let games = JSON.parse(localStorage.getItem('games'));
@@ -43,6 +47,30 @@ onMounted(() => {
     console.log("igor", games.name);
 });
 
+
+//Funcion que lleva al jugador al nivel en el que estaba
+const continueGame = () => {
+    //Extraemos los datos del storage
+    let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
+    let localStorageDataGamer = localStorage.getItem('gamer');
+
+    let indiceGamer;
+
+    //Localizamos el usuario
+    for (let i = 0; i < localStorageDataGames.length; i++) {
+        if(localStorageDataGamer === localStorageDataGames[i].name){
+            indiceGamer = i;
+        }
+    }
+
+    //Extraemos el nivel y subnivel de los datos del usuario
+    let level = localStorageDataGames[indiceGamer].currentLevel.level;
+    let sublevel = localStorageDataGames[indiceGamer].currentLevel.sublevel;
+
+    //Vamos a continuar el nivel donde va el jugador
+    window.location = `${localHost}/level${level}/${sublevel}`;
+};
+
 </script>
 
 <template>
@@ -59,7 +87,7 @@ onMounted(() => {
                 <img class="landing-start__div--planet-icons absolute" :src="planetHome" alt="planet"/>
             </div>
 
-            <div v-if="interfaz" class="landing-start__div--interfaz w-80 h-full absolute">
+            <div class="landing-start__div--interfaz w-80 h-full absolute">
                 <div class="text-white font-luckiest-guy text-2xl xl:text-3xl text-center select-none relative top-10">
                     Salva los <span class="text-red-500">Colores</span> con <br>
                     <span class="text-red-500">Mati</span> y <span class="text-blue-500">Motas</span>
@@ -74,9 +102,7 @@ onMounted(() => {
                 </div> -->
 
                 <div class="flex justify-center pt-36 top-60 absolute w-full">
-                    <a :href="localHost + '/levels'">
-                        <buttonStar id="buttonStar" class="buttonStar"></buttonStar>
-                    </a>
+                    <buttonStar @click="continueGame" id="buttonStar" class="buttonStar"></buttonStar>
                 </div>
 
                 <div class="landing-start__div--gamer text-white absolute flex justify-center items-center mt-28 xl:mt-36 top-96 left-0 right-0 m-auto font-bold text-4xl font-black">
@@ -130,13 +156,40 @@ onMounted(() => {
 }
 
 .landing-start__div--interfaz {
-    animation: interfazAnimation 2s linear;
+    animation: interfazAnimation 3s linear;
     animation-fill-mode: forwards;
 }
 
-
 @keyframes interfazAnimation {
     0% {
+        opacity: 0%;
+    }
+
+    90% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
+
+
+@media (min-width: 800px) {
+    .landing-start__div--interfaz {
+        animation: interfaz800pxAnimation 5s linear;
+        animation-fill-mode: forwards;
+    }
+}
+
+
+
+@keyframes interfaz800pxAnimation {
+    0% {
+        opacity: 0%;
+    }
+
+    90% {
         opacity: 0%;
     }
 
