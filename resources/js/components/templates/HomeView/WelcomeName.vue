@@ -65,22 +65,29 @@ setTimeout(() => {
     robotRocket.value = true;
     sateliteRef.value = true;
 
+    setTimeout(() => {
+        sateliteRef.value = false;
+    }, 20000);
+
     //Control de aparicion de las naves que aparecen volando por la parte trasera.
+    //Ovni
     setTimeout(() => {
         shipOrbitRef.value = true;
 
         setTimeout(() => {
             shipOrbitRef.value = false;
 
+
+        }, 12000);
+
+        //nave de fondo
+        setTimeout(() => {
+            shipOrbit2Ref.value = true;
+
             setTimeout(() => {
-                shipOrbit2Ref.value = true;
-
-                setTimeout(() => {
-                    shipOrbit2Ref.value = false;
-                }, 10000);
-
-            }, 2000);
-        }, 17000);
+                shipOrbit2Ref.value = false;
+            }, 10000);
+        }, 5000);
     }, 7000);
 
     //Controld de aparicion de la animacion del robot hablando.
@@ -127,15 +134,15 @@ setTimeout(() => {
 
         <img v-if="sateliteRef" class="welcome-name__img--satelite w-16 absolute" :src="satelite" alt="satelite"/>
         <img v-if="shipOrbitRef" class="welcome-name__img--ship-orbit w-32 absolute top-52" :src="shipOrbit" alt="ship"/>
-        <img v-if="shipOrbit2Ref" class="welcome-name__img--ship-2-orbit w-40 absolute top-52" :src="shipOrbit2" alt="ship"/>
+        <img v-if="shipOrbit2Ref" class="welcome-name__img--ship-2-orbit w-36 absolute top-52" :src="shipOrbit2" alt="ship"/>
 
 
         <div class="welcome-name__div--robot-rocket w-60 absolute m-auto left-0 right-0">
             <img v-if="shipAnimation2" class="welcome-name__img--ship-2" :src="ship" alt="ship-2"/>
             <img v-if="shipAnimationLeft" class="welcome-name__img--ship-left" :src="ship" alt="ship-2"/>
-            <img v-if="robotRocket" :class="`${conectionClass} w-28 absolute  bottom-14 left-10 xl:w-40`" :src="conection" alt="conection"/>
+            <img v-if="robotRocket" :class="`${conectionClass} w-28 absolute  bottom-14 left-10`" :src="conection" alt="conection"/>
             <img v-if="robotRocket" class="welcome-name__img--ship-static w-60 z-10 absolute" :src="shipStatic" alt="ship"/>
-            <img v-if="robotRocket" :class="`${robotClass} w-40 relative bottom-4 z-0 left-24 xl:w-60`" :src="typeRobot" alt="robot"/>
+            <img v-if="robotRocket" :class="`${robotClass} w-40 relative bottom-4 z-0 left-24`" :src="typeRobot" alt="robot"/>
         </div>
 
 
@@ -149,13 +156,25 @@ setTimeout(() => {
 .welcome-name__img--galaxy {
     overflow: hidden;
     background-image: url('../../../../../public/images/backgrounds/space.jpg');
+    opacity: 90%;
     background-size: cover;
     background-position: center;
     animation: galaxiaAnimation 1s linear;
 }
 
+@keyframes galaxiaAnimation {
+    0% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
+
 
 .welcome-name__img--ship {
+    /* background-color: red; */
     transform: rotate(170deg);
     animation: shipAnimation 4s linear;
     animation-fill-mode: forwards;
@@ -167,11 +186,11 @@ setTimeout(() => {
     }
 
     80% {
-        transform: translate(300px, 340px) rotate(125deg);
+        transform: translate(400px, 440px) rotate(125deg);
     }
 
     100% {
-        transform: translate(360px, 370px)  rotate(130deg);
+        transform: translate(560px, 570px)  rotate(130deg);
     }
 }
 
@@ -203,6 +222,7 @@ setTimeout(() => {
 
 .welcome-name__img--ship-left {
     width: 490px;
+    /* background-color: aqua; */
     margin: auto;
     position: absolute;
     transform: translateY(200px);
@@ -212,48 +232,52 @@ setTimeout(() => {
 
 @keyframes shipLeftAnimation {
     0% {
-        transform: translate(-76px, -30px) scale(1.4);
+        transform: translate(-76px, -30px) scale(1.4) rotate(0deg);
         opacity: 0%;
     }
 
     10% {
-        transform: translate(-76px, -30px) scale(1.4);
+        transform: translate(-76px, -30px) scale(1.4) rotate(0deg);
+        opacity: 100%;
+    }
+
+    70% {
+        transform: translate(-76px, -300px) scale(1.4) rotate(90deg);
         opacity: 100%;
     }
 
     100% {
-        transform: translate(-76px, -900px) scale(1.4);
+        transform: translate(1000px, -300px) scale(1.4) rotate(90deg);
         opacity: 100%;
     }
 }
 
 .welcome-name__img--belt-asteroids {
-    width: 3500px;
+    width: 3800px;
+    opacity: 50%;
     max-width: none;
     position: relative;
-    top: 150px;
+    top: 450px;
     overflow: hidden;
     animation: asteroidAnimation 120s infinite linear;
 }
 
 @keyframes asteroidAnimation {
     0% {
-        transform: translateX(0);
+        transform: translateX(-100px) rotate(10deg);
     }
 
     50% {
-        transform: translateX(-500px);
+        transform: translateX(-500px) rotate(10deg);
     }
 
     100% {
-        transform: translateX(0);
+        transform: translateX(-100px) rotate(10deg);
     }
 }
 
 
-
 .welcome-name__div--planet {
-    background-color: white;
     width: 800px;
     height: 800px;
     border-radius: 100%;
@@ -262,9 +286,36 @@ setTimeout(() => {
     right: -650px;
 }
 
+@media (min-width: 800px) {
+    .welcome-name__div--planet {
+        width: 1600px;
+        height: 1600px;
+        border-radius: 100%;
+        position: absolute;
+        top: -1000px;
+        right: -1050px;
+        animation: planetOrbitAnimation 10s infinite linear;
+    }
+}
+
+
+@keyframes planetOrbitAnimation {
+    0% {
+        transform: translateX(0px);
+    }
+
+    50% {
+        transform: translateX(20px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
 
 .welcome-name__div--robot-rocket  {
-    top: 450px;
+    top: 400px;
 }
 
 
@@ -277,6 +328,26 @@ setTimeout(() => {
     0% {
         transform: translateX(-50px) scale(0.1);
     }
+
+    100% {
+        transform: translateX(0px) scale(1);
+    }
+}
+
+@media (min-width: 800px) {
+    .welcome-name__img--conection-arrived {
+        animation: robotLineArrived800pxAnimation 3s linear;
+    }
+}
+
+@keyframes robotLineArrived800pxAnimation {
+    0% {
+        transform: translateX(-50px) scale(0.1);
+    }
+
+    /* 80% {
+        transform: translateX(-10px) scale(0.9);
+    } */
 
     100% {
         transform: translateX(0px) scale(1);
@@ -296,6 +367,30 @@ setTimeout(() => {
 
     100% {
         transform: translateX(-50px) scale(0.1);
+    }
+}
+
+@media (min-width: 800px) {
+    .welcome-name__img--conection-left {
+        animation: robotLineLeft800pxAnimation 3s linear;
+        animation-fill-mode: forwards;
+    }
+}
+
+@keyframes robotLineLeft800pxAnimation {
+    0% {
+        transform: translate(0px, 0px) scale(1);
+        /* opacity: 0%; */
+    }
+
+    /* 90%{
+        transform: translate(-50px, 0px) scale(0.1);
+        opacity: 100%;
+    } */
+
+    100% {
+        transform: translate(-50px, -10px) scale(0.1);
+        /* opacity: 0%; */
     }
 }
 
@@ -416,6 +511,23 @@ setTimeout(() => {
     }
 }
 
+@media (min-width: 800px) {
+    .welcome-name__img--satelite {
+        animation: satelite800pxAnimation 12s linear;
+        animation-fill-mode: forwards;
+    }
+}
+
+@keyframes satelite800pxAnimation {
+    0% {
+        transform: translate(100px, -200px);
+    }
+
+    100% {
+        transform: translate(800px, 800px);
+    }
+}
+
 
 .welcome-name__img--ship-orbit {
     transform: rotate(-90deg);
@@ -430,6 +542,29 @@ setTimeout(() => {
 
     100% {
         transform: translateX(-200px) rotate(0deg);
+    }
+}
+
+
+@media (min-width: 800px) {
+    .welcome-name__img--ship-orbit {
+        animation: orbitShip800pxAnimation 12s linear;
+        animation-fill-mode: forwards;
+    }
+}
+
+
+@keyframes orbitShip800pxAnimation {
+    0% {
+        transform: translateX(2500px) rotate(15deg);
+    }
+
+    50% {
+        transform: translateX(-100px) rotate(-15deg);
+    }
+
+    100% {
+        transform: translateX(-800px) rotate(15deg);
     }
 }
 

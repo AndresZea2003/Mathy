@@ -50,7 +50,7 @@ const gamerSelected = (name) => {
     }else if(deleteMode.value){
         //Logica en el modo borrado
         Swal.fire({
-            title: "Quieres borrar este usuario?",
+            title: `¿quieres borrar a ${name}?`,
             showCancelButton: true,
             confirmButtonText: "Borrar",
             confirmButtonColor: "red"
@@ -214,12 +214,12 @@ const getIcon = (name) => {
         <img class="w-40 z-50" :src="logo" alt="logo"/>
 
         <!-- Boton activar modo borrado -->
-        <button @click="deleteFunction" class="rounded-full absolute top-3 right-3 bg-red-500 z-20 xl:top-auto xl:bottom-10 xl:right-10 hover:transition-all hover:scale-90">
+        <button @click="deleteFunction" class="rounded-full absolute top-3 right-3 bg-red-500 z-20 xl:top-auto xl:bottom-16 xl:right-16 hover:transition-all hover:scale-90 xl:p-2">
             <img class="w-10 p-2 xl:w-16" :src="iconDelete" alt="delete"/>
         </button>
 
         <!-- boton borrar todo -->
-        <button v-if="deleteMode" @click="deleteAllUsers" class="rounded-full absolute top-3 left-3 bg-blue-800 z-20 xl:top-auto xl:bottom-10 xl:left-10 hover:transition-all hover:scale-90">
+        <button v-if="deleteMode" @click="deleteAllUsers" class="rounded-full absolute top-3 left-3 bg-blue-800 xl:bg-gray-500 z-20 xl:top-auto xl:bottom-16 xl:left-16 hover:transition-all hover:scale-90 xl:p-2">
             <img class="w-10 p-2 xl:w-16" :src="allUsers" alt="delete"/>
         </button>
     </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, onUpdated, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
 //Components
 import ChoiceGame from "./ChoiceGame.vue";

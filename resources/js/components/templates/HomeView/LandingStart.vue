@@ -49,7 +49,7 @@ onMounted(() => {
     <div class="landing-start__div--container w-full h-full flex items-center justify-center overflow-hidden relative">
         <SpaceBg/>
         <div class="w-full h-full flex justify-center items-center">
-            <img class="landing-start__img--ship w-56 top-16 absolute" :src="shipGif" alt="ship"/>
+            <img class="landing-start__img--ship w-56 top-16 absolute z-10" :src="shipGif" alt="ship"/>
             
 
             <!-- planeta parte baja -->
@@ -60,13 +60,13 @@ onMounted(() => {
             </div>
 
             <div v-if="interfaz" class="landing-start__div--interfaz w-80 h-full absolute">
-                <div class="text-white font-luckiest-guy text-2xl text-center select-none relative top-10">
+                <div class="text-white font-luckiest-guy text-2xl xl:text-3xl text-center select-none relative top-10">
                     Salva los <span class="text-red-500">Colores</span> con <br>
                     <span class="text-red-500">Mati</span> y <span class="text-blue-500">Motas</span>
                 </div>
 
-                <div class="landing-start__div--experiencias-logico-matematicas bg-amber-200 absolute border-amber-400 border-2 rounded select-none">
-                    <span class="font-bangers text-amber-900 text-xl">Experiencias Logico Matematicas</span>
+                <div class="landing-start__div--experiencias-logico-matematicas bg-amber-200 absolute border-amber-400 border-2 rounded select-none xl:w-96 text-center">
+                    <span class="font-bangers text-amber-900 text-xl xl:text-3xl">Experiencias Logico Matematicas</span>
                 </div>
 
                 <!-- <div class="landing-start__div--gamer text-white absolute flex justify-center items-center mt-20 top-96 rounded-xl py-1 px-20 border-slate-400 border-2 left-0 right-0 m-auto font-bold text-4xl font-black"  :style="{ backgroundColor: currentGamer.inputColor.background, color: currentGamer.inputColor.text }">
@@ -79,7 +79,7 @@ onMounted(() => {
                     </a>
                 </div>
 
-                <div class="landing-start__div--gamer text-white absolute flex justify-center items-center mt-28 top-96 left-0 right-0 m-auto font-bold text-4xl font-black">
+                <div class="landing-start__div--gamer text-white absolute flex justify-center items-center mt-28 xl:mt-36 top-96 left-0 right-0 m-auto font-bold text-4xl font-black">
                     <p class="text-center">{{ gamer }}</p>
                 </div>
 
@@ -90,14 +90,38 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.landing-start__div--container {
+    animation: introlandingStart 1s linear;
+}
+
+@keyframes introlandingStart  {
+    0%{
+        opacity: 0%;
+    }
+
+    100%{
+        opacity: 100%;
+    }
+}
+
 .landing-start__img--ship {
     animation: shipAnimation 2s linear;
     animation-fill-mode: forwards;
 }
 
+
+
+@media (min-width: 800px) {
+    .landing-start__img--ship {
+        animation: shipAnimation 4s linear;
+        animation-fill-mode: forwards;
+    }
+}
+
+
 @keyframes shipAnimation {
     0% {
-        transform: translateX(-500px) rotate(90deg);
+        transform: translateX(-1000px) rotate(90deg);
     }
 
     100% {
@@ -124,7 +148,12 @@ onMounted(() => {
 
 .landing-start__div--experiencias-logico-matematicas {
     animation: gamerAnimation 5s infinite linear;
+}
 
+@media (min-width: 800px) {
+    .landing-start__div--experiencias-logico-matematicas {
+        animation: gamer2Animation 5s infinite linear;
+    }
 }
 
 @keyframes gamerAnimation {
@@ -141,6 +170,20 @@ onMounted(() => {
     }
 }
 
+@keyframes gamer2Animation {
+    0% {
+        transform: rotate(-15deg) translate(-400px, 50px);
+    }
+
+    50% {
+        transform: rotate(-10deg) translate(-400px, 50px);
+    }
+
+    100% {
+        transform: rotate(-15deg) translate(-400px, 50px);
+    }
+}
+
 .landing-start__div--gamer {
     font-family: 'Julius Sans One', sans-serif;
 }
@@ -150,7 +193,14 @@ onMounted(() => {
     height: 2400px;
     position: absolute;
     top: 210px;
-    animation: planetAnimation 20s infinite linear;
+    /* animation: planetAnimation 20s infinite linear; */
+    animation: planetAnimation 40s infinite linear;
+}
+
+@media (min-width: 800px) {
+    .landing-start__div--planet-container {
+        top: 280px;
+    }
 }
 
 @keyframes planetAnimation {
@@ -172,7 +222,7 @@ onMounted(() => {
 }
 
 .landing-start__div--planet-icons {
-    width: 81%;
-    height: 81%;
+    width: 83.6%;
+    height: 83.6%;
 }
 </style>

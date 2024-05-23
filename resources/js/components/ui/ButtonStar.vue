@@ -126,8 +126,8 @@ button {
   background: #90c2b1;
   font-size: 17px;
   font-weight: 500;
-  color: #006400;
-  border: 3px solid #10b981;
+  color: #c5c5c5;
+  border: 3px solid #4144ff;
   border-radius: 8px;
   box-shadow: 0 0 0 #fec1958c;
   transition: all 0.4s ease-in-out;
@@ -137,20 +137,17 @@ button {
 
 @keyframes buttonAnimation {
     0% {
-      background-color: #00ac11;
-      color: #000064;
+      background-color: #0011a7;
       transform: scale(1);
     }
 
     50% {
-        background-color: #005105;
-        color: #ffffff;
+      background-color: #000749;
         transform: scale(.9);
     }
 
     100% {
-      background-color: #00ac11;
-      color: #000064;
+      background-color: #0011a7;
       transform: scale(1);
     }
 }
