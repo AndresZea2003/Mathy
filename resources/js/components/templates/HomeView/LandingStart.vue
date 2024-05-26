@@ -9,6 +9,7 @@ import buttonStar from '../../ui/ButtonStar.vue';
 //Imagenes
 import shipGif from '../../../../../public/images/rockets/Cohetes-13.gif';
 import planetHome from '../../../../../public/images/home/planet-home.png';
+import logo from '../../../../../public/images/globals/main-logo.png';
 
 
 //Ref
@@ -88,14 +89,16 @@ const continueGame = () => {
             </div>
 
             <div class="landing-start__div--interfaz w-80 h-full absolute">
-                <div class="text-white font-luckiest-guy text-2xl xl:text-3xl text-center select-none relative top-10">
+                <img class="w-48 absolute top-6 m-auto left-0 right-0" :src="logo" alt="logo"/>
+
+                <!-- <div class="text-white font-luckiest-guy text-2xl xl:text-3xl text-center select-none relative top-10">
                     Salva los <span class="text-red-500">Colores</span> con <br>
                     <span class="text-red-500">Mati</span> y <span class="text-blue-500">Motas</span>
                 </div>
 
                 <div class="landing-start__div--experiencias-logico-matematicas bg-amber-200 absolute border-amber-400 border-2 rounded select-none xl:w-96 text-center">
                     <span class="font-bangers text-amber-900 text-xl xl:text-3xl">Experiencias Logico Matematicas</span>
-                </div>
+                </div> -->
 
                 <!-- <div class="landing-start__div--gamer text-white absolute flex justify-center items-center mt-20 top-96 rounded-xl py-1 px-20 border-slate-400 border-2 left-0 right-0 m-auto font-bold text-4xl font-black"  :style="{ backgroundColor: currentGamer.inputColor.background, color: currentGamer.inputColor.text }">
                     <p class="" v-for="letter, index in arrayNameRef" :key="index">{{ letter }}</p>

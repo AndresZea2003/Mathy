@@ -6,6 +6,14 @@ import ChoiceGame from "./ChoiceGame.vue";
 import CreateGame from "./CreateGame.vue";
 import PlanetsFooter from "./PlanetsFooter.vue";
 import IntroAnimationSpace from "./IntroAnimationSpace.vue";
+import ButtonSkip from "../../ui/ButtonSkip.vue";
+
+
+//Borrar solo ensayo
+import WinCoin from "../../activities/Coin Changer/WinCoin.vue";
+
+
+
 
 const gamesVerify = ref();
 const createAccount = ref(false);
@@ -48,6 +56,7 @@ const introAnimationFunction = (event) => {
         <CreateGame v-if="!gamesVerify && !introAnimationActive" @introAnimationActive="introAnimationFunction"/>
         <IntroAnimationSpace v-if="introAnimationActive"/>
         <PlanetsFooter v-if="!introAnimationActive"/>
+        <!-- <ButtonSkip/> -->
     </div>
 </template>
 

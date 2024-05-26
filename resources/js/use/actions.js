@@ -191,3 +191,21 @@ export const saveCurrentLevel = (level, sublevel) => {
     //Los subimos al storage
     localStorage.setItem('games', JSON.stringify(localStorageDataGames));
 };
+
+//Funcion que trae los datos del usuario para utilizar en los componentes. para llamar solo getUsersLocalStorage().name por ejmeplo.
+export const getUsersLocalStorage = () => {
+        //Extraemos los datos del storage
+        let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
+        let localStorageDataGamer = localStorage.getItem('gamer');
+
+        let indiceGamer;
+
+        //Localizamos el usuario
+        for (let i = 0; i < localStorageDataGames.length; i++) {
+            if(localStorageDataGamer === localStorageDataGames[i].name){
+                indiceGamer = i;
+            }
+        }
+
+        return localStorageDataGames[indiceGamer]
+};

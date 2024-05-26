@@ -20,7 +20,7 @@ import {
   playSuccessShortRandom,
   showCheckIcon,
   showErrorIcon,
-  saveCurrentLevel
+  saveCurrentLevel,
 } from '../../use';
 import {onMounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
@@ -54,7 +54,7 @@ const vortexType = ref("");
 const selectedLevelVortex = ref(false);
 const selectedCoinChanger = ref(false);
 const updateCoins = ref(false);
-const inTutorial = ref(false)
+const inTutorial = ref(false);
 
 //Establecemos la ubicacion actual del software en el storage
 localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
@@ -539,7 +539,6 @@ const coinChangerClose = (event) => {
 
 const updateCoinsFunction = (event) => {
   updateCoins.value = event;
-  console.log("updatecoins ejecutandose");
 };
 
 </script>

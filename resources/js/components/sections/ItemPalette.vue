@@ -1,7 +1,7 @@
 <script setup>
 
 import {ref, onMounted, onUpdated} from "vue";
-import {types, sizes, localHost, getSelectItem, updateCoins, playAudio} from '../../use';
+import {types, sizes, localHost, getSelectItem, updateCoins, playAudio, getUsersLocalStorage} from '../../use';
 import Swal from 'sweetalert2';
 
 
@@ -304,6 +304,7 @@ const clickButtonAudio = () => {
   clickAudioEffect.volume = 0.5;
 };
 
+
 </script>
 <template>
   <div
@@ -395,7 +396,7 @@ const clickButtonAudio = () => {
 
             <!-- Codigo nuevo para monedas -->
             <div>
-              <div v-if="goldCoins < 1" class="w-52 h-10 absolute z-20"></div>
+              <div v-if="goldCoins < 1 || getUsersLocalStorage().coinChangerAuto === true" class="w-52 h-10 absolute z-20"></div>
               <div
                   :class="`item-palette-gold__div--container ${goldCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-yellow-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
                   @mouseenter="openAnimation('store')" @mouseleave="closeAnimation()" @click="storeAccess()">
@@ -407,7 +408,7 @@ const clickButtonAudio = () => {
             </div>
 
             <div>
-              <div v-if="silverCoins < 3" class="w-52 h-10 absolute z-20"></div>
+              <div v-if="silverCoins < 3 || getUsersLocalStorage().coinChangerAuto === true" class="w-52 h-10 absolute z-20"></div>
               <div
                   :class="`item-palette-silver__div--container ${silverCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-gray-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
                   @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()" @click="openCoinChanger()">
@@ -419,7 +420,7 @@ const clickButtonAudio = () => {
             </div>
 
             <div>
-              <div v-if="bronzeCoins < 3" class="w-52 h-10 absolute z-20"></div>
+              <div v-if="bronzeCoins < 3 || getUsersLocalStorage().coinChangerAuto === true" class="w-52 h-10 absolute z-20"></div>
               <div
                   :class="`item-palette-bronze__div--container ${bronzeCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-amber-700 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
                   @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()" @click="openCoinChanger()">

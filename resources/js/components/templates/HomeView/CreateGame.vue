@@ -153,6 +153,7 @@ const createGame = () => {
             inputColor: {background: backgroundInputColorRef.value.background, text: backgroundInputColorRef.value.text},
             icon: iconRef.value,
             currentLevel: {level: 1, sublevel: 1},
+            coinChangerAuto: false,
             unlockedLevels: [1],
             shipSelected: 1,
             goldenCoins: 0,
@@ -186,6 +187,8 @@ const createGame = () => {
     <div class="w-64 h-80 flex justify-center items-center flex-col xl:bottom-9 z-10">
         <img class="w-48 absolute top-24" :src="logo" alt="logo"/>
 
+        <img class="w-10 bg-slate-50 border border-3 border-current rounded-md p-2 absolute mb-32" :src="iconIMG" alt="icon"/>
+
         <div class="flex justify-center items-center flex-col relative top-7">
             <label for="text-input" class="create-game__font--julius text-white text-xl mt-20 xl:text-2xl">NOMBRE</label>
             <div class="flex justify-center items-center">
@@ -193,7 +196,7 @@ const createGame = () => {
             </div>
         </div>
 
-        <img class="w-10 bg-slate-50 border border-3 border-current rounded-md p-2 absolute mt-40" :src="iconIMG" alt="icon"/>
+        <!-- <img class="w-10 bg-slate-50 border border-3 border-current rounded-md p-2 absolute mt-40" :src="iconIMG" alt="icon"/> -->
 
         <button class="create-game__font--julius bg-blue-950 w-40 h-8 text-white border-white relative top-7 border rounded-md mt-20 xl:w-52 xl:h-10 hover:bg-white hover:text-black xl:" @click="createGame">
             Continuar
