@@ -1,6 +1,6 @@
 <script setup>
 //Ref
-import { onMounted, onUpdated, ref } from 'vue';
+import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
 
 //Componentes
 import CoinChangerScreen from '../Coin Changer/CoinChangerScreen.vue';
@@ -42,6 +42,9 @@ const calculatedResponsive = () => {
     };
 };
 
+onBeforeMount(() => {
+    coinChangerAutoRef.value = getUsersLocalStorage().coinChangerAuto;
+});
 
 //On mounted que se ejecuta antes de montar el componente que calcula el tamaño del componente padre.
 onMounted(() => {
@@ -50,8 +53,6 @@ onMounted(() => {
     widthRef.value = divClassWidth.offsetWidth;
 
     calculatedResponsive();
-
-    coinChangerAutoRef.value = getUsersLocalStorage().coinChangerAuto;
 });
 
 
@@ -80,10 +81,8 @@ const updateCoins = (event) => {
             class="coin-changer__div--space-background w-full h-full absolute top-0 left-0 bg-cover bg-center z-0 overflow-hidden bg-center">
         </div>
         <ShotingStar />
-        <CoinChangerScreen v-if="!coinChangerAutoRef" :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldenExchange="props.goldenExchange"
-            :silverExchange="props.silverExchange" :guide="props.guide"  @closeCoinChanger="closeCoinChanger" @updateCoins="updateCoins"/>
-        <CoinChangerScreenAuto v-if="coinChangerAutoRef" :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldenExchange="props.goldenExchange"
-        :silverExchange="props.silverExchange" :guide="props.guide"  @closeCoinChanger="closeCoinChanger" @updateCoins="updateCoins"/>
+        <CoinChangerScreen :coinChangerAuto="coinChangerAutoRef" :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldenExchange="props.goldenExchange"
+            :silverExchange="props.silverExchange" :guide="props.guide"  @closeCoinChanger="closeCoinChanger" @updateCoins="updateCoins" />
     </div>
 </template>
 

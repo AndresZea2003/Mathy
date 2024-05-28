@@ -29,6 +29,8 @@ const bronzeCoins = ref(null);
 const goldCoinsChangeActive = ref("");
 const silverCoinsChangeActive = ref("");
 const bronzeCoinsChangeActive = ref("");
+const userData = ref("");
+const buttonNextLevel = ref(true);
 
 
 //Props
@@ -101,6 +103,8 @@ onUpdated(() => {
 
 onMounted(async() => {
   storageCoinUpdated();
+
+  userData.value = getUsersLocalStorage();
 
   localStorage.setItem('itemSelected', null)
   itemSelected.value = getSelectItem()
@@ -304,6 +308,21 @@ const clickButtonAudio = () => {
   clickAudioEffect.volume = 0.5;
 };
 
+//Codigo para abrir el cambiador de monedas automatico antes de continuar al siguiente nivel si se cumplen los requisitos.
+let silverCoinsAuto = parseInt(localStorage.getItem('silverCoins'));//Temporal hasta que se conecte el perfil
+let bronzeCoinsAuto = parseInt(localStorage.getItem('bronzeCoins'));//Temporal hasta que se conecte el perfil
+const nextLevel = () => {
+  if(userData.value.coinChangerAuto && silverCoinsAuto === 3 || userData.value.coinChangerAuto && bronzeCoinsAuto === 3){
+    buttonNextLevel.value = false;
+    emit('vortexType', 'changer');
+    openCoinChanger();
+    setTimeout(() => {
+      window.location = nextUrl.value;
+    }, 50000);
+  }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto !== 3 || userData.value.coinChangerAuto && bronzeCoins !== 3){
+    window.location = nextUrl.value;
+  };
+};
 
 </script>
 <template>
@@ -481,8 +500,8 @@ const clickButtonAudio = () => {
         </div>
 
         <div class="col-span-2 flex justify-center">
-          <a :href="nextUrl">
-            <button id="nextLevelButton"
+          <!-- <a :href="nextUrl"> -->
+            <button v-if="buttonNextLevel" @click="nextLevel" id="nextLevelButton"
                     class="bg-yellow-infinite py-5 px-12 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden">
 
               <div class="arrow">
@@ -492,7 +511,7 @@ const clickButtonAudio = () => {
               </div>
 
             </button>
-          </a>
+          <!-- </a> -->
         </div>
 
       </div>

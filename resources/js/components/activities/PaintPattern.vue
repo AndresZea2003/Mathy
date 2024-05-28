@@ -557,8 +557,8 @@ const updateCoinsFunction = (event) => {
                          :image_2="`${localHost}/images/characters/robot/talk.gif`"
           />
         </div>
-        <div id="board" class="w-[68%] duration-300 bg-red-200 p-5 grid grid-rows-4">
-          <div v-if="selectedCoinChanger" class="w-full h-full absolute top-0 left-0 z-30">
+        <div id="board" class="w-[68%] duration-300 bg-red-200 p-5 grid grid-rows-4 relative">
+          <div v-if="selectedCoinChanger" class="w-full h-full absolute top-0 left-0 z-30" >
             <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'" :goldenExchange="3" :silverExchange="3" :guide="true" @coinChangerClose="coinChangerClose" @updateCoins="updateCoinsFunction"/>
           </div>
           <ProgressBar v-if="showProgressBar" :planet_1="`${localHost}/images/planets/tierra.svg`"

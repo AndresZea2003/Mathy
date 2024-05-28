@@ -16,6 +16,7 @@ import asteroidBelt from '../../../../../public/images/home/asteroid-belt.png';
 
 //Gifs
 import talkAnimationRobot from '../../../../../public/images/characters/robot/talk-animation.gif';
+import asteroidAnimation from '../../../../../public/images/home/asteroid gif.gif';
 
 //Traemos datos del storage
 let gamer = localStorage.getItem('gamer');
@@ -135,6 +136,7 @@ setTimeout(() => {
         <img v-if="sateliteRef" class="welcome-name__img--satelite w-16 absolute" :src="satelite" alt="satelite"/>
         <img v-if="shipOrbitRef" class="welcome-name__img--ship-orbit w-32 absolute top-52" :src="shipOrbit" alt="ship"/>
         <img v-if="shipOrbit2Ref" class="welcome-name__img--ship-2-orbit w-36 absolute top-52" :src="shipOrbit2" alt="ship"/>
+        <img v-if="shipAnimation2" class="welcome-name__img--asteroid w-36 absolute rotate-90 left-10 xl:left-60" :src="asteroidAnimation" alt="asteroid gif"/>
 
 
         <div class="welcome-name__div--robot-rocket w-60 absolute m-auto left-0 right-0">
@@ -265,14 +267,21 @@ setTimeout(() => {
 @keyframes asteroidAnimation {
     0% {
         transform: translateX(-100px) rotate(10deg);
+        opacity: 50%;
+    }
+
+    20% {
+        opacity: 0%;
     }
 
     50% {
         transform: translateX(-500px) rotate(10deg);
+        opacity: 0%;
     }
 
     100% {
         transform: translateX(-100px) rotate(10deg);
+        opacity: 0%;
     }
 }
 
@@ -582,6 +591,22 @@ setTimeout(() => {
 
     100% {
         transform: translate(500px, 500px) rotate(140deg);
+    }
+}
+
+.welcome-name__img--asteroid {
+    animation: asteroidAnimation 12s linear;
+    animation-fill-mode: forwards;
+}
+
+
+@keyframes asteroidAnimation {
+    0% {
+        transform: translateY(-100px) rotate(90deg);
+    }
+
+    100% {
+        transform: translateY(1500px) rotate(90deg);
     }
 }
 

@@ -33,7 +33,7 @@ const props = defineProps({
     storage_gold: String
 });
 
-console.log("current_ship_storage", props.current_ship_storage);
+// console.log("current_ship_storage", props.current_ship_storage);
 
 const currentShip = localStorage.getItem(props.current_ship_storage);
 
