@@ -9,9 +9,6 @@ import IntroAnimationSpace from "./IntroAnimationSpace.vue";
 import ButtonSkip from "../../ui/ButtonSkip.vue";
 
 
-//Borrar solo ensayo
-import WinCoin from "../../activities/Coin Changer/WinCoin.vue";
-
 
 
 
@@ -56,7 +53,6 @@ const introAnimationFunction = (event) => {
         <CreateGame v-if="!gamesVerify && !introAnimationActive" @introAnimationActive="introAnimationFunction"/>
         <IntroAnimationSpace v-if="introAnimationActive"/>
         <PlanetsFooter v-if="!introAnimationActive"/>
-        <!-- <ButtonSkip/> -->
     </div>
 </template>
 

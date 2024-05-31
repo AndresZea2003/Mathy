@@ -29,7 +29,8 @@ import CoinChanger from "./components/activities/Coin Changer/CoinChangerMain.vu
 import TemplateDrawActivity from "./components/activities/DrawActivity/TemplateDrawActivity.vue";
 import TemplateDrawActivityFree from "./components/activities/DrawActivity/TemplateDrawActivityFree.vue";
 import HomeAccess from "./components/templates/HomeView/HomeAccess.vue";
-
+import LaunchRocket from "./components/templates/LaunchRocketPlanet/LaunchRocket.vue";
+import WinCoin from "./components/templates/WinCoin/WinCoin.vue";
 
 
 
@@ -56,7 +57,9 @@ createApp({
         'coin-changer': CoinChanger,
         'draw-activity': TemplateDrawActivity,
         'draw-activity-free':TemplateDrawActivityFree,
-        'home-access': HomeAccess
+        'home-access': HomeAccess,
+        'launch-rocket': LaunchRocket,
+        'win-coin': WinCoin
 
     }
 }).mount("#app");

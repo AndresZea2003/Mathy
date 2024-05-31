@@ -20,6 +20,7 @@ import IconChanger from "../../../../public/images/globals/icon-change.png";
 //Importacion audio
 import hoverAudio from '../../../../public/audios/effects/audioHoverStandard.mp3';
 import clickAudio from '../../../../public/audios/effects/audioClickStandard.mp3';
+import CoinChanger from "../activities/Coin Changer/CoinChanger.vue";
 
 
 //Ref que controla el numero de monedas de oro
@@ -39,6 +40,7 @@ const props = defineProps({
   items: {type: Object},
   updateCoins: {type: Boolean},
   currentAudio: {type: HTMLAudioElement},
+  coinChangerClose: {type: Boolean}
 });
 
 
@@ -96,8 +98,7 @@ const storageCoinUpdated = () => {
 onUpdated(() => {
   if (props.updateCoins) {
     storageCoinUpdated();
-  }
-  ;
+  };
 });
 
 
@@ -501,7 +502,7 @@ const nextLevel = () => {
 
         <div class="col-span-2 flex justify-center">
           <!-- <a :href="nextUrl"> -->
-            <button v-if="buttonNextLevel" @click="nextLevel" id="nextLevelButton"
+            <button v-if="buttonNextLevel || coinChangerClose && buttonNextLevel" @click="nextLevel" id="nextLevelButton"
                     class="bg-yellow-infinite py-5 px-12 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden">
 
               <div class="arrow">

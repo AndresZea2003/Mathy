@@ -53,6 +53,7 @@ const coinChangerVortexRef = ref(false);
 const vortexType = ref("");
 const selectedLevelVortex = ref(false);
 const selectedCoinChanger = ref(false);
+const coinChangerCloseUser = ref(false);
 const updateCoins = ref(false);
 const inTutorial = ref(false);
 
@@ -535,6 +536,7 @@ const coinChangerClose = (event) => {
   selectedCoinChanger.value = event;
   selectedLevelVortex.value = event;
   coinChangerVortexRef.value = event;
+  coinChangerCloseUser.value = true;
 };
 
 const updateCoinsFunction = (event) => {
@@ -624,6 +626,7 @@ const updateCoinsFunction = (event) => {
             :level="props.level"
             :items="items"
             :updateCoins="updateCoins"
+            :coinChangerClose="coinChangerCloseUser"
             @closeAnimation="coinChangerVortexActivate"
             @openAnimation="coinChangerVortexActivate"
             @vortexType="vortexTypeFunction"
