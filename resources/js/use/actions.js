@@ -211,3 +211,22 @@ export const getUsersLocalStorage = () => {
 
         return localStorageDataGames[indiceGamer]
 };
+
+//Funcion que guarda los datos modificados del usuario
+export const saveDataLocalStorage = (data) => {//Desde el componente modificamos los datos del usuario y los devolvemos modificados en la funcion y la funcion se encarga de actualizar las partidas guardadas.
+    let localStorageDataGamer = localStorage.getItem('gamer');
+    let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
+
+    let indiceGamer;
+
+    //Localizamos el usuario
+    for (let i = 0; i < localStorageDataGames.length; i++) {
+        if(localStorageDataGamer === localStorageDataGames[i].name){
+            indiceGamer = i;
+        }
+    }
+
+    localStorageDataGames[indiceGamer] = data;
+
+    localStorage.setItem('games', JSON.stringify(localStorageDataGames));
+};
