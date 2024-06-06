@@ -1,11 +1,14 @@
 <script setup>
+import { onBeforeMount, ref } from 'vue';
 
 //Nave modelo
 import ship from '../../../../../public/images/rockets/Cohetes-13.svg';
 import shipAnimated from '../../../../../public/images/rockets/Cohetes-13.gif';
 import robot from '../../../../../public/images/characters/robot/robot.png';
 import robotTalking from '../../../../../public/images/characters/robot/talk-animation.gif';
-import { onBeforeMount, ref } from 'vue';
+import marsBackground from '../../../../../public/images/backgrounds/marte-background.png';
+
+
 
 
 //Refs
@@ -29,7 +32,7 @@ const levelWorlds = [
     },
     {
         background: "launch-rocket__div--container-animation-mars",
-        img: "url(https://cdn.pixabay.com/photo/2020/02/16/05/59/alien-4852662_1280.jpg)",
+        img:  `url(${marsBackground})`,
         terrain: "#39211B",
         terrain2: "#A04A2E"
     },
@@ -167,11 +170,11 @@ setTimeout(() => {
 
 @keyframes containerBackgroundMarsAnimation {
     0%{
-        background-color: #FC9765;
+        background-color: #FFBF76;
     }
 
     60%{
-        background-color: #FC9765;
+        background-color: #FFBF76;
     }
 
     100%{
