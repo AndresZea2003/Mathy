@@ -21,6 +21,7 @@ import {
   showCheckIcon,
   showErrorIcon,
   saveCurrentLevel,
+  winCoinCheckLevel,
 } from '../../use';
 import {onMounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
@@ -30,6 +31,7 @@ import {defineProps} from 'vue';
 import BackgroundActivities from "../background/BackgroundActivities.vue";
 import CoinChangerVortex from "./Coin Changer/CoinChangerVortex.vue";
 import CoinChanger from "./Coin Changer/CoinChanger.vue";
+import WinCoin from "../templates/WinCoin/WinCoin.vue";
 
 const props = defineProps({
   size: {type: Array},
@@ -56,6 +58,8 @@ const selectedCoinChanger = ref(false);
 const coinChangerCloseUser = ref(false);
 const updateCoins = ref(false);
 const inTutorial = ref(false);
+const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
+const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
 
 //Establecemos la ubicacion actual del software en el storage
 localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
@@ -117,7 +121,9 @@ const swalHtml = `
 
 let boxSize = ref(0)
 onMounted(() => {
-  showInitialAlert()
+  winCoinRef.value = winCoinCheckLevel(props.level[0], props.level[1]); //Determinamos si el componente da una moneda o no.
+
+  showInitialAlert();
 
   // Calcular tamaño de las cajas
   if (props.size[0] * props.size[1] < 5) {
@@ -507,7 +513,16 @@ const win = () => {
   setTimeout(function () {
     winView.classList.replace('opacity-100', 'opacity-0')
     setTimeout(function () {
-      winView.classList.add('hidden')
+      winView.classList.add('hidden');
+      console.log("win tinme");
+      if(winCoinRef.value){
+        console.log("win", winCoinRef.value);
+        winCoinViewAnimation.value = true;
+
+        setTimeout(() => {
+          winCoinViewAnimation.value = false;
+        }, 15000);
+      };
     }, 200)
   }, 4000)
 }
@@ -547,9 +562,11 @@ const updateCoinsFunction = (event) => {
 <template>
   <BackgroundActivities/>
 
+
+
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
   <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
-
+  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef"/>
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
       <div class="flex  p-6 w-full gap-5 rounded-md">

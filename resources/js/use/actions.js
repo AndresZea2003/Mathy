@@ -1,3 +1,5 @@
+import { rewardLevelsCoin } from "./rewardCoin"
+
 export const types = {
     letter: 'LETTER',
     image: 'IMAGE',
@@ -229,4 +231,22 @@ export const saveDataLocalStorage = (data) => {//Desde el componente modificamos
     localStorageDataGames[indiceGamer] = data;
 
     localStorage.setItem('games', JSON.stringify(localStorageDataGames));
+};
+
+
+
+//Funcion que comprueba si el nivel da alguna coin
+export const winCoinCheckLevel = (level, sublevel) => {
+    let result = false;
+
+
+
+    for (let i = 0; i < rewardLevelsCoin.length; i++) {
+        if( level === rewardLevelsCoin[i].level && sublevel === rewardLevelsCoin[i].subLevel){
+            result = rewardLevelsCoin[i].typeCoin;
+        };
+    };
+
+    console.log("wincoin", result);
+    return result;
 };

@@ -164,7 +164,7 @@ setTimeout(() => {
 </script>
 
 <template>
-    <div class="win-coin__div--container w-full h-full flex justify-center items-center relative bg-no-repeat bg-cover" :style="{backgroundImage: `url(${backgroundImage})`}">
+    <div class="win-coin__div--container w-full h-full flex justify-center items-center absolute bg-no-repeat bg-cover top-0 left-0 z-50" :style="{backgroundImage: `url(${backgroundImage})`}">
         <div class="relative">
             <img class="win-coin__img--ship w-48 xl:w-60 relative bottom-40 right-10 xl:right-96 z-10" :src="shipStatic" alt="ship"/>
             <div v-if="bulletImpactRef" class="win-coin__div--bullet w-14 h-4 rounded-xl relative " :style="{backgroundColor: bulletColor.background ,boxShadow:  `0px 0px 23px 8px ${bulletColor.shadow}`}"></div>
@@ -181,6 +181,20 @@ setTimeout(() => {
 </template>
 
 <style scoped>
+.win-coin__div--container {
+    animation: introComponentAnimation 1s linear;
+}
+
+@keyframes introComponentAnimation  {
+    0%{
+        opacity: 0%;
+    }
+
+    100%{
+        opacity: 100%;
+    }
+}
+
 .win-coin__img--ship {
     /* transform: rotate(120deg); */
     animation: shipAnimation 5s linear infinite;
@@ -363,6 +377,43 @@ setTimeout(() => {
         bottom: -130px;
         animation: winCoinXLAnimation 5s linear;
         animation-fill-mode: forwards;
+    }
+}
+
+@keyframes winCoinAnimation  {
+    0%{
+        transform: translate(0px, 0px) rotate(0deg);
+        opacity: 100%;
+    }
+
+    10%{
+        transform: translate(0px, 0px) rotate(0deg);
+        opacity: 100%;
+    }
+
+    50%{
+        transform: translate(0px, -170px) rotate(0deg);
+        opacity: 100%;
+    }
+
+    80%{
+        transform: translate(0px, -170px) rotate(0deg);
+        opacity: 100%;
+    }
+
+    84%{
+        transform: translate(0px, -170px) rotate(360deg);
+        opacity: 100%;
+    }
+
+    88%{
+        transform: translate(0px, -170px) rotate(360deg);
+        opacity: 100%;
+    }
+
+    100%{
+        transform: translate(-20px, 45px) rotate(360deg);
+        opacity: 0%;
     }
 }
 

@@ -12,12 +12,13 @@ import { onBeforeMount, ref } from 'vue';
 const robotTalkingRef = ref(true);
 const robotStaticRef = ref(true);
 const classRobotRef = ref("");
-const shipAnimatedRef = ref(false);
-const shipStaticRef = ref(true);
+const shipAnimatedRef = ref(false); //false
+const shipStaticRef = ref(true); //true
 const classBackgroundImageRef = ref("launch-rocket__div--image");
 const classBackgroundImageContainerRef = ref("launch-rocket__div--container");
 const classTerrainRef = ref("launch-rocket__div--terrain");
 const planetSelectedAnimation = ref("");
+const starsAnimationRef = ref(false);
 
 const levelWorlds = [
     {
@@ -75,6 +76,10 @@ setTimeout(() => {
                 classBackgroundImageRef.value = "launch-rocket__div--image-animation";
                 classBackgroundImageContainerRef.value = planetSelectedAnimation.value;
                 classTerrainRef.value = "launch-rocket__div--terrain-animated";
+
+                setTimeout(() => {
+                    starsAnimationRef.value = true;
+                }, 6000);
             }, 3000);
         }, 4000);
     }, 1000);
@@ -85,12 +90,13 @@ setTimeout(() => {
 
 <template>
     <div :class="`${classBackgroundImageContainerRef} w-full h-full relative overflow-hidden`">
+        <div v-if="starsAnimationRef" class="launch-rocket__div--stars w-full h-full"></div>
         <div :class="`${classBackgroundImageRef} w-full h-full flex justify-center items-center overflow-hidden`" :style="{backgroundImage: levelWorlds[props.planet - 1].img}">
             <div class="flex items-center justify-center w-72 xl:w-96 absolute z-20 bottom-14">
-                <img v-if="shipStaticRef" class="launch-rocket__div--ship relative z-40 w-60" :src="ship" alt="ship"/>
-                <img v-if="shipAnimatedRef" class="launch-rocket__img--ship-animated absolute z-40" :src="shipAnimated" alt="ship-animated"/>
-                <img v-if="robotStaticRef" :class="`${classRobotRef} w-28 xl:w-32 absolute bottom-8 right-2 z-20`" :src="robot" alt="robot"/>
-                <img v-if="robotTalkingRef" class=" w-36 absolute right-0 bottom-6" :src="robotTalking" alt="robot"/>
+                <img v-if="shipStaticRef" class="launch-rocket__div--ship relative z-40 w-96" :src="ship" alt="ship"/>
+                <img v-if="shipAnimatedRef" class="launch-rocket__img--ship-animated absolute z-50" :src="shipAnimated" alt="ship-animated"/>
+                <img v-if="robotStaticRef" :class="`${classRobotRef} w-28 xl:w-32 absolute bottom-8 right-2 z-50`" :src="robot" alt="robot"/>
+                <img v-if="robotTalkingRef" class="w-32 xl:w-36 absolute right-0 bottom-6 z-50" :src="robotTalking" alt="robot"/>
             </div>
             <div :class="`${classTerrainRef} rounded-full flex justify-center items-center`" :style="{backgroundColor: levelWorlds[props.planet - 1].terrain}">
                 <div class="launch-rocket__div--terrain-2 rounded-full" :style="{backgroundColor: levelWorlds[props.planet - 1].terrain2}"></div>
@@ -135,7 +141,7 @@ setTimeout(() => {
 
 /* Planeta Tierra */
 .launch-rocket__div--container-animation-earth {
-    animation: containerBackgroundEarthAnimation 10s linear;
+    animation: containerBackgroundEarthAnimation 8s linear;
     animation-fill-mode: forwards;
 }
 
@@ -256,35 +262,100 @@ setTimeout(() => {
     animation-fill-mode: forwards;
 }
 
-@keyframes robotArrivedAnimation {
-    0%{
-        transform: translateX(0px) scale(1);;
+@media screen and (min-width: 1300px) {
+    .launch-rocket__div--robot-arrived {
+        animation: robotArrivedXLAnimation 3s linear;
+        animation-fill-mode: forwards;
     }
+}
+
+@keyframes robotArrivedXLAnimation {
+    0%{
+        transform: translateX(0px) scale(1);
+        z-index: 50;
+    }
+
+    20%{
+        z-index: 10;
+    }
+
 
     90%{
         transform: translateX(-150px) scale(0);
+        z-index: 10;
     }
 
     100%{
         transform: translateX(-150px) scale(0);
+        z-index: 10;
+    }
+}
+
+@keyframes robotArrivedAnimation {
+    0%{
+        transform: translateX(0px) scale(1);
+        z-index: 50;
+    }
+
+    20%{
+        z-index: 10;
+    }
+
+    90%{
+        transform: translateX(-100px) scale(0);
+        z-index: 10;
+    }
+
+    100%{
+        transform: translateX(-100px) scale(0);
+        z-index: 10;
     }
 }
 
 .launch-rocket__img--ship-animated {
     top: -320px;
     left: 15px;
-    width: 363px;
+    width: 600px;
     animation: shipLaunchAnimation 3s linear;
     animation-fill-mode: forwards;
+    /* transform: scale(1.4); */
 }
 
 @keyframes shipLaunchAnimation {
     0%{
-        transform: translateY(0px);
+        transform: translateY(0px) scale(1.5);
     }
 
     100%{
-        transform: translateY(-180px);
+        transform: translateY(-180px) scale(1.5);
+    }
+}
+
+.launch-rocket__div--stars {
+    background-image: url('../../../../../public/images/backgrounds/stars-background.png');
+    animation: starsAnimation 15s linear;
+}
+
+@media screen and (min-width: 1300px) {
+    .launch-rocket__div--stars {
+        background-size: cover;
+    }
+}
+
+@keyframes starsAnimation {
+    0%{
+        background-position-y: -3000px;
+        opacity: 0%;
+    }
+
+    2%{
+        background-position-y: -2800px;
+        opacity: 100%;
+    }
+
+    100%{
+        background-position-y: 5000px;
+        opacity: 100%;
     }
 }
 
