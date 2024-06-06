@@ -26,6 +26,13 @@ import silverCoin from '../../../../../public/images/globals/silver-coin.png';
 import { getUsersLocalStorage, saveDataLocalStorage } from '../../../use';
 
 
+//Sonidos
+import laserShot from '../../../../../public/audios/effects/laserShot.mp3';
+import impactShot from '../../../../../public/audios/effects/winCoinImpact.mp3';
+import explosion from  '../../../../../public/audios/effects/winCoinExplosion.mp3';
+import turnCoin from '../../../../../public/audios/effects/winCoinTurnCoinEffect.mp3';
+import coinReward from '../../../../../public/audios/effects/WinCoinCoinPayout.mp3';
+
 const arrayBackgrounds = [
     background1,
     background2,
@@ -160,6 +167,62 @@ setTimeout(() => {
         }, 3000);
     }, 1500);
 }, 5900);
+
+//Algoritmo de sonidos
+const laserSounds = () => {
+    const laserShotSound = new Audio(laserShot);
+    const impactSound = new Audio(impactShot);
+    const explosionSound = new Audio(explosion);
+    const turnCoinSound = new Audio(turnCoin);
+    const payoutCoinSound = new Audio(coinReward);
+
+    //Volumen
+    laserShotSound.volume = 0.1;
+    impactSound.volume = 0.1;
+    explosionSound.volume = 0.1;
+    turnCoinSound.volume = 0.1;
+    payoutCoinSound.volume = 0.1;
+
+    laserShotSound.play();
+
+    setTimeout(() => {
+        impactSound.play();
+
+        setTimeout(() => {
+            impactSound.currentTime = 0;
+            impactSound.play();
+
+            setTimeout(() => {
+                impactSound.currentTime = 0;
+                impactSound.play();
+
+                setTimeout(() => {
+                    explosionSound.play();
+
+                    setTimeout(() => {
+                        turnCoinSound.play();
+                        setTimeout(() => {
+                            payoutCoinSound.play();
+                        }, 1000);
+                    }, 6000);
+                }, 100);
+            }, 2000);
+        }, 2000);
+    }, 1500);
+
+
+    setTimeout(() => {
+        laserShotSound.currentTime = 0;
+        laserShotSound.play();
+
+        setTimeout(() => {
+            laserShotSound.currentTime = 0;
+            laserShotSound.play();
+        }, 2000);
+    }, 2000);
+};
+
+laserSounds();
 
 </script>
 

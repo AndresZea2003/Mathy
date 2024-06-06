@@ -261,10 +261,10 @@ setTimeout(() => {
     position: relative;
     top: 450px;
     overflow: hidden;
-    animation: asteroidAnimation 120s infinite linear;
+    animation: asteroidBeltAnimation 120s infinite linear;
 }
 
-@keyframes asteroidAnimation {
+@keyframes asteroidBeltAnimation  {
     0% {
         transform: translateX(-100px) rotate(10deg);
         opacity: 50%;
@@ -284,7 +284,6 @@ setTimeout(() => {
         opacity: 0%;
     }
 }
-
 
 .welcome-name__div--planet {
     width: 800px;
@@ -595,18 +594,18 @@ setTimeout(() => {
 }
 
 .welcome-name__img--asteroid {
-    animation: asteroidAnimation 12s linear;
+    animation: asteroidAnimation 10s linear;
     animation-fill-mode: forwards;
 }
 
 
 @keyframes asteroidAnimation {
     0% {
-        transform: translateY(-100px) rotate(90deg);
+        transform: translateY(-800px) rotate(65deg) scale(1.8);
     }
 
     100% {
-        transform: translateY(1500px) rotate(90deg);
+        transform: translateY(1500px) rotate(65deg) scale(1.8);
     }
 }
 

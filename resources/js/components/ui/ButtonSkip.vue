@@ -38,8 +38,8 @@
     width: 100%;
     height: 100%;
     border-radius: 10px;
-    background-color: rgb(29, 0, 126);
-    border: white 3px solid;
+    background-color: rgb(0, 227, 79);
+    border: rgb(230, 230, 230) 3px solid;
     position: relative;
     display: flex;
     align-content: center;
@@ -79,15 +79,15 @@
 
 @keyframes arrow-one  {
     0%{
-        fill: white;
+        fill: rgb(17, 0, 204);
     }
 
     50%{
-        fill: rgb(0, 162, 202);
+        fill: rgb(218, 218, 218);
     }
 
     100%{
-        fill: white;
+        fill: rgb(17, 0, 204);
     }
 }
 
@@ -100,15 +100,15 @@
 
 @keyframes arrow-two  {
     0%{
-        fill: white;
+        fill: rgb(17, 0, 204);
     }
 
     50%{
-        fill: rgb(0, 162, 202);
+        fill: rgb(218, 218, 218);
     }
 
     100%{
-        fill: white;
+        fill: rgb(17, 0, 204);
     }
 }
 
@@ -123,15 +123,15 @@
 
 @keyframes arrow-three  {
     0%{
-        fill: white;
+        fill: rgb(17, 0, 204);
     }
 
     50%{
-        fill: rgb(0, 162, 202);
+        fill: rgb(218, 218, 218);
     }
 
     100%{
-        fill: white;
+        fill: rgb(17, 0, 204);
     }
 }
 
