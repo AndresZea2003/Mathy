@@ -16,6 +16,10 @@ import hoverEffect from '../../../../../public/audios/effects/audioHoverStandard
 import clickEffect from '../../../../../public/audios/effects/audioClickStandard.mp3';
 
 
+//Importacion de librerias
+import { getUsersLocalStorage } from '../../../use';
+
+
 //Props
 const props = defineProps({
     coinChangeType: String
@@ -24,6 +28,7 @@ const props = defineProps({
 //Ref que manejan las imagenes segun las monedas a cambiar
 const coinImage = ref(null);
 const coinChange = ref(null);
+const coinChangerAutoRef = ref(false);
 
 
 //Creamos un before mount para manejar antes del monataje del componente que imagenes se usaran.
@@ -35,6 +40,8 @@ onBeforeMount(() => {
         coinImage.value = coinBronze;
         coinChange.value = coinSilver;
     }
+
+    coinChangerAutoRef.value = getUsersLocalStorage().coinChangerAuto;
 });
 
 
@@ -76,7 +83,7 @@ const clickEffectSound = () => {
             </div>
         </div>
 
-        <button @mouseenter="hoverEffectSound"
+        <button v-if="!coinChangerAutoRef" @mouseenter="hoverEffectSound"
             class="change-animation__button--continuar text-slate-300 m-auto w-56 h-8 rounded rounded-lg bg-cyan-950 absolute left-0 right-0 transition-all hover:scale-125 hover:text-slate-100"
             @click="closeAnimation">Continuar</button>
     </div>

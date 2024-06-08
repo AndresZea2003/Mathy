@@ -1,11 +1,16 @@
 <script setup>
-import { onBeforeMount, onUpdated, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
 //Components
 import ChoiceGame from "./ChoiceGame.vue";
 import CreateGame from "./CreateGame.vue";
 import PlanetsFooter from "./PlanetsFooter.vue";
 import IntroAnimationSpace from "./IntroAnimationSpace.vue";
+import ButtonSkip from "../../ui/ButtonSkip.vue";
+
+
+
+
 
 const gamesVerify = ref();
 const createAccount = ref(false);

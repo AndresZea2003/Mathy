@@ -3,51 +3,51 @@ import { ref } from 'vue';
 
 //Imagenes
 import mainLogo from '../../../../../public/images/globals/main-logo.png';
-import galaxy from '../../../../../public/images/home/galaxy.jpg';
-import robot from '../../../../../public/images/characters/robot/robot.png';
-import conection from '../../../../../public/images/home/conection.png';
-import asteroidBelt from '../../../../../public/images/home/asteroid-belt.png';
-import satelite from '../../../../../public/images/home/satelite.png';
+import skipShip from '../../../../../public/images/home/standard-ship.png';
 
-import ship1 from '../../../../../public/images/rockets/Cohetes-13.gif';
-import ship from '../../../../../public/images/rockets/Cohetes-13.svg';
+
 
 //Componentes
-import AnimatedStars from '../../activities/DrawActivity/AnimatedStars.vue';
 import WelcomeName from './WelcomeName.vue';
 import LandingStart from './LandingStart.vue';
+import ButtonSkip from '../../ui/ButtonSkip.vue';
 
 //Ref
-const logoAnimation = ref(false); //true
+const logoAnimation = ref(true); //true
 const galaxyAnimationRef = ref(false); //false
-const welcomeName = ref(true);
-const title = ref(false);
-const ship1Ref = ref(true);
+const landingStartanimationRef = ref(false); //false
 
 
 
 
-// //Desmontaje de animacion del logo
-// setTimeout(() => {
-//     logoAnimation.value = false;
-// }, 7000);
+//Desmontaje de animacion del logo
+setTimeout(() => {
+    logoAnimation.value = false;
 
-// //Montaje de animacion de galaxia
-// setTimeout(() => {
-//     galaxyAnimationRef.value = true;
-//     title.value = true;
-//     titleText.value = 'via lactea';
+    //SIla ultima pantalla esta activa significa que se uso el omitir asi que ya no se activa la animacion del robot
+    if(!landingStartanimationRef.value){
+        robotIntroduction();
+    };
+}, 6000);
 
-//     //Desmontaje de galaxia
-//     setTimeout(() => {
-//         galaxyAnimationRef.value = false;
-//         title.value = false;
-//     }, 10000);
-// }, 6000);
+//Funcion que activa la secuencia de activacion de animaciones de robot y posterior pantalla principal
+const robotIntroduction = () => {
+    galaxyAnimationRef.value = true;
+
+    setTimeout(() => {
+        galaxyAnimationRef.value = false;
+
+        landingStartanimationRef.value = true;
+    }, 28000);
+};
 
 
 
-
+const skipAnimation = () => {
+    logoAnimation.value = false;
+    galaxyAnimationRef.value = false;
+    landingStartanimationRef.value = true;
+};
 
 </script>
 
@@ -56,13 +56,18 @@ const ship1Ref = ref(true);
         <!-- <h2 v-if="title" class="intro-animation__h2--title absolute text-white top-12 border border-white rounded-full px-4 text-2xl z-20">{{ titleText }}</h2> -->
         <img v-if="logoAnimation" class="intro-animation__img--logo" :src="mainLogo" alt="logo"/>
         <WelcomeName v-if="galaxyAnimationRef"/>
-        <LandingStart/>
+        <LandingStart v-if="landingStartanimationRef"/>
+        <!-- <button v-if="!landingStartanimationRef" @click="skipAnimation" class="absolute bottom-7 right-7 bg-blue-900 z-50 rounded-lg px-10 transition-all border border-2 hover:bg-blue-500 hover:scale-90"><img class="intro-animation__div--skip-button w-10" :src="skipShip" alt="skip"/></button> -->
+        <div v-if="!landingStartanimationRef" @click="skipAnimation" class="absolute bottom-2 right-7 z-20 w-16 h-20 xl:bottom-7 xl:w-24 xl:h-24">
+            <ButtonSkip/>
+        </div>
     </div>
 </template>
 
 <style scoped>
 .intro-animation__div--background {
     animation: backgroundAnimation 25s linear;
+    animation-fill-mode: forwards;
 }
 
 @keyframes backgroundAnimation {
@@ -87,7 +92,7 @@ const ship1Ref = ref(true);
 .intro-animation__img--logo  {
     width: 200px;
     z-index: 11;
-    animation: mainLogoAnimation 6s linear;
+    animation: mainLogoAnimation 5s linear;
     animation-fill-mode: forwards;
 }
 
@@ -256,6 +261,24 @@ const ship1Ref = ref(true);
 
     100% {
         transform: translate(500px, 500px);
+    }
+}
+
+.intro-animation__div--skip-button {
+    animation: skipAnimation 2s linear infinite;
+};
+
+@keyframes skipAnimation {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.9);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }
 

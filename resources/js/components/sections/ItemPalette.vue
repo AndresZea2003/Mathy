@@ -1,7 +1,7 @@
 <script setup>
 
 import {ref, onMounted, onUpdated} from "vue";
-import {types, sizes, localHost, getSelectItem, updateCoins, playAudio} from '../../use';
+import {types, sizes, localHost, getSelectItem, updateCoins, playAudio, getUsersLocalStorage} from '../../use';
 import Swal from 'sweetalert2';
 
 
@@ -20,6 +20,7 @@ import IconChanger from "../../../../public/images/globals/icon-change.png";
 //Importacion audio
 import hoverAudio from '../../../../public/audios/effects/audioHoverStandard.mp3';
 import clickAudio from '../../../../public/audios/effects/audioClickStandard.mp3';
+import CoinChanger from "../activities/Coin Changer/CoinChanger.vue";
 
 
 //Ref que controla el numero de monedas de oro
@@ -29,6 +30,8 @@ const bronzeCoins = ref(null);
 const goldCoinsChangeActive = ref("");
 const silverCoinsChangeActive = ref("");
 const bronzeCoinsChangeActive = ref("");
+const userData = ref("");
+const buttonNextLevel = ref(true);
 
 
 //Props
@@ -37,6 +40,7 @@ const props = defineProps({
   items: {type: Object},
   updateCoins: {type: Boolean},
   currentAudio: {type: HTMLAudioElement},
+  coinChangerClose: {type: Boolean}
 });
 
 
@@ -94,13 +98,14 @@ const storageCoinUpdated = () => {
 onUpdated(() => {
   if (props.updateCoins) {
     storageCoinUpdated();
-  }
-  ;
+  };
 });
 
 
 onMounted(async() => {
   storageCoinUpdated();
+
+  userData.value = getUsersLocalStorage();
 
   localStorage.setItem('itemSelected', null)
   itemSelected.value = getSelectItem()
@@ -304,6 +309,22 @@ const clickButtonAudio = () => {
   clickAudioEffect.volume = 0.5;
 };
 
+//Codigo para abrir el cambiador de monedas automatico antes de continuar al siguiente nivel si se cumplen los requisitos.
+let silverCoinsAuto = parseInt(localStorage.getItem('silverCoins'));//Temporal hasta que se conecte el perfil
+let bronzeCoinsAuto = parseInt(localStorage.getItem('bronzeCoins'));//Temporal hasta que se conecte el perfil
+const nextLevel = () => {
+  if(userData.value.coinChangerAuto && silverCoinsAuto === 3 || userData.value.coinChangerAuto && bronzeCoinsAuto === 3){
+    buttonNextLevel.value = false;
+    emit('vortexType', 'changer');
+    openCoinChanger();
+    setTimeout(() => {
+      window.location = nextUrl.value;
+    }, 50000);
+  }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto !== 3 || userData.value.coinChangerAuto && bronzeCoins !== 3){
+    window.location = nextUrl.value;
+  };
+};
+
 </script>
 <template>
   <div
@@ -395,7 +416,7 @@ const clickButtonAudio = () => {
 
             <!-- Codigo nuevo para monedas -->
             <div>
-              <div v-if="goldCoins < 1" class="w-52 h-10 absolute z-20"></div>
+              <div v-if="goldCoins < 1 || getUsersLocalStorage().coinChangerAuto === true" class="w-52 h-10 absolute z-20"></div>
               <div
                   :class="`item-palette-gold__div--container ${goldCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-yellow-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
                   @mouseenter="openAnimation('store')" @mouseleave="closeAnimation()" @click="storeAccess()">
@@ -407,7 +428,7 @@ const clickButtonAudio = () => {
             </div>
 
             <div>
-              <div v-if="silverCoins < 3" class="w-52 h-10 absolute z-20"></div>
+              <div v-if="silverCoins < 3 || getUsersLocalStorage().coinChangerAuto === true" class="w-52 h-10 absolute z-20"></div>
               <div
                   :class="`item-palette-silver__div--container ${silverCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-gray-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
                   @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()" @click="openCoinChanger()">
@@ -419,7 +440,7 @@ const clickButtonAudio = () => {
             </div>
 
             <div>
-              <div v-if="bronzeCoins < 3" class="w-52 h-10 absolute z-20"></div>
+              <div v-if="bronzeCoins < 3 || getUsersLocalStorage().coinChangerAuto === true" class="w-52 h-10 absolute z-20"></div>
               <div
                   :class="`item-palette-bronze__div--container ${bronzeCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-amber-700 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
                   @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()" @click="openCoinChanger()">
@@ -480,8 +501,8 @@ const clickButtonAudio = () => {
         </div>
 
         <div class="col-span-2 flex justify-center">
-          <a :href="nextUrl">
-            <button id="nextLevelButton"
+          <!-- <a :href="nextUrl"> -->
+            <button v-if="buttonNextLevel || coinChangerClose && buttonNextLevel" @click="nextLevel" id="nextLevelButton"
                     class="bg-yellow-infinite py-5 px-12 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden">
 
               <div class="arrow">
@@ -491,7 +512,7 @@ const clickButtonAudio = () => {
               </div>
 
             </button>
-          </a>
+          <!-- </a> -->
         </div>
 
       </div>

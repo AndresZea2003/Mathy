@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, onUpdated, ref } from 'vue';
+import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
 import Draggable from 'vuedraggable';
 
 //Importacion de componentes
@@ -46,7 +46,8 @@ const props = defineProps({
     bronzeCoins: Number,
     goldenExchange: Number,
     silverExchange: Number,
-    guide: Boolean
+    guide: Boolean,
+    coinChangerAuto: Boolean
 });
 
 
@@ -113,11 +114,31 @@ const sourceList = ref(null);
 //Control de el dragEnd para evitar mas de una ejecucion.
 const onDragEndControl = ref(true);
 
+//En el modo automatico este ref maneja el tipo de moneda que se estara cambiando
+const typeChangeAuto = ref("");
 
+//Turno actual de animacion auto
+const changeAutoActiveCoin = ref(0);
+
+const arrayChangeAutoActivated = ref([]);
+
+onMounted(() => {
+    //verificamos si esta en modo automatico y si estan las monedas de plata con 3 y bronce con 3 se cambian primero las de plata y si no las de bronce
+    if(props.coinChangerAuto){
+        if(silverArray.value.length === 3){
+            typeChangeAuto.value = silverArray.value[0].img;
+            coinsAutoAnimation(silverArray.value[0]);
+        }else if(bronzeArray.value.length === 3){
+            typeChangeAuto.value = bronzeArray.value[0].img;
+            coinsAutoAnimation(bronzeArray.value[0]);
+        };
+    };
+});
 
 
 //Creamos un before mount que se ejecuta antes de mostrar el componente donde se convertira las monedas en objetos en un array para arrastrar.
 onBeforeMount(() => {
+
     for (let i = 0; i < props.bronzeCoins; i++) {
         bronzeArray.value.push({
             coinId: i,
@@ -133,8 +154,8 @@ onBeforeMount(() => {
             img: silverIMG
         });
     };
-
 });
+
 
 
 const tutorialAnimationActivation = () => {
@@ -150,11 +171,6 @@ const tutorialAnimationActivation = () => {
 onUpdated(() => {
     tutorialAnimationActivation();
 });
-
-
-
-
-
 
 
 //Funcion que marca lo que pasa al inicio del arrastre del elemento
@@ -559,138 +575,175 @@ const closeCoinChanger = () => {
 };
 
 
+const coinDepositAutoCicle = (numberCoin, typeCoin) => {
+    changeAutoActiveCoin.value = numberCoin;
+
+    setTimeout(() => {
+        arrayChangeAutoActivated.value.push(numberCoin);
+        animationDepositActive.value = true;
+        typeCoinDeposit.value = typeCoin.img;
+
+        setTimeout(() => {
+            animationDepositActive.value = false;
+            capsuleCoins.value.push(typeCoin);
+
+            if(capsuleCoins.value.length < 3){
+                setTimeout(() => {
+                    coinDepositAutoCicle(numberCoin + 1, typeCoin);
+                }, 1000);
+            }else if(capsuleCoins.value.length === 3){
+                changeReady.value = true;
+                setTimeout(() => {
+                    console.log("ejecutando el cambio");
+                    changeCoins();
+                }, 1000);
+            };
+        }, 5900);
+    }, 3000);
+};
+
+//Fragmento de codigo dedicado al automatizador de animación
+const coinsAutoAnimation = (typeCoin) => {
+    coinDepositAutoCicle(1, typeCoin);
+};
+
 </script>
 
 <template>
     <div class="coinChangerScreen__div--container z-40 relative w-full h-full">
-        <CoinChangerTutorial v-if="tutorialAnimation && props.guide" :capsuleCoins="capsuleCoins" :bronzeArray="bronzeArray"
-            :silverArray="silverArray" :goldenExchange="props.goldenExchange" :silverExchange="props.silverExchange"/>
-        <ChangeError v-if="error" @closeWindowError="closeError" />
-        <ChangeAnimation v-if="startConversion" :coinChangeType="typeChange" @closeAnimation="closeAnimation" />
-        <div
-            class="coin-changer-screen__div--container--title w-64 top-30 text-center mx-auto relative text-white pt-2 mt-4">
-            <h2 class="text-2xl">COHETELANDIA</h2>
-            <img class="w-12 top-6 right-1 absolute transform -rotate-45" :src="naveIMG" alt="nave" />
-            <img class="w-52 absolute top-11 right-18" :src="shotingStar" alt="shoting-star" />
-        </div>
-        <div>
-            <img @click="closeCoinChanger" class="w-12 absolute right-20 cursor-pointer hover:scale-110 transition-all" :src="close" alt="close"/>
-        </div>
-        <div class="coin-changer-screen__div--change-platform bg-center bg-no-repeat w-52 m-auto relative top-16">
-            <div class="absolute top-10 inset-x-0 w-12 h-16 m-auto">
-                <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-1"></div>
-                <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-2"></div>
-                <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-3"></div>
-                <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-4"></div>
-                <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-5"></div>
+        <div class="coinChangerScreen__div--content">
+            <CoinChangerTutorial v-if="tutorialAnimation && props.guide && !props.coinChangerAuto" :capsuleCoins="capsuleCoins" :bronzeArray="bronzeArray"
+                :silverArray="silverArray" :goldenExchange="props.goldenExchange" :silverExchange="props.silverExchange"/>
+            <ChangeError v-if="error" @closeWindowError="closeError" />
+            <ChangeAnimation v-if="startConversion" :coinChangeType="typeChange" @closeAnimation="closeAnimation" />
+            <div
+                class="coin-changer-screen__div--container--title w-64 top-30 text-center mx-auto relative text-white pt-2 mt-4">
+                <h2 class="text-2xl">COHETELANDIA</h2>
+                <img class="w-12 top-6 right-1 absolute transform -rotate-45" :src="naveIMG" alt="nave" />
+                <img class="w-52 absolute top-11 right-18" :src="shotingStar" alt="shoting-star" />
             </div>
-
-            <div v-if="errorDepositCoin" class="coin-changer-screen__div--error-different-coin-container m-auto absolute inset-x-0 z-10 flex justify-center items-center">
-                <div class="coin-changer-screen__div--error-different-coin-1 h-5 absolute"></div>
-                <div class="coin-changer-screen__div--error-different-coin-2 absolute h-5 "></div>
-                <img class="coin-changer-screen__div--error-coin relative z-10 " :src="typeCoinDeposit" alt="coin" />
-            </div>
-
-            <div v-if="animationDepositActive" class="coin-changer-screen__div--block-interaction absolute m-auto inset-x-0 z-30"></div>
-
-            <div v-if="animationDepositActive" class="coin-changer-screen__img--animacion-deposit-container h-5 m-auto inset-x-0 absolute ">
-                <img class="coin-changer-screen__img--coin-deposit-animation w-12 m-auto relative" :src="typeCoinDeposit"
-                    alt="coin-change" />
-                <div class="coin-changer-screen__div--panel-deposit-animation m-auto absolute inset-x-0"></div>
-            </div>
-
-            <img :src="panel1" class="coin-changer-screen__img--panel-1 absolute top-10 inset-x-0 w-21 m-auto"
-                alt="platform1" />
-
             <div>
-                <Draggable v-if="!returnCoins" v-model="changeArray" tag="ul"
-                    class="changeArray coin-changer-screen__div--changer w-20 h-20 relative  flex justify-content-center align-items-center m-auto rounded-full"
-                    @start="onDragStart" @dragover="onDragOver" @end="onDragEnd"  @touchstart.prevent="onDragStart" @touchmove.prevent="onDragOver" @touchend.prevent="onDragEnd" >
-                    <template #item="{ element }">
-                        <li class="drag-item" :key="element.index" :data-key="element.coinId">
-                            <img class="coin-changer-screen__img--coin w-12 m-auto hover:scale-125 hover:cursor-grab transition-all"
-                                :src="element.img" alt="coin-change" />
-                        </li>
-                    </template>
-                </Draggable>
-
-                <div class="relative w-full h-20 m-auto" v-else>
-                    <button @mouseenter="hoverEffectSoundFunction()" @click="returnCoinsFunction" class="coin-changer-screen__button--return-coins m-auto absolute inset-x-0 rounded-full bg-center"></button>
+                <img v-if="!coinChangerAuto" @click="closeCoinChanger" class="w-12 absolute right-20 cursor-pointer hover:scale-110 transition-all" :src="close" alt="close"/>
+            </div>
+            <div class="coin-changer-screen__div--change-platform bg-center bg-no-repeat w-52 m-auto relative top-16">
+                <div class="absolute top-10 inset-x-0 w-12 h-16 m-auto">
+                    <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-1"></div>
+                    <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-2"></div>
+                    <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-3"></div>
+                    <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-4"></div>
+                    <div class="coin-changer-screen__div--wind coin-changer-screen__div--wind-5"></div>
                 </div>
 
-            </div>
-
-            <img class="coin-changer-screen__img--panel-2 absolute inset-x-0 m-auto flex justify-center items-center"
-                :src="panel2" alt="panel2" />
-
-            <div class="coin-changer-screen__div--container-coins-panel relative left-2.5">
-                <div class="coin-changer-screen__div--coins flex justify-center items-center w-full">
-                    <img class="coin-changer-screen__img--coin w-12" v-for="element, index in capsuleCoins" :key="index"
-                        :src="element.img" alt="silver-coin" />
+                <div v-if="errorDepositCoin" class="coin-changer-screen__div--error-different-coin-container m-auto absolute inset-x-0 z-10 flex justify-center items-center">
+                    <div class="coin-changer-screen__div--error-different-coin-1 h-5 absolute"></div>
+                    <div class="coin-changer-screen__div--error-different-coin-2 absolute h-5 "></div>
+                    <img class="coin-changer-screen__div--error-coin relative z-10 " :src="typeCoinDeposit" alt="coin" />
                 </div>
-                <img class="absolute top-0 left-0" :src="purplePanel" alt="panel" />
-                <div v-if="coinTunnel"
-                    class="coin-changer-screen__img--purple-panel-animation absolute inset-x-0 m-auto "></div>
-            </div>
 
-            <div v-if="changeReady"
-                class="coin-changer-screen__div--arrows absolute top-60 pl-0.5 inset-x-0 flex justify-center items-center flex-col w-10 m-auto z-10">
-                <img class="coin-changer-screen__img--arrow-1 w-5 rotate-90" :src="arrow" alt="arrow" />
-                <img class="coin-changer-screen__img--arrow-2 w-5 rotate-90" :src="arrow" alt="arrow" />
-                <img class="coin-changer-screen__img--arrow-3 w-5 rotate-90" :src="arrow" alt="arrow" />
-            </div>
+                <div v-if="animationDepositActive" class="coin-changer-screen__div--block-interaction absolute m-auto inset-x-0 z-30"></div>
 
-            <button @mouseenter="hoverEffectSoundFunction()" v-if="changeReady" @click="changeCoins"
-                class="coin-changer-screen__button--changer-button size-12 rounded-full m-auto flex justify-center items-center relative left-0.5 hover:scale-125">
-                <img class="w-12" :src="coinButton" alt="coin" />
-            </button>
-            <div class="coin-changer-screen__div--elipses-container relative ">
-                <img :class="{ 'coin-changer-screen__div--elipse-1-animation relative top-10': startConversion, 'relative top-10': !startConversion }"
-                    :src="elipseChangerPlatform" alt="elipse" />
-                <img :class="{ 'coin-changer-screen__div--elipse-2-animation relative top-5': startConversion, 'relative top-5': !startConversion }"
-                    :src="elipseChangerPlatform" alt="elipse" />
-                <img :class="{ 'coin-changer-screen__div--elipse-3-animation': startConversion, 'coin-changer-screen__div--elipse-3': !startConversion }"
-                    :src="elipseChangerPlatform" alt="elipse" />
-            </div>
-        </div>
-        <div class="w-56 h-36 absolute px-1.5 inset-x-0 m-auto bottom-10">
-            <div class="coin-changer-screen__div--animation-back" :style="{ background: backCoinColor('silver') }">
-                <div class="coin-changer-screen__div--container absolute rounded-3xl overflow-hidden">
-                    <div v-if="animationDepositActive || errorDepositCoin || blockDragCoins(silverArray, props.goldenExchange, 'silver')"
-                        class="coin-changer-screen__div--block-animation absolute z-30">
-                    </div>
-                    <Draggable v-model="silverArray" tag="ul" class="silverArray grid grid-cols-1" @start="onDragStart"
-                        @dragover="onDragOver" @end="onDragEnd" @touchstart.prevent="onDragStart" @touchmove.prevent="onDragOver" @touchend.prevent="onDragEnd">
+                <div v-if="animationDepositActive" class="coin-changer-screen__img--animacion-deposit-container h-5 m-auto inset-x-0 absolute ">
+                    <img class="coin-changer-screen__img--coin-deposit-animation w-12 m-auto relative" :src="typeCoinDeposit"
+                        alt="coin-change" />
+                    <div class="coin-changer-screen__div--panel-deposit-animation m-auto absolute inset-x-0"></div>
+                </div>
 
+                <img :src="panel1" class="coin-changer-screen__img--panel-1 absolute top-10 inset-x-0 w-21 m-auto"
+                    alt="platform1" />
+
+                <div>
+                    <Draggable v-if="!returnCoins" v-model="changeArray" tag="ul"
+                        class="changeArray coin-changer-screen__div--changer w-20 h-20 relative  flex justify-content-center align-items-center m-auto rounded-full"
+                        @start="onDragStart" @dragover="onDragOver" @end="onDragEnd"  @touchstart.prevent="onDragStart" @touchmove.prevent="onDragOver" @touchend.prevent="onDragEnd" >
                         <template #item="{ element }">
                             <li class="drag-item" :key="element.index" :data-key="element.coinId">
                                 <img class="coin-changer-screen__img--coin w-12 m-auto hover:scale-125 hover:cursor-grab transition-all"
-                                    :src="element.img" alt="silver-coin" />
+                                    :src="element.img" alt="coin-change" />
                             </li>
                         </template>
                     </Draggable>
+
+                    <div class="relative w-full h-20 m-auto" v-else>
+                        <button @mouseenter="hoverEffectSoundFunction()" @click="returnCoinsFunction" class="coin-changer-screen__button--return-coins m-auto absolute inset-x-0 rounded-full bg-center"></button>
+                    </div>
+
+                </div>
+
+                <img class="coin-changer-screen__img--panel-2 absolute inset-x-0 m-auto flex justify-center items-center"
+                    :src="panel2" alt="panel2" />
+
+                <div class="coin-changer-screen__div--container-coins-panel relative left-2.5">
+                    <div class="coin-changer-screen__div--coins flex justify-center items-center w-full">
+                        <img class="coin-changer-screen__img--coin w-12" v-for="element, index in capsuleCoins" :key="index"
+                            :src="element.img" alt="silver-coin" />
+                    </div>
+                    <img class="absolute top-0 left-0" :src="purplePanel" alt="panel" />
+                    <div v-if="coinTunnel"
+                        class="coin-changer-screen__img--purple-panel-animation absolute inset-x-0 m-auto "></div>
+                </div>
+
+                <div v-if="changeReady"
+                    class="coin-changer-screen__div--arrows absolute top-60 pl-0.5 inset-x-0 flex justify-center items-center flex-col w-10 m-auto z-10">
+                    <img class="coin-changer-screen__img--arrow-1 w-5 rotate-90" :src="arrow" alt="arrow" />
+                    <img class="coin-changer-screen__img--arrow-2 w-5 rotate-90" :src="arrow" alt="arrow" />
+                    <img class="coin-changer-screen__img--arrow-3 w-5 rotate-90" :src="arrow" alt="arrow" />
+                </div>
+
+                <button @mouseenter="hoverEffectSoundFunction()" v-if="changeReady && !coinChangerAuto" @click="changeCoins"
+                    class="coin-changer-screen__button--changer-button size-12 rounded-full m-auto flex justify-center items-center relative left-0.5 hover:scale-125">
+                    <img class="w-12" :src="coinButton" alt="coin" />
+                </button>
+                <div class="coin-changer-screen__div--elipses-container relative ">
+                    <img :class="{ 'coin-changer-screen__div--elipse-1-animation relative top-10': startConversion, 'relative top-10': !startConversion }"
+                        :src="elipseChangerPlatform" alt="elipse" />
+                    <img :class="{ 'coin-changer-screen__div--elipse-2-animation relative top-5': startConversion, 'relative top-5': !startConversion }"
+                        :src="elipseChangerPlatform" alt="elipse" />
+                    <img :class="{ 'coin-changer-screen__div--elipse-3-animation': startConversion, 'coin-changer-screen__div--elipse-3': !startConversion }"
+                        :src="elipseChangerPlatform" alt="elipse" />
                 </div>
             </div>
-            <div class="coin-changer-screen__div--animation-back coin-changer-screen__div--animation-back-side right-0"
-                :style="{ background: backCoinColor('bronze') }">
-                <div class="coin-changer-screen__div--container absolute rounded-3xl overflow-hidden">
-                    <div v-if="animationDepositActive || errorDepositCoin || blockDragCoins(bronzeArray, props.silverExchange, 'bronze')"
-                        class="coin-changer-screen__div--block-animation coin-changer-screen__div--block-animation absolute z-30">
-                    </div>
-                    <Draggable v-model="bronzeArray" tag="ul" class="bronzeArray grid grid-cols-1" @start="onDragStart"
-                        @dragover="onDragOver" @end="onDragEnd" @touchstart.prevent="onDragStart" @touchmove.prevent="onDragOver" @touchend.prevent="onDragEnd">
+            <div v-if="!props.coinChangerAuto" class="w-56 h-36 absolute px-1.5 inset-x-0 m-auto bottom-10">
+                <div class="coin-changer-screen__div--animation-back" :style="{ background: backCoinColor('silver') }">
+                    <div class="coin-changer-screen__div--container absolute rounded-3xl overflow-hidden">
+                        <div v-if="animationDepositActive || errorDepositCoin || blockDragCoins(silverArray, props.goldenExchange, 'silver')"
+                            class="coin-changer-screen__div--block-animation absolute z-30">
+                        </div>
+                        <Draggable v-model="silverArray" tag="ul" class="silverArray grid grid-cols-1" @start="onDragStart"
+                            @dragover="onDragOver" @end="onDragEnd" @touchstart.prevent="onDragStart" @touchmove.prevent="onDragOver" @touchend.prevent="onDragEnd">
 
-                        <template #item="{ element }">
-                            <li class="drag-item" :key="element.index" :data-key="element.coinId">
-                                <img class="coin-changer-screen__img--coin w-12 m-auto hover:scale-125 hover:cursor-grab transition-all"
-                                    :src="element.img" alt="bronze-coin" />
-                            </li>
-                        </template>
-                    </Draggable>
+                            <template #item="{ element }">
+                                <li class="drag-item" :key="element.index" :data-key="element.coinId">
+                                    <img class="coin-changer-screen__img--coin w-12 m-auto hover:scale-125 hover:cursor-grab transition-all"
+                                        :src="element.img" alt="silver-coin" />
+                                </li>
+                            </template>
+                        </Draggable>
+                    </div>
                 </div>
+                <div class="coin-changer-screen__div--animation-back coin-changer-screen__div--animation-back-side right-0"
+                    :style="{ background: backCoinColor('bronze') }">
+                    <div class="coin-changer-screen__div--container absolute rounded-3xl overflow-hidden">
+                        <div v-if="animationDepositActive || errorDepositCoin || blockDragCoins(bronzeArray, props.silverExchange, 'bronze')"
+                            class="coin-changer-screen__div--block-animation coin-changer-screen__div--block-animation absolute z-30">
+                        </div>
+                        <Draggable v-model="bronzeArray" tag="ul" class="bronzeArray grid grid-cols-1" @start="onDragStart"
+                            @dragover="onDragOver" @end="onDragEnd" @touchstart.prevent="onDragStart" @touchmove.prevent="onDragOver" @touchend.prevent="onDragEnd">
+
+                            <template #item="{ element }">
+                                <li class="drag-item" :key="element.index" :data-key="element.coinId">
+                                    <img class="coin-changer-screen__img--coin w-12 m-auto hover:scale-125 hover:cursor-grab transition-all"
+                                        :src="element.img" alt="bronze-coin" />
+                                </li>
+                            </template>
+                        </Draggable>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="coinChangerAuto && !startConversion" class="coin-changer-screen__div--auto-change bg-blue-950 absolute m-auto left-0 right-0 rounded-xl border-2 border-cyan-400 flex justify-center items-center">
+                <img v-for="index in 3" :class="`coin-changer-screen__img--coin-auto coin-changer-screen__img--${index === changeAutoActiveCoin ? ('animation'):('coin')}-${index} w-20 absolute`" :src="typeChangeAuto" :key="index" alt="coin" :style="{opacity: arrayChangeAutoActivated.includes(index) ? ('0%'):('100%')}"/>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -708,6 +761,11 @@ const closeCoinChanger = () => {
     100% {
         opacity: 100%;
     }
+}
+
+.coinChangerScreen__div--content {
+    position: relative;
+    height: 605px;
 }
 
 /* Estilos titulo */
@@ -1460,4 +1518,99 @@ const closeCoinChanger = () => {
     width: 70px;
     height: 130px;
 }
+
+.coin-changer-screen__div--auto-change {
+    bottom: 10px;
+    width: 300px;
+    height: 100px;
+    animation: containerCoinsAutoAnimation 1s linear;
+}
+
+@keyframes containerCoinsAutoAnimation  {
+    0% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
+
+.coin-changer-screen__img--coin-auto {
+    animation: coinAutoAnimation 5s linear infinite;
+    filter: drop-shadow(10px 10px 5px rgba(0, 0, 0, 0.5));
+    z-index: 20;
+}
+
+@keyframes coinAutoAnimation  {
+    0% {
+        transform: translateX(-10px) rotate(10deg);
+    }
+
+    50% {
+        transform: translateX(10px) rotate(-10deg);
+    }
+
+    100% {
+        transform: translateX(-10px) rotate(10deg);
+    }
+}
+
+.coin-changer-screen__img--coin-1 {
+    left: 30px;
+}
+
+.coin-changer-screen__img--animation-1  {
+    animation: coin1AutoAnimation 3s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes coin1AutoAnimation  {
+    0% {
+        left: 30px;
+        transform: translateY(0px) scale(1);
+    }
+
+    100% {
+        left: 100px;
+        transform: translateY(-440px) scale(0.6);
+    }
+}
+
+.coin-changer-screen__img--animation-2  {
+    animation: coin2AutoAnimation 3s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes coin2AutoAnimation  {
+    0% {
+        transform: translateY(0px) scale(1);
+    }
+
+    100% {
+        transform: translateY(-440px) scale(0.7);
+    }
+}
+
+.coin-changer-screen__img--coin-3 {
+    right: 30px;
+}
+
+.coin-changer-screen__img--animation-3  {
+    animation: coin3AutoAnimation 3s linear infinite;
+    animation-fill-mode: forwards;
+}
+
+@keyframes coin3AutoAnimation  {
+    0% {
+        right: 30px;
+        transform: translateY(0px) scale(1);
+    }
+
+    100% {
+        right: 100px;
+        transform: translateY(-440px) scale(0.7);
+    }
+}
+
 </style>

@@ -19,7 +19,9 @@ import {
   resolveAudio,
   playSuccessShortRandom,
   showCheckIcon,
-  showErrorIcon
+  showErrorIcon,
+  saveCurrentLevel,
+  winCoinCheckLevel,
 } from '../../use';
 import {onMounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
@@ -29,6 +31,7 @@ import {defineProps} from 'vue';
 import BackgroundActivities from "../background/BackgroundActivities.vue";
 import CoinChangerVortex from "./Coin Changer/CoinChangerVortex.vue";
 import CoinChanger from "./Coin Changer/CoinChanger.vue";
+import WinCoin from "../templates/WinCoin/WinCoin.vue";
 
 const props = defineProps({
   size: {type: Array},
@@ -52,11 +55,17 @@ const coinChangerVortexRef = ref(false);
 const vortexType = ref("");
 const selectedLevelVortex = ref(false);
 const selectedCoinChanger = ref(false);
+const coinChangerCloseUser = ref(false);
 const updateCoins = ref(false);
-const inTutorial = ref(false)
+const inTutorial = ref(false);
+const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
+const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
 
 //Establecemos la ubicacion actual del software en el storage
 localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
+
+//Se guarda el nivel actual en el perfil del jugador
+saveCurrentLevel(props.level[0], props.level[1]);
 
 // console.log("propsleve", );
 
@@ -112,7 +121,9 @@ const swalHtml = `
 
 let boxSize = ref(0)
 onMounted(() => {
-  showInitialAlert()
+  winCoinRef.value = winCoinCheckLevel(props.level[0], props.level[1]); //Determinamos si el componente da una moneda o no.
+
+  showInitialAlert();
 
   // Calcular tamaño de las cajas
   if (props.size[0] * props.size[1] < 5) {
@@ -502,7 +513,16 @@ const win = () => {
   setTimeout(function () {
     winView.classList.replace('opacity-100', 'opacity-0')
     setTimeout(function () {
-      winView.classList.add('hidden')
+      winView.classList.add('hidden');
+      console.log("win tinme");
+      if(winCoinRef.value){
+        console.log("win", winCoinRef.value);
+        winCoinViewAnimation.value = true;
+
+        setTimeout(() => {
+          winCoinViewAnimation.value = false;
+        }, 15000);
+      };
     }, 200)
   }, 4000)
 }
@@ -531,20 +551,22 @@ const coinChangerClose = (event) => {
   selectedCoinChanger.value = event;
   selectedLevelVortex.value = event;
   coinChangerVortexRef.value = event;
+  coinChangerCloseUser.value = true;
 };
 
 const updateCoinsFunction = (event) => {
   updateCoins.value = event;
-  console.log("updatecoins ejecutandose");
 };
 
 </script>
 <template>
   <BackgroundActivities/>
 
+
+
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
   <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
-
+  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef"/>
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
       <div class="flex  p-6 w-full gap-5 rounded-md">
@@ -554,8 +576,8 @@ const updateCoinsFunction = (event) => {
                          :image_2="`${localHost}/images/characters/robot/talk.gif`"
           />
         </div>
-        <div id="board" class="w-[68%] duration-300 bg-red-200 p-5 grid grid-rows-4">
-          <div v-if="selectedCoinChanger" class="w-full h-full absolute top-0 left-0 z-30">
+        <div id="board" class="w-[68%] duration-300 bg-red-200 p-5 grid grid-rows-4 relative">
+          <div v-if="selectedCoinChanger" class="w-full h-full absolute top-0 left-0 z-30" >
             <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'" :goldenExchange="3" :silverExchange="3" :guide="true" @coinChangerClose="coinChangerClose" @updateCoins="updateCoinsFunction"/>
           </div>
           <ProgressBar v-if="showProgressBar" :planet_1="`${localHost}/images/planets/tierra.svg`"
@@ -621,6 +643,7 @@ const updateCoinsFunction = (event) => {
             :level="props.level"
             :items="items"
             :updateCoins="updateCoins"
+            :coinChangerClose="coinChangerCloseUser"
             @closeAnimation="coinChangerVortexActivate"
             @openAnimation="coinChangerVortexActivate"
             @vortexType="vortexTypeFunction"

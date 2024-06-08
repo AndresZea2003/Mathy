@@ -134,7 +134,13 @@ const randomIconColor = () => {
 
 onMounted(() => {
     //Traemos las cuentas en la store.
-    storageCounts.value = JSON.parse(localStorage.getItem('games'));
+    if(JSON.parse(localStorage.getItem('games')) !== undefined){
+        storageCounts.value = JSON.parse(localStorage.getItem('games'));
+    }else if(JSON.parse(localStorage.getItem('games')) !== undefined){
+        storageCounts.value = [];
+        localStorage.setItem('games', JSON.stringify([]));
+    };
+
     randomSelectedColor();
     randomIconColor();
 });
@@ -146,7 +152,8 @@ const createGame = () => {
             name: inputName.value,
             inputColor: {background: backgroundInputColorRef.value.background, text: backgroundInputColorRef.value.text},
             icon: iconRef.value,
-            currentLevel:[0, 0],
+            currentLevel: {level: 1, sublevel: 1},
+            coinChangerAuto: false,// true para que se despliegue automaticamente el cambiador false para hacerlo manual
             unlockedLevels: [1],
             shipSelected: 1,
             goldenCoins: 0,
@@ -159,6 +166,8 @@ const createGame = () => {
         localStorageContent.push(templateObject);
 
         localStorage.setItem('games', JSON.stringify(localStorageContent));
+        localStorage.setItem('gamer', inputName.value);
+
         emit('introAnimationActive', true);
     }else if(inputName.value.length === 0){
         //alerta si el modo borrado esta activado
@@ -177,15 +186,18 @@ const createGame = () => {
 <template>
     <div class="w-64 h-80 flex justify-center items-center flex-col xl:bottom-9 z-10">
         <img class="w-48 absolute top-24" :src="logo" alt="logo"/>
+
+        <img class="w-10 bg-slate-50 border border-3 border-current rounded-md p-2 absolute mb-32" :src="iconIMG" alt="icon"/>
+
         <div class="flex justify-center items-center flex-col relative top-7">
             <label for="text-input" class="create-game__font--julius text-white text-xl mt-20 xl:text-2xl">NOMBRE</label>
             <div class="flex justify-center items-center">
-                <img class="w-10 mx-4 bg-white rounded-full p-2" :src="iconIMG" alt="icon"/>
                 <input class="create-game__font--julius w-64 border-white border rounded-2xl font-bold h-8 text-center text-white" id="text-input" v-model="inputName" type="text" :style="{backgroundColor: backgroundInputColorRef.background, color: backgroundInputColorRef.text}">
-                <img class="w-10 mx-4 bg-white rounded-full p-2"  :src="iconIMG" alt="icon"/>
             </div>
-
         </div>
+
+        <!-- <img class="w-10 bg-slate-50 border border-3 border-current rounded-md p-2 absolute mt-40" :src="iconIMG" alt="icon"/> -->
+
         <button class="create-game__font--julius bg-blue-950 w-40 h-8 text-white border-white relative top-7 border rounded-md mt-20 xl:w-52 xl:h-10 hover:bg-white hover:text-black xl:" @click="createGame">
             Continuar
         </button>

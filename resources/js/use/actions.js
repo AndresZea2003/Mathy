@@ -1,3 +1,5 @@
+import { rewardLevelsCoin } from "./rewardCoin"
+
 export const types = {
     letter: 'LETTER',
     image: 'IMAGE',
@@ -169,3 +171,82 @@ if(!localStorage.getItem("bronzeCoins")){
     localStorage.setItem("bronzeCoins", 1);
 }
 
+//Logica de guardado de niveles
+export const saveCurrentLevel = (level, sublevel) => {
+    //Extraemos los datos del storage
+    let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
+    let localStorageDataGamer = localStorage.getItem('gamer');
+
+    let indiceGamer;
+
+        //Localizamos el usuario
+        if(localStorageDataGames){
+            for (let i = 0; i < localStorageDataGames.length; i++) {
+                if(localStorageDataGamer === localStorageDataGames[i].name){
+                    indiceGamer = i;
+                }
+            }
+        
+            //Actualizamos los datos del usuarios
+            localStorageDataGames[indiceGamer].currentLevel.level = level;
+            localStorageDataGames[indiceGamer].currentLevel.sublevel = sublevel;
+        
+            //Los subimos al storage
+            localStorage.setItem('games', JSON.stringify(localStorageDataGames));
+        };
+};
+
+//Funcion que trae los datos del usuario para utilizar en los componentes. para llamar solo getUsersLocalStorage().name por ejmeplo.
+export const getUsersLocalStorage = () => {
+        //Extraemos los datos del storage
+        let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
+        let localStorageDataGamer = localStorage.getItem('gamer');
+
+        let indiceGamer;
+
+        //Localizamos el usuario
+        for (let i = 0; i < localStorageDataGames.length; i++) {
+            if(localStorageDataGamer === localStorageDataGames[i].name){
+                indiceGamer = i;
+            }
+        }
+
+        return localStorageDataGames[indiceGamer]
+};
+
+//Funcion que guarda los datos modificados del usuario
+export const saveDataLocalStorage = (data) => {//Desde el componente modificamos los datos del usuario y los devolvemos modificados en la funcion y la funcion se encarga de actualizar las partidas guardadas.
+    let localStorageDataGamer = localStorage.getItem('gamer');
+    let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
+
+    let indiceGamer;
+
+    //Localizamos el usuario
+    for (let i = 0; i < localStorageDataGames.length; i++) {
+        if(localStorageDataGamer === localStorageDataGames[i].name){
+            indiceGamer = i;
+        }
+    }
+
+    localStorageDataGames[indiceGamer] = data;
+
+    localStorage.setItem('games', JSON.stringify(localStorageDataGames));
+};
+
+
+
+//Funcion que comprueba si el nivel da alguna coin
+export const winCoinCheckLevel = (level, sublevel) => {
+    let result = false;
+
+
+
+    for (let i = 0; i < rewardLevelsCoin.length; i++) {
+        if( level === rewardLevelsCoin[i].level && sublevel === rewardLevelsCoin[i].subLevel){
+            result = rewardLevelsCoin[i].typeCoin;
+        };
+    };
+
+    console.log("wincoin", result);
+    return result;
+};
