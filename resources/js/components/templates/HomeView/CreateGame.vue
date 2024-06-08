@@ -153,7 +153,7 @@ const createGame = () => {
             inputColor: {background: backgroundInputColorRef.value.background, text: backgroundInputColorRef.value.text},
             icon: iconRef.value,
             currentLevel: {level: 1, sublevel: 1},
-            coinChangerAuto: true,
+            coinChangerAuto: false,// true para que se despliegue automaticamente el cambiador false para hacerlo manual
             unlockedLevels: [1],
             shipSelected: 1,
             goldenCoins: 0,
