@@ -216,25 +216,35 @@ const paintRow = (rowNumber, item, guide) => {
 
 };
 
-import {cat, mouse, heart, turtle, hat, smile} from '../../use';
+// import {cat, mouse, heart, turtle, hat, smile} from '../../use';
 
-const drawOptions = {
-  cat: cat,
-  mouse: mouse,
-  heart: heart,
-  turtle: turtle,
-  hat: hat,
-  smile: smile
-};
+import { drawsArray } from "../../use"; //Importación del array que contiene los dibujos
 
-let totalPixels = ref((drawOptions[props.draw].length / 2) * 9)
+
+// const drawOptions = {
+//   cat: cat,
+//   mouse: mouse,
+//   heart: heart,
+//   turtle: turtle,
+//   hat: hat,
+//   smile: smile
+// };
+
+let totalPixels = ref(drawsArray[props.draw].length / 2 * 9);
+
+// let totalPixels = ref((drawOptions[props.draw].length / 2) * 9)
 let i = 0
 
 setTimeout(function () {
   // Itera sobre el array paintData y llama a paintRow para cada fila
-  drawOptions[props.draw].forEach(({row, color, guide}) => {
+  drawsArray[props.draw].forEach(({row, color, guide}) => {
     paintRow(row, color, guide);
   });
+
+
+  // drawOptions[props.draw].forEach(({row, color, guide}) => {
+  //   paintRow(row, color, guide);
+  // });
 }, 500);
 
 let level = ref(props.level)

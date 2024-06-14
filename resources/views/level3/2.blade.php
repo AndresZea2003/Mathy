@@ -22,7 +22,7 @@
         create_audio_1="¡Bienvenidos al emocionante viaje por el espacio! ,  ¡Vamos a empezar con algo divertido!, "
         create_audio_2=""
         create_audio_3=""
-        draw="cat"
+        draw="1"
     ></pixel-art>
 
 

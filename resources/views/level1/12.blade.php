@@ -86,7 +86,7 @@
             ['name' => 'Borrador', 'type' => 'ERASER', 'content' => asset('/images/items/tools/eraser.png'), 'size' => 'BIG', 'group' => 'Borrador']
         ])}}"
             :level="[{{$levelNumber}},{{$activityNumber}}]"
-            draw="smile"
+            draw="0"
     ></pixel-art>
 
 
