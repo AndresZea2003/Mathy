@@ -46,7 +46,7 @@ const props = defineProps({
   create_audio_3: {type: String},
   phase: {type: Number},
   show_help: {type: Number}
-})
+});
 
 const items = props.items;
 const talkBool = ref(false);
@@ -382,17 +382,17 @@ const prepareActivity = () => {
     }
     let item = items[orderArray[i]]
     localStorage.setItem('itemSelected', JSON.stringify(item))
-    paintItem(`sample-${i + 1}`, items)
+    paintItem(`sample-${i + 1}`, items, props.rotate)
 
     localStorage.setItem('itemSelected', JSON.stringify(null))
   }
-
+  //_________________________________________________________________________________________________________________________________________
   if (props.rotate) {
-    document.getElementById('sample-img').classList.add('rotate-45', 'scale-75')
+    document.getElementById('sample-img').classList.add('rotate-45', 'scale-75');
 
-    document.getElementById('activity-img').classList.add('rotate-45', 'scale-75')
-  }
-}
+    document.getElementById('activity-img').classList.add('rotate-45', 'scale-75');
+  };
+};
 
 let boxes = ref([])
 let step = ref(0)
@@ -411,7 +411,7 @@ const paintBox = (id) => {
   }
 
   if (itemSelected.content === items[(props.fill_sample[id - 1]) - 1].content) {
-    paintItem(id, items)
+    paintItem(id, items, props.rotate)
 
     let bubble = new Audio()
     bubble.src = `${localHost}/audios/effects/soapBubble.wav`
@@ -436,7 +436,7 @@ const paintBox = (id) => {
     step.value = 0
 
   } else {
-    paintItem(id, items)
+    paintItem(id, items, props.rotate)
 
     showErrorIcon()
 
@@ -601,8 +601,8 @@ const updateCoinsFunction = (event) => {
 
                   <div id="sample-img" :class="`grid grid-cols-${props.size[0]} mt-5`">
                     <div :id="`sample-${i}`"
-                         v-for="i in (props.size[0] * props.size[1])" :key="i"
-                         :class="`bg-white border border-black hover:opacity-75
+                          v-for="i in (props.size[0] * props.size[1])" :key="i"
+                          :class="`bg-white border border-black hover:opacity-75
                                           flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
                     </div>
                   </div>

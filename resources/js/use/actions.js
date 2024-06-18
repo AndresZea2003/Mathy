@@ -44,7 +44,7 @@ export const talkCharacter = (stopImg, talkImg) => {
     }
 }
 
-export const paintItem = (id, items) => {
+export const paintItem = (id, items, rotate) => {
 
     let itemSelected = getSelectItem()
 
@@ -85,6 +85,13 @@ export const paintItem = (id, items) => {
             let imgExisting = document.createElement('img');
 
             imgExisting.src = itemSelected.content;
+
+            //Se añade este codigo para en caso de tener el atributo rotate en el componente vamos a rotar las imagenes para que queden derechas.
+            if (rotate) {
+                imgExisting.style.transform = "rotate(-40deg)";
+            } else {
+                imgExisting.style.transform = "";
+            }
 
             if (itemSelected.size === sizes.small) {
                 imgExisting.width = 50;
