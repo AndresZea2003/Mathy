@@ -31,6 +31,7 @@ import TemplateDrawActivityFree from "./components/activities/DrawActivity/Templ
 import HomeAccess from "./components/templates/HomeView/HomeAccess.vue";
 import LaunchRocket from "./components/templates/LaunchRocketPlanet/LaunchRocket.vue";
 import WinCoin from "./components/templates/WinCoin/WinCoin.vue";
+import WinRocketAuto from "./components/templates/WinRocketAuto/WinRocketAuto.vue";
 
 
 
@@ -59,7 +60,7 @@ createApp({
         'draw-activity-free':TemplateDrawActivityFree,
         'home-access': HomeAccess,
         'launch-rocket': LaunchRocket,
-        'win-coin': WinCoin
-
+        'win-coin': WinCoin,
+        'win-rocket-auto': WinRocketAuto
     }
 }).mount("#app");
