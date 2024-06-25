@@ -60,15 +60,31 @@ const randomBackground = () => {
 onBeforeMount(() => {
     backgroundSelected.value = randomBackground();
     unlockedShips.value = getUsersLocalStorage().unlockedShips;
-    rocketsSelectedRef.value = [selectedRandomRocket(), selectedRandomRocket()];
+    // rocketsSelectedRef.value = [ selectedRandomRocket(), selectedRandomRocket() ];
+    notSameRocket();
 });
+
+
+//Funcion que verifica que las naves sean diferentes
+const notSameRocket = () => {
+    let rocket1 = selectedRandomRocket();
+    let rocket2 = selectedRandomRocket();
+
+    if(rocket1 !== rocket2){
+        console.log("diferentes naves");
+        rocketsSelectedRef.value = [ rocket1, rocket2 ];
+    }else if(rocket1 === rocket2){
+        console.log("Naves iguales");
+        notSameRocket();
+    }
+};
 
 //Funcion que elige una nave aleatoriamente
 const selectedRandomRocket = () => {
     let shipsNumber = store_data.length;
     let result;
 
-    if(unlockedShips.value.length === shipsNumber){
+    if(unlockedShips.value.length >= shipsNumber || unlockedShips.value.length === shipsNumber - 1 ){
         result = store_data[Math.floor(Math.random() * store_data.length)];
     }else{
         let rocketsFiltered = store_data.filter(ship => !unlockedShips.value.includes(ship.id));
@@ -77,9 +93,10 @@ const selectedRandomRocket = () => {
 
     };
 
-    console.log("Nave elegida", result);
     return result;
 };
+
+
 
 const rocketSelected = (event) => {
     rocketSelectedCard.value = event;

@@ -1,20 +1,13 @@
 @extends('layouts.app')
 
 @section('main')
-        <paint-pattern
+        <pixel-art
                 :items="{{json_encode([
-                        ['name' => 'Amarillo', 'type' => 'COLOR', 'content' => 'bg-yellow-400', 'hex' => '#facc15' , 'group' => 'Color'],
-                        ['name' => 'Azul', 'type' => 'COLOR', 'content' => 'bg-blue-700', 'hex' => '#1D4ED8' , 'group' => 'Color'],
+                ['name' => 'Verde', 'type' => 'COLOR', 'content' => 'bg-green-600', 'hex' => '#16A44B' , 'group' => 'Color'],
+                ['name' => 'Cafe', 'type' => 'COLOR', 'content' => 'bg-amber-900', 'hex' => '#773611' , 'group' => 'Color'],
+                ['name' => 'Borrador', 'type' => 'ERASER', 'content' => asset('/images/items/tools/eraser.png'), 'size' => 'BIG', 'group' => 'Borrador']
                 ])}}"
-                :size="[3,3]"
-                :fill_sample="[
-                1,1,2,
-                1,2,1,
-                2,1,1,
-                ]"
                 :level="[{{$levelNumber}},{{$activityNumber}}]"
-                :rotate="false"
-                :fake_items="[]"
-                :phase="{{ 3 }}"
-        ></paint-pattern>
+                draw="7"
+        ></pixel-art>
 @endsection

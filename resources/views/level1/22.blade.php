@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('main')
-
     <line-paint-pattern
             :items="{{json_encode([
             ['name' => 'Vaca', 'type' => 'IMAGE', 'content' => asset('/images/items/animals/Vaca.png'), 'group' => 'Imagen'],
@@ -16,5 +15,4 @@
             :fake_items="[]"
             :phase="{{ 3 }}"
     ></line-paint-pattern>
-
 @endsection

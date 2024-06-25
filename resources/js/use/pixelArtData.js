@@ -613,8 +613,152 @@ export const drawsArray = [
         {row: 85, color: 2, guide: false},
         {row: 86, color: 2, guide: false},
         {row: 87, color: 2, guide: false},
+    ],
+    //Tree 7
+    [
+        {row: 17, color: 0, guide: true},
 
+        {row: 27, color: 0, guide: true},
+        {row: 28, color: 0, guide: true},
+        {row: 29, color: 0, guide: true},
 
+        {row: 37, color: 0, guide: true},
+        {row: 38, color: 0, guide: true},
+        {row: 39, color: 0, guide: true},
+        {row: 40, color: 0, guide: true},
+        {row: 41, color: 0, guide: true},
+
+        {row: 47, color: 0, guide: true},
+        {row: 48, color: 0, guide: true},
+        {row: 49, color: 0, guide: true},
+        {row: 50, color: 0, guide: true},
+        {row: 51, color: 0, guide: true},
+        {row: 52, color: 0, guide: true},
+        {row: 53, color: 0, guide: true},
+
+        {row: 61, color: 1, guide: true},
+
+        {row: 72, color: 1, guide: true},
+
+        {row: 83, color: 1, guide: true},
+
+        /////////////////////////////////
+
+        {row: 17, color: 0, guide: false},
+
+        {row: 27, color: 0, guide: false},
+        {row: 28, color: 0, guide: false},
+        {row: 29, color: 0, guide: false},
+
+        {row: 37, color: 0, guide: false},
+        {row: 38, color: 0, guide: false},
+        {row: 39, color: 0, guide: false},
+        {row: 40, color: 0, guide: false},
+        {row: 41, color: 0, guide: false},
+
+        {row: 47, color: 0, guide: false},
+        {row: 48, color: 0, guide: false},
+        {row: 49, color: 0, guide: false},
+        {row: 50, color: 0, guide: false},
+        {row: 51, color: 0, guide: false},
+        {row: 52, color: 0, guide: false},
+        {row: 53, color: 0, guide: false},
+
+        {row: 61, color: 1, guide: false},
+
+        {row: 72, color: 1, guide: false},
+
+        {row: 83, color: 1, guide: false},
+    ],
+    //Cactus 8
+    [
+        {row: 5, color: 0, guide: true},
+        {row: 6, color: 0, guide: true},
+        {row: 7, color: 0, guide: true},
+
+        {row: 16, color: 0, guide: true},
+        {row: 17, color: 0, guide: true},
+        {row: 18, color: 0, guide: true},
+
+        {row: 25, color: 0, guide: true},
+        {row: 27, color: 0, guide: true},
+        {row: 28, color: 0, guide: true},
+        {row: 29, color: 0, guide: true},
+
+        {row: 36, color: 0, guide: true},
+        {row: 37, color: 0, guide: true},
+        {row: 38, color: 0, guide: true},
+        {row: 39, color: 0, guide: true},
+        {row: 40, color: 0, guide: true},
+        {row: 42, color: 0, guide: true},
+
+        {row: 49, color: 0, guide: true},
+        {row: 50, color: 0, guide: true},
+        {row: 51, color: 0, guide: true},
+        {row: 52, color: 0, guide: true},
+        {row: 53, color: 0, guide: true},
+
+        {row: 60, color: 0, guide: true},
+        {row: 61, color: 0, guide: true},
+        {row: 62, color: 0, guide: true},
+
+        {row: 70, color: 1, guide: true},
+        {row: 71, color: 1, guide: true},
+        {row: 72, color: 1, guide: true},
+        {row: 73, color: 1, guide: true},
+        {row: 74, color: 1, guide: true},
+
+        {row: 82, color: 1, guide: true},
+        {row: 83, color: 1, guide: true},
+        {row: 84, color: 1, guide: true},
+
+        {row: 93, color: 1, guide: true},
+        {row: 94, color: 1, guide: true},
+        {row: 95, color: 1, guide: true},
+        ////////////////////////////////
+        {row: 5, color: 0, guide: false},
+        {row: 6, color: 0, guide: false},
+        {row: 7, color: 0, guide: false},
+
+        {row: 16, color: 0, guide: false},
+        {row: 17, color: 0, guide: false},
+        {row: 18, color: 0, guide: false},
+
+        {row: 25, color: 0, guide: false},
+        {row: 27, color: 0, guide: false},
+        {row: 28, color: 0, guide: false},
+        {row: 29, color: 0, guide: false},
+
+        {row: 36, color: 0, guide: false},
+        {row: 37, color: 0, guide: false},
+        {row: 38, color: 0, guide: false},
+        {row: 39, color: 0, guide: false},
+        {row: 40, color: 0, guide: false},
+        {row: 42, color: 0, guide: false},
+
+        {row: 49, color: 0, guide: false},
+        {row: 50, color: 0, guide: false},
+        {row: 51, color: 0, guide: false},
+        {row: 52, color: 0, guide: false},
+        {row: 53, color: 0, guide: false},
+
+        {row: 60, color: 0, guide: false},
+        {row: 61, color: 0, guide: false},
+        {row: 62, color: 0, guide: false},
+
+        {row: 70, color: 1, guide: false},
+        {row: 71, color: 1, guide: false},
+        {row: 72, color: 1, guide: false},
+        {row: 73, color: 1, guide: false},
+        {row: 74, color: 1, guide: false},
+
+        {row: 82, color: 1, guide: false},
+        {row: 83, color: 1, guide: false},
+        {row: 84, color: 1, guide: false},
+
+        {row: 93, color: 1, guide: false},
+        {row: 94, color: 1, guide: false},
+        {row: 95, color: 1, guide: false},
     ]
 ];
 

@@ -13,6 +13,7 @@
         1,2,3,1,2,3
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
+        :rotate="false"
         :fake_items="[]"
         :phase="{{ 3 }}"
     ></line-paint-pattern>

@@ -59,8 +59,30 @@ export const paintItem = (id, items, rotate) => {
             const item = items[i];
             document.getElementById(id).classList.remove(item.content)
         }
-        document.getElementById(id).classList.add('bg-white')
-        document.getElementById(id).innerText = itemSelected.name;
+        document.getElementById(id).classList.add('bg-white');
+
+        //Comprobamos si el contenido se rota para crear las etiquetas p y rotar los numeros o letras
+        if(!rotate){
+            document.getElementById(id).innerText = itemSelected.name;
+        }else if(rotate){
+            //Comprobamos si el elemento ya existe
+            let existingElement = document.getElementById(id).querySelector("p");
+
+            //Si el elemento existe solo reemplazamos el contenido dentro
+            if(existingElement){
+                existingElement.innerText = itemSelected.name;
+            }else if(!existingElement){
+
+                //Creamos un elemento p
+                let newElement = document.createElement("p");
+                //Añadimos el contenido dentro
+                newElement.innerText = itemSelected.name;
+                //Añadimos la etiqueta con el contenido dentro del div.
+                document.getElementById(id).appendChild(newElement);
+                //Añadimos el estilo de rotación para girar la letra o numero.
+                newElement.style.transform = "rotate(-45deg)";
+            };
+        };
     } else if (itemSelected.type === types.color) {
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
@@ -88,7 +110,7 @@ export const paintItem = (id, items, rotate) => {
 
             //Se añade este codigo para en caso de tener el atributo rotate en el componente vamos a rotar las imagenes para que queden derechas.
             if (rotate) {
-                imgExisting.style.transform = "rotate(-40deg)";
+                imgExisting.style.transform = "rotate(-45deg)";
             } else {
                 imgExisting.style.transform = "";
             }

@@ -17,5 +17,4 @@
         :fake_items="[]"
         :phase="{{ 3 }}"
     ></line-paint-pattern>
-
 @endsection

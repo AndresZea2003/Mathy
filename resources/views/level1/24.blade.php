@@ -7,8 +7,8 @@
             ['name' => 'Borrador', 'type' => 'ERASER', 'content' => asset('/images/items/tools/eraser.png'), 'size' => 'BIG', 'group' => 'Borrador']
         ])}}"
         :size="[5,6]"
-        :select_cols="[2]"
-        :solution="[22,27]"
+        :select_cols="[4]"
+        :solution="[14,19,24,29]"
         :fill_sample="[
         0,0,0,0,0,
         0,0,0,0,1,

@@ -411,7 +411,12 @@ const paintBox = (id) => {
   }
 
   if (itemSelected.content === items[(props.fill_sample[id - 1]) - 1].content) {
-    paintItem(id, items, props.rotate)
+
+    console.log("fill sample proba", itemSelected.content, items[(props.fill_sample[id - 1]) - 1].content);
+    paintItem(id, items, props.rotate);
+    //Codigo para pintar la letra de negro despues de que estuviera roja por el error.
+    let element = document.getElementById(id);
+    element.classList.add('text-black');
 
     let bubble = new Audio()
     bubble.src = `${localHost}/audios/effects/soapBubble.wav`
@@ -456,7 +461,7 @@ const paintBox = (id) => {
       element.appendChild(span);
     } else if (itemSelected.type === types.letter || itemSelected.type === types.number) {
       let element = document.getElementById(id);
-      element.classList.add('text-red-500')
+      element.classList.add('text-red-500');
     }
 
     document.getElementById(id).classList.add('animate-pulse', 'scale-95', 'zoom-box')
