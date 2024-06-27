@@ -4,6 +4,10 @@ import { ref } from 'vue';
 import goldCoin from '../../../../../public/images/globals/gold-coin.png';
 import { getUsersLocalStorage, saveDataLocalStorage } from '../../../use';
 
+//Audios
+import clickAudio from '../../../../../public/audios/effects/soapBubble.wav';
+import hoverCardAudio from '../../../../../public/audios/effects/happyPop.mp3';
+import launchRocketAudio from '../../../../../public/audios/effects/audioRocket.mp3';
 
 
 //Emits
@@ -13,16 +17,19 @@ const emit = defineEmits(['rocketSelected']);
 //Props
 const props = defineProps({
     shipNum: Number,
-    randomShip: Object
+    randomShip: Object,
+    rocketSelectedRef: Boolean
 });
 
 
 //Ref
 const hoverClass = ref(`rocket-card__div--card-${props.shipNum}`);
+const rocketSelectedRef = ref(true);
 
 
 //Funciones para tratar el hover sin perder ninguna animacion
 const hoverCard = () => {
+    hoverAudioFunction();
     hoverClass.value = `rocket-card__div--card-animation`;
 };
 
@@ -32,6 +39,12 @@ const hoverOffCard = () => {
 
 //Elegimos la nave para guardar y ejecutar la animacion
 const rocketSelected = (type) => {
+    //Ref que controla si se eligio nave para no elegir automaticamente.
+    rocketSelectedRef.value = false;
+
+    //Ejecucion del sonido de click
+    clickAudioFunction();
+
     //Traemos los datos de la store
     let userData = getUsersLocalStorage();
 
@@ -46,6 +59,39 @@ const rocketSelected = (type) => {
     //Enviamos los datos al componente padre para ejecutar la animacion de eleccion.
     emit('rocketSelected', type);
 };
+
+//Audio
+const clickAudioFunction = () => {
+    const click = new Audio(clickAudio);
+    const launchRocket = new Audio(launchRocketAudio);
+
+
+    click.volume = 0.1;
+    launchRocket.volume = 0.1;
+
+    click.play();
+
+    setTimeout(() => {
+        launchRocket.play();
+    }, 2000);
+};
+
+const hoverAudioFunction = () => {
+    const hover = new Audio(hoverCardAudio);
+
+    hover.volume = 0.1;
+
+    hover.play();
+};
+
+setTimeout(() => {
+    if(props.rocketSelectedRef && rocketSelectedRef.value){
+        console.log("ejecutando nave electa", props.rocketSelectedRef);
+        rocketSelected(props.randomShip);
+    };
+
+}, 30000);
+
 
 </script>
 

@@ -18,6 +18,9 @@ import background12 from '../../../../../public/images/backgrounds/background-12
 import background13 from '../../../../../public/images/backgrounds/background-13.png';
 import background14 from '../../../../../public/images/backgrounds/background-14.png';
 
+//Audios
+import timerAudio from '../../../../../public/audios/effects/timerAudio.mp3';
+
 //Componentes
 import RocketCard from "./RocketCard.vue";
 import RocketSelected from "./RocketSelected.vue";
@@ -33,6 +36,8 @@ const counterActive = ref(true);
 const backgroundSelected = ref("");
 const unlockedShips = ref([]);
 const rocketsSelectedRef = ref([]);
+const rocketSelected1Ref = ref(false);
+const rocketSelected2Ref = ref(false);
 
 
 
@@ -62,8 +67,23 @@ onBeforeMount(() => {
     unlockedShips.value = getUsersLocalStorage().unlockedShips;
     // rocketsSelectedRef.value = [ selectedRandomRocket(), selectedRandomRocket() ];
     notSameRocket();
+
+    shipSelectedRandom();
 });
 
+const shipSelectedRandom = () => {
+    let randomNum = Math.floor(Math.random() * 2);
+
+    if(randomNum === 0){
+        console.log("Random 1");
+        rocketSelected1Ref.value = true;
+        rocketSelected2Ref.value = false;
+    } else if(randomNum === 1){
+        console.log("Random 2");
+        rocketSelected1Ref.value = false;
+        rocketSelected2Ref.value = true;
+    }
+};
 
 //Funcion que verifica que las naves sean diferentes
 const notSameRocket = () => {
@@ -103,7 +123,42 @@ const rocketSelected = (event) => {
     rocketSelected2.value = false;
     rocketSelected1.value = false;
     counterActive.value = false;
+    rocketSelected1Ref.value = false;
+    rocketSelected2Ref.value = false;
 };
+
+
+onUpdated(() => {
+    if(!counterActive.value){
+        timerAudioFunction("pause");
+    }
+})
+
+
+
+//Audio
+const timer = new Audio(timerAudio);
+const timerAudioFunction = (action) => {
+    console.log("timer gun", action);
+
+    timer.volume = 0.1;
+
+
+    if(action === "play"){
+        timer.play();
+    }else if(action === "pause"){
+        timer.pause();
+    }
+
+};
+
+
+
+
+setTimeout(() => {
+    timerAudioFunction("play");
+}, 25000);
+
 
 
 </script>
@@ -114,8 +169,8 @@ const rocketSelected = (event) => {
             <div v-if="counterActive" class="w-4 md:w-full h-full md:h-6 absolute flex justify-center items-center md:bottom-0">
                 <div class="win-rocket-auto__div--cards-contador bg-white w-2 h-full rounded md:h-3"></div>
             </div>
-            <RocketCard v-if="rocketSelected1" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[0]" :shipNum="1"/>
-            <RocketCard v-if="rocketSelected2" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[1]" :shipNum="2"/>
+            <RocketCard v-if="rocketSelected1" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[0]" :shipNum="1" :rocketSelectedRef="rocketSelected1Ref"/>
+            <RocketCard v-if="rocketSelected2" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[1]" :shipNum="2" :rocketSelectedRef="rocketSelected2Ref"/>
             <RocketSelected v-if="rocketSelectedCard" :rocketSelected="rocketSelectedCard"/>
         </div>
     </div>

@@ -414,20 +414,21 @@ const paintBox = (id) => {
 
     console.log("fill sample proba", itemSelected.content, items[(props.fill_sample[id - 1]) - 1].content);
     paintItem(id, items, props.rotate);
-    //Codigo para pintar la letra de negro despues de que estuviera roja por el error.
+    //Codigo para pintar la letra de negro despues de que estuviera roja por el error ademas de quitar la clase que le da el rojo a la letra.
     let element = document.getElementById(id);
     element.classList.add('text-black');
+    element.classList.remove('text-red-500');
 
     let bubble = new Audio()
     bubble.src = `${localHost}/audios/effects/soapBubble.wav`
     bubble.play()
 
     // playSuccessShortRandom()
-    showCheckIcon()
+    showCheckIcon();
 
-    document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
+    document.getElementById(id).classList.remove('animate-pulse', 'scale-95');
 
-    boxes.value[id - 1] = true
+    boxes.value[id - 1] = true;
 
     for (let i = 0; i < props.size[0] * props.size[1]; i++) {
       if (boxes.value[i] === true) {

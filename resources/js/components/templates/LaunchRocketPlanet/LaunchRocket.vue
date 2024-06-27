@@ -32,6 +32,7 @@ const starsAnimationRef = ref(false);
 const galaxyRef = ref(false);
 const nebulosaRef = ref(false);
 const cometaRef = ref(false);
+const typeDirectionShipRef = ref("");
 
 
 const levelWorlds = [
@@ -79,6 +80,56 @@ const levelWorlds = [
     },
 ];
 
+let styleWorldsClass = [
+    //Volar hacia arriba
+    {
+        stars: "launch-rocket__div--stars-upwards",
+        ship: "launch-rocket__img--ship-animated-upwards",
+        element1: "launch-rocket__img--galaxy",
+        element2: "launch-rocket__img--element2",
+        element3: "launch-rocket__img--element3"
+    },
+    // //Volar hacia diagonal izquierda
+    {
+        stars: "launch-rocket__div--stars-left-diagonal",
+        ship: "launch-rocket__img--ship-animated-left-diagonal",
+        element1: "launch-rocket__img--galaxy-left",
+        element2: "launch-rocket__img--element2-left",
+        element3: "launch-rocket__img--element3-left"
+    },
+    // //Volar hacia izquierda
+    {
+        stars: "launch-rocket__div--stars-left",
+        ship: "launch-rocket__img--ship-animated-left",
+        element1: "launch-rocket__img--galaxy-left",
+        element2: "launch-rocket__img--element2-left",
+        element3: "launch-rocket__img--element3-left"
+    },
+    //Volar hacia diagonal derecha
+    {
+        stars: "launch-rocket__div--stars-right-diagonal",
+        ship: "launch-rocket__img--ship-animated-right-diagonal",
+        element1: "launch-rocket__img--galaxy-rigth",
+        element2: "launch-rocket__img--element2-right",
+        element3: "launch-rocket__img--element3-right"
+    },
+    //Volar hacia derecha
+    {
+        stars: "launch-rocket__div--stars-right",
+        ship: "launch-rocket__img--ship-animated-right",
+        element1: "launch-rocket__img--galaxy-rigth",
+        element2: "launch-rocket__img--element2-right",
+        element3: "launch-rocket__img--element3-right"
+    },
+];
+
+//Funcion para elegir la animacion
+const typeDirectionShip = () => {
+    let randomNum = Math.floor(Math.random() * styleWorldsClass.length);
+
+    return styleWorldsClass[randomNum];
+};
+
 //Props
 const props = defineProps({
     planet: Number
@@ -86,6 +137,7 @@ const props = defineProps({
 
 onBeforeMount(() => {
     planetSelectedAnimation.value = levelWorlds[props.planet - 1].background;
+    typeDirectionShipRef.value = typeDirectionShip();
 });
 
 
@@ -128,16 +180,16 @@ setTimeout(() => {
 
 <template>
     <div :class="`${classBackgroundImageContainerRef} w-full h-full relative overflow-hidden`">
-        <div v-if="starsAnimationRef" class="launch-rocket__div--stars-background w-full h-full absolute"></div>
-        <div v-if="starsAnimationRef" class="launch-rocket__div--stars w-full h-full absolute"></div>
-        <img v-if="galaxyRef" class="launch-rocket__img--galaxy absolute top-20 right-0" :src="galaxyIMG" alt="galaxy"/>
-        <img v-if="galaxyRef" class="launch-rocket__img--moon w-20 absolute left-10 xl:left-80" :src="moon" alt="moon"/>
-        <img v-if="nebulosaRef" class="launch-rocket__img--nebulosa w-80 absolute left-10 xl:left-80" :src="nebulosa" alt="nebulosa"/>
+        <div v-if="starsAnimationRef" :class="`launch-rocket__div--stars-background  w-full h-full absolute`"></div>
+        <div v-if="starsAnimationRef" :class="`${typeDirectionShipRef.stars} launch-rocket__div--stars w-full h-full absolute`"></div>
+        <img v-if="galaxyRef" :class="`${typeDirectionShipRef.element1} absolute top-20 right-0`" :src="galaxyIMG" alt="galaxy"/>
+        <img v-if="galaxyRef" :class="`${typeDirectionShipRef.element2} w-20 absolute left-10 xl:left-80`" :src="moon" alt="moon"/>
+        <img v-if="nebulosaRef" :class="`${typeDirectionShipRef.element3} w-80 absolute left-10 xl:left-80`" :src="nebulosa" alt="nebulosa"/>
         <img v-if="cometaRef" class="launch-rocket__img--cometa w-80 absolute left-10 xl:left-80" :src="cometaGif" alt="cometa"/>
         <div :class="`${classBackgroundImageRef} w-full h-full flex justify-center items-center overflow-hidden`" :style="{backgroundImage: levelWorlds[props.planet - 1].img}">
             <div class="flex items-center justify-center w-72 xl:w-96 absolute z-20 bottom-14">
                 <img v-if="shipStaticRef" class="launch-rocket__div--ship relative z-40 w-96" :src="ship" alt="ship"/>
-                <img v-if="shipAnimatedRef" class="launch-rocket__img--ship-animated absolute z-50" :src="shipAnimated" alt="ship-animated"/>
+                <img v-if="shipAnimatedRef" :class="`${typeDirectionShipRef.ship} absolute z-50`" :src="shipAnimated" alt="ship-animated"/>
                 <img v-if="robotStaticRef" :class="`${classRobotRef} w-28 xl:w-32 absolute bottom-8 right-2 z-50`" :src="robot" alt="robot"/>
                 <img v-if="robotTalkingRef" class="w-32 xl:w-36 absolute right-0 bottom-6 z-50" :src="robotTalking" alt="robot"/>
             </div>
@@ -416,16 +468,18 @@ setTimeout(() => {
     }
 }
 
-.launch-rocket__img--ship-animated {
+/*Arriba*/
+.launch-rocket__img--ship-animated-upwards {
     top: -320px;
     left: 15px;
     width: 600px;
-    animation: shipLaunchAnimation 3s linear;
+    animation: shipupwardsLaunchAnimation 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
 }
 
-@keyframes shipLaunchAnimation {
+/*Arriba*/
+@keyframes shipupwardsLaunchAnimation {
     0%{
         transform: translateY(0px) scale(1.5);
     }
@@ -435,9 +489,111 @@ setTimeout(() => {
     }
 }
 
-.launch-rocket__div--stars {
+/*Diagonal izquierda*/
+.launch-rocket__img--ship-animated-left-diagonal {
+    top: -320px;
+    left: 15px;
+    width: 600px;
+    animation: shipLaunchAnimationLeftDiagonal 10s linear;
+    animation-fill-mode: forwards;
+    /* transform: scale(1.4); */
+}
+
+/*Diagonal izquierda*/
+@keyframes shipLaunchAnimationLeftDiagonal {
+    0%{
+        transform: translate(0px, 0px) scale(1.5) rotate(0deg);
+    }
+
+    50%{
+        transform: translate(0px, -180px) scale(1.5) rotate(0deg);
+    }
+
+    100%{
+        transform: translate(0px, -180px) scale(1.5) rotate(-35deg);
+    }
+}
+
+
+/*Diagonal derecha*/
+.launch-rocket__img--ship-animated-right-diagonal {
+    top: -320px;
+    left: 15px;
+    width: 600px;
+    animation: shipLaunchAnimationRightDiagonal 10s linear;
+    animation-fill-mode: forwards;
+    /* transform: scale(1.4); */
+}
+
+/*Diagonal derecha*/
+@keyframes shipLaunchAnimationRightDiagonal {
+    0%{
+        transform: translate(0px, 0px) scale(1.5) rotate(0deg);
+    }
+
+    50%{
+        transform: translate(0px, -180px) scale(1.5) rotate(0deg);
+    }
+
+    100%{
+        transform: translate(0px, -180px) scale(1.5) rotate(35deg);
+    }
+}
+
+
+.launch-rocket__img--ship-animated-right {
+    top: -320px;
+    left: 15px;
+    width: 600px;
+    animation: shipLaunchAnimationRight 10s linear;
+    animation-fill-mode: forwards;
+    /* transform: scale(1.4); */
+}
+
+/*Derecha*/
+@keyframes shipLaunchAnimationRight {
+    0%{
+        transform: translate(0px, 0px) scale(1.5) rotate(0deg);
+    }
+
+    50%{
+        transform: translate(0px, -180px) scale(1.5) rotate(0deg);
+    }
+
+    100%{
+        transform: translate(0px, -180px) scale(1.5) rotate(90deg);
+    }
+}
+
+
+
+.launch-rocket__img--ship-animated-left {
+    top: -320px;
+    left: 15px;
+    width: 600px;
+    animation: shipLaunchAnimationLeft 10s linear;
+    animation-fill-mode: forwards;
+    /* transform: scale(1.4); */
+}
+
+/*Izquierda*/
+@keyframes shipLaunchAnimationLeft {
+    0%{
+        transform: translate(0px, 0px) scale(1.5) rotate(0deg);
+    }
+
+    50%{
+        transform: translate(0px, -180px) scale(1.5) rotate(0deg);
+    }
+
+    100%{
+        transform: translate(0px, -180px) scale(1.5) rotate(-90deg);
+    }
+}
+
+.launch-rocket__div--stars-upwards {
     background-image: url('../../../../../public/images/backgrounds/stars-background.png');
-    animation: starsAnimation 15s linear;
+    animation: starsUpwardsAnimation 15s linear;
     position: relative;
     z-index: 5;
 }
@@ -448,7 +604,9 @@ setTimeout(() => {
     }
 }
 
-@keyframes starsAnimation {
+
+/*arriba*/
+@keyframes starsUpwardsAnimation {
     0%{
         background-position-y: -3000px;
         opacity: 0%;
@@ -464,6 +622,117 @@ setTimeout(() => {
         opacity: 100%;
     }
 }
+
+.launch-rocket__div--stars-left-diagonal {
+    background-image: url('../../../../../public/images/backgrounds/stars-background.png');
+    animation: starsLeftDiagonalAnimation 15s linear;
+    position: relative;
+    z-index: 5;
+}
+
+/*Diagonal izquierda*/
+@keyframes starsLeftDiagonalAnimation {
+    0%{
+        background-position-y: -3000px;
+        background-position-x: -4000px;
+        opacity: 0%;
+    }
+
+    2%{
+        background-position-y: -2800px;
+        opacity: 100%;
+    }
+
+    100%{
+        background-position-y: 5000px;
+        opacity: 100%;
+    }
+}
+
+.launch-rocket__div--stars-right-diagonal {
+    background-image: url('../../../../../public/images/backgrounds/stars-background.png');
+    animation: starsRightDiagonalAnimation 15s linear;
+    position: relative;
+    z-index: 5;
+}
+
+/*Diagonal derecha*/
+@keyframes starsRightDiagonalAnimation {
+    0%{
+        background-position-y: -3000px;
+        background-position-x: 4000px;
+        opacity: 0%;
+    }
+
+    2%{
+        background-position-y: -2800px;
+        opacity: 100%;
+    }
+
+    100%{
+        background-position-y: 5000px;
+        opacity: 100%;
+    }
+}
+
+.launch-rocket__div--stars-right {
+    background-image: url('../../../../../public/images/backgrounds/stars-background.png');
+    animation: starsRightAnimation 15s linear;
+    position: relative;
+    z-index: 5;
+}
+
+/*Derecha*/
+@keyframes starsRightAnimation {
+    0%{
+        background-position-y: -3000px;
+        background-position-x: 0px;
+        opacity: 0%;
+    }
+
+    10%{
+        background-position-y: -2800px;
+        background-position-x: 0px;
+        opacity: 100%;
+    }
+
+    100%{
+        background-position-y: -2800px;
+        background-position-x: -8000px;
+        opacity: 100%;
+    }
+}
+
+
+.launch-rocket__div--stars-left {
+    background-image: url('../../../../../public/images/backgrounds/stars-background.png');
+    animation: starsLeftAnimation 15s linear;
+    position: relative;
+    z-index: 5;
+}
+
+/*Izquierda*/
+@keyframes starsLeftAnimation {
+    0%{
+        background-position-y: -3000px;
+        background-position-x: 0px;
+        opacity: 0%;
+    }
+
+    10%{
+        background-position-y: -2800px;
+        background-position-x: 0px;
+        opacity: 100%;
+    }
+
+    100%{
+        background-position-y: -2800px;
+        background-position-x: 8000px;
+        opacity: 100%;
+    }
+}
+
+
 
 .launch-rocket__div--stars-background {
     background-image: url('../../../../../public/images/backgrounds/stars-background-3.png');
@@ -483,6 +752,7 @@ setTimeout(() => {
     }
 }
 
+/*Arriba*/
 .launch-rocket__img--galaxy {
     width: 500px;
     z-index: 1;
@@ -506,12 +776,62 @@ setTimeout(() => {
     }
 }
 
-.launch-rocket__img--moon {
-    animation: moonAnimation 5s linear;
+
+/*Derecha*/
+.launch-rocket__img--galaxy-rigth {
+    width: 500px;
+    z-index: 1;
+    animation: galaxyRigthAnimation 15s linear;
     animation-fill-mode: forwards;
 }
 
-@keyframes moonAnimation {
+@keyframes galaxyRigthAnimation {
+    0%{
+        transform: translateX(100px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translateX(0px);
+        opacity: 65%;
+    }
+}
+
+/*Izquierda*/
+.launch-rocket__img--galaxy-left {
+    width: 500px;
+    z-index: 1;
+    animation: galaxyLeftAnimation 15s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes galaxyLeftAnimation {
+    0%{
+        transform: translateX(0px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translateX(100px);
+        opacity: 65%;
+    }
+}
+
+/**Arriba*/
+.launch-rocket__img--element2 {
+    animation: element2Animation 5s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes element2Animation {
     0%{
         transform: translateY(-1550px);
         opacity: 0%;
@@ -527,12 +847,57 @@ setTimeout(() => {
     }
 }
 
-.launch-rocket__img--nebulosa {
+/*Izquierda*/
+.launch-rocket__img--element2-left {
+    animation: element2LeftAnimation 8s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes element2LeftAnimation {
+    0%{
+        transform: translate(-500px, -300px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translate(1500px, -300px);
+        opacity: 65%;
+    }
+}
+
+/*Derecha*/
+.launch-rocket__img--element2-right {
+    animation: element2RightAnimation 8s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes element2RightAnimation {
+    0%{
+        transform: translate(1500px, -300px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translate(-800px, -300px);
+        opacity: 65%;
+    }
+}
+
+/*Arriba*/
+.launch-rocket__img--element3 {
     animation: nebulosaAnimation 15s linear;
     animation-fill-mode: forwards;
 }
 
-@keyframes nebulosaAnimation {
+@keyframes element3Animation {
     0%{
         transform: translateY(-1550px);
         opacity: 0%;
@@ -543,9 +908,58 @@ setTimeout(() => {
     }
 
     100%{
-        transform: translateY(500px);
+        transform: translateY(800px);
         opacity: 65%;
     }
+}
+
+/*Izquierda*/
+.launch-rocket__img--element3-left {
+    animation: element3LeftAnimation 15s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes element3LeftAnimation {
+    0%{
+        transform: translate(-500px, -600px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translate(1500px, -600px);
+        opacity: 65%;
+    }
+}
+
+/*Derecha*/
+.launch-rocket__img--element3-right {
+    animation: element3RightAnimation 15s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes element3RightAnimation {
+    0%{
+        transform: translate(1500px, -300px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translate(-800px, -300px);
+        opacity: 65%;
+    }
+}
+
+.launch-rocket__img--cometa {
+    animation: cometaAnimation 15s linear;
+    animation-fill-mode: forwards;
 }
 
 .launch-rocket__img--cometa {
