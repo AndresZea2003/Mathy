@@ -208,7 +208,7 @@ const updateTable = (id, itemSelected) => {
   if (itemSelected.type === types.eraser) {
     configSudoku.value.table[row - 1][col - 1] = false;
   } else {
-    configSudoku.value.table[row - 1][col - 1] = itemSelected.content;
+    configSudoku.value.table[row - 1][col - 1] = itemSelected.name;
   }
 
   updateRowsAndCols();
