@@ -44,12 +44,19 @@ export const talkCharacter = (stopImg, talkImg) => {
     }
 }
 
+const removeAllBg = (id, items) => {
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        document.getElementById(id).classList.remove(item.content)
+    }
+}
+
 export const paintItem = (id, items, rotate) => {
 
     let itemSelected = getSelectItem()
 
     if (itemSelected.type === types.eraser) {
-        removeAllBg()
+        removeAllBg(id, items)
         document.getElementById(id).classList.add('bg-white')
         document.getElementById(id).innerText = null
     }
@@ -125,15 +132,6 @@ export const paintItem = (id, items, rotate) => {
         }
 
     }
-
-
-    const removeAllBg = () => {
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
-            document.getElementById(id).classList.remove(item.content)
-        }
-    }
-
 }
 
 export const errorPaint = (id) => {
