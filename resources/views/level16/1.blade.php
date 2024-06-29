@@ -26,18 +26,6 @@
             ['name' => 'Borrador', 'type' => 'ERASER', 'content' => asset('/images/items/tools/eraser.png'), 'size' => 'BIG', 'group' => 'Borrador']
         ])}}"
             :size="{{3}}"
-            :order_to_resolve="[1,5,9]"
-            :solution="[1,1,1]"
-            :fill_sudoku="[
-        0,2,3,
-        3,0,2,
-        2,3,0
-        ]"
-            :selectors="[
-        [1,1],
-        [2,0],
-        [3,0],
-        ]"
         :fill_sample="[
         1,2,0,
         0,1,2,
@@ -52,7 +40,6 @@
 {{--        ]"--}}
 {{--            :sequence="[3,5,12,4,13,14]"--}}
             :game_mode="{{ 0 }}"
-            :game_speed="{{ 0 }}"
             :level="[{{$levelNumber}},{{$activityNumber}}]"
     ></interactive-sudoku>
 

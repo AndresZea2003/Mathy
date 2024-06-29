@@ -309,7 +309,12 @@ const paintBox = (id) => {
       // Reasignar el box seleccionado
 
       box.classList.remove('selected');
-      box.classList.replace('bg-blue-500', 'bg-white');
+      box.classList.remove('bg-white');
+      box.classList.replace('bg-blue-500', 'bg-green-400');
+      setTimeout(() => {
+        box.classList.replace('bg-green-400', 'bg-white');
+      }, 500);
+
       box.classList.remove('waiting-too-long');
 
       // Seleccionar el siguiente item de la secuencia
@@ -593,7 +598,7 @@ const win = () => {
                    v-for="i in props.size * props.size"
                    :key="`box-${i}`"
                    :style="`width: ${configSize.sizeBox}vmin; height: ${configSize.sizeBox}vmin;`"
-                   :class="`bg-white border border-black hover:opacity-60 flex justify-center items-center
+                   :class="`bg-white breathing border border-black hover:opacity-60 flex justify-center items-center
                         font-bold text-6xl select-none duration-300 cursor-cell rounded-md`">
               </div>
             </div>
@@ -654,6 +659,19 @@ const win = () => {
 //background-color: #f1c40f; /* Amarillo vibrante */
 //background-color: #3498db; /* Azul vibrante */
 
+
+@keyframes breathing {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .selected {
   display: inline-block;
   padding: 20px 40px;
@@ -667,6 +685,7 @@ const win = () => {
   transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
 }
+
 
 .selected:hover {
   background-color: #2980b9; /* Azul más oscuro */
@@ -706,6 +725,11 @@ const win = () => {
   animation: waiting 3s infinite;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   transform: scale(.80); /* Restablecer el tamaño */
+}
+
+/* Clase que aplica la animación */
+.breathing {
+  animation: breathing 3s ease-in-out infinite;
 }
 </style>
 
