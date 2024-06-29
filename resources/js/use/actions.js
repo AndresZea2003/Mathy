@@ -1,4 +1,4 @@
-import {rewardLevelsCoin} from "./rewardCoin"
+import { rewardLevelsCoin } from "./rewardCoin"
 
 export const types = {
     letter: 'LETTER',
@@ -44,19 +44,12 @@ export const talkCharacter = (stopImg, talkImg) => {
     }
 }
 
-const removeAllBg = (id, items) => {
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        document.getElementById(id).classList.remove(item.content)
-    }
-}
-
-export const paintItem = (id, items) => {
+export const paintItem = (id, items, rotate) => {
 
     let itemSelected = getSelectItem()
 
     if (itemSelected.type === types.eraser) {
-        removeAllBg(id, items)
+        removeAllBg()
         document.getElementById(id).classList.add('bg-white')
         document.getElementById(id).innerText = null
     }
@@ -66,8 +59,30 @@ export const paintItem = (id, items) => {
             const item = items[i];
             document.getElementById(id).classList.remove(item.content)
         }
-        document.getElementById(id).classList.add('bg-white')
-        document.getElementById(id).innerText = itemSelected.name;
+        document.getElementById(id).classList.add('bg-white');
+
+        //Comprobamos si el contenido se rota para crear las etiquetas p y rotar los numeros o letras
+        if(!rotate){
+            document.getElementById(id).innerText = itemSelected.name;
+        }else if(rotate){
+            //Comprobamos si el elemento ya existe
+            let existingElement = document.getElementById(id).querySelector("p");
+
+            //Si el elemento existe solo reemplazamos el contenido dentro
+            if(existingElement){
+                existingElement.innerText = itemSelected.name;
+            }else if(!existingElement){
+
+                //Creamos un elemento p
+                let newElement = document.createElement("p");
+                //Añadimos el contenido dentro
+                newElement.innerText = itemSelected.name;
+                //Añadimos la etiqueta con el contenido dentro del div.
+                document.getElementById(id).appendChild(newElement);
+                //Añadimos el estilo de rotación para girar la letra o numero.
+                newElement.style.transform = "rotate(-45deg)";
+            };
+        };
     } else if (itemSelected.type === types.color) {
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
@@ -93,6 +108,13 @@ export const paintItem = (id, items) => {
 
             imgExisting.src = itemSelected.content;
 
+            //Se añade este codigo para en caso de tener el atributo rotate en el componente vamos a rotar las imagenes para que queden derechas.
+            if (rotate) {
+                imgExisting.style.transform = "rotate(-45deg)";
+            } else {
+                imgExisting.style.transform = "";
+            }
+
             if (itemSelected.size === sizes.small) {
                 imgExisting.width = 50;
             } else if (itemSelected.size === sizes.normal) {
@@ -103,6 +125,15 @@ export const paintItem = (id, items) => {
         }
 
     }
+
+
+    const removeAllBg = () => {
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            document.getElementById(id).classList.remove(item.content)
+        }
+    }
+
 }
 
 export const errorPaint = (id) => {
@@ -117,17 +148,17 @@ export const errorPaint = (id) => {
 }
 
 export const cleanBox = (box, items) => {
-    let imgExt = box.getElementsByTagName('img')[0];
+  let imgExt = box.getElementsByTagName('img')[0];
 
-    if (imgExt) {
-        box.removeChild(imgExt);
-    }
+  if (imgExt) {
+    box.removeChild(imgExt);
+  }
 
-    box.innerText = null;
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        box.classList.remove(item.content)
-    }
+  box.innerText = null;
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    box.classList.remove(item.content)
+  }
 }
 
 export const getCoins = () => {
@@ -151,21 +182,21 @@ export const unlockedShips = [1, 2, 3, 4, 5];
 
 
 //Se crea la variable en el localStorage sobre la nave elegida en caso de no existir se crea y selecciona la numero 1 si ya existe la variable en el localstorage se ignora.
-if (!localStorage.getItem("shipSelected")) {
+if(!localStorage.getItem("shipSelected")){
     localStorage.setItem("shipSelected", 1);
 }
 
 
 //Logica de variables de cada moneda en el local storage.
-if (!localStorage.getItem("goldCoins")) {
+if(!localStorage.getItem("goldCoins")){
     localStorage.setItem("goldCoins", 1);
 }
 
-if (!localStorage.getItem("silverCoins")) {
+if(!localStorage.getItem("silverCoins")){
     localStorage.setItem("silverCoins", 1);
 }
 
-if (!localStorage.getItem("bronzeCoins")) {
+if(!localStorage.getItem("bronzeCoins")){
     localStorage.setItem("bronzeCoins", 1);
 }
 
@@ -177,40 +208,39 @@ export const saveCurrentLevel = (level, sublevel) => {
 
     let indiceGamer;
 
-    //Localizamos el usuario
-    if (localStorageDataGames) {
-        for (let i = 0; i < localStorageDataGames.length; i++) {
-            if (localStorageDataGamer === localStorageDataGames[i].name) {
-                indiceGamer = i;
+        //Localizamos el usuario
+        if(localStorageDataGames){
+            for (let i = 0; i < localStorageDataGames.length; i++) {
+                if(localStorageDataGamer === localStorageDataGames[i].name){
+                    indiceGamer = i;
+                }
             }
-        }
-
-        //Actualizamos los datos del usuarios
-        localStorageDataGames[indiceGamer].currentLevel.level = level;
-        localStorageDataGames[indiceGamer].currentLevel.sublevel = sublevel;
-
-        //Los subimos al storage
-        localStorage.setItem('games', JSON.stringify(localStorageDataGames));
-    }
-    ;
+        
+            //Actualizamos los datos del usuarios
+            localStorageDataGames[indiceGamer].currentLevel.level = level;
+            localStorageDataGames[indiceGamer].currentLevel.sublevel = sublevel;
+        
+            //Los subimos al storage
+            localStorage.setItem('games', JSON.stringify(localStorageDataGames));
+        };
 };
 
 //Funcion que trae los datos del usuario para utilizar en los componentes. para llamar solo getUsersLocalStorage().name por ejmeplo.
 export const getUsersLocalStorage = () => {
-    //Extraemos los datos del storage
-    let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
-    let localStorageDataGamer = localStorage.getItem('gamer');
+        //Extraemos los datos del storage
+        let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
+        let localStorageDataGamer = localStorage.getItem('gamer');
 
-    let indiceGamer;
+        let indiceGamer;
 
-    //Localizamos el usuario
-    for (let i = 0; i < localStorageDataGames.length; i++) {
-        if (localStorageDataGamer === localStorageDataGames[i].name) {
-            indiceGamer = i;
+        //Localizamos el usuario
+        for (let i = 0; i < localStorageDataGames.length; i++) {
+            if(localStorageDataGamer === localStorageDataGames[i].name){
+                indiceGamer = i;
+            }
         }
-    }
 
-    return localStorageDataGames[indiceGamer]
+        return localStorageDataGames[indiceGamer]
 };
 
 //Funcion que guarda los datos modificados del usuario
@@ -222,7 +252,7 @@ export const saveDataLocalStorage = (data) => {//Desde el componente modificamos
 
     //Localizamos el usuario
     for (let i = 0; i < localStorageDataGames.length; i++) {
-        if (localStorageDataGamer === localStorageDataGames[i].name) {
+        if(localStorageDataGamer === localStorageDataGames[i].name){
             indiceGamer = i;
         }
     }
@@ -233,18 +263,18 @@ export const saveDataLocalStorage = (data) => {//Desde el componente modificamos
 };
 
 
+
 //Funcion que comprueba si el nivel da alguna coin
 export const winCoinCheckLevel = (level, sublevel) => {
     let result = false;
 
 
+
     for (let i = 0; i < rewardLevelsCoin.length; i++) {
-        if (level === rewardLevelsCoin[i].level && sublevel === rewardLevelsCoin[i].subLevel) {
+        if( level === rewardLevelsCoin[i].level && sublevel === rewardLevelsCoin[i].subLevel){
             result = rewardLevelsCoin[i].typeCoin;
-        }
-        ;
-    }
-    ;
+        };
+    };
 
     console.log("wincoin", result);
     return result;

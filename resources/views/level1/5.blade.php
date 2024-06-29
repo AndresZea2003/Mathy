@@ -17,7 +17,7 @@
 {{--        2,1,3,--}}
 {{--        ]"--}}
 {{--        :level="[{{$levelNumber}},{{$activityNumber}}]"--}}
-{{--        :rotate="true"--}}
+{{--        :rotate="false"--}}
 {{--        :fake_items="[3]"--}}
 {{--    ></paint-pattern>--}}
 
@@ -29,17 +29,16 @@
             ['name' => 'Rojo', 'type' => 'COLOR', 'content' => 'bg-red-600', 'hex' => '#dc2626' , 'group' => 'Color'],
         ])}}"
         :size="{{18}}"
-        :solution="[1,2,3]"
+        :solution="[1,2]"
         :fill_sample="[
-        1,2,3,1,2,3
+        1,2,1,2,1,2
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
-        :fake_items="[]"
-        :phase="{{ 2 }}"
-{{--        create_audio_1="¡Mira cómo progresa nuestra nave en el viaje a Marte! ¡Sigamos enfrentando desafíos!"--}}
-        create_audio_2="Estás haciendo un excelente trabajo. Para esta ocasión, utilizaremos los colores ..."
-        create_audio_3="De la siguiente manera..."
+        :fake_items="[2]"
+        create_audio_1="¡Mira cómo progresa nuestra nave en el viaje a Marte! ¡Sigamos enfrentando desafíos!"
+        create_audio_2="La cinta que está en el centro, la debemos colorear únicamente de..."
+        create_audio_3="Presta mucha atención."
     ></line-paint-pattern>
 
 @endsection
