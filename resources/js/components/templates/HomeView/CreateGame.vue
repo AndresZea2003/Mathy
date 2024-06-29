@@ -159,6 +159,7 @@ const createGame = () => {
             goldenCoins: 0,
             silverCoins: 0,
             bronzeCoins: 3,
+            unlockedShips: [1,2,3,4,5,6,7,8,9,10]
         }
 
         let localStorageContent = JSON.parse(localStorage.getItem('games'));

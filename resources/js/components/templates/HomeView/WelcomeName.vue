@@ -33,6 +33,7 @@ const typeRobot = ref(robot);
 const shipOrbitRef = ref(false);
 const shipOrbit2Ref = ref(false);
 const shipAnimationLeft = ref(false);
+const cometaRef = ref(false);
 
 
 const getPlanetColor = () => {
@@ -100,6 +101,7 @@ setTimeout(() => {
     setTimeout(() => {
         robotClass.value = 'welcome-name__img--robot-orbit';
         conectionClass.value = 'welcome-name__img--conection-orbit';
+        cometaRef.value = true;
 
         //Control de clases en el momento donde se va el robot
         setTimeout(() => {
@@ -136,7 +138,7 @@ setTimeout(() => {
         <img v-if="sateliteRef" class="welcome-name__img--satelite w-16 absolute" :src="satelite" alt="satelite"/>
         <img v-if="shipOrbitRef" class="welcome-name__img--ship-orbit w-32 absolute top-52" :src="shipOrbit" alt="ship"/>
         <img v-if="shipOrbit2Ref" class="welcome-name__img--ship-2-orbit w-36 absolute top-52" :src="shipOrbit2" alt="ship"/>
-        <img v-if="shipAnimation2" class="welcome-name__img--asteroid w-36 absolute rotate-90 left-10 xl:left-60" :src="asteroidAnimation" alt="asteroid gif"/>
+        <img v-if="cometaRef" class="welcome-name__img--asteroid w-40 absolute rotate-90 left-10 xl:left-60" :src="asteroidAnimation" alt="asteroid gif"/>
 
 
         <div class="welcome-name__div--robot-rocket w-60 absolute m-auto left-0 right-0">
@@ -594,18 +596,25 @@ setTimeout(() => {
 }
 
 .welcome-name__img--asteroid {
-    animation: asteroidAnimation 10s linear;
+    animation: cometaAnimation 15s linear;
     animation-fill-mode: forwards;
+    z-index: -1;
 }
 
 
-@keyframes asteroidAnimation {
-    0% {
-        transform: translateY(-800px) rotate(65deg) scale(1.8);
+@keyframes cometaAnimation{
+    0%{
+        transform: translate(-600px, 1000px) rotate(-70deg);
+        opacity: 0%;
     }
 
-    100% {
-        transform: translateY(1500px) rotate(65deg) scale(1.8);
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translate(800px, -500px) rotate(-70deg);
+        opacity: 65%;
     }
 }
 

@@ -1,831 +1,764 @@
 <script setup>
-import "../sections/HelpCharacter.vue";
 import HelpCharacter from "../sections/HelpCharacter.vue";
 import ItemPalette from "../sections/ItemPalette.vue";
 import WinView from "../templates/WinView.vue";
 import ProgressBar from "../sections/ProgressBar.vue";
-import {
-    errorPaint,
-    getCoins,
-    getSelectItem,
-    localHost,
-    paintItem,
-    talk,
-    talkCharacter,
-    types,
-    updateCoins
-} from '../../use';
-import {onMounted, ref} from "vue";
-import Swal from "sweetalert2";
 import BackgroundActivities from "../background/BackgroundActivities.vue";
+import {
+  getSelectItem,
+  localHost, paintItem, playAudio, types,
+} from '../../use';
+import {defineProps, ref, onMounted} from 'vue';
+
+const GameModes = Object.freeze({
+  SEQUENCE: 0,
+  FREE: 1,
+});
+
+const GameSpeeds = Object.freeze({
+  SLOW: 0,
+  MEDIUM: 1,
+  FAST: 2,
+});
 
 const props = defineProps({
-    size: {type: Number, required: true},
-    order_to_resolve: {type: Array},
-    fill_sudoku: {type: Array},
-    solution: {type: Array},
-    level: {type: Array},
-    activity_number: {type: Number},
-    level_number: {type: Number},
-    selectors: {type: Array},
-    items: {type: Array},
-})
+  level: {type: Array, required: true},
+  size: {type: Number, required: true},
+  items: {type: Array, required: true},
+  fill_sample: {type: Array, default: () => []},
+  game_mode: {type: Number, default: 0},
+  game_speed: {type: Number, default: 0},
+  sequence: {type: Array, default: () => [1, 7, 6]},
+});
 
-let talkBool = ref(false)
+const configSize = ref({
+  sizeBox: 0,
+});
 
-let boxSize = ref(0)
+const configAudio = ref({
+  paintSound: `${localHost}/audios/effects/happyPop.mp3`,
+  assertSound: `${localHost}/audios/effects/happyPop.mp3`,
+  errorSound: `${localHost}/audios/effects/wood.wav`,
+  guide: {
+    errors: {
+      row: `${localHost}/audios/guide/errors/row.mp3`,
+      col: `${localHost}/audios/guide/errors/col.mp3`,
+      box: `${localHost}/audios/guide/errors/box.mp3`,
+      rowAndCol: `${localHost}/audios/guide/errors/rowAndCol.mp3`,
+    },
+    assert: {
+      row: `${localHost}/audios/guide/assert/row.mp3`,
+      col: `${localHost}/audios/guide/assert/col.mp3`,
+      box: `${localHost}/audios/guide/assert/box.mp3`,
+      rowAndCol: `${localHost}/audios/guide/assert/rowAndCol.mp3`,
+    },
+  }
+});
 
-onMounted(() => {
-    validateAudiosOfPositions(props.selectors)
-    document.getElementById('coinsCount').innerText = `x ${getCoins()}`
-    talk(false)
-    if (props.size === 3) {
-        boxSize.value = 36
-    } else if (props.size === 4) {
-        boxSize.value = 24
-    } else if (props.size === 5) {
-        boxSize.value = 20
+const configSudoku = ref({
+  size: props.size,
+  table: [],
+  blockedIds: [],
+  rows: {
+    ids: [],
+    contents: [],
+  },
+  cols: {
+    ids: [],
+    contents: [],
+  },
+  errors:
+      {
+        row: [],
+        col: [],
+        box: [],
+      },
+});
+
+const configGame = ref({
+  items: props.items,
+  currentAudio: '',
+  inTutorial: false,
+  win: false,
+  winView: false,
+  prepareActivity: false,
+  gameMode: GameModes.FREE,
+  gameSpeed: GameSpeeds.SLOW,
+  sequence: props.sequence,
+  levelComplete: false,
+});
+
+const configCharacter = ref({
+  get: null,
+  start: `${localHost}/images/characters/robot/v1/still/notFace.png`,
+  image_2: `${localHost}/images/characters/robot/talk.gif`,
+  assert: `${localHost}/images/characters/robot/v1/still/happy.png`,
+  error: `${localHost}/images/characters/robot/v1/still/alert.png`,
+  current: `${localHost}/images/characters/robot/v1/still/notFace.png`,
+});
+
+const sudokuTable = ref([]);
+
+const createSudokuTable = (n) => {
+  let table = new Array(n);
+  for (let i = 0; i < n; i++) {
+    table[i] = new Array(n).fill(false);
+  }
+  return table;
+}
+
+const hasDuplicates = (arr) => {
+  let arrayFilter = arr.filter(item => typeof item !== 'boolean');
+  let counts = {};
+
+  for (let i = 0; i < arrayFilter.length; i++) {
+    if (counts[arrayFilter[i]]) {
+      counts[arrayFilter[i]] += 1;
+    } else {
+      counts[arrayFilter[i]] = 1;
     }
+  }
 
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-
-        let audioPath = `${localHost}/audios/items/${item.name}.m4a`;
-
-        verificarExistenciaArchivo(audioPath, function (exist) {
-            if (exist) {
-                console.log('El archivo existe.');
-            } else {
-                resolveAudio(item.name, item.name, 'items', '0.8')
-                console.log('El archivo no existe.');
-            }
-        });
+  let duplicates = [];
+  for (let item in counts) {
+    if (counts[item] > 1) {
+      duplicates.push(item);
     }
+  }
+
+  return duplicates;
+}
+
+const updateRowsAndCols = () => {
+  // Actualizar ids, Ejemplo: ids rows seria = [['1','2','3','4'], ['5','6','7','8'], ['9','10','11','12'], ['13','14','15','16']]
+
+  configSudoku.value.rows.ids = configSudoku.value.table.map((_, rowIndex) => configSudoku.value.table[rowIndex].map((_, colIndex) => `${rowIndex * props.size + colIndex + 1}`));
+  configSudoku.value.cols.ids = configSudoku.value.table[0].map((_, colIndex) => configSudoku.value.table.map((_, rowIndex) => `${rowIndex * props.size + colIndex + 1}`));
+
+  configSudoku.value.rows.contents = configSudoku.value.table;
+  configSudoku.value.cols.contents = configSudoku.value.table[0].map((_, colIndex) => configSudoku.value.table.map(row => row[colIndex]));
+}
+
+onMounted(async () => {
+  const sizeBoxValues = {
+    3: 21, // ( 3x3 sudoku = 20 de size )
+    4: 16, // ( 4x4 sudoku = 16 de size )
+    5: 13, // ( 5x5 sudoku = 13 de size )
+    6: 11, // ( 6x6 sudoku = 11 de size )
+    7: 9, // ( 7x7 sudoku = 9 de size )
+    8: 8, // ( 8x8 sudoku = 8 de size )
+    9: 7, // ( 9x9 sudoku = 7 de size )
+  };
+
+  configSize.value.sizeBox = sizeBoxValues[props.size];
+
+  configCharacter.value.get = document.getElementById('character');
+
+  configSudoku.value.table = createSudokuTable(props.size);
+  configGame.value.gameMode = props.game_mode;
+  configGame.value.gameSpeed = props.game_speed;
+
+  if (props.fill_sample.length > 0) {
+    let orderArray = []
+    for (let i = 0; i <= props.fill_sample.length - 1; i++) {
+      let order = props.fill_sample[i] - 1
+      orderArray.push(order)
+      if (orderArray[i] === -1) {
+        continue
+      }
+      let item = props.items[orderArray[i]]
+      updateTable(`${i + 1}`, item);
+      localStorage.setItem('itemSelected', JSON.stringify(item))
+      configSudoku.value.blockedIds.push(i + 1)
+      paintItem(`${i + 1}`, props.items)
+
+      localStorage.setItem('itemSelected', JSON.stringify(null))
+    }
+  }
+
+  // Modos de juego
+
+  // Modo secuencia
+  if (configGame.value.gameMode === GameModes.SEQUENCE) {
+
+    // Seleccionar el primer item de la secuencia
+    let initialBox = document.getElementById(`${configGame.value.sequence[0]}`);
+
+    // configGame.value.sequence.shift()
+
+    initialBox.classList.replace('bg-white', 'bg-blue-500')
+    initialBox.classList.add('selected');
+
+
+  } else if (configGame.value.gameMode === GameModes.FREE) {
+    // Code for game mode with defaults
+  } else {
+    // Code for game mode without help
+  }
+
+  updateRowsAndCols();
 
 });
 
-const resolveAudio = (text, name, path, speed) => {
-    axios.post(`${localHost}/loadAudio`, {
-        text: text,
-        name: name,
-        path: path,
-        speed: speed,
-    }).then(response => {
-        console.log(response.data)
-    })
+const updateTable = (id, itemSelected) => {
 
+  const row = Math.floor((id - 1) / props.size) + 1;
+  const col = ((id - 1) % props.size) + 1;
+
+  if (itemSelected.type === types.eraser) {
+    configSudoku.value.table[row - 1][col - 1] = false;
+  } else {
+    configSudoku.value.table[row - 1][col - 1] = itemSelected.content;
+  }
+
+  updateRowsAndCols();
 }
 
-
-function verificarExistenciaArchivo(url, callback) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('HEAD', url, true);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            // 200 OK indica que el archivo existe
-            if (xhr.status === 200) {
-                callback(true);
-            } else {
-                callback(false);
-            }
-        }
-    };
-
-    xhr.send();
-}
-
-
-const items = props.items
-
-let paintImage = ref(false)
-
-const intro = () => {
-
-    let introductionAudio = new Audio(`${localHost}/audios/start/sudoku/introduction/vamossuperarsiguientereto.m4a`)
-
-    introductionAudio.play()
-
-    introductionAudio.onended = function () {
-        showItemsPresentation(true)
+const handleRowErrors = (row) => {
+  configSudoku.value.rows.contents[row - 1].forEach((item, index) => {
+    let box = document.getElementById((row - 1) * props.size + index + 1);
+    if (hasDuplicates(configSudoku.value.rows.contents[row - 1]).includes(item)) {
+      box.classList.add('error');
     }
+  });
+
+  if (!configSudoku.value.errors.row.includes(row)) {
+    configSudoku.value.errors.row.push(row);
+  }
 }
 
-const showFocusBox = (id) => {
+const handleColErrors = (col) => {
+  configSudoku.value.cols.contents[col - 1].forEach((item, index) => {
+    let box = document.getElementById(`${index * props.size + col}`);
+    if (hasDuplicates(configSudoku.value.cols.contents[col - 1]).includes(item)) {
+      box.classList.add('error');
+    }
+  });
 
-    document.getElementById(id).classList.add('animate-pulse', 'zoom-box')
+  if (!configSudoku.value.errors.col.includes(col)) {
+    configSudoku.value.errors.col.push(col);
+  }
+}
+
+const checkWinCondition = () => {
+  if (configSudoku.value.errors.row.length === 0 && configSudoku.value.errors.col.length === 0) {
+    if (!configSudoku.value.table.flat().includes(false)) {
+      win()
+    }
+  }
+}
+
+const clearRowErrors = (row) => {
+  configSudoku.value.rows.contents[row - 1].forEach((item, index) => {
+    let box = document.getElementById(`${(row - 1) * props.size + index + 1}`);
+    const col = ((index) % props.size) + 1;
+    if (!configSudoku.value.errors.col.includes(col)) {
+      box.classList.remove('error');
+    }
+  });
+
+  if (configSudoku.value.errors.row.includes(row)) {
+    configSudoku.value.errors.row = configSudoku.value.errors.row.filter(item => item !== row);
+  }
+}
+
+const clearColErrors = (col) => {
+  configSudoku.value.cols.contents[col - 1].forEach((item, index) => {
+    let box = document.getElementById(`${index * props.size + col}`);
+    const row = Math.floor((box.id - 1) / props.size) + 1;
+    if (!configSudoku.value.errors.row.includes(row)) {
+      box.classList.remove('error');
+    }
+  });
+
+  if (configSudoku.value.errors.col.includes(col)) {
+    configSudoku.value.errors.col = configSudoku.value.errors.col.filter(item => item !== col);
+  }
+}
+
+
+const paintBox = (id) => {
+  if (configSudoku.value.blockedIds.indexOf(id) !== -1) {
+    return;
+  }
+
+  const row = Math.floor((id - 1) / props.size) + 1;
+  const col = ((id - 1) % props.size) + 1;
+
+  if (configGame.value.gameMode === GameModes.SEQUENCE) {
+    if (id !== configGame.value.sequence[0] || configGame.value.inTutorial) {
+      return;
+    }
+
+    paintItem(id, configGame.value.items)
+    const itemSelected = getSelectItem();
+
+    updateTable(id, itemSelected);
+
+    const hasRowError = !validateRow(configSudoku.value.rows.contents[row - 1]);
+    const hasColError = !validateCol(configSudoku.value.cols.contents[col - 1]);
+
+    validateTable();
+
+    let box = document.getElementById(`${configGame.value.sequence[0]}`);
+
+    if (!hasRowError && !hasColError) {
+      configCharacter.value.get.src = configCharacter.value.assert;
+      // configCharacter.value.current = configCharacter.value.assert;
+      playAudio(configAudio.value.assertSound);
+      // Reasignar el box seleccionado
+
+      box.classList.remove('selected');
+      box.classList.remove('bg-white');
+      box.classList.replace('bg-blue-500', 'bg-green-400');
+      setTimeout(() => {
+        box.classList.replace('bg-green-400', 'bg-white');
+      }, 500);
+
+      box.classList.remove('waiting-too-long');
+
+      // Seleccionar el siguiente item de la secuencia
+
+      configGame.value.sequence.shift();
+      if (configGame.value.sequence.length === 0) {
+        checkWinCondition();
+        return;
+      }
+
+      let nextBox = document.getElementById(`${configGame.value.sequence[0]}`);
+      nextBox.classList.replace('bg-white', 'bg-blue-500');
+      nextBox.classList.add('selected');
+
+    } else {
+
+      configCharacter.value.get.src = configCharacter.value.error;
+      // Configurar velocidades
+      if (configGame.value.gameSpeed === GameSpeeds.SLOW) {
+        configGame.value.inTutorial = true;
+        // Animacion de explicacion de error
+
+        if (hasRowError && !hasColError) {
+          // Cambiar scale de la fila
+
+          box.classList.remove('selected', 'waiting-too-long');
+          selectRowOrCol(row, id, 'rows');
+
+        } else if (hasColError && !hasRowError) {
+          console.log('Error solo en columna');
+
+          box.classList.remove('selected', 'waiting-too-long');
+
+          selectRowOrCol(col, id, 'cols');
+
+        } else if (hasRowError && hasColError) {
+          box.classList.remove('selected', 'waiting-too-long');
+          selectRowOrCol(row, id, 'rows');
+          selectRowOrCol(col, id, 'cols');
+        }
+
+        // box.classList.add('waiting-too-long');
+        playAudio(configAudio.value.errorSound);
+        return;
+      } else if (configGame.value.gameSpeed === GameSpeeds.MEDIUM) {
+        box.classList.add('waiting-too-long');
+        playAudio(configAudio.value.errorSound);
+        return;
+      } else if (configGame.value.gameSpeed === GameSpeeds.FAST) {
+        box.classList.add('waiting-too-long');
+        playAudio(configAudio.value.errorSound);
+        return;
+      }
+
+      box.classList.add('waiting-too-long');
+      playAudio(configAudio.value.errorSound);
+    }
+
+
+    return;
+
+  } else if (configGame.value.gameMode === GameModes.FREE) {
+    let box = document.getElementById(`${id}`);
+    paintItem(id, configGame.value.items)
+    const itemSelected = getSelectItem();
+
+    updateTable(id, itemSelected);
+
+    const hasRowError = !validateRow(configSudoku.value.rows.contents[row - 1]);
+    const hasColError = !validateCol(configSudoku.value.cols.contents[col - 1]);
+    console.log('hasRowError', hasRowError);
+
+    validateTable();
+
+    if (!hasRowError && !hasColError) {
+      playAudio(configAudio.value.assertSound);
+      box.classList.remove('waiting-too-long');
+      checkWinCondition();
+    } else {
+      if (props.fill_sample.length > 0) {
+        box.classList.add('waiting-too-long');
+      }
+      playAudio(configAudio.value.errorSound);
+    }
+  } else {
+    // Code for game mode without help
+  }
+
+  if (configGame.value.gameSpeed === GameSpeeds.FAST) {
+    // Code for fast game speed
+  } else if (configGame.value.gameSpeed === GameSpeeds.MEDIUM) {
+    // Code for medium game speed
+  } else {
+    // Code for slow game speed
+  }
+
+  paintItem(id, configGame.value.items)
+  const itemSelected = getSelectItem();
+
+  updateTable(id, itemSelected);
+
+
+  console.log('hasRowError', hasRowError);
+  console.log('hasColError', hasColError);
+
+  validateTable();
+
+  if (hasRowError && !hasColError) {
+    console.log('Error solo en fila');
+  }
+
+  if (hasColError && !hasRowError) {
+    console.log('Error solo en columna');
+
+  }
+
+  if (hasRowError && hasColError) {
+    console.log('Error en fila y columna');
+  }
+
+  if (!hasRowError && !hasColError) {
+
+    playAudio(configAudio.value.assertSound);
+    checkWinCondition();
+  } else {
+    playAudio(configAudio.value.errorSound);
+  }
+}
+
+const validateTable = () => {
+  configSudoku.value.table.forEach((row, rowIndex) => {
+    row.forEach((item, colIndex) => {
+      let box = document.getElementById(`${rowIndex * props.size + colIndex + 1}`);
+      box.classList.remove('error');
+    });
+  });
+
+  configSudoku.value.errors.row = [];
+
+  configSudoku.value.table[0].forEach((_, colIndex) => {
+    configSudoku.value.errors.col = [];
+  });
+
+  configSudoku.value.table.forEach((row, rowIndex) => {
+    if (!validateRow(row)) {
+      handleRowErrors(rowIndex + 1);
+    }
+  });
+
+  configSudoku.value.table[0].forEach((_, colIndex) => {
+    if (!validateCol(configSudoku.value.cols.contents[colIndex])) {
+      handleColErrors(colIndex + 1);
+    }
+  });
+}
+
+const validateRow = (row) => {
+  const duplicates = hasDuplicates(row);
+  return duplicates.length === 0;
+}
+
+const validateCol = (col) => {
+  const duplicates = hasDuplicates(col);
+  return duplicates.length === 0;
+}
+
+const selectRowOrCol = (ROC, id, type) => {
+
+  let contents = null
+
+  if (type === 'rows') {
+    contents = configSudoku.value.rows.contents
+  } else if (type === 'cols') {
+    contents = configSudoku.value.cols.contents
+  }
+
+  contents[ROC - 1].forEach((item, index) => {
+    let box = null;
+    if (type === 'rows') {
+      box = document.getElementById(`${(ROC - 1) * props.size + index + 1}`);
+    } else if (type === 'cols') {
+      box = document.getElementById(`${index * props.size + ROC}`);
+    }
+
+    setTimeout(() => {
+      box.classList.add('scale-50');
+    }, 1500);
+
+    // Quitar la animacion cuando finalice el audio de explicacion
+    setTimeout(() => {
+      box.classList.remove('scale-50');
+      configGame.value.inTutorial = false;
+      document.getElementById(id).classList.add('waiting-too-long');
+    }, 3000);
+  });
+}
+
+let level = ref(props.level)
+let showProgressBar = ref(true)
+const win = () => {
+  configGame.value.levelComplete = true
+  playAudio(`${localHost}/audios/effects/levelUp.mp3`)
+  let progressBar = document.getElementById('progressBar')
+
+  let staticBar = document.getElementById('staticBar')
+
+  let animated = document.getElementById('test2')
+
+  let station = document.getElementById('station')
+
+  let board = document.getElementById('board')
+
+  let winView = document.getElementById('winView')
+
+  staticBar.classList.replace('opacity-100', 'opacity-0')
+  progressBar.classList.replace('border-black', 'border-yellow-400')
+  animated.classList.replace('opacity-0', 'opacity-100')
+  station.classList.add('moveLeftInOut')
+
+  board.classList.replace('bg-red-200', 'bg-green-300')
+  winView.classList.remove('hidden')
+
+  let button = document.getElementById('nextLevelButton')
+
+  setTimeout(function () {
+    board.classList.replace('bg-green-300', 'bg-red-200')
+    winView.classList.replace('opacity-0', 'opacity-100')
 
     setTimeout(function () {
-        document.getElementById(id).classList.remove('zoom-box')
-    }, 3000)
+      staticBar.classList.replace('opacity-0', 'opacity-100')
+      animated.classList.replace('opacity-100', 'opacity-0')
+      button.classList.remove('hidden')
+      showProgressBar.value = false
+      level.value[1] = level.value[1] + 1
+      setTimeout(function () {
+        showProgressBar.value = true
+      }, 100)
+    }, 1000)
+  }, 2000)
+
+  setTimeout(function () {
+    winView.classList.replace('opacity-100', 'opacity-0')
+    setTimeout(function () {
+      winView.classList.add('hidden');
+      console.log("win tinme");
+    }, 200)
+  }, 4000)
 }
-
-setTimeout(function () {
-    Swal.fire({
-        title: `Actividad ${props.level[1]}`,
-        text: 'Llegamos a los Sudokus! Aqui veremos un poco de pensamiento combinatorio, filas y muchos colores!',
-        icon: 'warning',
-        confirmButtonText: 'Comenzar'
-    }).then((result) => {
-        // if (result.isConfirmed) {
-        //     initialAudio();
-        //     prepareSudoku()
-        // }
-        intro();
-        prepareSudoku()
-    });
-}, 500)
-
-// setTimeout(function () {
-//     intro();
-//     prepareSudoku()
-// }, 500)
-
-const prepareSudoku = () => {
-
-    let orderArray = []
-    for (let i = 0; i <= (props.size * props.size) - 1; i++) {
-        let order = props.fill_sudoku[i] - 1
-        orderArray.push(order)
-        if (orderArray[i] === -1) {
-            continue
-        }
-        let item = items[orderArray[i]]
-        localStorage.setItem('itemSelected', JSON.stringify(item))
-        paintItem(i + 1, items)
-        localStorage.setItem('itemSelected', JSON.stringify(null))
-
-    }
-}
-
-let step = ref(0)
-let focusBox = ref()
-
-const validateOrder = (id) => {
-    let itemSelected = getSelectItem()
-
-    if (itemSelected.type === types.eraser) {
-        errorPaint(id)
-        return
-    }
-
-    focusBox.value = props.order_to_resolve[step.value]
-
-    let box = document.getElementById(`${props.order_to_resolve[step.value]}`)
-    let nextBox = document.getElementById(`${props.order_to_resolve[step.value + 1]}`)
-
-    if (focusBox.value === id && talkBool.value === false) {
-
-
-        let item = items[props.solution[step.value] - 1]
-
-
-        if (item.name === itemSelected.name) {
-
-            let successes = new Audio(`${localHost}/audios/successes/muybien.m4a`)
-
-            let ext = new Audio()
-            let showExt = true
-
-            if (item.type === types.letter) {
-                ext.src = `${localHost}/audios/items/extensions/La letra.wav`
-            } else if (item.type === types.number) {
-                ext.src = `${localHost}/audios/items/extensions/El numero.wav`
-            } else if (item.type === types.color) {
-                ext.src = `${localHost}/audios/items/extensions/El color.wav`
-            } else {
-                showExt = false
-            }
-
-            let itemSound = new Audio(`${localHost}/audios/items/${item.name}.m4a`)
-            let explainSound = new Audio(`${localHost}/audios/explanations/erafaltanteparacompletar.m4a`)
-
-            talkBool.value = true
-            talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-
-            successes.play()
-
-            successes.onended = function () {
-                if (showExt) {
-                    ext.play()
-                } else {
-                    itemSound.play()
-                }
-            };
-
-            ext.onended = function () {
-                itemSound.play()
-            };
-
-            itemSound.onended = function () {
-                explainSound.play()
-            };
-
-            explainSound.onended = function () {
-                if (props.selectors) {
-                    selector(props.selectors[step.value][0], props.selectors[step.value][1], nextBox, item, false)
-                }
-                step.value++
-
-            }
-
-            box.classList.remove('animate-pulse')
-
-            let bubble = new Audio()
-            bubble.src = `${localHost}/audios/effects/soapBubble.wav`
-            bubble.play()
-
-            paintItem(id, items)
-
-        } else {
-            errorPaint(id)
-            let errorSound = new Audio(`${localHost}/audios/effects/wood.wav`)
-            errorSound.play()
-
-            talkBool.value = true
-            talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-
-            let ext = new Audio()
-            let showExt = true
-
-            let itemError = getSelectItem()
-
-            if (itemError.type === types.letter) {
-                ext.src = `${localHost}/audios/items/extensions/La letra.wav`
-            } else if (itemError.type === types.number) {
-                ext.src = `${localHost}/audios/items/extensions/El numero.wav`
-            } else if (itemError.type === types.color) {
-                ext.src = `${localHost}/audios/items/extensions/El color.wav`
-            } else {
-                showExt = false
-            }
-
-            let failed = new Audio(`${localHost}/audios/failed/buenintentopero.m4a`)
-            let itemSound = new Audio(`${localHost}/audios/items/${itemError.name}.m4a`)
-            let failedExplainSound = new Audio(`${localHost}/audios/explanations/errors/yaseencuentra.m4a`)
-
-            failed.play()
-
-            failed.onended = function () {
-                if (showExt) {
-                    ext.play()
-                } else {
-                    itemSound.play()
-                }
-            };
-
-            ext.onended = function () {
-                itemSound.play()
-            };
-
-            itemSound.onended = function () {
-                failedExplainSound.play()
-            };
-
-            failedExplainSound.onended = function () {
-                if (props.selectors) {
-                    selector(props.selectors[step.value][0], props.selectors[step.value][1], nextBox, item, true)
-                } else {
-                    errorPaint(id)
-                }
-            }
-
-
-        }
-    } else {
-        errorPaint(id)
-    }
-
-}
-
-
-const selector = (row, col, nextBox, item, isError) => {
-    let sudokuIds = []
-    let time = 2000
-
-    for (let i = 1; i <= (props.size * props.size); i++) {
-        sudokuIds.push(i)
-    }
-
-    let sudokuArray = convertInArray(sudokuIds, props.size, props.size);
-
-    let rowsAndCols = getRowsAndCols(sudokuArray)
-
-    let audio1 = new Audio()
-    let audio2 = new Audio()
-
-    if (row) {
-        audio1.src = `${localHost}/audios/positions/rows/${row}.m4a`
-
-        if (col) {
-            audio2.src = `${localHost}/audios/positions/cols/extensions/${col}.m4a`
-        }
-
-    } else {
-        audio1.src = `${localHost}/audios/positions/cols/${col}.m4a`
-    }
-
-    for (let i = 0; i <= props.size - 1; i++) {
-        const selectRow = () => {
-            if (row) {
-                if (isError) {
-                    setTimeout(function () {
-                        document.getElementById(rowsAndCols[0][row - 1][i]).classList.add('duration-300', 'scale-50', 'border-8', 'border-red-600')
-                        setTimeout(function () {
-                            document.getElementById(rowsAndCols[0][row - 1][i]).classList.remove('scale-50', 'border-8', 'border-red-600')
-                        }, time)
-                    }, 100)
-
-                } else {
-                    document.getElementById(rowsAndCols[0][row - 1][i]).classList.add('duration-300', 'scale-50', 'border-8', 'border-yellow-400')
-                    setTimeout(function () {
-                        document.getElementById(rowsAndCols[0][row - 1][i]).classList.remove('scale-50', 'border-8', 'border-yellow-400')
-                    }, time)
-                }
-            }
-        }
-
-        const selectCol = () => {
-            if (col) {
-                if (isError) {
-                    setTimeout(function () {
-                        document.getElementById(rowsAndCols[1][col - 1][i]).classList.add('duration-300', 'scale-50', 'border-8', 'border-red-600')
-                        setTimeout(function () {
-                            document.getElementById(rowsAndCols[1][col - 1][i]).classList.remove('scale-50', 'border-8', 'border-red-600')
-                        }, time)
-                    }, 100)
-
-                } else {
-                    document.getElementById(rowsAndCols[1][col - 1][i]).classList.add('duration-300', 'scale-50', 'border-8', 'border-yellow-400')
-                    setTimeout(function () {
-                        document.getElementById(rowsAndCols[1][col - 1][i]).classList.remove('scale-50', 'border-8', 'border-yellow-400')
-                    }, time)
-                }
-            }
-        }
-
-        if (row) {
-            selectRow()
-            audio1.play()
-
-            if (col) {
-                setTimeout(function () {
-                    selectCol()
-                    audio2.play()
-                    setTimeout(function () {
-                        if (i === props.size - 1 && isError === false) {
-                            nextStep()
-                        } else if (isError) {
-                            talkBool.value = false
-                            talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-                        }
-                    }, time)
-                }, time + 500)
-            } else {
-                setTimeout(function () {
-                    if (i === props.size - 1 && isError === false) {
-                        nextStep()
-                    } else if (isError) {
-                        talkBool.value = false
-                        talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-                    }
-                }, time)
-            }
-
-        } else {
-            selectCol()
-            audio1.play()
-            setTimeout(function () {
-                if (i === props.size - 1 && isError === false) {
-                    nextStep()
-                } else if (isError) {
-                    talkBool.value = false
-                    talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-                }
-            }, time)
-        }
-
-    }
-
-    const nextStep = () => {
-
-        let nextAudio = new Audio()
-
-        if (nextBox) {
-            nextAudio.src = `${localHost}/audios/explanations/nextPositionFocus/${item.group}.m4a`
-            nextAudio.play()
-
-            nextAudio.onended = function () {
-                talkBool.value = false
-                talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-                if (nextBox) {
-                    showFocusBox(`${props.order_to_resolve[step.value]}`)
-                    nextBox.classList.add('animate-pulse')
-                } else {
-                    win(true)
-                }
-            }
-        } else {
-            talkBool.value = false
-            talkCharacter(`${localHost}/images/characters/robot/normal.png`, `${localHost}/images/characters/robot/talk.gif`)
-            win(true)
-        }
-    }
-}
-
-const win = (coinAdd) => {
-
-    if (coinAdd) {
-        let winView = document.getElementById('winView')
-
-        winView.classList.remove('hidden')
-
-        setTimeout(function () {
-            winView.classList.replace('opacity-0', 'opacity-100')
-        }, 500)
-
-        setTimeout(function () {
-            winView.classList.replace('opacity-100', 'opacity-0')
-        }, 3000)
-
-        setTimeout(function () {
-            winView.classList.add('hidden')
-        }, 3500)
-        setTimeout(function () {
-            addCoinWin()
-            setTimeout(function () {
-                document.getElementById('nextLevelButton').classList.remove('hidden')
-            }, 2800)
-        }, 3600)
-    } else {
-        let winView = document.getElementById('winView')
-
-        winView.classList.remove('hidden')
-
-        setTimeout(function () {
-            winView.classList.replace('opacity-0', 'opacity-100')
-        }, 500)
-
-        setTimeout(function () {
-            winView.classList.replace('opacity-100', 'opacity-0')
-        }, 3000)
-
-        setTimeout(function () {
-            winView.classList.add('hidden')
-        }, 3500)
-        setTimeout(function () {
-            document.getElementById('nextLevelButton').classList.remove('hidden')
-        }, 2000)
-    }
-
-
-    const addCoinWin = () => {
-        let coinSound = new Audio(`${localHost}/audios/effects/simpleCoin.wav`)
-        coinSound.play()
-
-        document.getElementById('coins').classList.add('opacity-0')
-
-        setTimeout(function () {
-            document.getElementById('coins').classList.add('hidden')
-            document.getElementById('addCoin').classList.remove('hidden')
-        }, 300)
-
-        setTimeout(function () {
-            document.getElementById('addCoin').classList.replace('opacity-0', 'opacity-100')
-        }, 400)
-
-        setTimeout(function () {
-            document.getElementById('addCoin').classList.replace('opacity-100', 'opacity-0')
-        }, 2000)
-
-        setTimeout(function () {
-            document.getElementById('addCoin').classList.add('hidden')
-            document.getElementById('coins').classList.remove('hidden')
-        }, 2600)
-
-        setTimeout(function () {
-            document.getElementById('coins').classList.replace('opacity-0', 'opacity-100')
-        }, 2700)
-
-        setTimeout(function () {
-            document.getElementById('coinsCount').innerText = `x ${updateCoins(1)}`
-        }, 2700)
-    }
-}
-
-function convertInArray(sudokuIds, rows, cols) {
-    let array = [];
-    for (let i = 0; i < rows; i++) {
-        let row = [];
-        for (let j = 0; j < cols; j++) {
-            row.push(sudokuIds[i * cols + j]);
-        }
-        array.push(row);
-    }
-    return array;
-}
-
-
-function getRowsAndCols(sudokuIds) {
-
-    let getRows = sudokuIds.length;
-    let getCol = sudokuIds[0].length;
-
-    let rows = []
-    let cols = []
-
-    for (let i = 0; i < getRows; i++) {
-        rows.push(sudokuIds[i])
-    }
-
-    for (let j = 0; j < getCol; j++) {
-        let col = [];
-        for (let i = 0; i < getRows; i++) {
-            col.push(sudokuIds[i][j]);
-        }
-        cols.push(col)
-    }
-
-    return [rows, cols]
-}
-
-const validateAudiosOfPositions = (selector) => {
-
-    for (let i = 0; i < items.length; i++) {
-
-        let nextFocus = `${localHost}/audios/explanations/nextPositionFocus/${items[i].group}.m4a`;
-
-        let oration = `Sigamos, que ${items[i].group} debe ir en el siguiente Lugar`
-
-        verificarExistenciaArchivo(nextFocus, function (exist) {
-            if (exist) {
-                console.log(`El nextFocus existe.`);
-            } else {
-
-                resolveAudio(oration, items[i].group, 'explanations/nextPositionFocus', '0.8')
-                console.log(`El nextFocus no existe.`);
-            }
-        });
-    }
-
-    for (let i = 0; i < selector.length; i++) {
-
-        let row = selector[i][0]
-        let col = selector[i][1]
-
-        let rowPath = `${localHost}/audios/positions/rows/${row}.m4a`;
-        let colPath = `${localHost}/audios/positions/cols/${col}.m4a`;
-        let colExtPath = `${localHost}/audios/positions/cols/extensions/${col}.m4a`;
-
-        let rowText = [
-            'La primera fila',
-            'La Segunda fila',
-            'La tercera fila',
-            'La cuarta fila',
-            'La quinta fila',
-            'La sexta fila'
-        ]
-
-        let colText = [
-            'La primera columna',
-            'La Segunda columna',
-            'La tercera columna',
-            'La cuarta columna',
-            'La quinta columna',
-            'La sexta columna'
-        ]
-
-        if (row !== 0) {
-            verificarExistenciaArchivo(rowPath, function (exist) {
-                if (exist) {
-                    console.log(`El ROW ${row} existe.`);
-                } else {
-
-
-                    resolveAudio(rowText[row - 1], row, 'positions/rows', '0.8')
-                    console.log(`El ROW ${row} no existe.`);
-                }
-            });
-
-            if (col !== 0) {
-                verificarExistenciaArchivo(colExtPath, function (exist) {
-                    if (exist) {
-                        console.log(`El COL ${col} existe.`);
-                    } else {
-
-                        resolveAudio('y ' + colText[col - 1], col, 'positions/cols/extensions', '0.8')
-                        console.log(`El COL ${row} no existe.`);
-                    }
-                });
-            }
-        } else {
-            if (col !== 0) {
-                verificarExistenciaArchivo(colPath, function (exist) {
-                    if (exist) {
-                        console.log(`El COL ${col} existe.`);
-                    } else {
-
-                        resolveAudio(colText[col - 1], col, 'positions/cols', '0.8')
-                        console.log(`El COL ${row} no existe.`);
-                    }
-                });
-            }
-        }
-
-    }
-}
-
-const showItemsPresentation = (showFocus) => {
-    let box = document.getElementById('itemPresentation')
-
-    box.classList.remove('hidden')
-
-    let time = 0
-
-    for (let i = 0; i < items.length; i++) {
-
-        let subTime = 0
-
-        time = subTime
-
-
-        if (i === 1) {
-            subTime = 2000
-        } else if (i === 2) {
-            subTime = subTime + 4000
-        } else if (i === 3) {
-            subTime = subTime + 6000
-        } else if (i === 4) {
-            subTime = subTime + 8000
-        } else if (i === 5) {
-            subTime = subTime + 10000
-        }
-
-        let itemSound = new Audio(`${localHost}/audios/items/${items[i].name}.m4a`)
-        let start = new Audio(`${localHost}/audios/start/sudoku/locate/${items[0].group}.m4a`)
-
-        if (items[i].type === types.image) {
-
-            setTimeout(function () {
-                itemSound.play()
-                box = document.getElementById('itemPresentation');
-
-                let img = document.createElement('img');
-
-                img.src = items[i].content;
-                img.alt = 'Descripción de la imagen';
-
-                box.appendChild(img);
-            }, subTime)
-
-            setTimeout(function () {
-                let imgExt = box.getElementsByTagName('img')[0];
-
-                if (imgExt) {
-                    box.removeChild(imgExt);
-                }
-            }, subTime + 2000)
-
-        } else if (items[i].type === types.letter || items[i].type === types.number) {
-
-            let imgExt = box.getElementsByTagName('img')[0];
-
-            if (imgExt) {
-                box.removeChild(imgExt);
-            }
-
-            setTimeout(function () {
-                itemSound.play()
-                box.innerText = items[i].name
-            }, subTime)
-
-            setTimeout(function () {
-                box.innerText = null
-            }, subTime + 2000)
-        } else if (items[i].type === types.color) {
-
-            let imgExt = box.getElementsByTagName('img')[0];
-
-            if (imgExt) {
-                box.removeChild(imgExt);
-            }
-
-            setTimeout(function () {
-                itemSound.play()
-                box.classList.replace('bg-gray-200', items[i].content)
-            }, subTime)
-
-            setTimeout(function () {
-                box.classList.replace(items[i].content, 'bg-gray-200')
-            }, subTime + 2000)
-        } else if (items[i].type === types.eraser) {
-            setTimeout(function () {
-                box.classList.add('hidden')
-                start.play()
-                if (showFocus) {
-                    start.onended = function () {
-                        showFocusBox(props.order_to_resolve[0])
-                    }
-                }
-            }, subTime)
-            continue
-        }
-
-        if (i === items.length - 1) {
-            setTimeout(function () {
-                box.classList.add('hidden')
-                start.play()
-                if (showFocus) {
-                    start.onended = function () {
-                        showFocusBox(props.order_to_resolve[0])
-                    }
-                }
-            }, subTime + 2000)
-
-        }
-    }
-
-    return time
-};
-
 </script>
+
 <template>
-    <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden
-    grid-cols-6 grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11 grid-cols-12
-     ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`
-"></div>
-    <BackgroundActivities/>
-    <WinView id="winView" class="hidden opacity-0 duration-300"/>
+  <BackgroundActivities/>
+  <WinView id="winView" class="hidden opacity-0 duration-300"/>
 
-    <div class="flex flex-col min-h-screen">
-        <div class="mx-auto flex-1 container flex justify-center">
-            <div class="flex p-6 w-full gap-5 rounded-md">
-                <div class="w-[16%]">
-                    <HelpCharacter :image="`${localHost}/images/characters/robot/normal.png`"
-                                   :image_2="`${localHost}/images/characters/robot/talk.gif`"
-                                   bg=""
-                    />
-                </div>
-                <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
-                    <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
-                                 :planet_2="`${localHost}/images/planets/rojo.svg`"
-                                 :rocket="`${localHost}/images/rockets/1.svg`"
-                                 :activity_number="props.level[1]"
-                    />
-                    <div class="flex justify-center items-center row-span-3">
-                        <div>
-                            <div class="my-6 flex justify-center">
-
-                                <div :class="`grid grid-cols-${props.size}`">
-                                    <div :id="i" @click="validateOrder(i)" v-for="i in props.size * props.size" :key="i"
-                                         :class="`bg-white border border-black hover:opacity-75
-                                          flex justify-center items-center font-bold text-6xl select-none h-${boxSize} w-${boxSize}`">
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="w-[16%]">
-                    <ItemPalette :level="props.level" :items="items"/>
-                </div>
-            </div>
+  <div class="flex flex-col min-h-screen">
+    <div class="mx-auto flex-1 container flex justify-center">
+      <div class="flex p-6 w-full gap-5 rounded-md">
+        <div class="w-[16%]">
+          <HelpCharacter :image="configCharacter.current"
+                         :image_2="`${localHost}/images/characters/robot/talk.gif`"
+          />
         </div>
+        <div id="board" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
+          <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
+                       :planet_2="`${localHost}/images/planets/rojo.svg`"
+                       :rocket="`${localHost}/images/rockets/1.svg`"
+                       :level="props.level"
+          />
+          <!--          <span class="fixed text-white">TABLE: {{ configSudoku.table }}</span>-->
+          <!--          <span class="fixed text-white translate-y-4">ROWS ID: {{ configSudoku.rows.ids }}</span>-->
+          <!--          <span class="fixed text-white translate-y-8">ROWS: {{ configSudoku.rows.contents }}</span>-->
+          <!--          <span class="fixed text-white translate-y-12">COLS ID: {{ configSudoku.cols.ids }}</span>-->
+          <!--          <span class="fixed text-white translate-y-20">COLS ID: {{ configSudoku.cols.contents }}</span>-->
+          <!--          <span class="fixed text-white translate-y-24">ERRORS ROWS: {{ configSudoku.errors.row }}</span>-->
+          <!--          <span class="fixed text-white translate-y-28">ERRORS COLS: {{ configSudoku.errors.col }}</span>-->
+
+          <div class="row-span-3 flex justify-center items-center">
+            <div :class="`grid grid-cols-${props.size}`">
+              <div :id="i"
+                   @click="paintBox(i)"
+                   v-for="i in props.size * props.size"
+                   :key="`box-${i}`"
+                   :style="`width: ${configSize.sizeBox}vmin; height: ${configSize.sizeBox}vmin;`"
+                   :class="`bg-white breathing border border-black hover:opacity-60 flex justify-center items-center
+                        font-bold text-6xl select-none duration-300 cursor-cell rounded-md`">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="w-[16%]">
+          <ItemPalette :level="props.level" :items="items" :currentAudio="currentAudio"/>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
-<style>
-.brush-fail {
-    animation: move-right 100ms linear infinite;
-    fill: red;
+<style scoped>
+
+@keyframes shake {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  10% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  20% {
+    transform: translateX(5px) rotate(5deg);
+  }
+  30% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  40% {
+    transform: translateX(5px) rotate(5deg);
+  }
+  50% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  60% {
+    transform: translateX(5px) rotate(5deg);
+  }
+  70% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  80% {
+    transform: translateX(5px) rotate(5deg);
+  }
+  90% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
 }
 
-@keyframes move-right {
-    0% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(10px);
-    }
-    100% {
-        transform: translateX(0);
-    }
+.error {
+  background-color: red;
+  animation: shake 1s;
 }
 
-.zoom-box {
-    animation: zoom-out 1500ms linear infinite;
+//background-color: #f1c40f; /* Amarillo vibrante */
+//background-color: #3498db; /* Azul vibrante */
+
+
+@keyframes breathing {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-@keyframes zoom-out {
-    /*0% {*/
-    /*    transform: scale(.1);*/
-    /*}*/
-    50% {
-        transform: scale(.75);
-    }
-    /*100% {*/
-    /*    transform: scale(.1);*/
-    /*}*/
+.selected {
+  display: inline-block;
+  padding: 20px 40px;
+  background-color: #3498db; /* Azul vibrante */
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+
+.selected:hover {
+  background-color: #2980b9; /* Azul más oscuro */
+  transform: scale(.95);
+  animation: glowing 1.5s infinite alternate;
+}
+
+
+/* Animación de resplandor */
+@keyframes glowing {
+  0% {
+    box-shadow: 0 0 5px #f1c40f, 0 0 10px #f1c40f, 0 0 15px #f1c40f;
+  }
+  50% {
+    box-shadow: 0 0 20px #f1c40f, 0 0 30px #f1c40f, 0 0 40px #f1c40f;
+  }
+  100% {
+    box-shadow: 0 0 5px #f1c40f, 0 0 10px #f1c40f, 0 0 15px #f1c40f;
+  }
+}
+
+/* Animación de tardanza */
+@keyframes waiting {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Estilo del div si se tarda mucho en hacer clic */
+.waiting-too-long {
+  animation: waiting 3s infinite;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transform: scale(.80); /* Restablecer el tamaño */
+}
+
+/* Clase que aplica la animación */
+.breathing {
+  animation: breathing 3s ease-in-out infinite;
 }
 </style>
+
+
+<!--.selected {-->
+<!--  display: inline-block;-->
+<!--  background-color: #3498db; /* Azul vibrante */-->
+<!--  color: white;-->
+<!--  text-align: center;-->
+<!--  border-radius: 10px;-->
+<!--  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;-->
+<!--}-->
+
+<!--/* Animación de resplandor */-->
+<!--@keyframes glowing {-->
+<!--  0% {-->
+<!--    box-shadow: 0 0 5px #3498db, 0 0 10px #3498db, 0 0 15px #3498db;-->
+<!--  }-->
+<!--  50% {-->
+<!--    box-shadow: 0 0 20px #3498db, 0 0 30px #3498db, 0 0 40px #3498db;-->
+<!--  }-->
+<!--  100% {-->
+<!--    box-shadow: 0 0 5px #3498db, 0 0 10px #3498db, 0 0 15px #3498db;-->
+<!--  }-->
+<!--}-->
+
+<!--/* Estilo al pasar el cursor */-->
+<!--.selected:hover {-->
+<!--  background-color: #2980b9; /* Azul más oscuro */-->
+<!--  transform: scale(.90);-->
+<!--}-->

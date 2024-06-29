@@ -216,24 +216,35 @@ const paintRow = (rowNumber, item, guide) => {
 
 };
 
-import {cat, mouse, heart, turtle, hat} from '../../use';
+// import {cat, mouse, heart, turtle, hat, smile} from '../../use';
 
-const drawOptions = {
-  cat: cat,
-  mouse: mouse,
-  heart: heart,
-  turtle: turtle,
-  hat: hat
-};
+import { drawsArray } from "../../use"; //Importación del array que contiene los dibujos
 
-let totalPixels = ref((drawOptions[props.draw].length / 2) * 9)
+
+// const drawOptions = {
+//   cat: cat,
+//   mouse: mouse,
+//   heart: heart,
+//   turtle: turtle,
+//   hat: hat,
+//   smile: smile
+// };
+
+let totalPixels = ref(drawsArray[props.draw].length / 2 * 9);
+
+// let totalPixels = ref((drawOptions[props.draw].length / 2) * 9)
 let i = 0
 
 setTimeout(function () {
   // Itera sobre el array paintData y llama a paintRow para cada fila
-  drawOptions[props.draw].forEach(({row, color, guide}) => {
+  drawsArray[props.draw].forEach(({row, color, guide}) => {
     paintRow(row, color, guide);
   });
+
+
+  // drawOptions[props.draw].forEach(({row, color, guide}) => {
+  //   paintRow(row, color, guide);
+  // });
 }, 500);
 
 let level = ref(props.level)
@@ -321,7 +332,7 @@ const win = async () => {
                   <div class="grid grid-cols-11 bg-white w-full">
                     <!-- linea1 -->
                     <div v-for="i in 99" :key="`i-${i}`" class="grid grid-cols-3 border border-black">
-                      <span v-if="false" class="absolute select-none">{{ i }}</span>
+                      <span id="showIDs" v-if="false" class="absolute select-none">{{ i }}</span>
                       <div :id="`muestra${i}-${n}`"
                            class="select-none hover:bg-gray-300" style="width: 14px; height: 14px;" v-for="n in 9"
                            :key="`n-${n}`">
@@ -341,7 +352,6 @@ const win = async () => {
                   <div class="grid grid-cols-11 bg-white w-full">
                     <!-- linea1 -->
                     <div v-for="i in 99" :key="`i-${i}`" class="grid grid-cols-3 border border-black cursor-cell">
-
                       <div @mousemove="paint(`caja${i}-${n}`, null)" @click="paint(`caja${i}-${n}`, 'click')" :id="`caja${i}-${n}`"
                            class="select-none duration-100"
                            style="width: 14px; height: 14px; opacity: 0.8" v-for="n in 9"
