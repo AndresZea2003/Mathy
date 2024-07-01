@@ -69,6 +69,10 @@ let niceNextAudio = ref(1)
 let isLastRow = ref(false)
 let failedAttempts = ref(0);
 
+let configGame = ref({
+  timer: true,
+})
+
 const paintBox = async (id) => {
   if (levelComplete.value || inTutorial.value) {
     playAudio(`${localHost}/audios/effects/wood.wav`)
@@ -88,6 +92,8 @@ const paintBox = async (id) => {
   let [group, boxNumber] = id.split('-');
 
   if (currentFocus.value === null && showFakeRow.value && group === `group${showGroups.value}`) {
+    configGame.value.timer = false;
+
     paintItem(id, items);
 
     updateCurrentCombinations(group, parseInt(boxNumber), itemSelected.content);
@@ -100,6 +106,10 @@ const paintBox = async (id) => {
     let allBoxesColored = Array.from(boxesInGroup).every(box => {
       let boxClasses = box.className.split(' ');
       return boxClasses.some(cls => cls.startsWith('bg-') && cls !== 'bg-white');
+    });
+
+    boxesInGroup.forEach(box => {
+      box.classList.remove('yellow-border-reflection')
     });
 
     if (allBoxesColored) {
@@ -130,6 +140,18 @@ const paintBox = async (id) => {
           });
           boxesInGroup.forEach(box => box.classList.add('bg-white'));
           failedAttempts.value++;
+
+          if (failedAttempts.value >= 3) {
+            // The player has failed 3 times, they win
+            currentAudio.value = playAudio(
+                `${localHost}/audios/start/permutations/fakeRow/win.m4a`
+            )
+
+            setOnEnded(currentAudio.value, () => {
+              win()
+            })
+
+          }
         });
       } else if (hasDuplicateColors) {
         // Error 1: The player repeated colors in the group
@@ -167,6 +189,17 @@ const paintBox = async (id) => {
               failedAttempts.value++;
             }
           });
+
+          if (failedAttempts.value >= 3) {
+            // The player has failed 3 times, they win
+            currentAudio.value = playAudio(
+                `${localHost}/audios/start/permutations/fakeRow/win.m4a`
+            )
+
+            setOnEnded(currentAudio.value, () => {
+              win()
+            })
+          }
         })
 
       } else if (isCombinationRepeated) {
@@ -195,12 +228,23 @@ const paintBox = async (id) => {
           boxesInGroup.forEach(box => box.classList.add('bg-white'));
           failedAttempts.value++;
         });
+
+        if (failedAttempts.value >= 3) {
+            // The player has failed 3 times, they win
+            currentAudio.value = playAudio(
+                `${localHost}/audios/start/permutations/fakeRow/win.m4a`
+            )
+
+            setOnEnded(currentAudio.value, () => {
+              win()
+            })
+          }
       }
 
-      if (failedAttempts.value >= 3) {
-        // The player has failed 3 times, they win
-        alert('Ganaste');
-      }
+      // if (failedAttempts.value >= 3) {
+      //   // The player has failed 3 times, they win
+      //   alert('Ganaste');
+      // }
     }
 
     return;
@@ -488,16 +532,70 @@ const paintBox = async (id) => {
           alert('Ganaste')
           return;
         } else if (showFakeRow.value && niceNextAudio.value > realGroups) {
-          inTutorial.value = false;
-          currentFocus.value = null
+
+          currentAudio.value = playAudio(`${localHost}/audios/start/permutations/fakeRow/color.m4a`)
 
           let nextGroup = `group${showGroups.value}`
 
           let completedGroup = document.querySelectorAll(`#group${showGroups.value} div`);
 
-          completedGroup.forEach(box => box.style.opacity = 1);
+          // completedGroup.forEach(box => box.style.opacity = 1);
+
+          completedGroup.forEach(box => {
+            box.style.opacity = 1;
+            box.classList.add('yellow-border-reflection')
+          });
+
+          document.getElementById(`group${showGroups.value}-1`)
+              .classList.replace('bg-white', 'bg-blue-500');
+
+          document.getElementById(`group${showGroups.value}-2`)
+              .classList.replace('bg-white', 'bg-red-500');
+
+          document.getElementById(`group${showGroups.value}-3`)
+              .classList.replace('bg-white', 'bg-green-500');
+
+          setTimeout(() => {
+
+            document.getElementById(`group${showGroups.value}-1`)
+                .classList.replace('bg-blue-500', 'bg-green-500');
+
+            document.getElementById(`group${showGroups.value}-2`)
+                .classList.replace('bg-red-500', 'bg-blue-500');
+
+            document.getElementById(`group${showGroups.value}-3`)
+                .classList.replace('bg-green-500', 'bg-red-500');
+
+          }, 2000)
+
+          setTimeout(() => {
+
+            document.getElementById(`group${showGroups.value}-1`)
+                .classList.replace('bg-green-500', 'bg-white');
+
+            document.getElementById(`group${showGroups.value}-2`)
+                .classList.replace('bg-blue-500', 'bg-white');
+
+            document.getElementById(`group${showGroups.value}-3`)
+                .classList.replace('bg-red-500', 'bg-white');
+
+          }, 4000)
 
           document.getElementById(nextGroup).style.opacity = 1;
+
+          setOnEnded(currentAudio.value, () => {
+            inTutorial.value = false;
+            currentFocus.value = null
+
+            setTimeout(() => {
+              if (configGame.value.timer) {
+                // Audio de ayuda
+                currentAudio.value = playAudio(
+                    `${localHost}/audios/start/permutations/fakeRow/afk.m4a`
+                );
+              }
+            }, 10000)
+          })
 
           return;
         }
@@ -822,7 +920,57 @@ const initializeGame = () => {
       document.getElementById(`group${i}`).style.opacity = 1;
     }
   }
+}
 
+let level = ref(props.level)
+let showProgressBar = ref(true)
+const win = () => {
+  levelComplete.value = true
+  playAudio(`${localHost}/audios/effects/levelUp.mp3`)
+  let progressBar = document.getElementById('progressBar')
+
+  let staticBar = document.getElementById('staticBar')
+
+  let animated = document.getElementById('test2')
+
+  let station = document.getElementById('station')
+
+  let board = document.getElementById('board')
+
+  let winView = document.getElementById('winView')
+
+  staticBar.classList.replace('opacity-100', 'opacity-0')
+  progressBar.classList.replace('border-black','border-yellow-400')
+  animated.classList.replace('opacity-0', 'opacity-100')
+  station.classList.add('moveLeftInOut')
+
+  board.classList.replace('bg-red-200', 'bg-green-300')
+  winView.classList.remove('hidden')
+
+  let button = document.getElementById('nextLevelButton')
+
+  setTimeout(function () {
+    board.classList.replace('bg-green-300', 'bg-red-200')
+    winView.classList.replace('opacity-0', 'opacity-100')
+
+    setTimeout(function () {
+      staticBar.classList.replace('opacity-0', 'opacity-100')
+      animated.classList.replace('opacity-100', 'opacity-0')
+      button.classList.remove('hidden')
+      showProgressBar.value = false
+      level.value[1] = level.value[1] + 1
+      setTimeout(function () {
+        showProgressBar.value = true
+      },100)
+    },1000)
+  }, 2000)
+
+  setTimeout(function () {
+    winView.classList.replace('opacity-100', 'opacity-0')
+    setTimeout(function () {
+      winView.classList.add('hidden');
+    }, 200)
+  }, 4000)
 }
 </script>
 <template>
@@ -837,7 +985,7 @@ const initializeGame = () => {
                          :image_2="`${localHost}/images/characters/robot/talk.gif`"
           />
         </div>
-        <div id="dat" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
+        <div id="board" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
           <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
