@@ -277,3 +277,53 @@ export const winCoinCheckLevel = (level, sublevel) => {
     console.log("wincoin", result);
     return result;
 };
+
+
+//Funcion que controla las monedas que se muestran en las paletas
+
+export const storageCoinUpdated = (goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive) => {
+    //Valido si las monedas de oro son 5 o mas de 5 en caso de ser mas de 5 va a devolver solo 5 y si es menos devolvera la cantidad que se tiene
+    let goldCoinsStorage = getUsersLocalStorage().goldenCoins;
+    let silverCoinsStorage = getUsersLocalStorage().silverCoins;
+    let bronzeCoinsStorage = getUsersLocalStorage().bronzeCoins;
+
+
+    if (parseInt(goldCoinsStorage) > 5) {
+        goldCoins.value = 5;
+    } else if (parseInt(goldCoinsStorage) < 5) {
+        goldCoins.value = parseInt(goldCoinsStorage);
+    }
+
+    if (parseInt(silverCoinsStorage) > 5) {
+        silverCoins.value = 5;
+    } else if (parseInt(silverCoinsStorage) < 5) {
+        silverCoins.value = parseInt(silverCoinsStorage);
+    }
+
+    if (parseInt(bronzeCoinsStorage) > 5) {
+        bronzeCoins.value = 5;
+    } else if (parseInt(bronzeCoinsStorage) < 5) {
+        bronzeCoins.value = parseInt(bronzeCoinsStorage);
+    }
+
+    //Controlamos si hay monedas suficientes para cambiar para darle efecto al boton de cambiar segun las monedas.
+    if (parseInt(goldCoinsStorage) > 0) {
+        goldCoinsChangeActive.value = "item-palette-gold__div--container-active";
+    } else if (parseInt(goldCoinsStorage) === 0) {
+        goldCoinsChangeActive.value = "";
+    }
+    ;
+
+    if (parseInt(silverCoinsStorage) > 2) {
+        silverCoinsChangeActive.value = "item-palette-gold__div--container-active";
+    } else if (parseInt(silverCoinsStorage) < 3) {
+        silverCoinsChangeActive.value = "";
+    }
+    ;
+
+    if (parseInt(bronzeCoinsStorage) > 2) {
+        bronzeCoinsChangeActive.value = "item-palette-gold__div--container-active";
+    } else if (parseInt(bronzeCoinsStorage) < 3) {
+        bronzeCoinsChangeActive.value = "";
+    };
+};

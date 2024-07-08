@@ -95,7 +95,7 @@ const randomSelectedColor = () => {
     };
 
     // console.log("storage", storageCounts.value[0].inputColor);
-    console.log("Colores restantes",backgroundInputColors.length);
+    // console.log("Colores restantes",backgroundInputColors.length);
 
     if(backgroundInputColors.length === 0){
         let randonNum = Math.floor(Math.random() * backgroundInputColorBackup.length);

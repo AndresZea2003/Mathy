@@ -189,7 +189,7 @@ const handlePauseButton = () => {
     </div>
 
     <div class="px-2">
-      <div class="my-2 w-[380px]">
+      <div class="my-2 w-[380px] m-auto">
         <div id="itemScreen"
              :class="`border-2 border-black h-14 shadow-xl rounded-md flex justify-center font-bold text-5xl bg-white`">
           {{ itemSelected ? itemSelected.name : null }}
