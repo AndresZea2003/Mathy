@@ -14,7 +14,7 @@ import {
   talkCharacter,
   paintItem,
   errorPaint,
-  updateCoins,
+  // updateCoins,
   getCoins,
   playAudio,
   setOnEnded,
@@ -26,9 +26,11 @@ import {
   showErrorIcon
 } from '../../use';
 import {onMounted, onUnmounted, ref} from "vue";
-import IconArrowRight from "../icons/IconArrowRight.vue"
+import IconArrowRight from "../icons/IconArrowRight.vue";
 import Swal from "sweetalert2";
 import BackgroundActivities from "../background/BackgroundActivities.vue";
+import CoinChangerVortex from '../../components/activities/Coin Changer/CoinChangerVortex.vue';
+import CoinChanger from '../../components/activities/Coin Changer/CoinChanger.vue';
 
 const props = defineProps({
   size: {type: Number},
@@ -44,13 +46,25 @@ const props = defineProps({
   create_audio_3: {type: String},
   create_audio_4: {type: String},
   type: {type: String},
-})
+});
 
 const items = props.items
 const talkBool = ref(false)
 const levelComplete = ref(false)
 const inTutorial = ref(false)
 let currentAudio = ref(null);
+const coinChangerVortexRef = ref(false);
+const vortexType = ref("");
+const selectedLevelVortex = ref(false);
+const selectedCoinChanger = ref(false);
+const coinChangerCloseUser = ref(false);
+const updateCoins = ref(false);
+const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
+const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
+
+//Establecemos la ubicacion actual del software en el storage
+localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
+
 let character = document.getElementById('character')
 
 const showInitialAlert = () => {
@@ -652,6 +666,7 @@ const paintBox = (id) => {
     // Si tiene un acierto
     paintItem(id, items)
 
+
     let bubble = new Audio()
     bubble.src = `${localHost}/audios/effects/soapBubble.wav`
     bubble.play()
@@ -662,8 +677,10 @@ const paintBox = (id) => {
     //   talkCharacter(`${localHost}/images/characters/robot/v1/still/notFace.png`, `${localHost}/images/characters/robot/v1/still/notFace.png`)
     // }, 5000)
 
+    //Esta linea causa que no se termine el nivel___________________________________________________________________//____________________________
+    // character.src = `${localHost}/images/characters/robot/v1/still/happy.png`;
 
-    character.src = `${localHost}/images/characters/robot/v1/still/happy.png`
+    // console.log("local host valor", `${localHost}/images/characters/robot/v1/still/happy.png`);
 
     // if (showExpression.value === false) {
     //   showExpression.value = true
@@ -686,6 +703,8 @@ const paintBox = (id) => {
         step.value++
       }
     }
+
+    console.log("step value", step.value);
 
     if (step.value === props.size) {
       win()
@@ -783,7 +802,8 @@ const win = async () => {
 
   board.classList.replace('bg-red-200', 'bg-green-300')
 
-  let button = document.getElementById('nextLevelButton')
+  let button = document.getElementById('nextLevelButton');
+  let coinsComponent = document.getElementById('coinsComponentHorizontal');
 
   if (totalActivities.value === level.value[1]) {
 
@@ -800,7 +820,8 @@ const win = async () => {
     setTimeout(function () {
       staticBar.classList.replace('opacity-0', 'opacity-100')
       animated.classList.replace('opacity-100', 'opacity-0')
-      button.classList.remove('hidden')
+      button.classList.remove('hidden');
+      coinsComponent.classList.add('hidden');
       showProgressBar.value = false
       level.value[1] = level.value[1] + 1
       setTimeout(function () {
@@ -815,7 +836,42 @@ const win = async () => {
       winView.classList.add('hidden')
     }, 200)
   }, 4000)
-}
+};
+
+
+
+//Funcion que controla los emits que activan el vortice
+const coinChangerVortexActivate = (event) => {
+  console.log("Ehjecutando el coinChanger vortex active", event);
+  coinChangerVortexRef.value = event;
+};
+
+//Funcion que controla el tipo de vortice si es a coin changer o a la store
+const vortexTypeFunction = (event) => {
+  vortexType.value = event;
+};
+
+//Funcion que controla cuando el usuario da click para mostrar la animacion de la nave viajando al portal.
+const selectedLevelVortexFunction= (event) => {
+  selectedLevelVortex.value = event;
+};
+
+//Funcion que controla si se abre el coinChanger
+const selectedCoinChangerFunction = (event) => {
+  selectedCoinChanger.value = event;
+};
+
+const coinChangerClose = (event) => {
+  selectedCoinChanger.value = event;
+  selectedLevelVortex.value = event;
+  coinChangerVortexRef.value = event;
+  coinChangerCloseUser.value = true;
+};
+
+const updateCoinsFunction = (event) => {
+  updateCoins.value = event;
+};
+
 </script>
 <template>
   <!--  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden-->
@@ -828,7 +884,16 @@ const win = async () => {
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
 
+  <div v-if="selectedCoinChanger"  class="w-full h-full absolute top-0 left-0 z-30" >
+    <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'" :goldenExchange="3" :silverExchange="3" :guide="true" @coinChangerClose="coinChangerClose" @updateCoins="updateCoinsFunction"/>
+  </div>
+
+  <div v-if="coinChangerVortexRef || selectedLevelVortex" class="absolute z-20 w-full h-full pointer-events-none">
+    <CoinChangerVortex :type="vortexType" :selected="selectedLevelVortex"/>
+  </div>
+
   <div id="blackScreen" class="bg-black h-screen w-screen fixed opacity-0 duration-300 hidden"></div>
+
 
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
@@ -861,8 +926,17 @@ const win = async () => {
         </div>
 
         <div class="col-span-5">
-          <HorizontalItemPalette :level="props.level" :items="items"
-                                 :currentAudio="currentAudio"></HorizontalItemPalette>
+          <HorizontalItemPalette
+            :level="props.level" :items="items"
+            :currentAudio="currentAudio"
+            :updateCoins="updateCoins"
+            :coinChangerClose="coinChangerCloseUser"
+            @closeAnimation="coinChangerVortexActivate"
+            @openAnimation="coinChangerVortexActivate"
+            @vortexType="vortexTypeFunction"
+            @selected="selectedLevelVortexFunction"
+            @selectedCoinChanger="selectedCoinChangerFunction"
+          ></HorizontalItemPalette>
         </div>
 
       </div>

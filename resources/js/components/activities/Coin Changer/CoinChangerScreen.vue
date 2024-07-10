@@ -33,6 +33,7 @@ import tunnelEffectSound2 from '../../../../../public/audios/coin-changer/tunel-
 import spawnCoinEffectSound from '../../../../../public/audios/coin-changer/spawn-coin-sound.mp3';
 import endChangeEffectSound from '../../../../../public/audios/coin-changer/end-change-sound.mp3';
 import endChangeButtonEffectSound from '../../../../../public/audios/coin-changer/end-button-sound.mp3'
+import { getUsersLocalStorage, saveDataLocalStorage } from '../../../use';
 
 
 //Creando emits
@@ -50,7 +51,8 @@ const props = defineProps({
     coinChangerAuto: Boolean
 });
 
-
+//Obtenemos los datos del usuario del local storage.
+let dataUserStorage = getUsersLocalStorage();
 
 
 //Recibimos la cantidad de monedas
@@ -386,9 +388,16 @@ const changeCoins = () => {
             typeChange.value = "bronze";
             //Generamos el codigo al cambiar las monedas de bronce, añadimos una en el array de plata y limpiamos el array de cambio.
             capsuleCoins.value = [];
-            localStorage.setItem("bronzeCoins", localStorage.getItem("bronzeCoins") - props.silverExchange)
-            //Establecemos en la store
-            localStorage.setItem("silverCoins", parseInt(localStorage.getItem("silverCoins")) + 1);
+
+            //Establecemos el nuevo valor de las monedas de bronce
+            dataUserStorage.bronzeCoins = dataUserStorage.bronzeCoins - props.silverExchange;
+
+            //Establecemos el nuevo valor de las monedas de plata
+            dataUserStorage.silverCoins = dataUserStorage.silverCoins + 1;
+
+            //Guardamos los valores en el perfil del usuario.
+            saveDataLocalStorage(dataUserStorage);
+
             setTimeout(() => {
                 //Temporizador para que la moneda aparezca despues de un tiempo en las monedas de plata.
                 silverArray.value.push({
@@ -410,9 +419,16 @@ const changeCoins = () => {
             typeChange.value = "silver";
             //Generamos el codigo al cambiar las monedas de bronce, añadimos una en el array de plata y limpiamos el array de cambio.
             capsuleCoins.value = [];
-            localStorage.setItem("silverCoins", parseInt(localStorage.getItem("silverCoins")) - props.goldenExchange);
-            //Establecemos en la store
-            localStorage.setItem("goldCoins", parseInt(localStorage.getItem("goldCoins")) + 1);
+
+
+            //Establecemos el nuev o valor de las monedas de plata.
+            dataUserStorage.silverCoins = dataUserStorage.silverCoins - props.goldenExchange;
+
+            //Establecemos el nuevo valor de las monedas de oro.
+            dataUserStorage.goldCoins = dataUserStorage.goldCoins + 1;
+
+            //Guardamos los datos en el perfil
+            saveDataLocalStorage(dataUserStorage);
         }
     }
 

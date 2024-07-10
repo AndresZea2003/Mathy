@@ -20,9 +20,10 @@ const props = defineProps({
 //Creando emits
 const emit = defineEmits(['coinChangerClose', 'updateCoins']);
 
+console.log("probando llamdo de monedas", getUsersLocalStorage().silverCoins);
 
-const silverCoins = ref(localStorage.getItem(props.storageSilver));
-const bronzeCoins = ref(localStorage.getItem(props.storageBronze));
+const silverCoins = ref(getUsersLocalStorage().silverCoins);
+const bronzeCoins = ref(getUsersLocalStorage().bronzeCoins);
 
 
 //Ref para definir el tamaño del div padre y convertirlo a tamaño de pantalla.

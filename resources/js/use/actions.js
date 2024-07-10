@@ -242,6 +242,7 @@ export const getUsersLocalStorage = () => {
 };
 
 //Funcion que guarda los datos modificados del usuario
+//USO: al usar getUsersLocalStorage() se debe guardar en una variable esos datos traidos del usuario, despues se modifican EJEMPLO dataUser.bronzeCoins = 3, para guardar los datos de usuario con esa modificacion simplemnte llamamos la funcion saveDataLocalStorage y como parametro le pasamos los datos modificados por EJEMPLO. saveDataLocalStorage(dataUser);
 export const saveDataLocalStorage = (data) => {//Desde el componente modificamos los datos del usuario y los devolvemos modificados en la funcion y la funcion se encarga de actualizar las partidas guardadas.
     let localStorageDataGamer = localStorage.getItem('gamer');
     let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
@@ -279,8 +280,7 @@ export const winCoinCheckLevel = (level, sublevel) => {
 };
 
 
-//Funcion que controla las monedas que se muestran en las paletas
-
+//Funcion que controla las monedas que se muestran en las secciones de los items
 export const storageCoinUpdated = (goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive) => {
     //Valido si las monedas de oro son 5 o mas de 5 en caso de ser mas de 5 va a devolver solo 5 y si es menos devolvera la cantidad que se tiene
     let goldCoinsStorage = getUsersLocalStorage().goldenCoins;

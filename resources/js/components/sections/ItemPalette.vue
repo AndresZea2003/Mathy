@@ -310,8 +310,8 @@ const clickButtonAudio = () => {
 };
 
 //Codigo para abrir el cambiador de monedas automatico antes de continuar al siguiente nivel si se cumplen los requisitos.
-let silverCoinsAuto = parseInt(localStorage.getItem('silverCoins'));//Temporal hasta que se conecte el perfil
-let bronzeCoinsAuto = parseInt(localStorage.getItem('bronzeCoins'));//Temporal hasta que se conecte el perfil
+let silverCoinsAuto = parseInt(getUsersLocalStorage().silverCoins);
+let bronzeCoinsAuto = parseInt(getUsersLocalStorage().bronzeCoins);
 const nextLevel = () => {
   if(userData.value.coinChangerAuto && silverCoinsAuto === 3 || userData.value.coinChangerAuto && bronzeCoinsAuto === 3){
     buttonNextLevel.value = false;

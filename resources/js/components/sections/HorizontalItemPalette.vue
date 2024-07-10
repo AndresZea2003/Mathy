@@ -4,25 +4,56 @@ import IconPaintBrush from "../icons/IconPaintBrush.vue"
 import HelpCharacterOnly from "./HelpCharacterOnly.vue";
 import IconCheck from "../icons/IconCheck.vue";
 import IconError from "../icons/IconError.vue";
-import {ref, onMounted} from "vue";
-import {types, sizes, localHost, getSelectItem, playAudio, setOnEnded} from '../../use';
-import Swal from 'sweetalert2'
+import {ref, onMounted, onUpdated} from "vue";
+import {types, sizes, localHost, getSelectItem, playAudio, setOnEnded, storageCoinUpdated, getUsersLocalStorage} from '../../use';
+import Swal from 'sweetalert2';
+import CoinsComponent from '../ui/CoinsComponent.vue';
 
 let itemSelected = ref()
 let itemImg = ref()
 let itemSize = ref()
 
+//Ref que controlan el numero de monedas.
+const goldCoins = ref(null);
+const silverCoins = ref(null);
+const bronzeCoins = ref(null);
+const goldCoinsChangeActive = ref("");
+const silverCoinsChangeActive = ref("");
+const bronzeCoinsChangeActive = ref("");
+const buttonNextLevel = ref(true);
+const userData = ref("");
+
+//Audios
+import hoverAudio from '../../../../public/audios/effects/audioHoverStandard.mp3';
+import clickAudio from '../../../../public/audios/effects/audioClickStandard.mp3';
+
+//Emits
+const emit = defineEmits(['closeAnimation', 'openAnimation', 'vortexType', 'selected', 'selectedCoinChanger']);
+
 const props = defineProps({
   level: {type: Array},
   items: {type: Object},
   currentAudio: {type: HTMLAudioElement},
-})
+  updateCoins: {type: Boolean},
+  coinChangerClose: {type: Boolean}
+});
+
+onUpdated(() => {
+  if (props.updateCoins) {
+    storageCoinUpdated(goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive);
+  };
+
+  console.log("Viendo valores de butoon", buttonNextLevel.value, props.coinChangerClose);
+});
+
 
 let isPlaying = ref(true)
-let nextUrl = ref(`${localHost}/level${props.level[0]}/${props.level[1] + 1}`)
+let nextUrl = ref(`${localHost}/level${props.level[0]}/${props.level[1] + 1}`);
 onMounted(async () => {
-  localStorage.setItem('itemSelected', null)
-  itemSelected.value = getSelectItem()
+  storageCoinUpdated(goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive);
+  userData.value = getUsersLocalStorage();
+  localStorage.setItem('itemSelected', null);
+  itemSelected.value = getSelectItem();
 
   const response = await axios.get('/activityCount/' + props.level[0]);
   if (props.level[1] === response.data) {
@@ -179,6 +210,68 @@ const handlePauseButton = () => {
 
 
 
+
+
+//Emits que controlan el cierre y la apertura de la animacion vortex.
+const closeAnimation = () => {
+  emit('closeAnimation', false);
+};
+
+
+//Control del sistema de monedas
+const openAnimation = (type) => {
+  console.log("ejecutando la funcion openanimation", type);
+  emit('openAnimation', true);
+  emit('vortexType', type);
+  hoverButtonAudio();
+};
+
+//Creamos una funcion que nos mandara a la ruta de la store
+const storeAccess = () => {
+  clickButtonAudio();
+  setTimeout(() => {
+    window.location = `${localHost}/store`;
+  }, 3000);
+  emit('selected', true);
+};
+
+const openCoinChanger = () => {
+  setTimeout(() => {
+    emit('selectedCoinChanger', true);
+  }, 4000);
+  emit('selected', true);
+};
+
+//Funciones para los sonidos
+const hoverButtonAudio = () => {
+  const hoverAudioEffect = new Audio(hoverAudio);
+
+  hoverAudioEffect.play();
+  hoverAudioEffect.volume = 0.5;
+};
+
+const clickButtonAudio = () => {
+  const clickAudioEffect = new Audio(clickAudio);
+
+  clickAudioEffect.play();
+  clickAudioEffect.volume = 0.5;
+};
+
+//Codigo para abrir el cambiador de monedas automatico antes de continuar al siguiente nivel si se cumplen los requisitos.
+let silverCoinsAuto = parseInt(getUsersLocalStorage().silverCoins);
+let bronzeCoinsAuto = parseInt(getUsersLocalStorage().bronzeCoins);
+const nextLevel = () => {
+  if(userData.value.coinChangerAuto && silverCoinsAuto === 3 || userData.value.coinChangerAuto && bronzeCoinsAuto === 3){
+    buttonNextLevel.value = false;
+    emit('vortexType', 'changer');
+    openCoinChanger();
+    setTimeout(() => {
+      window.location = nextUrl.value;
+    }, 50000);
+  }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto !== 3 || userData.value.coinChangerAuto && bronzeCoins !== 3){
+    window.location = nextUrl.value;
+  };
+};
 </script>
 <template>
   <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full flex justify-center items-center px-12">
@@ -248,17 +341,17 @@ const handlePauseButton = () => {
       </div>
     </div>
 
-    <div class="col-span-2 flex justify-center absolute translate-x-[450px]">
+    <div class="col-span-2 flex justify-center items-center absolute translate-x-[450px]">
 
       <div class="flex justify-center items-center">
         <IconCheck id="icon-check" class="absolute duration-300 opacity-0" hex="#86efac"></IconCheck>
         <IconError id="icon-error" class="absolute duration-300 opacity-0" hex="#f87171"></IconError>
-        <div id="itemPresentation"
-             class="duration-300 h-36 w-36 bg-gray-200 flex justify-center items-center text-8xl font-bold shadow-xl hidden">
+        <div id="itemPresentation" class="duration-300 h-36 w-36 bg-gray-200 flex justify-center items-center text-8xl font-bold shadow-xl hidden">
         </div>
       </div>
 
-      <a :href="nextUrl">
+
+      <!-- <a :href="nextUrl">
         <button id="nextLevelButton"
                 class="bg-yellow-infinite py-8 px-16 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden">
 
@@ -267,9 +360,22 @@ const handlePauseButton = () => {
             <span></span>
             <span></span>
           </div>
-
         </button>
-      </a>
+      </a> -->
+
+      <button v-if="buttonNextLevel || coinChangerClose && buttonNextLevel" @click="nextLevel" id="nextLevelButton" class="bg-yellow-infinite py-5 px-12 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden">
+
+        <div class="arrow">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+      </button>
+      <!-- Codigo de prueba abajo va el componente monedas -->
+      <div id="coinsComponentHorizontal" class="absolute">
+        <CoinsComponent :goldCoins="goldCoins" :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldCoinsChangeActive="goldCoinsChangeActive" :silverCoinsChangeActive="silverCoinsChangeActive" :bronzeCoinsChangeActive="bronzeCoinsChangeActive" :openAnimation="openAnimation" :closeAnimation="closeAnimation" :storeAccess="storeAccess" :openCoinChanger="openCoinChanger"/>
+      </div>
     </div>
   </div>
 </template>

@@ -12,7 +12,7 @@
             :size="{{18}}"
             :solution="[1,2,2]"
             :fill_sample="[
-                1,2,2,1,2,2,1
+                1,2,2,1,2,2
             ]"
             :level="[{{$levelNumber}},{{$activityNumber}}]"
             :rotate="false"
