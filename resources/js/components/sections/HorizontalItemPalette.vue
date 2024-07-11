@@ -238,8 +238,11 @@ const storeAccess = () => {
 const openCoinChanger = () => {
   setTimeout(() => {
     emit('selectedCoinChanger', true);
+    characterComponetChanger();
+    coinsComponetChanger();
   }, 4000);
   emit('selected', true);
+
 };
 
 //Funciones para los sonidos
@@ -272,11 +275,119 @@ const nextLevel = () => {
     window.location = nextUrl.value;
   };
 };
+
+
+//Funcion que reposiciona el robot en pantalla cuando se ejecuta el cambiador de monedas
+// const robotPositionCoinChanger = () => {
+//   const body = document.body;
+//   const characterContainer = document.getElementById("helpCharacterContainer");
+//   body.appendChild(characterContainer);
+//   characterContainer.style.position = "fixed";
+//   characterContainer.style.bottom = "250px";
+//   characterContainer.style.left = "40%";
+//   characterContainer.style.zIndex = "9999";
+// };
+
+let originalCharacterParent = null; // Variable para almacenar el padre original del elemento
+
+const characterComponetChanger = () => {
+  const body = document.body;
+  const characterComponent = document.getElementById("helpCharacterContainer");
+  
+  // Guardar la posición original del elemento
+  originalCharacterParent  = characterComponent.parentNode;
+  
+  // Mover el elemento
+  body.appendChild(characterComponent);
+  characterComponent.style.position = "fixed";
+  characterComponent.style.bottom = "250px";
+  characterComponent.style.left = "15%";
+  characterComponent.style.zIndex = "9999";
+  characterComponent.style.transform = "translateX(0px)"
+};
+
+const restoreCharacterComponent = () => {
+  const characterComponent = document.getElementById("helpCharacterContainer");
+  
+  // Verificar si hay una posición original guardada
+  if (originalCharacterParent) {
+    // Devolver el elemento a su posición original
+    if (originalCharacterParent.lastElementChild === characterComponent) {
+      // Si characterComponent es el último hijo, agregarlo al final del originalParent
+      originalCharacterParent.appendChild(characterComponent);
+    } else {
+      // Si characterComponent no es el último hijo, insertarlo antes del originalNextSibling
+      originalCharacterParent.insertBefore(characterComponent, originalCharacterParent.nextSibling);
+    }
+    
+    // Restaurar estilos
+    characterComponent.style.position = "";
+    characterComponent.style.bottom = "";
+    characterComponent.style.left = "";
+    characterComponent.style.zIndex = "";
+    characterComponent.style.transform = "translateX(-450px)"
+  }
+};
+
+
+
+//Control del componente monedas segun se abre el cambiador de monedas.
+let originalParent = null; // Variable para almacenar el padre original del elemento
+
+const coinsComponetChanger = () => {
+  const body = document.body;
+  const coinsComponent = document.getElementById("coinsComponentHorizontal");
+  
+  // Guardar la posición original del elemento
+  originalParent = coinsComponent.parentNode;
+  
+  // Mover el elemento
+  body.appendChild(coinsComponent);
+  coinsComponent.style.position = "fixed";
+  coinsComponent.style.bottom = "280px";
+  coinsComponent.style.right = "15%";
+  coinsComponent.style.zIndex = "9999";
+};
+const restoreCoinsComponent = () => {
+  const coinsComponent = document.getElementById("coinsComponentHorizontal");
+  
+  // Verificar si hay una posición original guardada
+  if (originalParent) {
+    // Devolver el elemento a su posición original
+    if (originalParent.lastElementChild === coinsComponent) {
+      // Si coinsComponent es el último hijo, agregarlo al final del originalParent
+      originalParent.appendChild(coinsComponent);
+    } else {
+      // Si coinsComponent no es el último hijo, insertarlo antes del originalNextSibling
+      originalParent.insertBefore(coinsComponent, originalParent.nextSibling);
+    }
+    
+    // Restaurar estilos
+    coinsComponent.style.position = "absolute";
+    coinsComponent.style.bottom = "";
+    coinsComponent.style.right = "";
+    coinsComponent.style.zIndex = "";
+  }
+};
+
+
+
+
+onUpdated(() => {
+  if(props.coinChangerClose){
+    console.log("revirtiendo posicion del componente", props.coinChangerClose);
+    restoreCoinsComponent();
+    restoreCharacterComponent();
+  }
+});
+
+
+
 </script>
 <template>
-  <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full flex justify-center items-center px-12">
+  <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full flex justify-center items-center px-12 z-1 relative">
 
-    <div class="absolute translate-x-[-450px] border-b-4 border-dashed drop-shadow-2xl">
+    <div id="helpCharacterContainer" class="absolute translate-x-[-450px] border-b-4 border-dashed drop-shadow-2xl">
       <HelpCharacterOnly :image="`${localHost}/images/characters/robot/v1/still/notFace.png`"
                          :image_2="`${localHost}/images/characters/robot/v1/still/notFace.png`"></HelpCharacterOnly>
     </div>
@@ -363,7 +474,7 @@ const nextLevel = () => {
         </button>
       </a> -->
 
-      <button v-if="buttonNextLevel || coinChangerClose && buttonNextLevel" @click="nextLevel" id="nextLevelButton" class="bg-yellow-infinite py-5 px-12 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden">
+      <button v-if="buttonNextLevel || coinChangerClose && buttonNextLevel" @click="nextLevel" id="nextLevelButton" class="bg-yellow-infinite py-5 px-12 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden z-30">
 
         <div class="arrow">
           <span></span>
@@ -373,7 +484,7 @@ const nextLevel = () => {
 
       </button>
       <!-- Codigo de prueba abajo va el componente monedas -->
-      <div id="coinsComponentHorizontal" class="absolute">
+      <div id="coinsComponentHorizontal" class="absolute z-40">
         <CoinsComponent :goldCoins="goldCoins" :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldCoinsChangeActive="goldCoinsChangeActive" :silverCoinsChangeActive="silverCoinsChangeActive" :bronzeCoinsChangeActive="bronzeCoinsChangeActive" :openAnimation="openAnimation" :closeAnimation="closeAnimation" :storeAccess="storeAccess" :openCoinChanger="openCoinChanger"/>
       </div>
     </div>

@@ -866,6 +866,10 @@ const coinChangerClose = (event) => {
   selectedLevelVortex.value = event;
   coinChangerVortexRef.value = event;
   coinChangerCloseUser.value = true;
+
+  setTimeout(() => {
+    coinChangerCloseUser.value = false;
+  }, 1000);
 };
 
 const updateCoinsFunction = (event) => {
@@ -895,9 +899,9 @@ const updateCoinsFunction = (event) => {
   <div id="blackScreen" class="bg-black h-screen w-screen fixed opacity-0 duration-300 hidden"></div>
 
 
-  <div class="flex flex-col min-h-screen">
-    <div class="mx-auto flex-1 container flex justify-center">
-      <div class="flex  p-6 w-full gap-5 rounded-md grid grid-cols-5 ">
+  <div class="flex flex-col min-h-screen relative">
+    <div class="mx-auto flex-1 container flex justify-center relative">
+      <div class="flex  p-6 w-full gap-5 rounded-md grid grid-cols-5 relative">
 
 
         <div class="col-span-5">
@@ -925,7 +929,7 @@ const updateCoinsFunction = (event) => {
           </div>
         </div>
 
-        <div class="col-span-5">
+        <div class="col-span-5 relative">
           <HorizontalItemPalette
             :level="props.level" :items="items"
             :currentAudio="currentAudio"
