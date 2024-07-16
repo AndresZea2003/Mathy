@@ -267,6 +267,8 @@ const nextLevel = () => {
   if(userData.value.coinChangerAuto && silverCoinsAuto === 3 || userData.value.coinChangerAuto && bronzeCoinsAuto === 3){
     buttonNextLevel.value = false;
     emit('vortexType', 'changer');
+    let coinsComponentHorizontal = document.getElementById("coinsComponentHorizontal");
+    coinsComponentHorizontal.classList.remove("hidden");
     openCoinChanger();
     setTimeout(() => {
       window.location = nextUrl.value;
@@ -303,7 +305,7 @@ const characterComponetChanger = () => {
   characterComponent.style.bottom = "250px";
   characterComponent.style.left = "15%";
   characterComponent.style.zIndex = "9999";
-  characterComponent.style.transform = "translateX(0px)"
+  characterComponent.style.transform = "translateX(0px)";
 };
 
 const restoreCharacterComponent = () => {
@@ -337,10 +339,10 @@ let originalParent = null; // Variable para almacenar el padre original del elem
 const coinsComponetChanger = () => {
   const body = document.body;
   const coinsComponent = document.getElementById("coinsComponentHorizontal");
-  
+
   // Guardar la posición original del elemento
   originalParent = coinsComponent.parentNode;
-  
+
   // Mover el elemento
   body.appendChild(coinsComponent);
   coinsComponent.style.position = "fixed";
@@ -350,7 +352,7 @@ const coinsComponetChanger = () => {
 };
 const restoreCoinsComponent = () => {
   const coinsComponent = document.getElementById("coinsComponentHorizontal");
-  
+
   // Verificar si hay una posición original guardada
   if (originalParent) {
     // Devolver el elemento a su posición original
@@ -361,7 +363,7 @@ const restoreCoinsComponent = () => {
       // Si coinsComponent no es el último hijo, insertarlo antes del originalNextSibling
       originalParent.insertBefore(coinsComponent, originalParent.nextSibling);
     }
-    
+
     // Restaurar estilos
     coinsComponent.style.position = "absolute";
     coinsComponent.style.bottom = "";

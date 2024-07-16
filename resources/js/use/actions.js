@@ -327,3 +327,4 @@ export const storageCoinUpdated = (goldCoins, silverCoins, bronzeCoins, goldCoin
         bronzeCoinsChangeActive.value = "";
     };
 };
+

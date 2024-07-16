@@ -16,6 +16,9 @@ import IconPaintBrush from "../icons/IconPaintBrush.vue"
 import Swal from "sweetalert2";
 import {defineProps} from 'vue';
 import BackgroundActivities from "../background/BackgroundActivities.vue";
+import CoinChangerVortex from "./Coin Changer/CoinChangerVortex.vue";
+import CoinChanger from "./Coin Changer/CoinChanger.vue";
+import WinCoin from "../templates/WinCoin/WinCoin.vue";
 
 const props = defineProps({
   size: {type: Array},
@@ -38,6 +41,15 @@ const levelComplete = ref(false)
 let isMouseDown = ref(false);
 let calibrateSound = ref(false);
 let calibrateSoundBlom = ref(false);
+const coinChangerVortexRef = ref(false);
+const vortexType = ref("");
+const selectedLevelVortex = ref(false);
+const selectedCoinChanger = ref(false);
+const coinChangerCloseUser = ref(false);
+const updateCoins = ref(false);
+const inTutorial = ref(false);
+const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
+const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
 
 let totalActivities = ref(0)
 onMounted(async () => {
@@ -303,20 +315,62 @@ const win = async () => {
       winView.classList.add('hidden')
     }, 200)
   }, 4000)
-}
+};
+
+
+
+//Funcion que controla los emits que activan el vortice
+const coinChangerVortexActivate = (event) => {
+  coinChangerVortexRef.value = event;
+};
+
+
+//Funcion que controla el tipo de vortice si es a coin changer o a la store
+const vortexTypeFunction = (event) => {
+  vortexType.value = event;
+};
+
+//Funcion que controla cuando el usuario da click para mostrar la animacion de la nave viajando al portal.
+const selectedLevelVortexFunction= (event) => {
+  selectedLevelVortex.value = event;
+};
+
+//Funcion que controla si se abre el coinChanger
+const selectedCoinChangerFunction = (event) => {
+  selectedCoinChanger.value = event;
+};
+//Funcion para controlar el cierre del cambiador de monedas
+const coinChangerClose = (event) => {
+  selectedCoinChanger.value = event;
+  selectedLevelVortex.value = event;
+  coinChangerVortexRef.value = event;
+  coinChangerCloseUser.value = true;
+};
+
+//Funcion que controla la actualizacion de las monedas para mostrar en el componente de monedas.
+const updateCoinsFunction = (event) => {
+  updateCoins.value = event;
+};
+
+
 </script>
 <template>
 
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
+  <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
+  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef"/>
 
   <div class="flex flex-col h-[90%]" @mousedown="handleMouseDown" @mouseup="handleMouseUp">
     <div class="mx-auto flex-1 container flex justify-center">
       <div class="flex  p-6 w-full gap-5 rounded-md">
 
-        <div id="board" class="w-[84%] bg-red-200 bg-opacity-70 h-[100%] p-5 grid">
-          <div style="height: 150px;">
+        <div id="board" class="w-[84%] bg-red-200 bg-opacity-70 h-[100%] p-5 grid relative">
+          <div v-if="selectedCoinChanger" class="w-full h-full absolute top-0 left-0 z-30" >
+            <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'" :goldenExchange="3" :silverExchange="3" :guide="true" @coinChangerClose="coinChangerClose" @updateCoins="updateCoinsFunction"/>
+          </div>
+          <div style="height: 150px; position: relative">
             <ProgressBar v-if="showProgressBar" class="select-none" :planet_1="`${localHost}/images/planets/tierra.svg`"
                          :planet_2="`${localHost}/images/planets/rojo.svg`"
                          :rocket="`${localHost}/images/rockets/1.svg`"
@@ -368,7 +422,18 @@ const win = async () => {
         </div>
 
         <div class="w-[16%]">
-          <ItemPalette :level="props.level" :items="items" :currentAudio="currentAudio"/>
+          <ItemPalette
+            :level="props.level"
+            :items="items"
+            :currentAudio="currentAudio"
+            :updateCoins="updateCoins"
+            :coinChangerClose="coinChangerCloseUser"
+            @closeAnimation="coinChangerVortexActivate"
+            @openAnimation="coinChangerVortexActivate"
+            @vortexType="vortexTypeFunction"
+            @selected="selectedLevelVortexFunction"
+            @selectedCoinChanger="selectedCoinChangerFunction"
+          />
         </div>
       </div>
     </div>

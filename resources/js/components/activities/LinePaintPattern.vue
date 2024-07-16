@@ -65,7 +65,7 @@ const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cu
 //Establecemos la ubicacion actual del software en el storage
 localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
 
-let character = document.getElementById('character')
+let character = document.getElementById('character');
 
 const showInitialAlert = () => {
   Swal.fire({
@@ -692,7 +692,7 @@ const paintBox = (id) => {
     // }
 
 
-    showCheckIcon()
+    showCheckIcon();
 
     document.getElementById(id).classList.remove('animate-pulse', 'scale-95')
 
@@ -736,12 +736,16 @@ const paintBox = (id) => {
     bubble.src = `${localHost}/audios/effects/wood.wav`
     bubble.play()
 
-    character.src = `${localHost}/images/characters/robot/v1/still/alert.png`
-    character.classList.add('brush-fail')
 
-    setTimeout(function () {
-      character.classList.remove('brush-fail')
-    }, 500)
+    //Codigo a revisar____________________________________________________________________
+    // character.src = `${localHost}/images/characters/robot/v1/still/alert.png`
+    // character.classList.add('brush-fail');
+    // document.getElementById('character').classList.add('brush-fail');
+    console.log("character", character);
+
+    // setTimeout(function () {
+    //   character.classList.remove('brush-fail')
+    // }, 500)
 
     // if (showExpression.value === false) {
     //   showExpression.value = true

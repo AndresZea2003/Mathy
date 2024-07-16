@@ -471,7 +471,7 @@ const paintBox = (id) => {
       document.getElementById(id).classList.remove('zoom-box')
     }, 3000)
   }
-}
+};
 
 let level = ref(props.level)
 let showProgressBar = ref(true)
@@ -538,6 +538,7 @@ const coinChangerVortexActivate = (event) => {
   coinChangerVortexRef.value = event;
 };
 
+
 //Funcion que controla el tipo de vortice si es a coin changer o a la store
 const vortexTypeFunction = (event) => {
   vortexType.value = event;
@@ -552,7 +553,7 @@ const selectedLevelVortexFunction= (event) => {
 const selectedCoinChangerFunction = (event) => {
   selectedCoinChanger.value = event;
 };
-
+//Funcion para controlar el cierre del cambiador de monedas
 const coinChangerClose = (event) => {
   selectedCoinChanger.value = event;
   selectedLevelVortex.value = event;
@@ -560,6 +561,7 @@ const coinChangerClose = (event) => {
   coinChangerCloseUser.value = true;
 };
 
+//Funcion que controla la actualizacion de las monedas para mostrar en el componente de monedas.
 const updateCoinsFunction = (event) => {
   updateCoins.value = event;
 };

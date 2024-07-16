@@ -175,7 +175,10 @@ export const showCheckIcon = () => {
     if (getIcon()) {
         return;
     }
+
     icon(true);
+
+
     let iconCheck = document.getElementById('icon-check');
     let coinsComponent = document.getElementById('coinsComponentHorizontal');
 
@@ -193,9 +196,11 @@ export const showErrorIcon = () => {
     if (getIcon()) {
         return;
     }
+
     icon(true);
     let iconCheck = document.getElementById('icon-error');
     let coinsComponent = document.getElementById('coinsComponentHorizontal');
+    console.log("Ejecutando error icon");
 
     iconCheck.classList.replace('opacity-0', 'opacity-100');
     coinsComponent.classList.add('hidden');
