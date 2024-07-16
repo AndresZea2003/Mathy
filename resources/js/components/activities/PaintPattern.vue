@@ -564,6 +564,7 @@ const coinChangerClose = (event) => {
 //Funcion que controla la actualizacion de las monedas para mostrar en el componente de monedas.
 const updateCoinsFunction = (event) => {
   updateCoins.value = event;
+  console.log("Ejecutanfo el emit", event);
 };
 
 </script>
@@ -574,7 +575,7 @@ const updateCoinsFunction = (event) => {
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
   <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
-  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef"/>
+  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef" @updateCoins="updateCoinsFunction"/>
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
       <div class="flex  p-6 w-full gap-5 rounded-md">

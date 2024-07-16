@@ -157,8 +157,8 @@ const createGame = () => {
             unlockedLevels: [1],
             shipSelected: 1,
             goldenCoins: 0,
-            silverCoins: 0,
-            bronzeCoins: 3,
+            silverCoins: 6,
+            bronzeCoins: 5,
             unlockedShips: [1,2,3,4,5,6,7,8,9,10]
         }
 

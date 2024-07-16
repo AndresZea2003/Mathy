@@ -264,7 +264,7 @@ const clickButtonAudio = () => {
 let silverCoinsAuto = parseInt(getUsersLocalStorage().silverCoins);
 let bronzeCoinsAuto = parseInt(getUsersLocalStorage().bronzeCoins);
 const nextLevel = () => {
-  if(userData.value.coinChangerAuto && silverCoinsAuto === 3 || userData.value.coinChangerAuto && bronzeCoinsAuto === 3){
+  if(userData.value.coinChangerAuto && silverCoinsAuto >= 3 || userData.value.coinChangerAuto && bronzeCoinsAuto >= 3){
     buttonNextLevel.value = false;
     emit('vortexType', 'changer');
     let coinsComponentHorizontal = document.getElementById("coinsComponentHorizontal");
@@ -273,7 +273,7 @@ const nextLevel = () => {
     setTimeout(() => {
       window.location = nextUrl.value;
     }, 50000);
-  }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto !== 3 || userData.value.coinChangerAuto && bronzeCoins !== 3){
+  }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto < 3 || userData.value.coinChangerAuto && bronzeCoins < 3){
     window.location = nextUrl.value;
   };
 };

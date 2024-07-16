@@ -127,10 +127,11 @@ const arrayChangeAutoActivated = ref([]);
 onMounted(() => {
     //verificamos si esta en modo automatico y si estan las monedas de plata con 3 y bronce con 3 se cambian primero las de plata y si no las de bronce
     if(props.coinChangerAuto){
-        if(silverArray.value.length === 3){
+        if(silverArray.value.length >= 3){
             typeChangeAuto.value = silverArray.value[0].img;
             coinsAutoAnimation(silverArray.value[0]);
-        }else if(bronzeArray.value.length === 3){
+        }else if(bronzeArray.value.length >= 3){
+            console.log("ejecutando el cambio auto de bronce");
             typeChangeAuto.value = bronzeArray.value[0].img;
             coinsAutoAnimation(bronzeArray.value[0]);
         };
@@ -421,11 +422,12 @@ const changeCoins = () => {
             capsuleCoins.value = [];
 
 
-            //Establecemos el nuev o valor de las monedas de plata.
+            //Establecemos el nuevo valor de las monedas de plata.
             dataUserStorage.silverCoins = dataUserStorage.silverCoins - props.goldenExchange;
 
             //Establecemos el nuevo valor de las monedas de oro.
-            dataUserStorage.goldCoins = dataUserStorage.goldCoins + 1;
+            dataUserStorage.goldenCoins = dataUserStorage.goldenCoins + 1;
+
 
             //Guardamos los datos en el perfil
             saveDataLocalStorage(dataUserStorage);

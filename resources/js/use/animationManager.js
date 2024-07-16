@@ -178,16 +178,24 @@ export const showCheckIcon = () => {
 
     icon(true);
 
+    //Si tenemos el componente de barra de items horizontal ejecutamos este codigo
+    if(document.getElementById('coinsComponentHorizontal')){
+        let coinsComponent = document.getElementById('coinsComponentHorizontal');
+        coinsComponent.classList.add('hidden');
+
+        setTimeout(() => {
+            coinsComponent.classList.remove('hidden');
+        }, 1000);
+    }
 
     let iconCheck = document.getElementById('icon-check');
-    let coinsComponent = document.getElementById('coinsComponentHorizontal');
+
 
     iconCheck.classList.replace('opacity-0', 'opacity-100');
-    coinsComponent.classList.add('hidden');
+
 
     setTimeout(() => {
         iconCheck.classList.replace('opacity-100', 'opacity-0');
-        coinsComponent.classList.remove('hidden');
         icon(false);
     }, 1000)
 }
@@ -198,16 +206,24 @@ export const showErrorIcon = () => {
     }
 
     icon(true);
+
+    if(document.getElementById('coinsComponentHorizontal')){
+        let coinsComponent = document.getElementById('coinsComponentHorizontal');
+        coinsComponent.classList.add('hidden');
+
+        setTimeout(() => {
+            coinsComponent.classList.remove('hidden');
+        }, 1000);
+    }
+
     let iconCheck = document.getElementById('icon-error');
-    let coinsComponent = document.getElementById('coinsComponentHorizontal');
-    console.log("Ejecutando error icon");
+
 
     iconCheck.classList.replace('opacity-0', 'opacity-100');
-    coinsComponent.classList.add('hidden');
+
 
     setTimeout(() => {
         icon(false);
         iconCheck.classList.replace('opacity-100', 'opacity-0');
-        coinsComponent.classList.remove('hidden');
     }, 1000)
 }

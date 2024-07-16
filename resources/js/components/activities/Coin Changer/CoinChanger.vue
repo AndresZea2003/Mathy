@@ -20,7 +20,6 @@ const props = defineProps({
 //Creando emits
 const emit = defineEmits(['coinChangerClose', 'updateCoins']);
 
-console.log("probando llamdo de monedas", getUsersLocalStorage().silverCoins);
 
 const silverCoins = ref(getUsersLocalStorage().silverCoins);
 const bronzeCoins = ref(getUsersLocalStorage().bronzeCoins);
@@ -66,7 +65,6 @@ onUpdated(() => {
 //Funcion para cerrar el coinChanger
 const closeCoinChanger = (event) => {
     emit('coinChangerClose', event);
-    console.log("Activando el emit");
 };
 
 //Emit para actualizar

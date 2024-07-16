@@ -23,7 +23,8 @@ import {
   resolveAudio,
   playSuccessShortRandom,
   showCheckIcon,
-  showErrorIcon
+  showErrorIcon,
+  winCoinCheckLevel,
 } from '../../use';
 import {onMounted, onUnmounted, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue";
@@ -31,6 +32,7 @@ import Swal from "sweetalert2";
 import BackgroundActivities from "../background/BackgroundActivities.vue";
 import CoinChangerVortex from '../../components/activities/Coin Changer/CoinChangerVortex.vue';
 import CoinChanger from '../../components/activities/Coin Changer/CoinChanger.vue';
+import WinCoin from "../templates/WinCoin/WinCoin.vue";
 
 const props = defineProps({
   size: {type: Number},
@@ -147,6 +149,7 @@ const updateBoxSize = () => {
 }
 let totalActivities = ref(0)
 onMounted(async () => {
+  winCoinRef.value = winCoinCheckLevel(props.level[0], props.level[1]); //Determinamos si el subnivel da una moneda o no.
   await axios.get('/activityCount/' + props.level[0])
       .then(response => totalActivities.value = response.data);
 
@@ -837,7 +840,15 @@ const win = async () => {
   setTimeout(function () {
     winView.classList.replace('opacity-100', 'opacity-0')
     setTimeout(function () {
-      winView.classList.add('hidden')
+      winView.classList.add('hidden');
+      if(winCoinRef.value){
+        console.log("winrefffffffffff", winCoinRef.value);
+        winCoinViewAnimation.value = true;
+
+        setTimeout(() => {
+          winCoinViewAnimation.value = false;
+        }, 15000);
+      };
     }, 200)
   }, 4000)
 };
@@ -891,6 +902,7 @@ const updateCoinsFunction = (event) => {
   <BackgroundActivities/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
+  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef"/>
 
   <div v-if="selectedCoinChanger"  class="w-full h-full absolute top-0 left-0 z-30" >
     <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'" :goldenExchange="3" :silverExchange="3" :guide="true" @coinChangerClose="coinChangerClose" @updateCoins="updateCoinsFunction"/>

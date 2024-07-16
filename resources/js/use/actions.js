@@ -282,25 +282,26 @@ export const winCoinCheckLevel = (level, sublevel) => {
 
 //Funcion que controla las monedas que se muestran en las secciones de los items
 export const storageCoinUpdated = (goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive) => {
+    console.log("ejecutando coinsss");
     //Valido si las monedas de oro son 5 o mas de 5 en caso de ser mas de 5 va a devolver solo 5 y si es menos devolvera la cantidad que se tiene
     let goldCoinsStorage = getUsersLocalStorage().goldenCoins;
     let silverCoinsStorage = getUsersLocalStorage().silverCoins;
     let bronzeCoinsStorage = getUsersLocalStorage().bronzeCoins;
 
 
-    if (parseInt(goldCoinsStorage) > 5) {
+    if (parseInt(goldCoinsStorage) >= 5) {
         goldCoins.value = 5;
     } else if (parseInt(goldCoinsStorage) < 5) {
         goldCoins.value = parseInt(goldCoinsStorage);
     }
 
-    if (parseInt(silverCoinsStorage) > 5) {
+    if (parseInt(silverCoinsStorage) >= 5) {
         silverCoins.value = 5;
     } else if (parseInt(silverCoinsStorage) < 5) {
         silverCoins.value = parseInt(silverCoinsStorage);
     }
 
-    if (parseInt(bronzeCoinsStorage) > 5) {
+    if (parseInt(bronzeCoinsStorage) >= 5) {
         bronzeCoins.value = 5;
     } else if (parseInt(bronzeCoinsStorage) < 5) {
         bronzeCoins.value = parseInt(bronzeCoinsStorage);

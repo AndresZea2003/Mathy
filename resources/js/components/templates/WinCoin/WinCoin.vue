@@ -33,6 +33,10 @@ import explosion from  '../../../../../public/audios/effects/winCoinExplosion.mp
 import turnCoin from '../../../../../public/audios/effects/winCoinTurnCoinEffect.mp3';
 import coinReward from '../../../../../public/audios/effects/WinCoinCoinPayout.mp3';
 
+//Emits
+const emit = defineEmits(['updateCoins']);
+
+
 const arrayBackgrounds = [
     background1,
     background2,
@@ -127,9 +131,11 @@ const rewardCoin = () => {
     if(props.type_coin === "bronze"){
         actualDataUser.bronzeCoins = actualDataUser.bronzeCoins + 1;
 
+
         saveDataLocalStorage(actualDataUser);
     }else if(props.type_coin === "silver"){
         actualDataUser.silverCoins = actualDataUser.silverCoins + 1;
+
 
         saveDataLocalStorage(actualDataUser);
     };
@@ -161,8 +167,10 @@ setTimeout(() => {
         setTimeout(() => {
             actualCoinTempRef.value = true;
             rewardCoin();
+            emit('updateCoins', true);
             setTimeout(() => {
                 newCoinRef.value = true;
+                emit('updateCoins', false);
             }, 2000);
         }, 3000);
     }, 1500);

@@ -20,7 +20,8 @@ import {
   showCheckIcon,
   playSuccessShortRandom,
   showErrorIcon,
-  cleanBox
+  cleanBox,
+  winCoinCheckLevel
 } from '../../use';
 import {onMounted, ref, onUnmounted} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
@@ -118,6 +119,7 @@ const updateBoxSize = () => {
 }
 let totalActivities = ref(0)
 onMounted(async () => {
+  winCoinRef.value = winCoinCheckLevel(props.level[0], props.level[1]); //Determinamos si el componente da una moneda o no.
   await axios.get('/activityCount/' + props.level[0])
       .then(response => totalActivities.value = response.data);
   updateBoxSize();
@@ -609,7 +611,15 @@ const win = async () => {
   setTimeout(function () {
     winView.classList.replace('opacity-100', 'opacity-0')
     setTimeout(function () {
-      winView.classList.add('hidden')
+      winView.classList.add('hidden');
+      if(winCoinRef.value){
+        console.log("win", winCoinRef.value);
+        winCoinViewAnimation.value = true;
+
+        setTimeout(() => {
+          winCoinViewAnimation.value = false;
+        }, 15000);
+      };
     }, 200)
   }, 4000)
 };
@@ -661,7 +671,7 @@ const updateCoinsFunction = (event) => {
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
   <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
-  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef"/>
+  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef" @updateCoins="updateCoinsFunction"/>
 
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
