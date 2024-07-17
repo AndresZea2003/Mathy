@@ -321,7 +321,11 @@ const nextLevel = () => {
       window.location = nextUrl.value;
     }, 50000);
   }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto < 3 || userData.value.coinChangerAuto && bronzeCoins < 3){
-    window.location = nextUrl.value;
+    if(userData.value.goldenCoins >= 1){
+      window.location = `${localHost}/claim-rocket`;
+    }else if(userData.value.goldenCoins === 0){
+      window.location = nextUrl.value;
+    }
   };
 };
 

@@ -51,6 +51,10 @@ const inTutorial = ref(false);
 const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
 const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
 
+
+//Establecemos la ubicacion actual del software en el storage
+localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
+
 let totalActivities = ref(0)
 onMounted(async () => {
   winCoinRef.value = winCoinCheckLevel(props.level[0], props.level[1]); //Determinamos si el componente da una moneda o no.

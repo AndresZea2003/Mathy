@@ -24,6 +24,7 @@ import timerAudio from '../../../../../public/audios/effects/timerAudio.mp3';
 //Componentes
 import RocketCard from "./RocketCard.vue";
 import RocketSelected from "./RocketSelected.vue";
+import ShotingStars from "../../background/ShotingStar.vue";
 
 //Librerias
 import { store_data } from "../../../use/store_data";
@@ -82,7 +83,7 @@ const shipSelectedRandom = () => {
         console.log("Random 2");
         rocketSelected1Ref.value = false;
         rocketSelected2Ref.value = true;
-    }
+    };
 };
 
 //Funcion que verifica que las naves sean diferentes
@@ -113,6 +114,12 @@ const selectedRandomRocket = () => {
 
     };
 
+    // redeemCurrency();
+
+    // setTimeout(() => {
+    //     nextLevel();
+    // }, 5000);
+
     return result;
 };
 
@@ -125,14 +132,20 @@ const rocketSelected = (event) => {
     counterActive.value = false;
     rocketSelected1Ref.value = false;
     rocketSelected2Ref.value = false;
+
+    // redeemCurrency();
+
+    // setTimeout(() => {
+    //     nextLevel();
+    // }, 4000);
 };
 
 
 onUpdated(() => {
     if(!counterActive.value){
         timerAudioFunction("pause");
-    }
-})
+    };
+});
 
 
 
@@ -143,13 +156,11 @@ const timerAudioFunction = (action) => {
 
     timer.volume = 0.1;
 
-
     if(action === "play"){
         timer.play();
     }else if(action === "pause"){
         timer.pause();
-    }
-
+    };
 };
 
 
@@ -161,11 +172,42 @@ setTimeout(() => {
 
 
 
+//Funcion que resta la moneda de oro al reclamar la nave.
+const redeemCurrency = () => {
+    let userData = getUsersLocalStorage();
+
+    userData.goldenCoins = userData.goldenCoins - 1;
+
+    saveDataLocalStorage(userData);
+};
+
+//Funcion que traslada al siguiente nivel.
+const nextLevel = () => {
+    let linkActualLevel = localStorage.getItem("currentLocation");
+
+    let lastCharacter = linkActualLevel.slice(-1);
+
+    console.log("last character", lastCharacter);
+
+    let lastCharacterNewLevel = parseInt(lastCharacter) + 1;
+
+    console.log("last Character new level", lastCharacterNewLevel);
+
+    let linkNewLevel = linkActualLevel.slice(0, -1) + lastCharacterNewLevel;
+
+    console.log("Link new level...", linkNewLevel);
+
+    window.location = linkNewLevel;
+};
+
+
+
 </script>
 
 <template>
-    <div class="win-rocket-auto__div--background w-full h-full flex justify-center items-center overflow-hidden">
-        <div class="win-rocket-auto__div--cards-container flex-col rounded-md relative md:flex-row md:flex" :style="{backgroundImage: `url(${backgroundSelected})`}">
+    <div class="win-rocket-auto__div--background w-full h-full flex justify-center items-center overflow-hidden" :style="{backgroundImage: `url(${backgroundSelected})`}">
+        <ShotingStars/>
+        <div class="win-rocket-auto__div--cards-container backdrop-blur-sm border-2 border-blue-900 flex-col rounded-md relative md:flex-row md:flex" >
             <div v-if="counterActive" class="w-4 md:w-full h-full md:h-6 absolute flex justify-center items-center md:bottom-0">
                 <div class="win-rocket-auto__div--cards-contador bg-white w-2 h-full rounded md:h-3"></div>
             </div>
@@ -179,12 +221,16 @@ setTimeout(() => {
 <style scoped>
 .win-rocket-auto__div--background {
     background-color: rgba(0, 17, 255, 0.377);
-}
-
-.win-rocket-auto__div--cards-container {
     background-image: url('../../../../../public/images/backgrounds/background-10.png');
     background-position: center;
     background-size: cover;
+}
+
+.win-rocket-auto__div--cards-container {
+    /* background-image: url('../../../../../public/images/backgrounds/background-10.png');
+    background-position: center;
+    background-size: cover; */
+    background-color: rgba(0, 255, 255, 0.199);
     animation: containerRocketsAnimation 1s;
 }
 
