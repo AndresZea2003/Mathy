@@ -19,4 +19,9 @@ export const rewardLevelsCoin = [
         subLevel: 13,
         typeCoin: "silver"
     },
+    {
+        level: 50,
+        subLevel: 56,
+        typeCoin: "silver"
+    },
 ];

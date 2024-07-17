@@ -133,11 +133,11 @@ const rocketSelected = (event) => {
     rocketSelected1Ref.value = false;
     rocketSelected2Ref.value = false;
 
-    // redeemCurrency();
+    redeemCurrency();
 
-    // setTimeout(() => {
-    //     nextLevel();
-    // }, 4000);
+    setTimeout(() => {
+        nextLevel();
+    }, 4000);
 };
 
 

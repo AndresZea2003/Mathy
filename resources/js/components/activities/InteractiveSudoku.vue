@@ -7,8 +7,12 @@ import BackgroundActivities from "../background/BackgroundActivities.vue";
 import {
   getSelectItem,
   localHost, paintItem, playAudio, types,
+winCoinCheckLevel,
 } from '../../use';
 import {defineProps, ref, onMounted} from 'vue';
+import CoinChangerVortex from "./Coin Changer/CoinChangerVortex.vue";
+import CoinChanger from "./Coin Changer/CoinChanger.vue";
+import WinCoin from "../templates/WinCoin/WinCoin.vue";
 
 const GameModes = Object.freeze({
   SEQUENCE: 0,
@@ -21,6 +25,9 @@ const GameSpeeds = Object.freeze({
   FAST: 2,
 });
 
+//Establecemos la ubicacion actual del software en el storage
+localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
+
 const props = defineProps({
   level: {type: Array, required: true},
   size: {type: Number, required: true},
@@ -30,6 +37,15 @@ const props = defineProps({
   game_speed: {type: Number, default: 0},
   sequence: {type: Array, default: () => [1, 7, 6]},
 });
+
+const coinChangerVortexRef = ref(false);
+const vortexType = ref("");
+const selectedLevelVortex = ref(false);
+const selectedCoinChanger = ref(false);
+const coinChangerCloseUser = ref(false);
+const updateCoins = ref(false);
+const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
+const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
 
 const configSize = ref({
   sizeBox: 0,
@@ -140,6 +156,7 @@ const updateRowsAndCols = () => {
 }
 
 onMounted(async () => {
+  winCoinRef.value = winCoinCheckLevel(props.level[0], props.level[1]); //Determinamos si el componente da una moneda o no.
   const sizeBoxValues = {
     3: 21, // ( 3x3 sudoku = 20 de size )
     4: 16, // ( 4x4 sudoku = 16 de size )
@@ -560,14 +577,60 @@ const win = () => {
     setTimeout(function () {
       winView.classList.add('hidden');
       console.log("win tinme");
+      if(winCoinRef.value){
+        console.log("win", winCoinRef.value);
+        winCoinViewAnimation.value = true;
+
+        setTimeout(() => {
+          winCoinViewAnimation.value = false;
+        }, 15000);
+      };
     }, 200)
   }, 4000)
-}
+};
+
+
+//Funcion que controla los emits que activan el vortice
+const coinChangerVortexActivate = (event) => {
+  coinChangerVortexRef.value = event;
+};
+
+
+//Funcion que controla el tipo de vortice si es a coin changer o a la store
+const vortexTypeFunction = (event) => {
+  vortexType.value = event;
+};
+
+//Funcion que controla cuando el usuario da click para mostrar la animacion de la nave viajando al portal.
+const selectedLevelVortexFunction= (event) => {
+  selectedLevelVortex.value = event;
+};
+
+//Funcion que controla si se abre el coinChanger
+const selectedCoinChangerFunction = (event) => {
+  selectedCoinChanger.value = event;
+};
+//Funcion para controlar el cierre del cambiador de monedas
+const coinChangerClose = (event) => {
+  selectedCoinChanger.value = event;
+  selectedLevelVortex.value = event;
+  coinChangerVortexRef.value = event;
+  coinChangerCloseUser.value = true;
+};
+
+//Funcion que controla la actualizacion de las monedas para mostrar en el componente de monedas.
+const updateCoinsFunction = (event) => {
+  updateCoins.value = event;
+  console.log("Ejecutanfo el emit", event);
+};
+
 </script>
 
 <template>
   <BackgroundActivities/>
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
+  <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
+  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef" @updateCoins="updateCoinsFunction"/>
 
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
@@ -577,7 +640,10 @@ const win = () => {
                          :image_2="`${localHost}/images/characters/robot/talk.gif`"
           />
         </div>
-        <div id="board" class="w-[68%] bg-red-200 p-5 grid grid-rows-4">
+        <div id="board" class="w-[68%] bg-red-200 p-5 grid grid-rows-4 relative">
+          <div v-if="selectedCoinChanger" class="w-full h-full absolute top-0 left-0 z-30" >
+            <CoinChanger :storageBronze="'bronzeCoins'" :storageSilver="'silverCoins'" :storageGold="'goldCoins'" :goldenExchange="3" :silverExchange="3" :guide="true" @coinChangerClose="coinChangerClose" @updateCoins="updateCoinsFunction"/>
+          </div>
           <ProgressBar :planet_1="`${localHost}/images/planets/tierra.svg`"
                        :planet_2="`${localHost}/images/planets/rojo.svg`"
                        :rocket="`${localHost}/images/rockets/1.svg`"
@@ -607,7 +673,18 @@ const win = () => {
         </div>
 
         <div class="w-[16%]">
-          <ItemPalette :level="props.level" :items="items" :currentAudio="currentAudio"/>
+          <ItemPalette
+            :level="props.level"
+            :items="items"
+            :currentAudio="currentAudio"
+            :updateCoins="updateCoins"
+            :coinChangerClose="coinChangerCloseUser"
+            @closeAnimation="coinChangerVortexActivate"
+            @openAnimation="coinChangerVortexActivate"
+            @vortexType="vortexTypeFunction"
+            @selected="selectedLevelVortexFunction"
+            @selectedCoinChanger="selectedCoinChangerFunction"
+          />
         </div>
       </div>
     </div>
@@ -656,8 +733,8 @@ const win = () => {
   animation: shake 1s;
 }
 
-//background-color: #f1c40f; /* Amarillo vibrante */
-//background-color: #3498db; /* Azul vibrante */
+/* background-color: #f1c40f; Amarillo vibrante
+background-color: #3498db; Azul vibrante */
 
 
 @keyframes breathing {

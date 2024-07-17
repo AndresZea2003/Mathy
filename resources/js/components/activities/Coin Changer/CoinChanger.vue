@@ -75,7 +75,7 @@ const updateCoins = (event) => {
 </script>
 
 <template>
-    <div class="coin-changer__div--container relative w-full h-full rounded-md overflow-hidden">
+    <div class="coin-changer__div--container relative w-full h-full overflow-hidden">
         <div
             class="coin-changer__div--space-background w-full h-full absolute top-0 left-0 bg-cover bg-center z-0 overflow-hidden bg-center">
         </div>
