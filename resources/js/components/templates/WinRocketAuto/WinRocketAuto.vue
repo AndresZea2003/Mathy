@@ -28,7 +28,7 @@ import ShotingStars from "../../background/ShotingStar.vue";
 
 //Librerias
 import { store_data } from "../../../use/store_data";
-import { getUsersLocalStorage, saveDataLocalStorage } from "../../../use";
+import { getUsersLocalStorage, nextLevel, saveDataLocalStorage } from "../../../use";
 
 const rocketSelectedCard = ref(false);//false
 const rocketSelected1 = ref(true);//true
@@ -181,24 +181,24 @@ const redeemCurrency = () => {
     saveDataLocalStorage(userData);
 };
 
-//Funcion que traslada al siguiente nivel.
-const nextLevel = () => {
-    let linkActualLevel = localStorage.getItem("currentLocation");
+// //Funcion que traslada al siguiente nivel.
+// const nextLevel = () => {
+//     let linkActualLevel = localStorage.getItem("currentLocation");
 
-    let lastCharacter = linkActualLevel.slice(-1);
+//     let lastCharacter = linkActualLevel.slice(-1);
 
-    console.log("last character", lastCharacter);
+//     console.log("last character", lastCharacter);
 
-    let lastCharacterNewLevel = parseInt(lastCharacter) + 1;
+//     let lastCharacterNewLevel = parseInt(lastCharacter) + 1;
 
-    console.log("last Character new level", lastCharacterNewLevel);
+//     console.log("last Character new level", lastCharacterNewLevel);
 
-    let linkNewLevel = linkActualLevel.slice(0, -1) + lastCharacterNewLevel;
+//     let linkNewLevel = linkActualLevel.slice(0, -1) + lastCharacterNewLevel;
 
-    console.log("Link new level...", linkNewLevel);
+//     console.log("Link new level...", linkNewLevel);
 
-    window.location = linkNewLevel;
-};
+//     window.location = linkNewLevel;
+// };
 
 
 

@@ -271,9 +271,9 @@ const nextLevel = () => {
     let coinsComponentHorizontal = document.getElementById("coinsComponentHorizontal");
     coinsComponentHorizontal.classList.remove("hidden");
     openCoinChanger();
-    setTimeout(() => {
-      window.location = nextUrl.value;
-    }, 50000);
+    // setTimeout(() => {
+    //   window.location = nextUrl.value;
+    // }, 50000);
   }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto < 3 || userData.value.coinChangerAuto && bronzeCoins < 3){
     if(userData.value.goldenCoins >= 1){
       window.location = `${localHost}/claim-rocket`;

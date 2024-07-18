@@ -33,7 +33,7 @@ import tunnelEffectSound2 from '../../../../../public/audios/coin-changer/tunel-
 import spawnCoinEffectSound from '../../../../../public/audios/coin-changer/spawn-coin-sound.mp3';
 import endChangeEffectSound from '../../../../../public/audios/coin-changer/end-change-sound.mp3';
 import endChangeButtonEffectSound from '../../../../../public/audios/coin-changer/end-button-sound.mp3'
-import { getUsersLocalStorage, saveDataLocalStorage } from '../../../use';
+import { getUsersLocalStorage, nextLevel, saveDataLocalStorage } from '../../../use';
 
 
 //Creando emits
@@ -124,19 +124,78 @@ const changeAutoActiveCoin = ref(0);
 
 const arrayChangeAutoActivated = ref([]);
 
+//Ref que controla cuando el cambiador pasa a modo automatico si el usuario no interactua de manera correcta con el software
+const coinChangerAutoActive = ref(false);
+
+
 onMounted(() => {
     //verificamos si esta en modo automatico y si estan las monedas de plata con 3 y bronce con 3 se cambian primero las de plata y si no las de bronce
     if(props.coinChangerAuto){
         if(silverArray.value.length >= 3){
             typeChangeAuto.value = silverArray.value[0].img;
+            // coinsAutoAnimation(silverArray.value[0]);
+        }else if(bronzeArray.value.length >= 3){
+            typeChangeAuto.value = bronzeArray.value[0].img;
+            // coinsAutoAnimation(bronzeArray.value[0]);
+        };
+    };
+
+
+    if(silverArray.value.length >= 3){
+        typeChangeAuto.value = silverArray.value[0].img;
+        // coinsAutoAnimation(silverArray.value[0]);
+    }else if(bronzeArray.value.length >= 3){
+        typeChangeAuto.value = bronzeArray.value[0].img;
+        // coinsAutoAnimation(bronzeArray.value[0]);
+    };
+
+});
+
+
+//Variables que contienen el timer largo y corto.
+let timerShort, timerAutoActiveInitial;
+
+//Timer inicial que se ejecuta si esta el modo auto activado desde inicio.
+timerAutoActiveInitial = setTimeout(() => {
+    if(props.coinChangerAuto){
+        coinChangerAutoActiveFunction();
+    }
+}, 15000);
+
+//Funcion que al activarse activa el modo automatico del componente.
+const coinChangerAutoActiveFunction = () => {
+    if(!coinChangerAutoActive.value){
+        coinChangerAutoActive.value = true;
+        returnCoinsFunction();
+
+        if(silverArray.value.length >= 3){
+            typeChangeAuto.value = silverArray.value[0].img;
             coinsAutoAnimation(silverArray.value[0]);
         }else if(bronzeArray.value.length >= 3){
-            console.log("ejecutando el cambio auto de bronce");
             typeChangeAuto.value = bronzeArray.value[0].img;
             coinsAutoAnimation(bronzeArray.value[0]);
         };
     };
-});
+};
+
+//Funcion para para el timer corto si esta en ejecucion o el timer initial e iniciar un timer corto
+const shortTimerChangerAuto = () => {
+    if(props.coinChangerAuto){
+        clearTimeout(timerAutoActiveInitial);
+        clearTimeout(timerShort);
+
+        timerShort =  setTimeout(() => {
+            coinChangerAutoActiveFunction();
+        }, 15000);
+    }
+
+};
+
+//Desactivar todo timer que este activo
+const timerClosed = () => {
+    clearTimeout(timerAutoActiveInitial);
+    clearTimeout(timerShort);
+};
 
 
 //Creamos un before mount que se ejecuta antes de mostrar el componente donde se convertira las monedas en objetos en un array para arrastrar.
@@ -178,6 +237,7 @@ onUpdated(() => {
 
 //Funcion que marca lo que pasa al inicio del arrastre del elemento
 const onDragStart = (event) => {
+    shortTimerChangerAuto();
     // Asignar el nuevo valor a la propiedad `data-target` del elemento arrastrado.
     // event.item.dataset.target = event.target.classList[0];
     sourceList.value = event.target.classList[0];
@@ -201,6 +261,7 @@ const onDragStart = (event) => {
 
 
 const onDragOver = (event) => {
+    shortTimerChangerAuto();
     // Verificar si el evento es táctil
     const isTouch = event.type === 'touchmove';
     
@@ -237,6 +298,7 @@ const onDragEndChanger = () => {
 
 // // //Funcion que se ejecuta al final del arrastre
 const onDragEnd = (event) => {
+    shortTimerChangerAuto();
     event.preventDefault();
     if(onDragEndControl.value){
         //Para evitar la ejecucion doble de la funcion en tactil se puso un timer y un control con un ref.
@@ -369,6 +431,7 @@ const onDragEnd = (event) => {
 
 //Boton para cambiar las monedas
 const changeCoins = () => {
+    timerClosed();
     clickEffectSoundFunction();
     changeAnimationEffectSounds();
     returnCoins.value = false;
@@ -431,6 +494,10 @@ const changeCoins = () => {
 
             //Guardamos los datos en el perfil
             saveDataLocalStorage(dataUserStorage);
+
+            setTimeout(() => {
+                nextLevel();
+            }, 17000);
         }
     }
 
@@ -450,6 +517,7 @@ const closeError = (event) => {
 
 //Función para retornar las monedas al monedero
 const returnCoinsFunction = () => {
+    shortTimerChangerAuto();
     clickEffectSoundFunction();
     let typeCoin = capsuleCoins.value[0].type;
 
@@ -630,7 +698,7 @@ const coinsAutoAnimation = (typeCoin) => {
 <template>
     <div class="coinChangerScreen__div--container z-40 relative w-full h-full">
         <div class="coinChangerScreen__div--content">
-            <CoinChangerTutorial v-if="tutorialAnimation && props.guide && !props.coinChangerAuto" :capsuleCoins="capsuleCoins" :bronzeArray="bronzeArray"
+            <CoinChangerTutorial v-if="tutorialAnimation && props.guide && !coinChangerAutoActive" :capsuleCoins="capsuleCoins" :bronzeArray="bronzeArray"
                 :silverArray="silverArray" :goldenExchange="props.goldenExchange" :silverExchange="props.silverExchange"/>
             <ChangeError v-if="error" @closeWindowError="closeError" />
             <ChangeAnimation v-if="startConversion" :coinChangeType="typeChange" @closeAnimation="closeAnimation" />
@@ -707,7 +775,7 @@ const coinsAutoAnimation = (typeCoin) => {
                     <img class="coin-changer-screen__img--arrow-3 w-5 rotate-90" :src="arrow" alt="arrow" />
                 </div>
 
-                <button @mouseenter="hoverEffectSoundFunction()" v-if="changeReady && !coinChangerAuto" @click="changeCoins"
+                <button @mouseenter="hoverEffectSoundFunction()" v-if="changeReady && !coinChangerAutoActive" @click="changeCoins"
                     class="coin-changer-screen__button--changer-button size-12 rounded-full m-auto flex justify-center items-center relative left-0.5 hover:scale-125">
                     <img class="w-12" :src="coinButton" alt="coin" />
                 </button>
@@ -720,7 +788,7 @@ const coinsAutoAnimation = (typeCoin) => {
                         :src="elipseChangerPlatform" alt="elipse" />
                 </div>
             </div>
-            <div v-if="!props.coinChangerAuto" class="w-56 h-36 absolute px-1.5 inset-x-0 m-auto bottom-10">
+            <div v-if="!coinChangerAutoActive" class="w-56 h-36 absolute px-1.5 inset-x-0 m-auto bottom-10">
                 <div class="coin-changer-screen__div--animation-back" :style="{ background: backCoinColor('silver') }">
                     <div class="coin-changer-screen__div--container absolute rounded-3xl overflow-hidden">
                         <div v-if="animationDepositActive || errorDepositCoin || blockDragCoins(silverArray, props.goldenExchange, 'silver')"
@@ -758,7 +826,7 @@ const coinsAutoAnimation = (typeCoin) => {
                 </div>
             </div>
 
-            <div v-if="coinChangerAuto && !startConversion" class="coin-changer-screen__div--auto-change bg-blue-950 absolute m-auto left-0 right-0 rounded-xl border-2 border-cyan-400 flex justify-center items-center">
+            <div v-if="coinChangerAutoActive && !startConversion" class="coin-changer-screen__div--auto-change bg-blue-950 absolute m-auto left-0 right-0 rounded-xl border-2 border-cyan-400 flex justify-center items-center">
                 <img v-for="index in 3" :class="`coin-changer-screen__img--coin-auto coin-changer-screen__img--${index === changeAutoActiveCoin ? ('animation'):('coin')}-${index} w-20 absolute`" :src="typeChangeAuto" :key="index" alt="coin" :style="{opacity: arrayChangeAutoActivated.includes(index) ? ('0%'):('100%')}"/>
             </div>
         </div>

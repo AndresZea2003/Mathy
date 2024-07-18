@@ -329,3 +329,15 @@ export const storageCoinUpdated = (goldCoins, silverCoins, bronzeCoins, goldCoin
     };
 };
 
+//Funcion que traslada al siguiente nivel tomando el nivel actual guradado en el local storage y trasladando al siguiente
+export const nextLevel = () => {
+    let linkActualLevel = localStorage.getItem("currentLocation");
+
+    let lastCharacter = linkActualLevel.slice(-1);
+
+    let lastCharacterNewLevel = parseInt(lastCharacter) + 1;
+
+    let linkNewLevel = linkActualLevel.slice(0, -1) + lastCharacterNewLevel;
+
+    window.location = linkNewLevel;
+};

@@ -317,9 +317,9 @@ const nextLevel = () => {
     buttonNextLevel.value = false;
     emit('vortexType', 'changer');
     openCoinChanger();
-    setTimeout(() => {
-      window.location = nextUrl.value;
-    }, 50000);
+    // setTimeout(() => {
+    //   window.location = nextUrl.value;
+    // }, 50000);
   }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto < 3 || userData.value.coinChangerAuto && bronzeCoins < 3){
     if(userData.value.goldenCoins >= 1){
       window.location = `${localHost}/claim-rocket`;
