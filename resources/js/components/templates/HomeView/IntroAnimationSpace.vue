@@ -17,7 +17,9 @@ const logoAnimation = ref(true); //true
 const galaxyAnimationRef = ref(false); //false
 const landingStartanimationRef = ref(false); //false
 
-
+const props = defineProps({
+    video: String,
+});
 
 
 //Desmontaje de animacion del logo
@@ -55,7 +57,7 @@ const skipAnimation = () => {
     <div class="intro-animation__div--background w-full h-full flex justify-center items-center overflow-hidden">
         <!-- <h2 v-if="title" class="intro-animation__h2--title absolute text-white top-12 border border-white rounded-full px-4 text-2xl z-20">{{ titleText }}</h2> -->
         <img v-if="logoAnimation" class="intro-animation__img--logo" :src="mainLogo" alt="logo"/>
-        <WelcomeName v-if="galaxyAnimationRef"/>
+        <WelcomeName v-if="galaxyAnimationRef" :video="props.video"/>
         <LandingStart v-if="landingStartanimationRef"/>
         <!-- <button v-if="!landingStartanimationRef" @click="skipAnimation" class="absolute bottom-7 right-7 bg-blue-900 z-50 rounded-lg px-10 transition-all border border-2 hover:bg-blue-500 hover:scale-90"><img class="intro-animation__div--skip-button w-10" :src="skipShip" alt="skip"/></button> -->
         <div v-if="!landingStartanimationRef" @click="skipAnimation" class="absolute bottom-2 right-7 z-20 w-16 h-20 xl:bottom-7 xl:w-24 xl:h-24">

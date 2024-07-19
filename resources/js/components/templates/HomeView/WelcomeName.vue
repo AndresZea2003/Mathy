@@ -18,6 +18,9 @@ import asteroidBelt from '../../../../../public/images/home/asteroid-belt.png';
 import talkAnimationRobot from '../../../../../public/images/characters/robot/talk-animation.gif';
 import asteroidAnimation from '../../../../../public/images/home/asteroid gif.gif';
 
+//Video
+import videoSrc from '../../../../../public/images/Video prueba/video-prueba.mp4';
+
 //Traemos datos del storage
 let gamer = localStorage.getItem('gamer');
 
@@ -34,6 +37,11 @@ const shipOrbitRef = ref(false);
 const shipOrbit2Ref = ref(false);
 const shipAnimationLeft = ref(false);
 const cometaRef = ref(false);
+
+
+const props = defineProps({
+    video: String,
+});
 
 
 const getPlanetColor = () => {
@@ -129,16 +137,22 @@ setTimeout(() => {
 </script>
 
 <template>
-    <div class="welcome-name__img--galaxy w-full h-full relative z-10">
-        <AnimatedStars/>
-        <img class="welcome-name__img--belt-asteroids overflow-hidden" :src="asteroidBelt" alt="asteroid-belt"/>
+    <div :class="video ? ('w-full h-full relative z-10'):('welcome-name__img--galaxy w-full h-full relative z-10')">
+        <div v-if="video" class="video-container">
+            <video v-if="video" :autoplay="true" loop="true">
+                <source :src="videoSrc" type="video/mp4" />
+                Tu navegador no soporta la reproducción de video.
+            </video>
+        </div>
+        <AnimatedStars v-if="!video"/>
+        <img v-if="!video" class="welcome-name__img--belt-asteroids overflow-hidden" :src="asteroidBelt" alt="asteroid-belt"/>
         <img v-if="shipAnimation1" class="welcome-name__img--ship w-80" :src="ship" alt="ship"/>
         <div class="welcome-name__div--planet overflow-hidden" :style="{background: planetColor, boxShadow: `0px 0px 40px 3px ${planetColor}`}"></div>
 
-        <img v-if="sateliteRef" class="welcome-name__img--satelite w-16 absolute" :src="satelite" alt="satelite"/>
-        <img v-if="shipOrbitRef" class="welcome-name__img--ship-orbit w-32 absolute top-52" :src="shipOrbit" alt="ship"/>
-        <img v-if="shipOrbit2Ref" class="welcome-name__img--ship-2-orbit w-36 absolute top-52" :src="shipOrbit2" alt="ship"/>
-        <img v-if="cometaRef" class="welcome-name__img--asteroid w-40 absolute rotate-90 left-10 xl:left-60" :src="asteroidAnimation" alt="asteroid gif"/>
+        <img v-if="sateliteRef && !video" class="welcome-name__img--satelite w-16 absolute" :src="satelite" alt="satelite"/>
+        <img v-if="shipOrbitRef && !video" class="welcome-name__img--ship-orbit w-32 absolute top-52" :src="shipOrbit" alt="ship"/>
+        <img v-if="shipOrbit2Ref && !video" class="welcome-name__img--ship-2-orbit w-36 absolute top-52" :src="shipOrbit2" alt="ship"/>
+        <img v-if="cometaRef && !video" class="welcome-name__img--asteroid w-40 absolute rotate-90 left-10 xl:left-60" :src="asteroidAnimation" alt="asteroid gif"/>
 
 
         <div class="welcome-name__div--robot-rocket w-60 absolute m-auto left-0 right-0">
@@ -618,4 +632,23 @@ setTimeout(() => {
     }
 }
 
+
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: rgb(182, 182, 182);
+    overflow:hidden
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
 </style>

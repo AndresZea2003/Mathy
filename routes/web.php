@@ -35,6 +35,7 @@ Route::view('/draw-activity', 'draw-activity')->name('draw-activity');
 Route::view('/drawing', 'drawing')->name('drawing');
 
 Route::view('/home-test', 'home-test')->name('home-test');//temporal ruta del intro.
+Route::view('/home-test-video', 'home-test-video')->name('home-test-video');//temporal ruta del intro.
 
 Route::view('/launch-rocket', 'launch-rocket')->name('launch-rocket');//Temporal ruta del lanzamiento del cohete.
 
