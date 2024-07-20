@@ -166,7 +166,9 @@ timerAutoActiveInitial = setTimeout(() => {
 const coinChangerAutoActiveFunction = () => {
     if(!coinChangerAutoActive.value){
         coinChangerAutoActive.value = true;
-        returnCoinsFunction();
+        if(capsuleCoins.value.length > 0){
+            returnCoinsFunction();
+        };
 
         if(silverArray.value.length >= 3){
             typeChangeAuto.value = silverArray.value[0].img;
@@ -431,6 +433,10 @@ const onDragEnd = (event) => {
 
 //Boton para cambiar las monedas
 const changeCoins = () => {
+    console.log("ejecutando Neuva ruta.");
+    setTimeout(() => {
+        nextLevel();
+    }, 19000);
     timerClosed();
     clickEffectSoundFunction();
     changeAnimationEffectSounds();
@@ -495,9 +501,7 @@ const changeCoins = () => {
             //Guardamos los datos en el perfil
             saveDataLocalStorage(dataUserStorage);
 
-            setTimeout(() => {
-                nextLevel();
-            }, 17000);
+
         }
     }
 
