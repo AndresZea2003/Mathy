@@ -1,8 +1,11 @@
 <script setup>
 
 import {ref, onMounted, onUpdated} from "vue";
-import {types, sizes, localHost, getSelectItem, updateCoins, playAudio, getUsersLocalStorage} from '../../use';
+import {types, sizes, localHost, getSelectItem, updateCoins, playAudio, getUsersLocalStorage, storageCoinUpdated} from '../../use';
 import Swal from 'sweetalert2';
+
+//Componentes
+import CoinsComponent from "../ui/CoinsComponent.vue";
 
 
 let itemSelected = ref();
@@ -12,10 +15,6 @@ let itemSize = ref();
 //Importacion de imagenes
 import IconShoppingCart from "../icons/IconShoppingCart.vue";
 import IconPaintBrush from "../icons/IconPaintBrush.vue";
-import IconGoldCoin from "../../../../public/images/globals/gold-coin.png";
-import IconSilverCoin from "../../../../public/images/globals/silver-coin.png";
-import IconBronzeCoin from "../../../../public/images/globals/bronze-coin.png";
-import IconChanger from "../../../../public/images/globals/icon-change.png";
 
 //Importacion audio
 import hoverAudio from '../../../../public/audios/effects/audioHoverStandard.mp3';
@@ -52,58 +51,58 @@ const emit = defineEmits(['closeAnimation', 'openAnimation', 'vortexType', 'sele
 let isPlaying = ref(true)
 let nextUrl = ref(`${localHost}/level${props.level[0]}/${props.level[1] + 1}`)
 
-const storageCoinUpdated = () => {
-  //Valido si las monedas de oro son 5 o mas de 5 en caso de ser mas de 5 va a devolver solo 5 y si es menos devolvera la cantidad que se tiene
-  if (parseInt(localStorage.getItem('goldCoins')) > 5) {
-    goldCoins.value = 5;
-  } else if (parseInt(localStorage.getItem('goldCoins')) < 5) {
-    goldCoins.value = parseInt(localStorage.getItem('goldCoins'));
-  }
+// const storageCoinUpdated = () => {
+//   //Valido si las monedas de oro son 5 o mas de 5 en caso de ser mas de 5 va a devolver solo 5 y si es menos devolvera la cantidad que se tiene
+//   if (parseInt(localStorage.getItem('goldCoins')) > 5) {
+//     goldCoins.value = 5;
+//   } else if (parseInt(localStorage.getItem('goldCoins')) < 5) {
+//     goldCoins.value = parseInt(localStorage.getItem('goldCoins'));
+//   }
 
-  if (parseInt(localStorage.getItem('silverCoins')) > 5) {
-    silverCoins.value = 5;
-  } else if (parseInt(localStorage.getItem('silverCoins')) < 5) {
-    silverCoins.value = parseInt(localStorage.getItem('silverCoins'));
-  }
+//   if (parseInt(localStorage.getItem('silverCoins')) > 5) {
+//     silverCoins.value = 5;
+//   } else if (parseInt(localStorage.getItem('silverCoins')) < 5) {
+//     silverCoins.value = parseInt(localStorage.getItem('silverCoins'));
+//   }
 
-  if (parseInt(localStorage.getItem('bronzeCoins')) > 5) {
-    bronzeCoins.value = 5;
-  } else if (parseInt(localStorage.getItem('bronzeCoins')) < 5) {
-    bronzeCoins.value = parseInt(localStorage.getItem('bronzeCoins'));
-  }
+//   if (parseInt(localStorage.getItem('bronzeCoins')) > 5) {
+//     bronzeCoins.value = 5;
+//   } else if (parseInt(localStorage.getItem('bronzeCoins')) < 5) {
+//     bronzeCoins.value = parseInt(localStorage.getItem('bronzeCoins'));
+//   }
 
-  //Controlamos si hay monedas suficientes para cambiar para darle efecto al boton de cambiar segun las monedas.
-  if (parseInt(localStorage.getItem('goldCoins')) > 0) {
-    goldCoinsChangeActive.value = "item-palette-gold__div--container-active";
-  } else if (parseInt(localStorage.getItem('goldCoins')) === 0) {
-    goldCoinsChangeActive.value = "";
-  }
-  ;
+//   //Controlamos si hay monedas suficientes para cambiar para darle efecto al boton de cambiar segun las monedas.
+//   if (parseInt(localStorage.getItem('goldCoins')) > 0) {
+//     goldCoinsChangeActive.value = "item-palette-gold__div--container-active";
+//   } else if (parseInt(localStorage.getItem('goldCoins')) === 0) {
+//     goldCoinsChangeActive.value = "";
+//   }
+//   ;
 
-  if (parseInt(localStorage.getItem('silverCoins')) > 2) {
-    silverCoinsChangeActive.value = "item-palette-gold__div--container-active";
-  } else if (parseInt(localStorage.getItem('silverCoins')) < 3) {
-    silverCoinsChangeActive.value = "";
-  }
-  ;
+//   if (parseInt(localStorage.getItem('silverCoins')) > 2) {
+//     silverCoinsChangeActive.value = "item-palette-gold__div--container-active";
+//   } else if (parseInt(localStorage.getItem('silverCoins')) < 3) {
+//     silverCoinsChangeActive.value = "";
+//   }
+//   ;
 
-  if (parseInt(localStorage.getItem('bronzeCoins')) > 2) {
-    bronzeCoinsChangeActive.value = "item-palette-gold__div--container-active";
-  } else if (parseInt(localStorage.getItem('bronzeCoins')) < 3) {
-    bronzeCoinsChangeActive.value = "";
-  }
-  ;
-};
+//   if (parseInt(localStorage.getItem('bronzeCoins')) > 2) {
+//     bronzeCoinsChangeActive.value = "item-palette-gold__div--container-active";
+//   } else if (parseInt(localStorage.getItem('bronzeCoins')) < 3) {
+//     bronzeCoinsChangeActive.value = "";
+//   }
+//   ;
+// };
 
 onUpdated(() => {
   if (props.updateCoins) {
-    storageCoinUpdated();
+    storageCoinUpdated(goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive);
   };
 });
 
 
 onMounted(async() => {
-  storageCoinUpdated();
+  storageCoinUpdated(goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive);
 
   userData.value = getUsersLocalStorage();
 
@@ -119,8 +118,9 @@ onMounted(async() => {
   }
 });
 
+
 const selectItemPalette = (item) => {
-  storageCoinUpdated();
+  storageCoinUpdated(goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive);
   let selectSound = new Audio()
   selectSound.src = `${localHost}/audios/effects/bubble.wav`
   selectSound.play()
@@ -310,18 +310,22 @@ const clickButtonAudio = () => {
 };
 
 //Codigo para abrir el cambiador de monedas automatico antes de continuar al siguiente nivel si se cumplen los requisitos.
-let silverCoinsAuto = parseInt(localStorage.getItem('silverCoins'));//Temporal hasta que se conecte el perfil
-let bronzeCoinsAuto = parseInt(localStorage.getItem('bronzeCoins'));//Temporal hasta que se conecte el perfil
+let silverCoinsAuto = parseInt(getUsersLocalStorage().silverCoins);
+let bronzeCoinsAuto = parseInt(getUsersLocalStorage().bronzeCoins);
 const nextLevel = () => {
-  if(userData.value.coinChangerAuto && silverCoinsAuto === 3 || userData.value.coinChangerAuto && bronzeCoinsAuto === 3){
+  if(userData.value.coinChangerAuto && silverCoinsAuto >= 3 || userData.value.coinChangerAuto && bronzeCoinsAuto >= 3){
     buttonNextLevel.value = false;
     emit('vortexType', 'changer');
     openCoinChanger();
-    setTimeout(() => {
+    // setTimeout(() => {
+    //   window.location = nextUrl.value;
+    // }, 50000);
+  }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto < 3 || userData.value.coinChangerAuto && bronzeCoins < 3){
+    if(userData.value.goldenCoins >= 1){
+      window.location = `${localHost}/claim-rocket`;
+    }else if(userData.value.goldenCoins === 0){
       window.location = nextUrl.value;
-    }, 50000);
-  }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto !== 3 || userData.value.coinChangerAuto && bronzeCoins !== 3){
-    window.location = nextUrl.value;
+    }
   };
 };
 
@@ -415,10 +419,10 @@ const nextLevel = () => {
 
 
             <!-- Codigo nuevo para monedas -->
-            <div>
-              <div v-if="goldCoins < 1 || getUsersLocalStorage().coinChangerAuto === true" class="w-52 h-10 absolute z-20"></div>
+            <!-- <div>
+              <div v-if="goldCoins < 1 || getUsersLocalStorage().coinChangerAuto === true" class="lg:w-32 xl:w-40 2xl:w-52 h-10 absolute z-20"></div>
               <div
-                  :class="`item-palette-gold__div--container ${goldCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-yellow-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
+                  :class="`item-palette-gold__div--container ${goldCoinsChangeActive} lg:w-32 xl:w-40 2xl:w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-yellow-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
                   @mouseenter="openAnimation('store')" @mouseleave="closeAnimation()" @click="storeAccess()">
                 <img class="item-palette-gold__img--gold-coin w-10 duration-300 ease-in-out" v-for="index in goldCoins"
                      :key="index" :src="IconGoldCoin" alt="golden-coin"/>
@@ -428,9 +432,9 @@ const nextLevel = () => {
             </div>
 
             <div>
-              <div v-if="silverCoins < 3 || getUsersLocalStorage().coinChangerAuto === true" class="w-52 h-10 absolute z-20"></div>
+              <div v-if="silverCoins < 3 || getUsersLocalStorage().coinChangerAuto === true" class="lg:w-32 xl:w-40 2xl:w-52 h-10 absolute z-20"></div>
               <div
-                  :class="`item-palette-silver__div--container ${silverCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-gray-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
+                  :class="`item-palette-silver__div--container ${silverCoinsChangeActive} lg:w-32 xl:w-40 2xl:w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-gray-400 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
                   @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()" @click="openCoinChanger()">
                 <img class="item-palette-silver__img--silver-coin w-10 duration-300 ease-in-out"
                      v-for="index in silverCoins" :key="index" :src="IconSilverCoin" alt="silver-coin"/>
@@ -440,17 +444,19 @@ const nextLevel = () => {
             </div>
 
             <div>
-              <div v-if="bronzeCoins < 3 || getUsersLocalStorage().coinChangerAuto === true" class="w-52 h-10 absolute z-20"></div>
+              <div v-if="bronzeCoins < 3 || getUsersLocalStorage().coinChangerAuto === true" class="lg:w-32 xl:w-40 2xl:w-52 h-10 absolute z-20"></div>
               <div
-                  :class="`item-palette-bronze__div--container ${bronzeCoinsChangeActive} w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-amber-700 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
+                  :class="`item-palette-bronze__div--container ${bronzeCoinsChangeActive} lg:w-32 xl:w-40 2xl:w-52 h-10 bg-blue-950 rounded-3xl flex justify-center items-center border-2 border-cyan-400 hover:bg-amber-700 hover:scale-95 hover:border-violet-50 cursor-pointer duration-300`"
                   @mouseenter="openAnimation('changer')" @mouseleave="closeAnimation()" @click="openCoinChanger()">
                 <img class="item-palette-bronze__img--bronze-coin w-10 duration-300 ease-in-out"
                      v-for="index in bronzeCoins" :key="index" :src="IconBronzeCoin" alt="bronze-coin"/>
                 <img class="item-palette__img--changer-icon w-0 absolute duration-300" :src="IconChanger"
                      alt="changer"/>
               </div>
-            </div>
+            </div> -->
 
+
+            <CoinsComponent :goldCoins="goldCoins" :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldCoinsChangeActive="goldCoinsChangeActive" :silverCoinsChangeActive="silverCoinsChangeActive" :bronzeCoinsChangeActive="bronzeCoinsChangeActive" :openAnimation="openAnimation" :closeAnimation="closeAnimation" :storeAccess="storeAccess" :openCoinChanger="openCoinChanger"/>
 
           </div>
 
@@ -585,65 +591,4 @@ const nextLevel = () => {
     transform: rotate(45deg) translate(20px, 20px);
   }
 }
-
-.item-palette-gold__div--container {
-  -webkit-box-shadow: inset 0px 0px 20px -1px rgba(233, 245, 0, 1);
-  -moz-box-shadow: inset 0px 0px 20px -1px rgba(233, 245, 0, 1);
-  box-shadow: inset 0px 0px 20px -1px rgba(233, 245, 0, 1);
-}
-
-
-.item-palette-gold__div--container:hover .item-palette-gold__img--gold-coin {
-  width: 0px;
-}
-
-.item-palette-gold__div--container:hover .item-palette__img--changer-icon {
-  width: 40px;
-}
-
-.item-palette-gold__div--container-active {
-  animation: changerActive 2s infinite;
-}
-
-@keyframes changerActive {
-  0% {
-    -webkit-box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
-    -moz-box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
-    box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
-  }
-
-  50% {
-    -webkit-box-shadow: 0px 0px 20px -3px rgba(255, 255, 255, 1);
-    -moz-box-shadow: 0px 0px 20px -3px rgba(255, 255, 255, 1);
-    box-shadow: 0px 0px 20px -3px rgba(255, 255, 255, 1);
-  }
-
-  100% {
-    -webkit-box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
-    -moz-box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
-    box-shadow: 0px 0px 9px -21px rgb(255, 255, 255);
-  }
-}
-
-.item-palette-gold__img--gold-coin {
-  filter: drop-shadow(10px 10px 5px rgba(0, 0, 0, 0.5));
-}
-
-.item-palette-silver__div--container:hover .item-palette-silver__img--silver-coin {
-  width: 0px;
-}
-
-.item-palette-silver__div--container:hover .item-palette__img--changer-icon {
-  width: 40px;
-}
-
-.item-palette-bronze__div--container:hover .item-palette-bronze__img--bronze-coin {
-  width: 0px;
-}
-
-.item-palette-bronze__div--container:hover .item-palette__img--changer-icon {
-  width: 40px;
-}
-
-
 </style>

@@ -15,6 +15,7 @@ import galaxyIMG from '../../../../../public/images/launch-rocket/galaxy.png';
 import moon from '../../../../../public/images/launch-rocket/moon.png';
 import nebulosa from '../../../../../public/images/launch-rocket/nebulosa.png';
 import cometaGif from '../../../../../public/images/home/asteroid gif.gif';
+import earthBackground from '../../../../../public/images/backgrounds/tierra-background-beta.png';
 
 
 
@@ -38,7 +39,8 @@ const typeDirectionShipRef = ref("");
 const levelWorlds = [
     {
         background: "launch-rocket__div--container-animation-earth",//Clase que se proporciona para la animacion de degradado del fondo
-        img: "url(https://cdn.pixabay.com/photo/2022/05/12/16/04/trees-7191822_1280.png)",//Imagen tomada apra representar el fondo
+        // img: "url(https://cdn.pixabay.com/photo/2022/05/12/16/04/trees-7191822_1280.png)",//Imagen tomada apra representar el fondo
+        img: `url(${earthBackground})`,
         terrain: "#BCDA4C",//Color de una de las bases donde van el robot y la nave
         terrain2: "#337709"//Color secundario de la base
     },
@@ -94,8 +96,8 @@ let styleWorldsClass = [
         stars: "launch-rocket__div--stars-left-diagonal",
         ship: "launch-rocket__img--ship-animated-left-diagonal",
         element1: "launch-rocket__img--galaxy-left",
-        element2: "launch-rocket__img--element2-left",
-        element3: "launch-rocket__img--element3-left"
+        element2: "launch-rocket__img--element2-left-diagonal",
+        element3: "launch-rocket__img--element3-left-diagonal"
     },
     // //Volar hacia izquierda
     {
@@ -110,8 +112,8 @@ let styleWorldsClass = [
         stars: "launch-rocket__div--stars-right-diagonal",
         ship: "launch-rocket__img--ship-animated-right-diagonal",
         element1: "launch-rocket__img--galaxy-rigth",
-        element2: "launch-rocket__img--element2-right",
-        element3: "launch-rocket__img--element3-right"
+        element2: "launch-rocket__img--element2-right-diagonal",
+        element3: "launch-rocket__img--element3-right-diagonal"
     },
     //Volar hacia derecha
     {
@@ -242,6 +244,20 @@ setTimeout(() => {
 
 @keyframes containerBackgroundEarthAnimation {
     0%{
+        background-color: #5593FC;
+    }
+
+    60%{
+        background-color: #5593FC;
+    }
+
+    100%{
+        background-color: #000000;
+    }
+}
+
+/* @keyframes containerBackgroundEarthAnimation {
+    0%{
         background-color: #68B9F0;
     }
 
@@ -252,7 +268,7 @@ setTimeout(() => {
     100%{
         background-color: #000000;
     }
-}
+} */
 
 /* Planeta Marte */
 .launch-rocket__div--container-animation-mars {
@@ -869,6 +885,28 @@ setTimeout(() => {
     }
 }
 
+/*Izquierda diagonal*/
+.launch-rocket__img--element2-left-diagonal {
+    animation: element2LeftAnimationDiagonal 8s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes element2LeftAnimationDiagonal {
+    0%{
+        transform: translate(-500px, -800px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translate(500px, 500px);
+        opacity: 65%;
+    }
+}
+
 /*Derecha*/
 .launch-rocket__img--element2-right {
     animation: element2RightAnimation 8s linear;
@@ -887,6 +925,28 @@ setTimeout(() => {
 
     100%{
         transform: translate(-800px, -300px);
+        opacity: 65%;
+    }
+}
+
+/*Derecha diagonal*/
+.launch-rocket__img--element2-right-diagonal {
+    animation: element2RightAnimationDiagonal 8s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes element2RightAnimationDiagonal {
+    0%{
+        transform: translate(500px, -800px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translate(-500px, 500px);
         opacity: 65%;
     }
 }
@@ -935,6 +995,28 @@ setTimeout(() => {
     }
 }
 
+/*Izquierda diagonal*/
+.launch-rocket__img--element3-left-diagonal {
+    animation: element3LeftAnimationDiagonal 15s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes element3LeftAnimationDiagonal {
+    0%{
+        transform: translate(-400px, -1200px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translate(800px, 1200px);
+        opacity: 65%;
+    }
+}
+
 /*Derecha*/
 .launch-rocket__img--element3-right {
     animation: element3RightAnimation 15s linear;
@@ -953,6 +1035,29 @@ setTimeout(() => {
 
     100%{
         transform: translate(-800px, -300px);
+        opacity: 65%;
+    }
+}
+
+
+/*Derecha diagonal*/
+.launch-rocket__img--element3-right-diagonal {
+    animation: element3RightAnimationDiagonal 15s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes element3RightAnimationDiagonal {
+    0%{
+        transform: translate(500px, -1200px);
+        opacity: 0%;
+    }
+
+    10%{
+        opacity: 65%;
+    }
+
+    100%{
+        transform: translate(-800px, 1200px);
         opacity: 65%;
     }
 }

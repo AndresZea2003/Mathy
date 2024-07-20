@@ -9,7 +9,9 @@ import IntroAnimationSpace from "./IntroAnimationSpace.vue";
 import ButtonSkip from "../../ui/ButtonSkip.vue";
 
 
-
+const props = defineProps({
+    video: String,
+});
 
 
 const gamesVerify = ref();
@@ -51,7 +53,7 @@ const introAnimationFunction = (event) => {
     <div class="home-access__div--container w-full h-screen flex justify-center items-center overflow-hidden">
         <ChoiceGame v-if="gamesVerify && !introAnimationActive" @createGameComponent="createGameComponent" @introAnimationActive="introAnimationFunction"/>
         <CreateGame v-if="!gamesVerify && !introAnimationActive" @introAnimationActive="introAnimationFunction"/>
-        <IntroAnimationSpace v-if="introAnimationActive"/>
+        <IntroAnimationSpace v-if="introAnimationActive" :video="props.video"/>
         <PlanetsFooter v-if="!introAnimationActive"/>
     </div>
 </template>

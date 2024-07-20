@@ -21,8 +21,8 @@ const props = defineProps({
 const emit = defineEmits(['coinChangerClose', 'updateCoins']);
 
 
-const silverCoins = ref(localStorage.getItem(props.storageSilver));
-const bronzeCoins = ref(localStorage.getItem(props.storageBronze));
+const silverCoins = ref(getUsersLocalStorage().silverCoins);
+const bronzeCoins = ref(getUsersLocalStorage().bronzeCoins);
 
 
 //Ref para definir el tamaño del div padre y convertirlo a tamaño de pantalla.
@@ -65,7 +65,6 @@ onUpdated(() => {
 //Funcion para cerrar el coinChanger
 const closeCoinChanger = (event) => {
     emit('coinChangerClose', event);
-    console.log("Activando el emit");
 };
 
 //Emit para actualizar
@@ -76,7 +75,7 @@ const updateCoins = (event) => {
 </script>
 
 <template>
-    <div class="coin-changer__div--container relative w-full h-full rounded-md overflow-hidden">
+    <div class="coin-changer__div--container relative w-full h-full overflow-hidden">
         <div
             class="coin-changer__div--space-background w-full h-full absolute top-0 left-0 bg-cover bg-center z-0 overflow-hidden bg-center">
         </div>

@@ -4,25 +4,56 @@ import IconPaintBrush from "../icons/IconPaintBrush.vue"
 import HelpCharacterOnly from "./HelpCharacterOnly.vue";
 import IconCheck from "../icons/IconCheck.vue";
 import IconError from "../icons/IconError.vue";
-import {ref, onMounted} from "vue";
-import {types, sizes, localHost, getSelectItem, playAudio, setOnEnded} from '../../use';
-import Swal from 'sweetalert2'
+import {ref, onMounted, onUpdated} from "vue";
+import {types, sizes, localHost, getSelectItem, playAudio, setOnEnded, storageCoinUpdated, getUsersLocalStorage} from '../../use';
+import Swal from 'sweetalert2';
+import CoinsComponent from '../ui/CoinsComponent.vue';
 
 let itemSelected = ref()
 let itemImg = ref()
 let itemSize = ref()
 
+//Ref que controlan el numero de monedas.
+const goldCoins = ref(null);
+const silverCoins = ref(null);
+const bronzeCoins = ref(null);
+const goldCoinsChangeActive = ref("");
+const silverCoinsChangeActive = ref("");
+const bronzeCoinsChangeActive = ref("");
+const buttonNextLevel = ref(true);
+const userData = ref("");
+
+//Audios
+import hoverAudio from '../../../../public/audios/effects/audioHoverStandard.mp3';
+import clickAudio from '../../../../public/audios/effects/audioClickStandard.mp3';
+
+//Emits
+const emit = defineEmits(['closeAnimation', 'openAnimation', 'vortexType', 'selected', 'selectedCoinChanger']);
+
 const props = defineProps({
   level: {type: Array},
   items: {type: Object},
   currentAudio: {type: HTMLAudioElement},
-})
+  updateCoins: {type: Boolean},
+  coinChangerClose: {type: Boolean}
+});
+
+onUpdated(() => {
+  if (props.updateCoins) {
+    storageCoinUpdated(goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive);
+  };
+
+  console.log("Viendo valores de butoon", buttonNextLevel.value, props.coinChangerClose);
+});
+
 
 let isPlaying = ref(true)
-let nextUrl = ref(`${localHost}/level${props.level[0]}/${props.level[1] + 1}`)
+let nextUrl = ref(`${localHost}/level${props.level[0]}/${props.level[1] + 1}`);
 onMounted(async () => {
-  localStorage.setItem('itemSelected', null)
-  itemSelected.value = getSelectItem()
+  storageCoinUpdated(goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive);
+  userData.value = getUsersLocalStorage();
+  localStorage.setItem('itemSelected', null);
+  itemSelected.value = getSelectItem();
 
   const response = await axios.get('/activityCount/' + props.level[0]);
   if (props.level[1] === response.data) {
@@ -179,17 +210,197 @@ const handlePauseButton = () => {
 
 
 
+
+
+//Emits que controlan el cierre y la apertura de la animacion vortex.
+const closeAnimation = () => {
+  emit('closeAnimation', false);
+};
+
+
+//Control del sistema de monedas
+const openAnimation = (type) => {
+  console.log("ejecutando la funcion openanimation", type);
+  emit('openAnimation', true);
+  emit('vortexType', type);
+  hoverButtonAudio();
+};
+
+//Creamos una funcion que nos mandara a la ruta de la store
+const storeAccess = () => {
+  clickButtonAudio();
+  setTimeout(() => {
+    window.location = `${localHost}/store`;
+  }, 3000);
+  emit('selected', true);
+};
+
+const openCoinChanger = () => {
+  setTimeout(() => {
+    emit('selectedCoinChanger', true);
+    characterComponetChanger();
+    coinsComponetChanger();
+  }, 4000);
+  emit('selected', true);
+
+};
+
+//Funciones para los sonidos
+const hoverButtonAudio = () => {
+  const hoverAudioEffect = new Audio(hoverAudio);
+
+  hoverAudioEffect.play();
+  hoverAudioEffect.volume = 0.5;
+};
+
+const clickButtonAudio = () => {
+  const clickAudioEffect = new Audio(clickAudio);
+
+  clickAudioEffect.play();
+  clickAudioEffect.volume = 0.5;
+};
+
+
+//Codigo para abrir el cambiador de monedas automatico antes de continuar al siguiente nivel si se cumplen los requisitos.
+let silverCoinsAuto = parseInt(getUsersLocalStorage().silverCoins);
+let bronzeCoinsAuto = parseInt(getUsersLocalStorage().bronzeCoins);
+const nextLevel = () => {
+  if(userData.value.coinChangerAuto && silverCoinsAuto >= 3 || userData.value.coinChangerAuto && bronzeCoinsAuto >= 3){
+    buttonNextLevel.value = false;
+    emit('vortexType', 'changer');
+    let coinsComponentHorizontal = document.getElementById("coinsComponentHorizontal");
+    coinsComponentHorizontal.classList.remove("hidden");
+    openCoinChanger();
+    // setTimeout(() => {
+    //   window.location = nextUrl.value;
+    // }, 50000);
+  }else if(!userData.value.coinChangerAuto || userData.value.coinChangerAuto && silverCoinsAuto < 3 || userData.value.coinChangerAuto && bronzeCoins < 3){
+    if(userData.value.goldenCoins >= 1){
+      window.location = `${localHost}/claim-rocket`;
+    }else if(userData.value.goldenCoins === 0){
+      window.location = nextUrl.value;
+    };
+  };
+};
+
+
+//Funcion que reposiciona el robot en pantalla cuando se ejecuta el cambiador de monedas
+// const robotPositionCoinChanger = () => {
+//   const body = document.body;
+//   const characterContainer = document.getElementById("helpCharacterContainer");
+//   body.appendChild(characterContainer);
+//   characterContainer.style.position = "fixed";
+//   characterContainer.style.bottom = "250px";
+//   characterContainer.style.left = "40%";
+//   characterContainer.style.zIndex = "9999";
+// };
+
+let originalCharacterParent = null; // Variable para almacenar el padre original del elemento
+
+const characterComponetChanger = () => {
+  const body = document.body;
+  const characterComponent = document.getElementById("helpCharacterContainer");
+  
+  // Guardar la posición original del elemento
+  originalCharacterParent  = characterComponent.parentNode;
+  
+  // Mover el elemento
+  body.appendChild(characterComponent);
+  characterComponent.style.position = "fixed";
+  characterComponent.style.bottom = "250px";
+  characterComponent.style.left = "15%";
+  characterComponent.style.zIndex = "9999";
+  characterComponent.style.transform = "translateX(0px)";
+};
+
+const restoreCharacterComponent = () => {
+  const characterComponent = document.getElementById("helpCharacterContainer");
+  
+  // Verificar si hay una posición original guardada
+  if (originalCharacterParent) {
+    // Devolver el elemento a su posición original
+    if (originalCharacterParent.lastElementChild === characterComponent) {
+      // Si characterComponent es el último hijo, agregarlo al final del originalParent
+      originalCharacterParent.appendChild(characterComponent);
+    } else {
+      // Si characterComponent no es el último hijo, insertarlo antes del originalNextSibling
+      originalCharacterParent.insertBefore(characterComponent, originalCharacterParent.nextSibling);
+    }
+    
+    // Restaurar estilos
+    characterComponent.style.position = "";
+    characterComponent.style.bottom = "";
+    characterComponent.style.left = "";
+    characterComponent.style.zIndex = "";
+    characterComponent.style.transform = "translateX(-450px)"
+  }
+};
+
+
+
+//Control del componente monedas segun se abre el cambiador de monedas.
+let originalParent = null; // Variable para almacenar el padre original del elemento
+
+const coinsComponetChanger = () => {
+  const body = document.body;
+  const coinsComponent = document.getElementById("coinsComponentHorizontal");
+
+  // Guardar la posición original del elemento
+  originalParent = coinsComponent.parentNode;
+
+  // Mover el elemento
+  body.appendChild(coinsComponent);
+  coinsComponent.style.position = "fixed";
+  coinsComponent.style.bottom = "280px";
+  coinsComponent.style.right = "15%";
+  coinsComponent.style.zIndex = "9999";
+};
+const restoreCoinsComponent = () => {
+  const coinsComponent = document.getElementById("coinsComponentHorizontal");
+
+  // Verificar si hay una posición original guardada
+  if (originalParent) {
+    // Devolver el elemento a su posición original
+    if (originalParent.lastElementChild === coinsComponent) {
+      // Si coinsComponent es el último hijo, agregarlo al final del originalParent
+      originalParent.appendChild(coinsComponent);
+    } else {
+      // Si coinsComponent no es el último hijo, insertarlo antes del originalNextSibling
+      originalParent.insertBefore(coinsComponent, originalParent.nextSibling);
+    }
+
+    // Restaurar estilos
+    coinsComponent.style.position = "absolute";
+    coinsComponent.style.bottom = "";
+    coinsComponent.style.right = "";
+    coinsComponent.style.zIndex = "";
+  }
+};
+
+
+
+
+onUpdated(() => {
+  if(props.coinChangerClose){
+    console.log("revirtiendo posicion del componente", props.coinChangerClose);
+    restoreCoinsComponent();
+    restoreCharacterComponent();
+  }
+});
+
+
+
 </script>
 <template>
-  <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full flex justify-center items-center px-12">
+  <div class="backdrop-blur-sm border-2 border-blue-900 rounded-md h-full flex justify-center items-center px-12 z-1 relative">
 
-    <div class="absolute translate-x-[-450px] border-b-4 border-dashed drop-shadow-2xl">
+    <div id="helpCharacterContainer" class="absolute translate-x-[-450px] border-b-4 border-dashed drop-shadow-2xl">
       <HelpCharacterOnly :image="`${localHost}/images/characters/robot/v1/still/notFace.png`"
                          :image_2="`${localHost}/images/characters/robot/v1/still/notFace.png`"></HelpCharacterOnly>
     </div>
 
     <div class="px-2">
-      <div class="my-2 w-[380px]">
+      <div class="my-2 w-[380px] m-auto">
         <div id="itemScreen"
              :class="`border-2 border-black h-14 shadow-xl rounded-md flex justify-center font-bold text-5xl bg-white`">
           {{ itemSelected ? itemSelected.name : null }}
@@ -248,17 +459,17 @@ const handlePauseButton = () => {
       </div>
     </div>
 
-    <div class="col-span-2 flex justify-center absolute translate-x-[450px]">
+    <div class="col-span-2 flex justify-center items-center absolute translate-x-[450px]">
 
       <div class="flex justify-center items-center">
         <IconCheck id="icon-check" class="absolute duration-300 opacity-0" hex="#86efac"></IconCheck>
         <IconError id="icon-error" class="absolute duration-300 opacity-0" hex="#f87171"></IconError>
-        <div id="itemPresentation"
-             class="duration-300 h-36 w-36 bg-gray-200 flex justify-center items-center text-8xl font-bold shadow-xl hidden">
+        <div id="itemPresentation" class="duration-300 h-36 w-36 bg-gray-200 flex justify-center items-center text-8xl font-bold shadow-xl hidden">
         </div>
       </div>
 
-      <a :href="nextUrl">
+
+      <!-- <a :href="nextUrl">
         <button id="nextLevelButton"
                 class="bg-yellow-infinite py-8 px-16 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden">
 
@@ -267,9 +478,22 @@ const handlePauseButton = () => {
             <span></span>
             <span></span>
           </div>
-
         </button>
-      </a>
+      </a> -->
+
+      <button v-if="buttonNextLevel || coinChangerClose && buttonNextLevel" @click="nextLevel" id="nextLevelButton" class="bg-yellow-infinite py-5 px-12 border-yellow-600 border-4 rounded-md shadow-xl shadow-yellow-400 hidden z-30">
+
+        <div class="arrow">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+      </button>
+      <!-- Codigo de prueba abajo va el componente monedas -->
+      <div id="coinsComponentHorizontal" class="absolute z-40">
+        <CoinsComponent :goldCoins="goldCoins" :silverCoins="silverCoins" :bronzeCoins="bronzeCoins" :goldCoinsChangeActive="goldCoinsChangeActive" :silverCoinsChangeActive="silverCoinsChangeActive" :bronzeCoinsChangeActive="bronzeCoinsChangeActive" :openAnimation="openAnimation" :closeAnimation="closeAnimation" :storeAccess="storeAccess" :openCoinChanger="openCoinChanger"/>
+      </div>
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('main')
-    <home-access :video="false"/>
+    <win-rocket-auto/>
 @endsection

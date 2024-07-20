@@ -242,6 +242,7 @@ export const getUsersLocalStorage = () => {
 };
 
 //Funcion que guarda los datos modificados del usuario
+//USO: al usar getUsersLocalStorage() se debe guardar en una variable esos datos traidos del usuario, despues se modifican EJEMPLO dataUser.bronzeCoins = 3, para guardar los datos de usuario con esa modificacion simplemnte llamamos la funcion saveDataLocalStorage y como parametro le pasamos los datos modificados por EJEMPLO. saveDataLocalStorage(dataUser);
 export const saveDataLocalStorage = (data) => {//Desde el componente modificamos los datos del usuario y los devolvemos modificados en la funcion y la funcion se encarga de actualizar las partidas guardadas.
     let localStorageDataGamer = localStorage.getItem('gamer');
     let localStorageDataGames = JSON.parse(localStorage.getItem('games'));
@@ -276,4 +277,67 @@ export const winCoinCheckLevel = (level, sublevel) => {
 
     console.log("wincoin", result);
     return result;
+};
+
+
+//Funcion que controla las monedas que se muestran en las secciones de los items
+export const storageCoinUpdated = (goldCoins, silverCoins, bronzeCoins, goldCoinsChangeActive, silverCoinsChangeActive, bronzeCoinsChangeActive) => {
+    console.log("ejecutando coinsss");
+    //Valido si las monedas de oro son 5 o mas de 5 en caso de ser mas de 5 va a devolver solo 5 y si es menos devolvera la cantidad que se tiene
+    let goldCoinsStorage = getUsersLocalStorage().goldenCoins;
+    let silverCoinsStorage = getUsersLocalStorage().silverCoins;
+    let bronzeCoinsStorage = getUsersLocalStorage().bronzeCoins;
+
+
+    if (parseInt(goldCoinsStorage) >= 5) {
+        goldCoins.value = 5;
+    } else if (parseInt(goldCoinsStorage) < 5) {
+        goldCoins.value = parseInt(goldCoinsStorage);
+    }
+
+    if (parseInt(silverCoinsStorage) >= 5) {
+        silverCoins.value = 5;
+    } else if (parseInt(silverCoinsStorage) < 5) {
+        silverCoins.value = parseInt(silverCoinsStorage);
+    }
+
+    if (parseInt(bronzeCoinsStorage) >= 5) {
+        bronzeCoins.value = 5;
+    } else if (parseInt(bronzeCoinsStorage) < 5) {
+        bronzeCoins.value = parseInt(bronzeCoinsStorage);
+    }
+
+    //Controlamos si hay monedas suficientes para cambiar para darle efecto al boton de cambiar segun las monedas.
+    if (parseInt(goldCoinsStorage) > 0) {
+        goldCoinsChangeActive.value = "item-palette-gold__div--container-active";
+    } else if (parseInt(goldCoinsStorage) === 0) {
+        goldCoinsChangeActive.value = "";
+    }
+    ;
+
+    if (parseInt(silverCoinsStorage) > 2) {
+        silverCoinsChangeActive.value = "item-palette-gold__div--container-active";
+    } else if (parseInt(silverCoinsStorage) < 3) {
+        silverCoinsChangeActive.value = "";
+    }
+    ;
+
+    if (parseInt(bronzeCoinsStorage) > 2) {
+        bronzeCoinsChangeActive.value = "item-palette-gold__div--container-active";
+    } else if (parseInt(bronzeCoinsStorage) < 3) {
+        bronzeCoinsChangeActive.value = "";
+    };
+};
+
+//Funcion que traslada al siguiente nivel tomando el nivel actual guradado en el local storage y trasladando al siguiente
+export const nextLevel = () => {
+    let linkActualLevel = localStorage.getItem("currentLocation");
+
+    let lastCharacter = linkActualLevel.slice(-1);
+
+    let lastCharacterNewLevel = parseInt(lastCharacter) + 1;
+
+    let linkNewLevel = linkActualLevel.slice(0, -1) + lastCharacterNewLevel;
+
+    window.location = linkNewLevel;
 };

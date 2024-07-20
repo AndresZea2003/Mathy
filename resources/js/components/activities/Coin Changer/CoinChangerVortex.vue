@@ -52,7 +52,7 @@ onUpdated(() => {
 </script>
 
 <template>
-    <div class="vortex__div--container flex justify-center items-center w-full h-full absolute ">
+    <div class="vortex__div--container flex justify-center items-center w-full h-full absolute">
         <img v-if="props.selected" class="vortex__img--ship w-80 absolute z-30" :src="currentShip()" alt="ship"/>
         <div class="vortex__div--vortex-background rounded-full w-96 h-96 flex justify-center items-center">
             <img v-if="props.type === 'changer'" class="vortex__img--coin-changer w-72 rounded-full" :src="coinChangerImage" alt="vortex-image"/>

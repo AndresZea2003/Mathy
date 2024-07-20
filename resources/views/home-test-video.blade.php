@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('main')
-    <home-access :video="false"/>
+    <home-access :video="true"/>
 @endsection
