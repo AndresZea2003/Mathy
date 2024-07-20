@@ -35,6 +35,7 @@
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
+        :phase="{{ 3 }}"
         :fake_items="[2]"
         create_audio_1="¡Mira cómo progresa nuestra nave en el viaje a Marte! ¡Sigamos enfrentando desafíos!"
         create_audio_2="La cinta que está en el centro, la debemos colorear únicamente de..."

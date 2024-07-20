@@ -13,10 +13,11 @@
         :size="{{18}}"
         :solution="[1,2,3]"
         :fill_sample="[
-        1,2,3,1,2,3,1,2,
+        1,2,3,1,2,3
         ]"
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
+        :phase="{{ 3 }}"
     ></line-paint-pattern>
 
 @endsection

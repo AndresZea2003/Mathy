@@ -36,7 +36,7 @@
         :level="[{{$levelNumber}},{{$activityNumber}}]"
         :rotate="false"
         :fake_items="[]"
-        :phase="{{ 1 }}"
+        :phase="{{ 3 }}"
 {{--        create_audio_1="¡Mira cómo progresa nuestra nave en el viaje a Marte! ¡Sigamos enfrentando desafíos!"--}}
 {{--        create_audio_2="Estás haciendo un excelente trabajo. Para esta ocasión, utilizaremos los colores ..."--}}
 {{--        create_audio_3="De la siguiente manera..."--}}

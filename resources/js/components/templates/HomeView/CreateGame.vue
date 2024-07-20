@@ -95,7 +95,7 @@ const randomSelectedColor = () => {
     };
 
     // console.log("storage", storageCounts.value[0].inputColor);
-    console.log("Colores restantes",backgroundInputColors.length);
+    // console.log("Colores restantes",backgroundInputColors.length);
 
     if(backgroundInputColors.length === 0){
         let randonNum = Math.floor(Math.random() * backgroundInputColorBackup.length);
@@ -153,12 +153,12 @@ const createGame = () => {
             inputColor: {background: backgroundInputColorRef.value.background, text: backgroundInputColorRef.value.text},
             icon: iconRef.value,
             currentLevel: {level: 1, sublevel: 1},
-            coinChangerAuto: false,// true para que se despliegue automaticamente el cambiador false para hacerlo manual
+            coinChangerAuto: true,// true para que se despliegue automaticamente el cambiador false para hacerlo manual
             unlockedLevels: [1],
             shipSelected: 1,
             goldenCoins: 0,
             silverCoins: 0,
-            bronzeCoins: 3,
+            bronzeCoins: 0,
             unlockedShips: [1,2,3,4,5,6,7,8,9,10]
         }
 

@@ -471,7 +471,7 @@ const paintBox = (id) => {
       document.getElementById(id).classList.remove('zoom-box')
     }, 3000)
   }
-}
+};
 
 let level = ref(props.level)
 let showProgressBar = ref(true)
@@ -538,6 +538,7 @@ const coinChangerVortexActivate = (event) => {
   coinChangerVortexRef.value = event;
 };
 
+
 //Funcion que controla el tipo de vortice si es a coin changer o a la store
 const vortexTypeFunction = (event) => {
   vortexType.value = event;
@@ -552,7 +553,7 @@ const selectedLevelVortexFunction= (event) => {
 const selectedCoinChangerFunction = (event) => {
   selectedCoinChanger.value = event;
 };
-
+//Funcion para controlar el cierre del cambiador de monedas
 const coinChangerClose = (event) => {
   selectedCoinChanger.value = event;
   selectedLevelVortex.value = event;
@@ -560,8 +561,10 @@ const coinChangerClose = (event) => {
   coinChangerCloseUser.value = true;
 };
 
+//Funcion que controla la actualizacion de las monedas para mostrar en el componente de monedas.
 const updateCoinsFunction = (event) => {
   updateCoins.value = event;
+  console.log("Ejecutanfo el emit", event);
 };
 
 </script>
@@ -572,7 +575,7 @@ const updateCoinsFunction = (event) => {
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
   <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
-  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef"/>
+  <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef" @updateCoins="updateCoinsFunction"/>
   <div class="flex flex-col min-h-screen">
     <div class="mx-auto flex-1 container flex justify-center">
       <div class="flex  p-6 w-full gap-5 rounded-md">
