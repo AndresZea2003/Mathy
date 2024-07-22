@@ -61,71 +61,71 @@ import elipse4g from '../../../public/images/store/elipse-g-tier-4.png';
 //Array que contiene los datos de todas las naves que estaran en la tienda, datos principales dato, img, price y sus dos variantes de moneda oro y plata y purchased que indica si esa nave ya se compro o no.
 
 let store_data = [
-    {
-        name: "Cometín",//Nombre
-        id: 1,//id
-        img: ship1,//Imagen de la nave
-        tier: 1,//Tier de la nave
-        smoke: smoke1,//Humo de tarjeta principal
-        stars: stars1,//Estrellas de tarjeta principal
-        elipse: elipse1,//Elipse de tarjeta giatorio pequeño
-        elipseg: elipse1g,//Elipse de tarjeta giratorio grande
-        price: 2,//Precio de nave
-        purchased: false,//Boleano que indica si la nave fue comprada o no
-        unlocked: false//Boleano que indica si la nave esta bloqueada o desbloqueada
-    },
-    {
-        name: "Chispa",
-        id: 2,
-        img: ship2,
-        tier: 1,
-        smoke: smoke1,
-        stars: stars1,
-        elipse: elipse1,
-        elipseg: elipse1g,
-        price: 2,
-        purchased: false,
-        unlocked: false
-    },
-    {
-        name: "Nova",
-        id: 3,
-        img: ship3,
-        tier: 2,
-        smoke: smoke2,
-        stars: stars2,
-        elipse: elipse2,
-        elipseg: elipse2g,
-        price: 2,
-        purchased: false,
-        unlocked: false
-    },
-    {
-        name: "Astro",
-        id: 4,
-        img: ship4,
-        tier: 2,
-        smoke: smoke2,
-        stars: stars2,
-        elipse: elipse2,
-        elipseg: elipse2g,
-        price: 2,
-        purchased: false,
-        unlocked: false
-    },
-    {
-        name: "Láctea",
-        id: 5,
-        img: ship5,
-        tier: 3,
-        smoke: smoke3,
-        stars: stars3,
-        elipse: elipse3,
-        elipseg: elipse3g,
-        price: 2,
-        purchased: false,
-        unlocked: false
-    },
+    // {
+    //     name: "Cometín",//Nombre
+    //     id: 1,//id
+    //     img: ship1,//Imagen de la nave
+    //     tier: 1,//Tier de la nave
+    //     smoke: smoke1,//Humo de tarjeta principal
+    //     stars: stars1,//Estrellas de tarjeta principal
+    //     elipse: elipse1,//Elipse de tarjeta giatorio pequeño
+    //     elipseg: elipse1g,//Elipse de tarjeta giratorio grande
+    //     price: 2,//Precio de nave
+    //     purchased: false,//Boleano que indica si la nave fue comprada o no
+    //     unlocked: false//Boleano que indica si la nave esta bloqueada o desbloqueada
+    // },
+    // {
+    //     name: "Chispa",
+    //     id: 2,
+    //     img: ship2,
+    //     tier: 1,
+    //     smoke: smoke1,
+    //     stars: stars1,
+    //     elipse: elipse1,
+    //     elipseg: elipse1g,
+    //     price: 2,
+    //     purchased: false,
+    //     unlocked: false
+    // },
+    // {
+    //     name: "Nova",
+    //     id: 3,
+    //     img: ship3,
+    //     tier: 2,
+    //     smoke: smoke2,
+    //     stars: stars2,
+    //     elipse: elipse2,
+    //     elipseg: elipse2g,
+    //     price: 2,
+    //     purchased: false,
+    //     unlocked: false
+    // },
+    // {
+    //     name: "Astro",
+    //     id: 4,
+    //     img: ship4,
+    //     tier: 2,
+    //     smoke: smoke2,
+    //     stars: stars2,
+    //     elipse: elipse2,
+    //     elipseg: elipse2g,
+    //     price: 2,
+    //     purchased: false,
+    //     unlocked: false
+    // },
+    // {
+    //     name: "Láctea",
+    //     id: 5,
+    //     img: ship5,
+    //     tier: 3,
+    //     smoke: smoke3,
+    //     stars: stars3,
+    //     elipse: elipse3,
+    //     elipseg: elipse3g,
+    //     price: 2,
+    //     purchased: false,
+    //     unlocked: false
+    // },
     {
         name: "Nómada",
         id: 6,
@@ -494,5 +494,74 @@ const standardShip = {
     unlocked: false
 }
 
+//Naves iniciales
+const initialRockets = [
+    {
+        name: "Cometín",//Nombre
+        id: 1,//id
+        img: ship1,//Imagen de la nave
+        tier: 1,//Tier de la nave
+        smoke: smoke1,//Humo de tarjeta principal
+        stars: stars1,//Estrellas de tarjeta principal
+        elipse: elipse1,//Elipse de tarjeta giatorio pequeño
+        elipseg: elipse1g,//Elipse de tarjeta giratorio grande
+        price: 2,//Precio de nave
+        purchased: false,//Boleano que indica si la nave fue comprada o no
+        unlocked: false//Boleano que indica si la nave esta bloqueada o desbloqueada
+    },
+    {
+        name: "Chispa",
+        id: 2,
+        img: ship2,
+        tier: 1,
+        smoke: smoke1,
+        stars: stars1,
+        elipse: elipse1,
+        elipseg: elipse1g,
+        price: 2,
+        purchased: false,
+        unlocked: false
+    },
+    {
+        name: "Nova",
+        id: 3,
+        img: ship3,
+        tier: 2,
+        smoke: smoke2,
+        stars: stars2,
+        elipse: elipse2,
+        elipseg: elipse2g,
+        price: 2,
+        purchased: false,
+        unlocked: false
+    },
+    {
+        name: "Astro",
+        id: 4,
+        img: ship4,
+        tier: 2,
+        smoke: smoke2,
+        stars: stars2,
+        elipse: elipse2,
+        elipseg: elipse2g,
+        price: 2,
+        purchased: false,
+        unlocked: false
+    },
+    {
+        name: "Láctea",
+        id: 5,
+        img: ship5,
+        tier: 3,
+        smoke: smoke3,
+        stars: stars3,
+        elipse: elipse3,
+        elipseg: elipse3g,
+        price: 2,
+        purchased: false,
+        unlocked: false
+    },
+];
 
-export {store_data, standardShip};
+
+export {store_data, standardShip, initialRockets};

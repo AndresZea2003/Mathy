@@ -18,7 +18,8 @@ const emit = defineEmits(['rocketSelected']);
 const props = defineProps({
     shipNum: Number,
     randomShip: Object,
-    rocketSelectedRef: Boolean
+    rocketSelectedRef: Boolean,
+    type: Number//Este parametro define que tipo de tarjeta se va a utilizar ya que este componente devuelve una tarjeta para el selector de naves automatico inicial y el del ciclo de juego.
 });
 
 
@@ -96,11 +97,14 @@ setTimeout(() => {
 </script>
 
 <template>
-    <div @click="rocketSelected(props.randomShip)" @mouseenter="hoverCard" @mouseleave="hoverOffCard" :class="`${hoverClass} bg-blue-900 w-52 h-60 md:h-96 md:w-60 m-5 border rounded-md border-cyan-300 border-2 flex justify-center items-center transition-all cursor-pointer relative`">
+    <div v-if="type === 1" @click="rocketSelected(props.randomShip)" @mouseenter="hoverCard" @mouseleave="hoverOffCard" :class="`${hoverClass} bg-blue-900 w-52 h-60 md:h-96 md:w-60 m-5 border rounded-md border-cyan-300 border-2 flex justify-center items-center transition-all cursor-pointer relative`">
         <img :src="props.randomShip.img" alt="rocket"/>
         <button class="rocket-card__button--container-coin w-14 h-14 absolute bottom-3">
             <img class="rocket-card__img--coin w-20 rounded-full" :src="goldCoin" alt="gold-coin"/>
         </button>
+    </div>
+    <div v-if="type === 2" class="rounded-lg  bg-black w-11/12 h-20 my-1">
+
     </div>
 </template>
 

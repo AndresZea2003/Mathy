@@ -32,6 +32,7 @@ import HomeAccess from "./components/templates/HomeView/HomeAccess.vue";
 import LaunchRocket from "./components/templates/LaunchRocketPlanet/LaunchRocket.vue";
 import WinCoin from "./components/templates/WinCoin/WinCoin.vue";
 import WinRocketAuto from "./components/templates/WinRocketAuto/WinRocketAuto.vue";
+import WinRocketAutoInitial from './components/templates/WinRocketAuto/WinrocketAutoInitial.vue';
 
 
 
@@ -61,6 +62,7 @@ createApp({
         'home-access': HomeAccess,
         'launch-rocket': LaunchRocket,
         'win-coin': WinCoin,
-        'win-rocket-auto': WinRocketAuto
+        'win-rocket-auto': WinRocketAuto,
+        'win-rocket-auto-initial': WinRocketAutoInitial
     }
 }).mount("#app");

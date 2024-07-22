@@ -211,8 +211,8 @@ const redeemCurrency = () => {
             <div v-if="counterActive" class="w-4 md:w-full h-full md:h-6 absolute flex justify-center items-center md:bottom-0">
                 <div class="win-rocket-auto__div--cards-contador bg-white w-2 h-full rounded md:h-3"></div>
             </div>
-            <RocketCard v-if="rocketSelected1" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[0]" :shipNum="1" :rocketSelectedRef="rocketSelected1Ref"/>
-            <RocketCard v-if="rocketSelected2" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[1]" :shipNum="2" :rocketSelectedRef="rocketSelected2Ref"/>
+            <RocketCard v-if="rocketSelected1" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[0]" :shipNum="1" :rocketSelectedRef="rocketSelected1Ref" :type="1"/>
+            <RocketCard v-if="rocketSelected2" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[1]" :shipNum="2" :rocketSelectedRef="rocketSelected2Ref" :type="1"/>
             <RocketSelected v-if="rocketSelectedCard" :rocketSelected="rocketSelectedCard"/>
         </div>
     </div>
