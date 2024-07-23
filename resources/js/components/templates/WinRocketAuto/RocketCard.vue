@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onUpdated, ref } from 'vue';
 
 import goldCoin from '../../../../../public/images/globals/gold-coin.png';
 import { getUsersLocalStorage, saveDataLocalStorage } from '../../../use';
@@ -19,14 +19,22 @@ const props = defineProps({
     shipNum: Number,
     randomShip: Object,
     rocketSelectedRef: Boolean,
-    type: Number//Este parametro define que tipo de tarjeta se va a utilizar ya que este componente devuelve una tarjeta para el selector de naves automatico inicial y el del ciclo de juego.
+    type: Number,//Este parametro define que tipo de tarjeta se va a utilizar ya que este componente devuelve una tarjeta para el selector de naves automatico inicial y el del ciclo de juego.
+    numberCard: Number,
+    selectedRocket: Boolean
 });
 
 
 //Ref
 const hoverClass = ref(`rocket-card__div--card-${props.shipNum}`);
 const rocketSelectedRef = ref(true);
+const rocketSelectionPaint = ref("");
+const rocketSelectionOpacity = ref(true);
 
+onUpdated(() => {
+    console.log("Actualizanzo", props.selectedRocket);
+    rocketSelectionOpacity.value = props.selectedRocket;
+});
 
 //Funciones para tratar el hover sin perder ninguna animacion
 const hoverCard = () => {
@@ -59,6 +67,11 @@ const rocketSelected = (type) => {
 
     //Enviamos los datos al componente padre para ejecutar la animacion de eleccion.
     emit('rocketSelected', type);
+
+    //Si estamos en el formato 2 de tarjeta vamos a pintar la tarjeta de verde
+    if(props.type === 2){
+        rocketSelectionPaint.value = "rocket-card__selected";
+    }
 };
 
 //Audio
@@ -103,8 +116,11 @@ setTimeout(() => {
             <img class="rocket-card__img--coin w-20 rounded-full" :src="goldCoin" alt="gold-coin"/>
         </button>
     </div>
-    <div v-if="type === 2" class="rounded-lg  bg-black w-11/12 h-20 my-1">
-
+    <div v-if="type === 2" @click="rocketSelected(props.randomShip)" :class="`rocket-card__div--content-card-${props.numberCard} ${rocketSelectionPaint} rounded-lg w-11/12 h-20 my-1 flex justify-center items-center overflow-hidden ${rocketSelectionOpacity ? (''):('rocket-card__opacity-selection')}`">
+        <div class="w-10/12 h-full flex justify-evenly items-center">
+            <img :class="`rocket-card__img--rocket-${props.numberCard} w-44 `" :src="props.randomShip.img" alt="rocket"/>
+            <img :class="`rocket-card__img--coin rocket-card__img--coin-${props.numberCard} w-10 rounded-full`" :src="goldCoin" alt="gold-coin"/>
+        </div>
     </div>
 </template>
 
@@ -143,20 +159,27 @@ setTimeout(() => {
 
 .rocket-card__img--coin {
     animation: buttonCoinAnimation 4s infinite;
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
+}
+
+.rocket-card__img--coin-1 {
+    filter: drop-shadow(0px 0px 15px rgb(251, 255, 0));
 }
 
 @keyframes buttonCoinAnimation {
     0% {
-        box-shadow: 0px 0px 73px -45px rgba(255,255,255,1);
+        filter: drop-shadow(0px 0px 5px rgb(255, 255, 255));
+        transform: scale(1);
     }
 
     50% {
-        box-shadow: 0px 0px 35px 17px rgb(255, 255, 255);
+        filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 0));
+        transform: scale(1.2);
     }
 
     100% {
-        box-shadow: 0px 0px 73px -45px rgba(255,255,255,1);
+        filter: drop-shadow(0px 0px 5px rgb(255, 255, 255));
+        transform: scale(1);
     }
 }
 
@@ -181,7 +204,6 @@ setTimeout(() => {
 }
 
 
-
 .rocket-card__button--container-coin {
     opacity: 0%;
     animation: coinIntroAnimation 1s;
@@ -197,5 +219,79 @@ setTimeout(() => {
     100% {
         opacity: 100%;
     }
+}
+
+.rocket-card__img--rocket-1 {
+    filter: drop-shadow(0px 0px 15px rgb(251, 255, 0));
+}
+
+.rocket-card__img--rocket-2 {
+    filter: drop-shadow(0px 0px 15px rgb(0, 132, 255));
+}
+
+.rocket-card__img--rocket-3 {
+    filter: drop-shadow(0px 0px 15px rgb(255, 0, 0));
+}
+
+.rocket-card__img--rocket-4 {
+    filter: drop-shadow(0px 0px 15px rgb(255, 0, 242));
+}
+
+.rocket-card__img--rocket-5 {
+    filter: drop-shadow(0px 0px 15px rgb(255, 153, 0));
+}
+
+.rocket-card__div--content-card-1 {
+    --glow-color: rgb(251, 255, 0);
+    --glow-spread-color: rgb(251, 255, 0, 0.863);
+    border: .25em solid var(--glow-color);
+    box-shadow: inset 0px 0px 23px 12px var(--glow-spread-color);
+}
+.rocket-card__div--content-card-2 {
+    --glow-color: rgb(0, 132, 255);
+    --glow-spread-color: rgb(0, 132, 255, 0.863);
+    border: .25em solid var(--glow-color);
+    box-shadow: inset 0px 0px 23px 12px var(--glow-spread-color);
+}
+.rocket-card__div--content-card-3 {
+    --glow-color: rgb(255, 0, 0);
+    --glow-spread-color: rgb(255, 0, 0, 0.863);
+    border: .25em solid var(--glow-color);
+    box-shadow: inset 0px 0px 23px 12px var(--glow-spread-color);
+}
+.rocket-card__div--content-card-4 {
+    --glow-color: rgb(255, 0, 242);
+    --glow-spread-color: rgb(255, 0, 242, 0.863);
+    border: .25em solid var(--glow-color);
+    box-shadow: inset 0px 0px 23px 12px var(--glow-spread-color);
+}
+.rocket-card__div--content-card-5 {
+    --glow-color: rgb(255, 153, 0);
+    --glow-spread-color: rgba(255, 153, 0, 0.863);
+    border: .25em solid var(--glow-color);
+    box-shadow: inset 0px 0px 23px 12px var(--glow-spread-color);
+}
+
+
+.rocket-card__opacity-selection {
+    animation: animationOpacitySelection 3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes animationOpacitySelection {
+    0% {
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
+    }
+}
+
+.rocket-card__selected {
+    --glow-color: rgb(9, 255, 0);
+    --glow-spread-color: rgba(9, 255, 0, 0.863);
+    border: .25em solid var(--glow-color);
+    box-shadow: inset 0px 0px 23px 12px var(--glow-spread-color);
 }
 </style>
