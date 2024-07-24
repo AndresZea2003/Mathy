@@ -2,7 +2,7 @@
 
 import {onMounted, ref} from "vue";
 import {store_data} from "../../use/store_data";
-import {localHost} from "../../use/index.js";
+import {getUsersLocalStorage, localHost} from "../../use/index.js";
 import axios from 'axios';
 
 
@@ -19,7 +19,7 @@ const currentShip = ref(0);
 let totalActivities = ref(12);
 let showStation = ref(Math.floor(Math.random() * 2) + 1)
 onMounted(async () => {
-  currentShip.value = store_data[localStorage.getItem('shipSelected') - 1].img;
+  currentShip.value = store_data[getUsersLocalStorage().shipSelected - 1].img;
   level.value = props.level[0];
   activityNumber.value = props.level[1]
 

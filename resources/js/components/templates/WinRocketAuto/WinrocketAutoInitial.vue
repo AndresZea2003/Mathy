@@ -61,7 +61,7 @@ const emit = defineEmits(['rocketSelected']);
 
 //Librerias
 import { initialRockets, store_data } from "../../../use/store_data";
-import { getUsersLocalStorage } from "../../../use";
+import { getUsersLocalStorage, saveDataLocalStorage } from "../../../use";
 
 const backgrounds = [
     background1,
@@ -125,6 +125,11 @@ const rocketSelected = (event) => {
         emit('rocketSelected', true);
     }, 9000);
 
+    let userData = getUsersLocalStorage();
+
+    userData.introduction = true;
+
+    saveDataLocalStorage(userData);
 };
 
 const redeemCurrency = () => {

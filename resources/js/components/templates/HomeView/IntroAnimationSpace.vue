@@ -12,6 +12,7 @@ import WelcomeName from './WelcomeName.vue';
 import LandingStart from './LandingStart.vue';
 import ButtonSkip from '../../ui/ButtonSkip.vue';
 import WinrocketAutoInitial from '../../templates/WinRocketAuto/WinrocketAutoInitial.vue';
+import { getUsersLocalStorage } from '../../../use';
 
 //Ref
 const logoAnimation = ref(true); //true
@@ -23,6 +24,12 @@ const props = defineProps({
     video: String,
 });
 
+//Guardamos en una variable si ya el usuario hizo la intro
+let introduction = getUsersLocalStorage().introduction;
+
+
+//Tomamos en una variable si el usuario ya realizo el tutorial
+let introductionEnded = getUsersLocalStorage().introduction;
 
 //Desmontaje de animacion del logo
 setTimeout(() => {
@@ -38,11 +45,21 @@ setTimeout(() => {
 const robotIntroduction = () => {
     galaxyAnimationRef.value = true;
 
-    setTimeout(() => {
-        galaxyAnimationRef.value = false;
+    if(!introduction){
+        setTimeout(() => {
+            galaxyAnimationRef.value = false;
 
-        winRocketInitialRef.value = true;
-    }, 28000);
+            winRocketInitialRef.value = true;
+        }, 28000);
+    }else if(introduction){
+        setTimeout(() => {
+            galaxyAnimationRef.value = false;
+
+            landingStartanimationRef.value = true;
+        }, 28000);
+    }
+
+
 };
 
 
@@ -61,6 +78,8 @@ const rocketSelected = (event) => {
         landingStartanimationRef.value = true;
     }
 };
+
+
 </script>
 
 <template>
@@ -71,7 +90,7 @@ const rocketSelected = (event) => {
         <LandingStart v-if="landingStartanimationRef"/>
         <WinrocketAutoInitial v-if="winRocketInitialRef" @rocketSelected="rocketSelected"/>
         <!-- <button v-if="!landingStartanimationRef" @click="skipAnimation" class="absolute bottom-7 right-7 bg-blue-900 z-50 rounded-lg px-10 transition-all border border-2 hover:bg-blue-500 hover:scale-90"><img class="intro-animation__div--skip-button w-10" :src="skipShip" alt="skip"/></button> -->
-        <div v-if="!landingStartanimationRef" @click="skipAnimation" class="absolute bottom-2 right-7 z-20 w-16 h-20 xl:bottom-7 xl:w-24 xl:h-24">
+        <div v-if="!landingStartanimationRef && introductionEnded" @click="skipAnimation" class="absolute bottom-2 right-7 z-20 w-16 h-20 xl:bottom-7 xl:w-24 xl:h-24">
             <ButtonSkip/>
         </div>
     </div>

@@ -1,12 +1,13 @@
 <script setup>
 import { store_data } from '../../use/store_data';
 import { onBeforeMount, ref } from 'vue';
+import { getUsersLocalStorage } from '../../use';
 
 const currentShip = ref(null);
 
 
 onBeforeMount(() => {
-    currentShip.value = store_data[localStorage.getItem('shipSelected') - 1].img;
+    currentShip.value = store_data[getUsersLocalStorage().shipSelected - 1].img;
 });
 
 
@@ -41,7 +42,7 @@ setInterval(() => {
         transform: rotate(0deg);
     }
     100% {
-        left: 1500px;
+        left: 2000px;
         transform: rotate(800deg);
     }
 }
