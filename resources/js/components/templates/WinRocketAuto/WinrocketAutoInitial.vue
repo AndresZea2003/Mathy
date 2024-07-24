@@ -3,6 +3,7 @@ import { ref, onBeforeMount } from "vue";
 
 //Componentes
 import RocketCard from "./RocketCard.vue";
+import AnimatedStars from "../../background/ShotingStar.vue";
 
 //Imagenes
 import background1 from '../../../../../public/images/backgrounds/background-1.png';
@@ -45,8 +46,22 @@ const selectedRocket3 = ref(true);
 const selectedRocket4 = ref(true);
 const selectedRocket5 = ref(true);
 
+//Ref para cambiar la nave
+const rocketBackgroundRef = ref(rocketGif);
+const rocketBackgroundInitialRef = ref(rocketInitialIMG);
+
+const initialGifClassRef = ref("win-rocket-initial__img--rocket");
+const initialImgClassRef =ref("");
+
+//Ref inicial
+const contentInitialAnimationFinalRef = ref("");
+
+//Emits
+const emit = defineEmits(['rocketSelected']);
+
 //Librerias
-import { initialRockets } from "../../../use/store_data";
+import { initialRockets, store_data } from "../../../use/store_data";
+import { getUsersLocalStorage } from "../../../use";
 
 const backgrounds = [
     background1,
@@ -94,12 +109,22 @@ initialTimers();
 const rocketSelected = (event) => {
     console.log(event);
 
-    procesingRocketsSelection(event.id);
+    contentInitialAnimationFinalRef.value = "win-rocket-initial__final-content-animation";
 
+    backgroundRocketSelectionStorage();
+
+    procesingRocketsSelection(event.id);
+    
     // redeemCurrency();
 
-
     // console.log("Nave reclamada");
+
+    rocketFinalRoad();
+
+    setTimeout(() => {
+        emit('rocketSelected', true);
+    }, 9000);
+
 };
 
 const redeemCurrency = () => {
@@ -152,15 +177,39 @@ const procesingRocketsSelection = (id) => {
 };
 
 
+//Funcion que toma la nave del fondo y la cambia por la nave seleccionada
+const backgroundRocketSelectionStorage = () => {
+    let rocketSelected = getUsersLocalStorage().shipSelected;
+
+    rocketBackgroundRef.value = store_data[rocketSelected - 1].img;
+
+    rocketBackgroundInitialRef.value = store_data[rocketSelected - 1].img;
+};
+
+
+//Funcion que ejecuta la animacion de la nave yendose
+const rocketFinalRoad = () => {
+    initialGifClassRef.value = "win-rocket-initial__img--rocket-launch-gif";
+    initialImgClassRef.value = "win-rocket-initial__img--rocket-launch";
+
+    setTimeout(() => {
+        rocketInitialGifRef.value = true;
+    }, 5000);
+    setTimeout(() => {
+        rocketInitialImgRef.value = false;
+    }, 5500);
+};
+
 </script>
 
 <template>
     <div class="win-rocket-initial__div--container w-full flex justify-center items-center overflow-hidden" :style="{backgroundImage: `url(${backgroundSelected})`}">
-        <div  class="w-full h-full overflow-hidden flex justify-center items-center">
-            <img v-if="rocketInitialGifRef" class="win-rocket-initial__img--rocket w-96 absolute" :src="rocketGif" alt="rocket-initial"/>
-            <img v-if="rocketInitialImgRef" class="win-rocket-initial__img--rocket-initial absolute" :src="rocketInitialIMG" alt="rocket-initial"/>
+        <AnimatedStars/>
+        <div  class="w-full h-full overflow-hidden flex justify-center items-center relative">
+            <img v-if="rocketInitialGifRef" :class="`${initialGifClassRef} w-96 absolute overflow-hidden`" :src="rocketBackgroundRef" alt="rocket-initial"/>
+            <img v-if="rocketInitialImgRef" :class="`win-rocket-initial__img--rocket-initial ${initialImgClassRef} absolute`" :src="rocketBackgroundInitialRef" alt="rocket-initial"/>
         </div>
-        <div v-if="contentRef" class="win-rocket-initial__div--content absolute w-4/5 rounded-lg backdrop-blur-sm flex justify-center items-center flex-col py-5 my-5">
+        <div v-if="contentRef" :class="`win-rocket-initial__div--content ${contentInitialAnimationFinalRef} absolute w-4/5 rounded-lg backdrop-blur-sm flex justify-center items-center flex-col lg:flex-row py-5 my-5 overflow-hidden`">
             <RocketCard v-if="rocketSelected1" @rocketSelected="rocketSelected" :randomShip="initialRockets[0]" :shipNum="1" :rocketSelectedRef="rocketSelected1Ref" :type="2" :numberCard="1" :selectedRocket="selectedRocket1"/>
             <RocketCard v-if="rocketSelected1" @rocketSelected="rocketSelected" :randomShip="initialRockets[1]" :shipNum="1" :rocketSelectedRef="rocketSelected1Ref" :type="2" :numberCard="2" :selectedRocket="selectedRocket2"/>
             <RocketCard v-if="rocketSelected1" @rocketSelected="rocketSelected" :randomShip="initialRockets[2]" :shipNum="1" :rocketSelectedRef="rocketSelected1Ref" :type="2" :numberCard="3" :selectedRocket="selectedRocket3"/>
@@ -172,10 +221,11 @@ const procesingRocketsSelection = (id) => {
 
 <style scoped>
 
-@media screen and (min-height: 500px) {
-    .win-rocket-initial__div--container {
-        height: 750px;
-    }
+.win-rocket-initial__div--container {
+    height: 750px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 @media screen and (min-height: 600px) {
@@ -204,18 +254,41 @@ const procesingRocketsSelection = (id) => {
         0 0 4em 1em var(--glow-spread-color),
         inset 0 0 .75em .25em var(--glow-color);
     animation: contentAnimation 4s linear;
-    animation-fill-mode: forwards;
+    /* animation-fill-mode: forwards; */
+}
+
+@media screen and (min-width: 1024px) {
+    .win-rocket-initial__div--content {
+        animation: contentAnimation1024 4s linear;
+    }
 }
 
 @keyframes contentAnimation {
     0% {
         width: 0%;
-        height: 0%;
+        height: 0px;
     }
 
     50% {
         width: 0%;
-        height: 80%;
+        height: 490px;
+    }
+
+    100% {
+        width: 320px;
+        height: auto;
+    }
+}
+
+@keyframes contentAnimation1024 {
+    0% {
+        width: 0%;
+        height: 0px;
+    }
+
+    50% {
+        width: 0%;
+        height: 440px;
     }
 
     100% {
@@ -250,4 +323,68 @@ const procesingRocketsSelection = (id) => {
     width: 260px;
 }
 
+
+.win-rocket-initial__final-content-animation {
+    animation: contentFinalAnimation 4.5s linear;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes contentFinalAnimation {
+    0% {
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
+    }
+}
+
+.win-rocket-initial__img--rocket-launch {
+    animation: rocketFinalIMGAnimation 2s linear;
+    animation-fill-mode: forwards;
+    animation-delay: 3s;
+}
+
+@keyframes rocketFinalIMGAnimation {
+    0% {
+        transform: rotate(-45deg) translate(90px, -95px);
+    }
+
+    100% {
+        transform: rotate(45deg) translate(0px, 0px);
+    }
+}
+
+
+.win-rocket-initial__img--rocket-launch-gif {
+    width: 255px;
+    transform: rotate(45deg);
+    animation: rocketFinalGIFAnimation 2s linear;
+    animation-fill-mode: forwards;
+    animation-delay: 2s;
+}
+
+/*Codigo para el gif*/
+/* @keyframes rocketFinalGIFAnimation {
+    0% {
+        transform: rotate(90deg) translateY(0px);
+    }
+
+    100% {
+        transform: rotate(90deg) translateY(-500px);
+    }
+} */
+
+
+/*Codigo para imagen momentaneo*/
+@keyframes rocketFinalGIFAnimation {
+    0% {
+        transform: rotate(45deg) translate(0px, 0px);
+    }
+
+    100% {
+        transform: rotate(45deg) translate(800px, -800px);
+    }
+}
 </style>

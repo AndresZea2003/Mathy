@@ -16,9 +16,11 @@ import logo from '../../../../../public/images/globals/main-logo.png';
 const interfaz = ref(false);
 const currentGamer = ref('');
 const arrayNameRef = ref([]);
+const currentShipRef = ref("");
 
 //Librerias
-import { localHost } from '../../../use';
+import { getUsersLocalStorage, localHost } from '../../../use';
+import { store_data } from '../../../use/store_data';
 
 
 
@@ -45,7 +47,9 @@ const gamerArray = () => {
 
 onMounted(() => {
     gamerArray();
-    console.log("igor", games.name);
+    let currentShip = getUsersLocalStorage().shipSelected;
+
+    currentShipRef.value = store_data[currentShip - 1].img;
 });
 
 
@@ -78,7 +82,8 @@ const continueGame = () => {
     <div class="landing-start__div--container w-full h-full flex items-center justify-center overflow-hidden relative">
         <SpaceBg/>
         <div class="w-full h-full flex justify-center items-center">
-            <img class="landing-start__img--ship w-56 top-16 absolute z-10" :src="shipGif" alt="ship"/>
+            <!-- <img class="landing-start__img--ship w-56 top-16 absolute z-10" :src="currentShipRef" alt="ship"/> linea gif correcta -->
+            <img class="landing-start__img--ship w-56 top-40 absolute z-10" :src="currentShipRef" alt="ship"/>
             
 
             <!-- planeta parte baja -->
@@ -133,12 +138,26 @@ const continueGame = () => {
     }
 }
 
-.landing-start__img--ship {
+/*Original*/
+/* .landing-start__img--ship {
+    animation: shipAnimation 2s linear;
+    animation-fill-mode: forwards;
+} */
+
+/*Temporal */
+.landing-start__img--ship{
     animation: shipAnimation 2s linear;
     animation-fill-mode: forwards;
 }
 
 
+/*Original*/
+/* @media (min-width: 800px) {
+    .landing-start__img--ship {
+        animation: shipAnimation 4s linear;
+        animation-fill-mode: forwards;
+    }
+} */
 
 @media (min-width: 800px) {
     .landing-start__img--ship {
@@ -147,8 +166,8 @@ const continueGame = () => {
     }
 }
 
-
-@keyframes shipAnimation {
+/*Original*/
+/* @keyframes shipAnimation {
     0% {
         transform: translateX(-1000px) rotate(90deg);
     }
@@ -156,7 +175,18 @@ const continueGame = () => {
     100% {
         transform: translateX(0px) rotate(90deg);
     }
+} */
+
+@keyframes shipAnimation {
+    0% {
+        transform: translateX(-1000px) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(0px) rotate(45deg);
+    }
 }
+
 
 .landing-start__div--interfaz {
     animation: interfazAnimation 3s linear;

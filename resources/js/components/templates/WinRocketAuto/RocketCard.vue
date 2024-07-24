@@ -30,9 +30,10 @@ const hoverClass = ref(`rocket-card__div--card-${props.shipNum}`);
 const rocketSelectedRef = ref(true);
 const rocketSelectionPaint = ref("");
 const rocketSelectionOpacity = ref(true);
+const rocketSelectionAnimation = ref("");
+const rocketSelectedCoin = ref(true);
 
 onUpdated(() => {
-    console.log("Actualizanzo", props.selectedRocket);
     rocketSelectionOpacity.value = props.selectedRocket;
 });
 
@@ -71,6 +72,8 @@ const rocketSelected = (type) => {
     //Si estamos en el formato 2 de tarjeta vamos a pintar la tarjeta de verde
     if(props.type === 2){
         rocketSelectionPaint.value = "rocket-card__selected";
+        rocketSelectionAnimation.value = "rocket-card__selected-rocket-animation";
+        rocketSelectedCoin.value = false;
     }
 };
 
@@ -110,21 +113,33 @@ setTimeout(() => {
 </script>
 
 <template>
-    <div v-if="type === 1" @click="rocketSelected(props.randomShip)" @mouseenter="hoverCard" @mouseleave="hoverOffCard" :class="`${hoverClass} bg-blue-900 w-52 h-60 md:h-96 md:w-60 m-5 border rounded-md border-cyan-300 border-2 flex justify-center items-center transition-all cursor-pointer relative`">
+    <div v-if="type === 1" @click="rocketSelected(props.randomShip)" @mouseenter="hoverCard" @mouseleave="hoverOffCard" :class="`${hoverClass} bg-blue-900 w-52 h-60 md:h-96 md:w-60 m-5 border rounded-md border-cyan-300 border-2 flex justify-center items-center transition-all cursor-pointer relative overflow-hidden`">
         <img :src="props.randomShip.img" alt="rocket"/>
         <button class="rocket-card__button--container-coin w-14 h-14 absolute bottom-3">
             <img class="rocket-card__img--coin w-20 rounded-full" :src="goldCoin" alt="gold-coin"/>
         </button>
     </div>
-    <div v-if="type === 2" @click="rocketSelected(props.randomShip)" :class="`rocket-card__div--content-card-${props.numberCard} ${rocketSelectionPaint} rounded-lg w-11/12 h-20 my-1 flex justify-center items-center overflow-hidden ${rocketSelectionOpacity ? (''):('rocket-card__opacity-selection')}`">
-        <div class="w-10/12 h-full flex justify-evenly items-center">
-            <img :class="`rocket-card__img--rocket-${props.numberCard} w-44 `" :src="props.randomShip.img" alt="rocket"/>
-            <img :class="`rocket-card__img--coin rocket-card__img--coin-${props.numberCard} w-10 rounded-full`" :src="goldCoin" alt="gold-coin"/>
+    <div v-if="type === 2" @click="rocketSelected(props.randomShip)" :class="`rocket-card__div--content-card-${props.numberCard} rocket-card__div--content-card-hover ${rocketSelectionPaint} rounded-lg w-11/12 h-20 my-1 flex justify-center items-center overflow-hidden ${rocketSelectionOpacity ? (''):('rocket-card__opacity-selection')} lg:h-96 lg:mx-3 overflow-hidden transition cursor-pointer`">
+        <div class="w-10/12 h-full flex justify-evenly lg:justify-center items-center lg:flex-col overflow-hidden">
+            <img :class="`rocket-card__img--rocket-${props.numberCard} ${rocketSelectionAnimation} w-44 lg:w-60 `" :src="props.randomShip.img" alt="rocket"/>
+            <img v-if="rocketSelectedCoin" :class="`rocket-card__img--coin rocket-card__img--coin-${props.numberCard} w-10 rounded-full transition`" :src="goldCoin" alt="gold-coin"/>
         </div>
     </div>
 </template>
 
 <style scoped>
+.rocket-card__div--content-card-hover:hover {
+    --glow-color: rgb(9, 255, 0);
+    --glow-spread-color: rgba(9, 255, 0, 0.863);
+    border: .25em solid var(--glow-color);
+    box-shadow: inset 0px 0px 23px 12px var(--glow-spread-color);
+}
+
+.rocket-card__div--content-card-hover:hover .rocket-card__img--coin {
+    /* transform: scale(2.5); */
+    width: 70px;
+}
+
 .rocket-card__div--card-1 {
     transition: ease-in-out 2s;
     animation: rocket1Animation 2s;
@@ -293,5 +308,39 @@ setTimeout(() => {
     --glow-spread-color: rgba(9, 255, 0, 0.863);
     border: .25em solid var(--glow-color);
     box-shadow: inset 0px 0px 23px 12px var(--glow-spread-color);
+    animation: animationContentSelection 5s;
+    animation-fill-mode: forwards;
+    animation-delay: 2s;
 }
+
+@keyframes animationContentSelection {
+    0% {
+        border: .25em solid var(--glow-color);
+        box-shadow: inset 0px 0px 23px 12px var(--glow-spread-color);
+    }
+
+    100% {
+        border: .25em solid rgba(9, 255, 0, 0);
+        box-shadow: inset 0px 0px 23px 12px rgba(9, 255, 0, 0);
+    }
+}
+
+
+.rocket-card__selected-rocket-animation {
+    position: absolute;
+    animation: animationRocketSelection 5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes animationRocketSelection {
+    0% {
+        width: 176px;
+    }
+
+    100% {
+        width: 450px;
+    }
+}
+
+
 </style>

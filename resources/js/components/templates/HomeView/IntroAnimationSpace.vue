@@ -11,11 +11,13 @@ import skipShip from '../../../../../public/images/home/standard-ship.png';
 import WelcomeName from './WelcomeName.vue';
 import LandingStart from './LandingStart.vue';
 import ButtonSkip from '../../ui/ButtonSkip.vue';
+import WinrocketAutoInitial from '../../templates/WinRocketAuto/WinrocketAutoInitial.vue';
 
 //Ref
 const logoAnimation = ref(true); //true
 const galaxyAnimationRef = ref(false); //false
 const landingStartanimationRef = ref(false); //false
+const winRocketInitialRef = ref(false);
 
 const props = defineProps({
     video: String,
@@ -39,7 +41,7 @@ const robotIntroduction = () => {
     setTimeout(() => {
         galaxyAnimationRef.value = false;
 
-        landingStartanimationRef.value = true;
+        winRocketInitialRef.value = true;
     }, 28000);
 };
 
@@ -51,6 +53,14 @@ const skipAnimation = () => {
     landingStartanimationRef.value = true;
 };
 
+
+//Funcion para determinar cuando se eligio una nave
+const rocketSelected = (event) => {
+    if(event){
+        winRocketInitialRef.value = false;
+        landingStartanimationRef.value = true;
+    }
+};
 </script>
 
 <template>
@@ -59,6 +69,7 @@ const skipAnimation = () => {
         <img v-if="logoAnimation" class="intro-animation__img--logo" :src="mainLogo" alt="logo"/>
         <WelcomeName v-if="galaxyAnimationRef" :video="props.video"/>
         <LandingStart v-if="landingStartanimationRef"/>
+        <WinrocketAutoInitial v-if="winRocketInitialRef" @rocketSelected="rocketSelected"/>
         <!-- <button v-if="!landingStartanimationRef" @click="skipAnimation" class="absolute bottom-7 right-7 bg-blue-900 z-50 rounded-lg px-10 transition-all border border-2 hover:bg-blue-500 hover:scale-90"><img class="intro-animation__div--skip-button w-10" :src="skipShip" alt="skip"/></button> -->
         <div v-if="!landingStartanimationRef" @click="skipAnimation" class="absolute bottom-2 right-7 z-20 w-16 h-20 xl:bottom-7 xl:w-24 xl:h-24">
             <ButtonSkip/>

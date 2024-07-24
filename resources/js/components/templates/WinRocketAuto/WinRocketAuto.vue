@@ -224,6 +224,7 @@ const redeemCurrency = () => {
     background-image: url('../../../../../public/images/backgrounds/background-10.png');
     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .win-rocket-auto__div--cards-container {
