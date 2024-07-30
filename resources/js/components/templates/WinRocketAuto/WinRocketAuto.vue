@@ -211,8 +211,8 @@ const redeemCurrency = () => {
             <div v-if="counterActive" class="w-4 md:w-full h-full md:h-6 absolute flex justify-center items-center md:bottom-0">
                 <div class="win-rocket-auto__div--cards-contador bg-white w-2 h-full rounded md:h-3"></div>
             </div>
-            <RocketCard v-if="rocketSelected1" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[0]" :shipNum="1" :rocketSelectedRef="rocketSelected1Ref" :type="1"/>
-            <RocketCard v-if="rocketSelected2" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[1]" :shipNum="2" :rocketSelectedRef="rocketSelected2Ref" :type="1"/>
+            <RocketCard v-if="rocketSelected1" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[0]" :shipNum="1" :rocketSelectedRef="rocketSelected1Ref" :type="1" :numberCard="1"/>
+            <RocketCard v-if="rocketSelected2" @rocketSelected="rocketSelected" :randomShip="rocketsSelectedRef[1]" :shipNum="2" :rocketSelectedRef="rocketSelected2Ref" :type="1" :numberCard="2"/>
             <RocketSelected v-if="rocketSelectedCard" :rocketSelected="rocketSelectedCard"/>
         </div>
     </div>
@@ -231,7 +231,12 @@ const redeemCurrency = () => {
     /* background-image: url('../../../../../public/images/backgrounds/background-10.png');
     background-position: center;
     background-size: cover; */
-    background-color: rgba(0, 255, 255, 0.199);
+    --glow-color: rgb(132, 0, 255);
+    --glow-spread-color: rgba(111, 0, 214, 0.781);
+    border: .25em solid var(--glow-color);
+    box-shadow: 0 0 1em .25em var(--glow-color),
+        0 0 4em 1em var(--glow-spread-color),
+        inset 0 0 .75em .25em var(--glow-color);
     animation: containerRocketsAnimation 1s;
 }
 

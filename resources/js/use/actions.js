@@ -341,3 +341,6 @@ export const nextLevel = () => {
 
     window.location = linkNewLevel;
 };
+
+
+

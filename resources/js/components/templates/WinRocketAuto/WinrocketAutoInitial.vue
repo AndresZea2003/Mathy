@@ -368,6 +368,7 @@ const rocketFinalRoad = () => {
     animation: rocketFinalGIFAnimation 2s linear;
     animation-fill-mode: forwards;
     animation-delay: 2s;
+    background: rgb(255, 0, 0);
 }
 
 /*Codigo para el gif*/

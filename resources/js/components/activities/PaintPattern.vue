@@ -23,7 +23,7 @@ import {
   saveCurrentLevel,
   winCoinCheckLevel,
 } from '../../use';
-import {onMounted, ref} from "vue";
+import {onBeforeMount, onMounted, onUpdated, ref} from "vue";
 import IconArrowRight from "../icons/IconArrowRight.vue"
 import IconPaintBrush from "../icons/IconPaintBrush.vue"
 import Swal from "sweetalert2";
@@ -32,6 +32,7 @@ import BackgroundActivities from "../background/BackgroundActivities.vue";
 import CoinChangerVortex from "./Coin Changer/CoinChangerVortex.vue";
 import CoinChanger from "./Coin Changer/CoinChanger.vue";
 import WinCoin from "../templates/WinCoin/WinCoin.vue";
+import IntroLevel from "../templates/IntroLevel/IntroLevel.vue";
 
 const props = defineProps({
   size: {type: Array},
@@ -60,6 +61,8 @@ const updateCoins = ref(false);
 const inTutorial = ref(false);
 const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
 const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
+const backgroundSelectedRef = ref();//Creado para controlar el emit de fondo para la intro
+const introActivated = ref(true);
 
 //Establecemos la ubicacion actual del software en el storage
 localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
@@ -81,6 +84,7 @@ const showInitialAlert = () => {
   });
 }
 
+
 const swalHtml = `
     <div class="flex justify-center items-center text-center">
                   <div>
@@ -95,7 +99,7 @@ const swalHtml = `
                       <br>
                       <span class="text-gray-200">¡Haz Brillar el Cuadro!</span>
                     </div>
-                    <button onmouseenter="playHoverSound('svgPlay')" onmouseleave="leaveMouse('svgPlay')"
+                    <button id="button-intro" onmouseenter="playHoverSound('svgPlay')" onmouseleave="leaveMouse('svgPlay')"
                             onclick="Swal.clickConfirm()" class="btn-frog"><i class="animation"></i>
                       <div class="translate-x-[10px]">
                         Comenzar
@@ -567,11 +571,21 @@ const updateCoinsFunction = (event) => {
   console.log("Ejecutanfo el emit", event);
 };
 
+
+//Funcion que toma el emit del fondo para la animacion de intro.
+const backgroundSelecteFunction = (event) => {
+  backgroundSelectedRef.value = event;
+};
+
+//Desactivar la intro de nivel
+setTimeout(() => {
+  introActivated.value = false;
+}, 2500);
 </script>
+
 <template>
-  <BackgroundActivities/>
-
-
+  <IntroLevel v-if="introActivated" :background="backgroundSelectedRef" :level="props.level[1]"/>
+  <BackgroundActivities @backgroundSelected="backgroundSelecteFunction"/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
   <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>

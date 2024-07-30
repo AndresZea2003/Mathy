@@ -113,8 +113,8 @@ setTimeout(() => {
 </script>
 
 <template>
-    <div v-if="type === 1" @click="rocketSelected(props.randomShip)" @mouseenter="hoverCard" @mouseleave="hoverOffCard" :class="`${hoverClass} bg-blue-900 w-52 h-60 md:h-96 md:w-60 m-5 border rounded-md border-cyan-300 border-2 flex justify-center items-center transition-all cursor-pointer relative overflow-hidden`">
-        <img :src="props.randomShip.img" alt="rocket"/>
+    <div v-if="type === 1" @click="rocketSelected(props.randomShip)" @mouseenter="hoverCard" @mouseleave="hoverOffCard" :class="`${hoverClass} rocket-card__div--content-card-${props.numberCard} rocket-card__div--content-card-hover w-52 h-60 md:h-96 md:w-60 m-5  rounded-md  flex justify-center items-center transition-all cursor-pointer relative overflow-hidden`">
+        <img :class="`rocket-card__img--rocket-${props.numberCard}`" :src="props.randomShip.img" alt="rocket"/>
         <button class="rocket-card__button--container-coin w-14 h-14 absolute bottom-3">
             <img class="rocket-card__img--coin w-20 rounded-full" :src="goldCoin" alt="gold-coin"/>
         </button>
@@ -200,7 +200,7 @@ setTimeout(() => {
 
 .rocket-card__div--card-animation {
     background: rgb(39,230,0);
-    background: linear-gradient(0deg, rgba(39,230,0,1) 49%, rgba(0,255,231,1) 52%, #1E3A8A 55%);
+    background: linear-gradient(0deg, rgba(38, 230, 0, 0.451) 49%, rgb(0, 255, 229) 52%, #1e3b8a50 55%);
     background-size: 3000px 3000px;
     animation: hoverCardAnimation 1s;
     animation-fill-mode: forwards;
