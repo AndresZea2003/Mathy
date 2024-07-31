@@ -5,6 +5,7 @@ import ItemPalette from "../sections/ItemPalette.vue";
 import ProgressBar from "../sections/ProgressBar.vue";
 import HorizontalItemPalette from "../sections/HorizontalItemPalette.vue";
 import WinView from "../templates/WinView.vue";
+import IntroLevel from "../templates/IntroLevel/IntroLevel.vue";
 import {
   types,
   localHost,
@@ -63,6 +64,8 @@ const coinChangerCloseUser = ref(false);
 const updateCoins = ref(false);
 const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
 const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
+const backgroundSelectedRef = ref();//Creado para controlar el emit de fondo para la intro
+const introActivated = ref(true); //Controla cuando se abre y se cierra el componente
 
 //Establecemos la ubicacion actual del software en el storage
 localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
@@ -891,6 +894,17 @@ const updateCoinsFunction = (event) => {
   updateCoins.value = event;
 };
 
+//Funcion que toma el emit del fondo para la animacion de intro.
+const backgroundSelecteFunction = (event) => {
+  backgroundSelectedRef.value = event;
+};
+
+//Desactivar la intro de nivel
+setTimeout(() => {
+  introActivated.value = false;
+}, 4000);
+
+
 </script>
 <template>
   <!--  <div id="loadStyles" :class="`h-36 w-36 h-24 w-24 h-20 w-20 grid grid-cols-3 grid-cols-4 grid-cols-5 hidden-->
@@ -898,8 +912,8 @@ const updateCoinsFunction = (event) => {
   <!--     ${items[0].content} ${items[1].content} ${items[2].content} ${items[3].content}`-->
 
   <!--"></div>-->
-
-  <BackgroundActivities/>
+  <IntroLevel v-if="introActivated" :background="backgroundSelectedRef" :level="props.level[1]"/>
+  <BackgroundActivities @backgroundSelected="backgroundSelecteFunction"/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
   <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef"/>

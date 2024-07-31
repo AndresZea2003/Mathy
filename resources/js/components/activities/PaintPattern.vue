@@ -580,7 +580,10 @@ const backgroundSelecteFunction = (event) => {
 //Desactivar la intro de nivel
 setTimeout(() => {
   introActivated.value = false;
-}, 2500);
+}, 4000);
+
+
+
 </script>
 
 <template>

@@ -13,6 +13,7 @@ import {defineProps, ref, onMounted} from 'vue';
 import CoinChangerVortex from "./Coin Changer/CoinChangerVortex.vue";
 import CoinChanger from "./Coin Changer/CoinChanger.vue";
 import WinCoin from "../templates/WinCoin/WinCoin.vue";
+import IntroLevel from "../templates/IntroLevel/IntroLevel.vue";
 
 const GameModes = Object.freeze({
   SEQUENCE: 0,
@@ -46,6 +47,8 @@ const coinChangerCloseUser = ref(false);
 const updateCoins = ref(false);
 const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
 const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
+const backgroundSelectedRef = ref();//Creado para controlar el emit de fondo para la intro
+const introActivated = ref(true); //Controla cuando se abre y se cierra el componente
 
 const configSize = ref({
   sizeBox: 0,
@@ -624,10 +627,22 @@ const updateCoinsFunction = (event) => {
   console.log("Ejecutanfo el emit", event);
 };
 
+//Funcion que toma el emit del fondo para la animacion de intro.
+const backgroundSelecteFunction = (event) => {
+  backgroundSelectedRef.value = event;
+};
+
+//Desactivar la intro de nivel
+setTimeout(() => {
+  introActivated.value = false;
+}, 4000);
+
+
 </script>
 
 <template>
-  <BackgroundActivities/>
+  <IntroLevel v-if="introActivated" :background="backgroundSelectedRef" :level="props.level[1]"/>
+  <BackgroundActivities @backgroundSelected="backgroundSelecteFunction"/>
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
   <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
   <WinCoin v-if="winCoinViewAnimation" :type_coin="winCoinRef" @updateCoins="updateCoinsFunction"/>

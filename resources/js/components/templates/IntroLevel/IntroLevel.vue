@@ -58,7 +58,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <div class="intro-level__div--container  w-full h-full absolute">
+    <div class="intro-level__div--container  w-full h-full absolute pointer-events-none">
         <div class="intro-level--container-background h-full absolute" :style="{backgroundImage: `url(${background})`}">
             <div class="intro-level__div--container-figures-numbers absolute w-80 h-80 rounded-xl right-20 backdrop-blur-sm flex justify-center items-center" :style="{border: `.25em solid ${color1}`, boxShadow: `0 0 1em .25em ${color1}, 0 0 4em 1em ${color1}, inset 0 0 .75em .25em ${color1}`}">
                 <div class="intro-level__div--circle w-10 h-10 rounded-full absolute top-5 left-5" :style="{border: `.25em solid ${color2}`, boxShadow: `0 0 1em .25em ${color2}, 0 0 4em 1em ${color2}, inset 0 0 .75em .25em ${color2}`}"></div>
@@ -76,6 +76,7 @@ onBeforeMount(() => {
 
 .intro-level__div--container {
     z-index: 10000;
+    filter: drop-shadow(0px 0px 105px rgb(13, 0, 255));
 }
 
 .intro-level--container-background {
@@ -167,5 +168,20 @@ onBeforeMount(() => {
     color: rgb(255, 255, 255);
     font-size: 200px;
     /* filter: drop-shadow(0px 0px 15px rgb(25, 0, 255)); */
+    animation: numbersAnimation 0.2s linear;
+    animation-delay: 0.8s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes numbersAnimation {
+    0% {
+        transform: scale(1);
+        /* opacity: 100%; */
+    }
+
+    100% {
+        transform: scale(0);
+        /* opacity: 0%; */
+    }
 }
 </style>

@@ -4,6 +4,7 @@ import HelpCharacter from "../sections/HelpCharacter.vue";
 import ItemPalette from "../sections/ItemPalette.vue";
 import ProgressBar from "../sections/ProgressBar.vue";
 import WinView from "../templates/WinView.vue";
+import IntroLevel from "../templates/IntroLevel/IntroLevel.vue";
 import {
   types,
   localHost,
@@ -50,7 +51,8 @@ const updateCoins = ref(false);
 const inTutorial = ref(false);
 const winCoinRef = ref(false);//Creado para determinar si el nivel se reclaman monedas y que tipo de moneda
 const winCoinViewAnimation = ref(false);//Creado para mostrar animacion si se cumplen requisitos
-
+const backgroundSelectedRef = ref();//Creado para controlar el emit de fondo para la intro
+const introActivated = ref(true); //Controla cuando se abre y se cierra el componente
 
 //Establecemos la ubicacion actual del software en el storage
 localStorage.setItem('currentLocation', `${localHost}/level${props.level[0]}/${props.level[1]}`);
@@ -365,11 +367,21 @@ const updateCoinsFunction = (event) => {
   updateCoins.value = event;
 };
 
+//Funcion que toma el emit del fondo para la animacion de intro.
+const backgroundSelecteFunction = (event) => {
+  backgroundSelectedRef.value = event;
+};
+
+
+//Desactivar la intro de nivel
+setTimeout(() => {
+  introActivated.value = false;
+}, 4000);
 
 </script>
 <template>
-
-  <BackgroundActivities/>
+  <IntroLevel v-if="introActivated" :background="backgroundSelectedRef" :level="props.level[1]"/>
+  <BackgroundActivities @backgroundSelected="backgroundSelecteFunction"/>
 
   <WinView id="winView" class="hidden opacity-0 duration-300"/>
   <CoinChangerVortex v-if="coinChangerVortexRef || selectedLevelVortex" :type="vortexType" :selected="selectedLevelVortex"/>
