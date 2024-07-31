@@ -19,7 +19,7 @@ import talkAnimationRobot from '../../../../../public/images/characters/robot/ta
 import asteroidAnimation from '../../../../../public/images/home/asteroid gif.gif';
 
 //Video
-import videoSrc from '../../../../../public/images/Video prueba/video-prueba.mp4';
+import videoSrc from '../../../../../public/videos/home/background-animated-home.mp4';
 
 //Traemos datos del storage
 let gamer = localStorage.getItem('gamer');
@@ -312,12 +312,12 @@ setTimeout(() => {
 
 @media (min-width: 800px) {
     .welcome-name__div--planet {
-        width: 1600px;
-        height: 1600px;
+        width: 800px;
+        height: 800px;
         border-radius: 100%;
         position: absolute;
-        top: -1000px;
-        right: -1050px;
+        top: -500px;
+        right: -500px;
         animation: planetOrbitAnimation 10s infinite linear;
     }
 }

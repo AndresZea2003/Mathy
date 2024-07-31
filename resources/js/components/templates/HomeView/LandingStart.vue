@@ -4,6 +4,9 @@ import { onMounted, ref } from 'vue';
 //Componentes
 import SpaceBg from '../../background/SpaceBg.vue';
 import buttonStar from '../../ui/ButtonStar.vue';
+import ButtonStart2 from '../../ui/ButtonStart2.vue';
+import NameCard1 from '../../templates/HomeView/NameCards1.vue';
+import NameCard2 from '../../templates/HomeView/NameCards2.vue';
 
 
 //Imagenes
@@ -21,6 +24,7 @@ const currentShipRef = ref("");
 //Librerias
 import { getUsersLocalStorage, localHost } from '../../../use';
 import { store_data } from '../../../use/store_data';
+import ButtonStart2Vue from '../../ui/ButtonStart2.vue';
 
 
 
@@ -76,14 +80,15 @@ const continueGame = () => {
     window.location = `${localHost}/level${level}/${sublevel}`;
 };
 
+
 </script>
 
 <template>
     <div class="landing-start__div--container w-full h-full flex items-center justify-center overflow-hidden relative">
-        <SpaceBg/>
+        <!-- <SpaceBg/> -->
         <div class="w-full h-full flex justify-center items-center">
             <!-- <img class="landing-start__img--ship w-56 top-16 absolute z-10" :src="currentShipRef" alt="ship"/> linea gif correcta -->
-            <img class="landing-start__img--ship w-56 top-40 absolute z-10" :src="currentShipRef" alt="ship"/>
+            <img class="landing-start__img--ship w-56 top-32 xl:top-40 absolute z-10" :src="currentShipRef" alt="ship"/>
             
 
             <!-- planeta parte baja -->
@@ -93,7 +98,7 @@ const continueGame = () => {
                 <img class="landing-start__div--planet-icons absolute" :src="planetHome" alt="planet"/>
             </div>
 
-            <div class="landing-start__div--interfaz w-80 h-full absolute">
+            <div class="landing-start__div--interfaz w-80 h-full absolute z-50">
                 <img class="w-48 absolute top-6 m-auto left-0 right-0" :src="logo" alt="logo"/>
 
                 <!-- <div class="text-white font-luckiest-guy text-2xl xl:text-3xl text-center select-none relative top-10">
@@ -109,13 +114,18 @@ const continueGame = () => {
                     <p class="" v-for="letter, index in arrayNameRef" :key="index">{{ letter }}</p>
                 </div> -->
 
-                <div class="flex justify-center pt-36 top-60 absolute w-full">
-                    <buttonStar @click="continueGame" id="buttonStar" class="buttonStar"></buttonStar>
+                <div class="flex justify-center pt-36 top-48 xl:top-60 absolute w-full">
+                    <!-- <buttonStar @click="continueGame" id="buttonStar" class="buttonStar"></buttonStar> -->
+                     <ButtonStart2/>
                 </div>
 
-                <div class="landing-start__div--gamer text-white absolute flex justify-center items-center mt-28 xl:mt-36 top-96 left-0 right-0 m-auto font-bold text-4xl font-black">
-                    <p class="text-center">{{ gamer }}</p>
+                <div class="w-full h-40 xl:mt-20 top-96 absolute flex justify-center items-center flex-col z-50">
+                    <NameCard2 :name="gamer" :color="currentGamer.inputColor.background"/>
                 </div>
+
+                <!-- <div class="landing-start__div--gamer text-white absolute flex justify-center items-center mt-28 xl:mt-36 top-96 left-0 right-0 m-auto font-bold text-4xl font-black">
+                    <p class="text-center">{{ gamer }}</p>
+                </div> -->
 
 
             </div>
@@ -125,6 +135,10 @@ const continueGame = () => {
 
 <style scoped>
 .landing-start__div--container {
+    /* background-image: url('../../../../../public/images/backgrounds/background-landing-start.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; */
     animation: introlandingStart 1s linear;
 }
 
