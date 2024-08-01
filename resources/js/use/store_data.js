@@ -34,6 +34,40 @@ import ship30 from '../../../public/images/rockets/Cohetes-30.png';
 import ship31 from '../../../public/images/rockets/Cohetes-31.png';
 import ship32 from '../../../public/images/rockets/Cohetes-32.png';
 
+//Importacion de los gif de cada nave
+import shipGif1 from '../../../public/images/rockets/Cohetes-01-gif.gif';
+import shipGif2 from '../../../public/images/rockets/Cohetes-02-gif.gif';
+import shipGif3 from '../../../public/images/rockets/Cohetes-01-gif.gif';//Faltante
+import shipGif4 from '../../../public/images/rockets/Cohetes-04-gif.gif';
+import shipGif5 from '../../../public/images/rockets/Cohetes-05-gif.gif';
+import shipGif6 from '../../../public/images/rockets/Cohetes-06-gif.gif';
+import shipGif7 from '../../../public/images/rockets/Cohetes-07-gif.gif';
+import shipGif8 from '../../../public/images/rockets/Cohetes-08-gif.gif';
+import shipGif9 from '../../../public/images/rockets/Cohetes-09-gif.gif';
+import shipGif10 from '../../../public/images/rockets/Cohetes-10-gif.gif';
+import shipGif11 from '../../../public/images/rockets/Cohetes-11-gif.gif';
+import shipGif12 from '../../../public/images/rockets/Cohetes-12-gif.gif';
+import shipGif13 from '../../../public/images/rockets/Cohetes-13-gif.gif';
+import shipGif14 from '../../../public/images/rockets/Cohetes-14-gif.gif';
+import shipGif15 from '../../../public/images/rockets/Cohetes-15-gif.gif';
+import shipGif16 from '../../../public/images/rockets/Cohetes-16-gif.gif';
+import shipGif17 from '../../../public/images/rockets/Cohetes-17-gif.gif';
+import shipGif18 from '../../../public/images/rockets/Cohetes-18-gif.gif';
+import shipGif19 from '../../../public/images/rockets/Cohetes-19-gif.gif';
+import shipGif20 from '../../../public/images/rockets/Cohetes-20-gif.gif';
+import shipGif21 from '../../../public/images/rockets/Cohetes-21-gif.gif';
+import shipGif22 from '../../../public/images/rockets/Cohetes-22-gif.gif';
+import shipGif23 from '../../../public/images/rockets/Cohetes-22-gif.gif';//Faltante
+import shipGif24 from '../../../public/images/rockets/Cohetes-24-gif.gif';
+import shipGif25 from '../../../public/images/rockets/Cohetes-25-gif.gif';
+import shipGif26 from '../../../public/images/rockets/Cohetes-26-gif.gif';
+import shipGif27 from '../../../public/images/rockets/Cohetes-27-gif.gif';
+import shipGif28 from '../../../public/images/rockets/Cohetes-28-gif.gif';
+import shipGif29 from '../../../public/images/rockets/Cohetes-01-gif.gif';//Faltante
+import shipGif30 from '../../../public/images/rockets/Cohetes-01-gif.gif';//Faltante
+import shipGif31 from '../../../public/images/rockets/Cohetes-01-gif.gif';//Faltante
+import shipGif32 from '../../../public/images/rockets/Cohetes-01-gif.gif';//Faltante
+
 //Importacion de el humo de cada tier
 import smoke1 from '../../../public/images/store/smoke-tier-1.png';
 import smoke2 from '../../../public/images/store/smoke-tier-2.png';
@@ -65,6 +99,7 @@ let store_data = [
         name: "Cometín",//Nombre
         id: 1,//id
         img: ship1,//Imagen de la nave
+        gif: shipGif1,//Gif animado de la nave
         tier: 1,//Tier de la nave
         smoke: smoke1,//Humo de tarjeta principal
         stars: stars1,//Estrellas de tarjeta principal
@@ -78,6 +113,7 @@ let store_data = [
         name: "Nova",
         id: 2,
         img: ship3,
+        gif: shipGif2,
         tier: 2,
         smoke: smoke2,
         stars: stars2,
@@ -91,6 +127,7 @@ let store_data = [
         name: "Chispa",
         id: 3,
         img: ship2,
+        gif: shipGif3,
         tier: 1,
         smoke: smoke1,
         stars: stars1,
@@ -104,6 +141,7 @@ let store_data = [
         name: "Astro",
         id: 4,
         img: ship4,
+        gif: shipGif4,
         tier: 2,
         smoke: smoke2,
         stars: stars2,
@@ -117,6 +155,7 @@ let store_data = [
         name: "Láctea",
         id: 5,
         img: ship5,
+        gif: shipGif5,
         tier: 3,
         smoke: smoke3,
         stars: stars3,
@@ -130,6 +169,7 @@ let store_data = [
         name: "Nómada",
         id: 6,
         img: ship6,
+        gif: shipGif6,
         tier: 3,
         smoke: smoke3,
         stars: stars3,
@@ -143,6 +183,7 @@ let store_data = [
         name: "Express",
         id: 7,
         img: ship7,
+        gif: shipGif7,
         tier: 3,
         smoke: smoke3,
         stars: stars3,
@@ -169,6 +210,7 @@ let store_data = [
         name: "Centella",
         id: 9,
         img: ship9,
+        gif: shipGif9,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -182,6 +224,7 @@ let store_data = [
         name: "Centella",
         id: 10,
         img: ship10,
+        gif: shipGif10,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -195,6 +238,7 @@ let store_data = [
         name: "Centella",
         id: 11,
         img: ship11,
+        gif: shipGif11,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -208,6 +252,7 @@ let store_data = [
         name: "Centella",
         id: 12,
         img: ship12,
+        gif: shipGif12,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -221,6 +266,7 @@ let store_data = [
         name: "Centella",
         id: 13,
         img: ship13,
+        gif: shipGif13,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -234,6 +280,7 @@ let store_data = [
         name: "Centella",
         id: 14,
         img: ship14,
+        gif: shipGif14,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -247,6 +294,7 @@ let store_data = [
         name: "Centella",
         id: 15,
         img: ship15,
+        gif: shipGif15,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -260,6 +308,7 @@ let store_data = [
         name: "Centella",
         id: 16,
         img: ship16,
+        gif: shipGif16,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -273,6 +322,7 @@ let store_data = [
         name: "Centella",
         id: 17,
         img: ship17,
+        gif: shipGif17,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -286,6 +336,7 @@ let store_data = [
         name: "Centella",
         id: 18,
         img: ship18,
+        gif: shipGif18,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -299,6 +350,7 @@ let store_data = [
         name: "Centella",
         id: 19,
         img: ship19,
+        gif: shipGif19,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -312,6 +364,7 @@ let store_data = [
         name: "Centella",
         id: 20,
         img: ship20,
+        gif: shipGif20,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -325,6 +378,7 @@ let store_data = [
         name: "Centella",
         id: 21,
         img: ship21,
+        gif: shipGif21,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -338,6 +392,7 @@ let store_data = [
         name: "Centella",
         id: 22,
         img: ship22,
+        gif: shipGif22,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -351,6 +406,7 @@ let store_data = [
         name: "Centella",
         id: 23,
         img: ship23,
+        gif: shipGif23,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -364,6 +420,7 @@ let store_data = [
         name: "Centella",
         id: 24,
         img: ship24,
+        gif: shipGif24,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -377,6 +434,7 @@ let store_data = [
         name: "Centella",
         id: 25,
         img: ship25,
+        gif: shipGif25,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -390,6 +448,7 @@ let store_data = [
         name: "Centella",
         id: 26,
         img: ship26,
+        gif: shipGif26,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -403,6 +462,7 @@ let store_data = [
         name: "Centella",
         id: 27,
         img: ship27,
+        gif: shipGif27,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -416,6 +476,7 @@ let store_data = [
         name: "Centella",
         id: 28,
         img: ship28,
+        gif: shipGif28,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -429,6 +490,7 @@ let store_data = [
         name: "Centella",
         id: 29,
         img: ship29,
+        gif: shipGif29,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -442,6 +504,7 @@ let store_data = [
         name: "Centella",
         id: 30,
         img: ship30,
+        gif: shipGif30,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -455,6 +518,7 @@ let store_data = [
         name: "Centella",
         id: 31,
         img: ship31,
+        gif: shipGif31,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -468,6 +532,7 @@ let store_data = [
         name: "Centella",
         id: 32,
         img: ship32,
+        gif: shipGif32,
         tier: 4,
         smoke: smoke4,
         stars: stars4,

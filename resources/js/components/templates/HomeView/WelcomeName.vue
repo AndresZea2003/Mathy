@@ -20,6 +20,8 @@ import asteroidAnimation from '../../../../../public/images/home/asteroid gif.gi
 
 //Video
 import videoSrc from '../../../../../public/videos/home/background-animated-home.mp4';
+import { getUsersLocalStorage } from '../../../use';
+import { store_data } from '../../../use/store_data';
 
 //Traemos datos del storage
 let gamer = localStorage.getItem('gamer');
@@ -37,12 +39,12 @@ const shipOrbitRef = ref(false);
 const shipOrbit2Ref = ref(false);
 const shipAnimationLeft = ref(false);
 const cometaRef = ref(false);
-
+const shipIMG = ref("");
+const shipGIF = ref("");
 
 const props = defineProps({
     video: String,
 });
-
 
 const getPlanetColor = () => {
     let games = JSON.parse(localStorage.getItem('games'));
@@ -54,8 +56,20 @@ const getPlanetColor = () => {
     }
 };
 
+
 onMounted(() => {
     getPlanetColor();
+
+    //Determinamos si el usuario ya ha hecho la intro y pondremos la nave que el usuario tiene si no sera la nave predeterminada del inicio
+    if(getUsersLocalStorage().introduction){
+        let numRocket = getUsersLocalStorage().shipSelected;
+        shipIMG.value = store_data[numRocket - 1].img;
+        shipGIF.value = store_data[numRocket - 1].gif;
+    }else if(!getUsersLocalStorage().introduction){
+        let numRocket = getUsersLocalStorage().shipSelected;
+        shipIMG.value = shipStatic;
+        shipGIF.value = ship;
+    }
 });
 
 
@@ -146,7 +160,7 @@ setTimeout(() => {
         </div>
         <AnimatedStars v-if="!video"/>
         <img v-if="!video" class="welcome-name__img--belt-asteroids overflow-hidden" :src="asteroidBelt" alt="asteroid-belt"/>
-        <img v-if="shipAnimation1" class="welcome-name__img--ship w-80" :src="ship" alt="ship"/>
+        <img v-if="shipAnimation1" class="welcome-name__img--ship w-80" :src="shipGIF" alt="ship"/>
         <div class="welcome-name__div--planet overflow-hidden" :style="{background: planetColor, boxShadow: `0px 0px 40px 3px ${planetColor}`}"></div>
 
         <img v-if="sateliteRef && !video" class="welcome-name__img--satelite w-16 absolute" :src="satelite" alt="satelite"/>
@@ -156,10 +170,10 @@ setTimeout(() => {
 
 
         <div class="welcome-name__div--robot-rocket w-60 absolute m-auto left-0 right-0">
-            <img v-if="shipAnimation2" class="welcome-name__img--ship-2" :src="ship" alt="ship-2"/>
-            <img v-if="shipAnimationLeft" class="welcome-name__img--ship-left" :src="ship" alt="ship-2"/>
+            <img v-if="shipAnimation2" class="welcome-name__img--ship-2" :src="shipGIF" alt="ship-2"/>
+            <img v-if="shipAnimationLeft" class="welcome-name__img--ship-left" :src="shipGIF" alt="ship-2"/>
             <img v-if="robotRocket" :class="`${conectionClass} w-28 absolute  bottom-14 left-10`" :src="conection" alt="conection"/>
-            <img v-if="robotRocket" class="welcome-name__img--ship-static w-60 z-10 absolute" :src="shipStatic" alt="ship"/>
+            <img v-if="robotRocket" class="welcome-name__img--ship-static w-60 z-10 absolute" :src="shipIMG" alt="ship"/>
             <img v-if="robotRocket" :class="`${robotClass} w-40 relative bottom-4 z-0 left-24`" :src="typeRobot" alt="robot"/>
         </div>
 
