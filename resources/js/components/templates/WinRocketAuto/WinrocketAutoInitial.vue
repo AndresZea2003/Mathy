@@ -21,7 +21,7 @@ import background12 from '../../../../../public/images/backgrounds/background-12
 import background13 from '../../../../../public/images/backgrounds/background-13.png';
 import background14 from '../../../../../public/images/backgrounds/background-14.png';
 import rocketGif from '../../../../../public/images/rockets/Cohetes-13.gif';
-import rocketInitialIMG from '../../../../../public/images/rockets/Cohetes-13.svg';
+import rocketInitialIMG from '../../../../../public/images/rockets/Cohetes-13.png';
 
 
 //Ref
@@ -186,7 +186,7 @@ const procesingRocketsSelection = (id) => {
 const backgroundRocketSelectionStorage = () => {
     let rocketSelected = getUsersLocalStorage().shipSelected;
 
-    rocketBackgroundRef.value = store_data[rocketSelected - 1].img;
+    rocketBackgroundRef.value = store_data[rocketSelected - 1].gif;
 
     rocketBackgroundInitialRef.value = store_data[rocketSelected - 1].img;
 };
@@ -324,8 +324,8 @@ const rocketFinalRoad = () => {
 }
 
 .win-rocket-initial__img--rocket-initial {
-    transform: rotate(-45deg) translate(90px, -95px);
-    width: 260px;
+    transform: translate(0px, -115px);
+    width: 410px;
 }
 
 
@@ -346,6 +346,7 @@ const rocketFinalRoad = () => {
 }
 
 .win-rocket-initial__img--rocket-launch {
+    width: 245px;
     animation: rocketFinalIMGAnimation 2s linear;
     animation-fill-mode: forwards;
     animation-delay: 3s;
@@ -353,18 +354,19 @@ const rocketFinalRoad = () => {
 
 @keyframes rocketFinalIMGAnimation {
     0% {
-        transform: rotate(-45deg) translate(90px, -95px);
+        transform: rotate(0deg) translate(0px, -95px);
     }
 
     100% {
-        transform: rotate(45deg) translate(0px, 0px);
+        transform: rotate(90deg) translate(0px, 0px);
     }
 }
 
 
 .win-rocket-initial__img--rocket-launch-gif {
-    width: 255px;
-    transform: rotate(45deg);
+    /* background-color: red; */
+    width: 250px;
+    transform: rotate(90deg) translate(0px, 100px);
     animation: rocketFinalGIFAnimation 2s linear;
     animation-fill-mode: forwards;
     animation-delay: 2s;
@@ -385,11 +387,11 @@ const rocketFinalRoad = () => {
 /*Codigo para imagen momentaneo*/
 @keyframes rocketFinalGIFAnimation {
     0% {
-        transform: rotate(45deg) translate(0px, 0px);
+        transform: rotate(90deg) translate(0px, 100px);
     }
 
     100% {
-        transform: rotate(45deg) translate(800px, -800px);
+        transform: rotate(90deg) translate(0px, -1500px);
     }
 }
 </style>

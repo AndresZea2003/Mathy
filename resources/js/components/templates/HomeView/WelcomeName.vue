@@ -10,7 +10,7 @@ import shipOrbit from '../../../../../public/images/rockets/Cohetes-23.png';
 import shipOrbit2 from '../../../../../public/images/rockets/Cohetes-27.png';
 import robot from '../../../../../public/images/characters/robot/robot.png';
 import conection from '../../../../../public/images/home/conection.png';
-import shipStatic from '../../../../../public/images/rockets/Cohetes-13.svg';
+import shipStatic from '../../../../../public/images/rockets/Cohetes-13.png';
 import satelite from '../../../../../public/images/home/satelite.png';
 import asteroidBelt from '../../../../../public/images/home/asteroid-belt.png';
 
@@ -173,7 +173,7 @@ setTimeout(() => {
             <img v-if="shipAnimation2" class="welcome-name__img--ship-2" :src="shipGIF" alt="ship-2"/>
             <img v-if="shipAnimationLeft" class="welcome-name__img--ship-left" :src="shipGIF" alt="ship-2"/>
             <img v-if="robotRocket" :class="`${conectionClass} w-28 absolute  bottom-14 left-10`" :src="conection" alt="conection"/>
-            <img v-if="robotRocket" class="welcome-name__img--ship-static w-60 z-10 absolute" :src="shipIMG" alt="ship"/>
+            <img v-if="robotRocket" class="welcome-name__img--ship-static w-96 z-10 absolute" :src="shipIMG" alt="ship"/>
             <img v-if="robotRocket" :class="`${robotClass} w-40 relative bottom-4 z-0 left-24`" :src="typeRobot" alt="robot"/>
         </div>
 
@@ -206,7 +206,6 @@ setTimeout(() => {
 
 
 .welcome-name__img--ship {
-    /* background-color: red; */
     transform: rotate(170deg);
     animation: shipAnimation 4s linear;
     animation-fill-mode: forwards;
@@ -215,14 +214,17 @@ setTimeout(() => {
 @keyframes shipAnimation {
     0% {
         transform: translate(-260px, -240px) rotate(160deg);
+        opacity: 100%;
     }
 
     80% {
         transform: translate(400px, 440px) rotate(125deg);
+        opacity: 100%;
     }
 
     100% {
-        transform: translate(560px, 570px)  rotate(130deg);
+        transform: translate(860px, 870px)  rotate(130deg);
+        opacity: 0%;
     }
 }
 
@@ -237,7 +239,7 @@ setTimeout(() => {
 
 @keyframes ship2Animation {
     0% {
-        transform: translate(-76px, 400px) scale(1.4);
+        transform: translate(-76px, 680px) scale(1.4);
         opacity: 100%;
     }
 
@@ -254,7 +256,6 @@ setTimeout(() => {
 
 .welcome-name__img--ship-left {
     width: 490px;
-    /* background-color: aqua; */
     margin: auto;
     position: absolute;
     transform: translateY(200px);
@@ -457,7 +458,7 @@ setTimeout(() => {
 }
 
 .welcome-name__img--ship-static {
-    transform: rotate(-45deg);
+    /* transform: rotate(-45deg); */
     left: -80px;
     bottom: -40px;
     animation: ship3Animation 6s infinite linear;
@@ -465,23 +466,24 @@ setTimeout(() => {
 
 @keyframes ship3Animation {
     0% {
-        transform: translate(0px, -10px) rotate(-45deg);
+        transform: translate(0px, -10px) scale(1.6);
     }
 
     40% {
-        transform: translate(0px, 0px) rotate(-45deg);
+        transform: translate(0px, 0px) scale(1.6);
     }
 
     60% {
-        transform: translate(0px, 0px) rotate(-45deg);
+        transform: translate(0px, 0px) scale(1.6);
     }
 
     100% {
-        transform: translate(0px, -10px) rotate(-45deg);
+        transform: translate(0px, -10px) scale(1.6);
     }
 }
 
 .welcome-name__img--robot-arrived {
+    background-color: aqua;
     animation: robotArrivedAnimation 3s linear;
 }
 
@@ -492,11 +494,12 @@ setTimeout(() => {
     }
 
     100% {
-        transform: translateX(0px) scale(1);
+        transform: translateX(0px) scale(1.1);
     }
 }
 
 .welcome-name__img--robot-left {
+    /* background-color: aqua; */
     animation: robotLeftAnimation 3s linear;
     animation-fill-mode: forwards;
 }
@@ -513,6 +516,7 @@ setTimeout(() => {
 }
 
 .welcome-name__img--robot-orbit {
+    /* background-color: red; */
     animation: robotOrbitAnimation 6s infinite linear;
 }
 

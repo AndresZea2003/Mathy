@@ -1,5 +1,5 @@
 <script setup>
-import rocket from '../../../../../public/images/rockets/Cohetes-01.svg';
+// import rocket from '../../../../../public/images/rockets/Cohetes-01.svg';
 
 //Props
 const props = defineProps({

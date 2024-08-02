@@ -2,7 +2,7 @@
 import { onBeforeMount, ref } from 'vue';
 
 //Nave modelo
-import ship from '../../../../../public/images/rockets/Cohetes-13.svg';
+import ship from '../../../../../public/images/rockets/Cohetes-13.png';
 import shipAnimated from '../../../../../public/images/rockets/Cohetes-13.gif';
 import robot from '../../../../../public/images/characters/robot/robot.png';
 import robotTalking from '../../../../../public/images/characters/robot/talk-animation.gif';

@@ -18,7 +18,7 @@ import background12 from '../../../../../public/images/backgrounds/background-12
 import background13 from '../../../../../public/images/backgrounds/background-13.png';
 import background14 from '../../../../../public/images/backgrounds/background-14.png';
 
-import shipStatic from '../../../../../public/images/rockets/Cohetes-13.svg';
+import shipStatic from '../../../../../public/images/rockets/Cohetes-13.png';
 import asteroid from '../../../../../public/images/win-coin/asteroid.png';
 
 import bronzeCoin from '../../../../../public/images/globals/bronze-coin.png';

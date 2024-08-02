@@ -1,22 +1,22 @@
 //Importacion de las imagenes de las naves.
 import ship0 from '../../../public/images/store/standard-ship.png';
 // import ship1 from '../img/nave.png';
-import ship1 from '../../../public/images/rockets/Cohetes-01.svg';
-import ship2 from '../../../public/images/rockets/Cohetes-02.svg';
-import ship3 from '../../../public/images/rockets/Cohetes-03.svg';
-import ship4 from '../../../public/images/rockets/Cohetes-04.svg';
-import ship5 from '../../../public/images/rockets/Cohetes-05.svg';
-import ship6 from '../../../public/images/rockets/Cohetes-06.svg';
-import ship7 from '../../../public/images/rockets/Cohetes-07.svg';
-import ship8 from '../../../public/images/rockets/Cohetes-08.svg';
-import ship9 from '../../../public/images/rockets/Cohetes-09.svg';
-import ship10 from '../../../public/images/rockets/Cohetes-10.svg';
-import ship11 from '../../../public/images/rockets/Cohetes-11.svg';
-import ship12 from '../../../public/images/rockets/Cohetes-12.svg';
-import ship13 from '../../../public/images/rockets/Cohetes-13.svg';
-import ship14 from '../../../public/images/rockets/Cohetes-14.svg';
-import ship15 from '../../../public/images/rockets/Cohetes-15.svg';
-import ship16 from '../../../public/images/rockets/Cohetes-16.svg';
+import ship1 from '../../../public/images/rockets/Cohetes-01.png';
+import ship2 from '../../../public/images/rockets/Cohetes-02.png';
+import ship3 from '../../../public/images/rockets/Cohetes-03.png';
+import ship4 from '../../../public/images/rockets/Cohetes-04.png';
+import ship5 from '../../../public/images/rockets/Cohetes-05.png';
+import ship6 from '../../../public/images/rockets/Cohetes-06.png';
+import ship7 from '../../../public/images/rockets/Cohetes-07.png';
+import ship8 from '../../../public/images/rockets/Cohetes-08.png';
+import ship9 from '../../../public/images/rockets/Cohetes-09.png';
+import ship10 from '../../../public/images/rockets/Cohetes-10.png';
+import ship11 from '../../../public/images/rockets/Cohetes-11.png';
+import ship12 from '../../../public/images/rockets/Cohetes-12.png';
+import ship13 from '../../../public/images/rockets/Cohetes-13.png';
+import ship14 from '../../../public/images/rockets/Cohetes-14.png';
+import ship15 from '../../../public/images/rockets/Cohetes-15.png';
+import ship16 from '../../../public/images/rockets/Cohetes-16.png';
 import ship17 from '../../../public/images/rockets/Cohetes-17.png';
 import ship18 from '../../../public/images/rockets/Cohetes-18.png';
 import ship19 from '../../../public/images/rockets/Cohetes-19.png';
@@ -197,6 +197,7 @@ let store_data = [
         name: "Centella",
         id: 8,
         img: ship8,
+        gif: shipGif8,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
