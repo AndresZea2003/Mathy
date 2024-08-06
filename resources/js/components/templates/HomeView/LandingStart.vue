@@ -53,7 +53,7 @@ onMounted(() => {
     gamerArray();
     let currentShip = getUsersLocalStorage().shipSelected;
 
-    currentShipRef.value = store_data[currentShip - 1].img;
+    currentShipRef.value = store_data[currentShip - 1].gif;
 });
 
 
@@ -88,7 +88,7 @@ const continueGame = () => {
         <!-- <SpaceBg/> -->
         <div class="w-full h-full flex justify-center items-center">
             <!-- <img class="landing-start__img--ship w-56 top-16 absolute z-10" :src="currentShipRef" alt="ship"/> linea gif correcta -->
-            <img class="landing-start__img--ship w-56 top-32 xl:top-40 absolute z-10" :src="currentShipRef" alt="ship"/>
+            <img class="landing-start__img--ship w-56 top-32 xl:top-20 absolute z-10" :src="currentShipRef" alt="ship"/>
             
 
             <!-- planeta parte baja -->
@@ -116,7 +116,7 @@ const continueGame = () => {
 
                 <div class="flex justify-center pt-36 top-48 xl:top-60 absolute w-full">
                     <!-- <buttonStar @click="continueGame" id="buttonStar" class="buttonStar"></buttonStar> -->
-                     <ButtonStart2/>
+                     <ButtonStart2  @click="continueGame" />
                 </div>
 
                 <div class="w-full h-40 xl:mt-20 top-96 absolute flex justify-center items-center flex-col z-50">
@@ -193,11 +193,11 @@ const continueGame = () => {
 
 @keyframes shipAnimation {
     0% {
-        transform: translateX(-1000px) rotate(45deg);
+        transform: translateX(-1000px) rotate(90deg);
     }
 
     100% {
-        transform: translateX(0px) rotate(45deg);
+        transform: translateX(0px) rotate(90deg);
     }
 }
 

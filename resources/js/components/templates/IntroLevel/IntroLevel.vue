@@ -21,7 +21,7 @@ const getActualRocket = () => {
 
     // console.log(store_data[0], "loffjjf", actualRocketID);
 
-    return store_data[actualRocketID - 1].img;
+    return store_data[actualRocketID - 1].gif;
 
 
 };
@@ -100,7 +100,7 @@ onBeforeMount(() => {
 
 .intro-level__img--rocket {
     top: 50%;
-    transform: translate(0%, -50%) rotate(45deg);
+    transform: translate(0%, -50%) rotate(90deg);
     z-index: 10000;
     left: -130px;
     /* animation: rocketAnimation 1s infinite linear; */

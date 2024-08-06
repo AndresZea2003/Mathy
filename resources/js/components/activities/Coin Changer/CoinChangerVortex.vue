@@ -26,7 +26,7 @@ const props = defineProps({
 const currentShip = () => {
     let currentShip = parseInt(localStorage.getItem('shipSelected'));
 
-    return store_data[currentShip - 1].img;
+    return store_data[currentShip - 1].gif;
 };
 
 const vortexSoundEffect = new Audio(vortexSound);
@@ -135,11 +135,11 @@ onUpdated(() => {
 
 @keyframes animationShip {
     0% {
-        transform: rotate(398deg) translate(-400px, 400px);
+        transform: rotate(80deg) translate(10px, 600px);
     }
 
     100% {
-        transform: rotate(398deg) translate(0px, 0px);
+        transform: rotate(80deg) translate(0px, 0px);
     }
 }
 

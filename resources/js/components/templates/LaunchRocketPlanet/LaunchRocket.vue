@@ -2,20 +2,27 @@
 import { onBeforeMount, ref } from 'vue';
 
 //Nave modelo
-import ship from '../../../../../public/images/rockets/Cohetes-13.png';
-import shipAnimated from '../../../../../public/images/rockets/Cohetes-13.gif';
 import robot from '../../../../../public/images/characters/robot/robot.png';
 import robotTalking from '../../../../../public/images/characters/robot/talk-animation.gif';
 import marsBackground from '../../../../../public/images/backgrounds/marte-background.png';
-import uranoBackground from '../../../../../public/images/backgrounds/urano-background.jpeg';
-import jupiterBackground from '../../../../../public/images/backgrounds/jupiter-background.jpeg';
-import saturnoBackground from '../../../../../public/images/backgrounds/saturno-background.jpeg';
-import venusBackground from '../../../../../public/images/backgrounds/venus-background.jpeg';
+import uranoBackground from '../../../../../public/images/backgrounds/urano-background.png';
+import saturnoBackground from '../../../../../public/images/backgrounds/saturno-background.png';
+import jupiterBackground from '../../../../../public/images/backgrounds/jupiter-background.png';
+import venusBackground from '../../../../../public/images/backgrounds/venus-background.png';
 import galaxyIMG from '../../../../../public/images/launch-rocket/galaxy.png';
 import moon from '../../../../../public/images/launch-rocket/moon.png';
 import nebulosa from '../../../../../public/images/launch-rocket/nebulosa.png';
 import cometaGif from '../../../../../public/images/home/asteroid gif.gif';
 import earthBackground from '../../../../../public/images/backgrounds/tierra-background-beta.png';
+import uranusTerrain from '../../../../../public/images/launch-rocket/uranus/uranusTerrain.png';
+import saturnoTerrain from '../../../../../public/images/launch-rocket/saturn/saturn-terrain.png';
+import jupiterTerrain from '../../../../../public/images/launch-rocket/jupiter/jupiter-terrain.png';
+import saturnoMoon from '../../../../../public/images/launch-rocket/saturn/saturn-moon.png';
+import uranoMoon from '../../../../../public/images/launch-rocket/uranus/moon-1.png';
+import uranoMoon2 from '../../../../../public/images/launch-rocket/uranus/moon-2.png';
+import jupiterMoon from '../../../../../public/images/launch-rocket/jupiter/jupiter-moon.png';
+import { getUsersLocalStorage } from '../../../use';
+import { store_data } from '../../../use/store_data';
 
 
 
@@ -42,43 +49,64 @@ const levelWorlds = [
         // img: "url(https://cdn.pixabay.com/photo/2022/05/12/16/04/trees-7191822_1280.png)",//Imagen tomada apra representar el fondo
         img: `url(${earthBackground})`,
         terrain: "#BCDA4C",//Color de una de las bases donde van el robot y la nave
-        terrain2: "#337709"//Color secundario de la base
+        terrain2: "#337709",//Color secundario de la base
+        terrainIMG: false,
+        moon: false,
+        moon2: false
     },
     {
         background: "launch-rocket__div--container-animation-mars",
         img:  `url(${marsBackground})`,
         terrain: "#39211B",
-        terrain2: "#A04A2E"
+        terrain2: "#A04A2E",
+        terrainIMG: false,
+        moon: false,
+        moon2: false
     },
     {
         background: "launch-rocket__div--container-animation-venus",
         img: `url(${venusBackground})`,
-        terrain: "#78BDBF",
-        terrain2: "#1D3758"
-    },
-    {
-        background: "launch-rocket__div--container-animation-jupiter",
-        img: "url(https://cdn.pixabay.com/photo/2021/07/15/05/06/flowers-6467492_1280.jpg)",
-        terrain: "#F4ACB4",
-        terrain2: "#FEE3E1"
+        terrain: "#D19F16",
+        terrain2: "#B48321",
+        terrainIMG: false,
+        moon: false,
+        moon2: false
     },
     {
         background: "launch-rocket__div--container-animation-urano",
         img: `url(${uranoBackground})`,
-        terrain: "#141D3A",
-        terrain2: "#8896B3"
+        terrain: "#5C6277",
+        terrain2: "#9DA1B0",
+        terrainIMG: `url(${uranusTerrain})`,
+        moon: uranoMoon,
+        moon2: uranoMoon2
     },
     {
         background: "launch-rocket__div--container-animation-jupiter",
         img: `url(${jupiterBackground})`,
-        terrain: "#5A617C",
-        terrain2: "#151D32"
+        terrain: "#565354",
+        terrain2: "#898283",
+        terrainIMG: `url(${jupiterTerrain})`,
+        moon: jupiterMoon,
+        moon2: false
     },
     {
         background: "launch-rocket__div--container-animation-saturno",
         img: `url(${saturnoBackground})`,
+        terrain: "#C48850",
+        terrain2: "#8b6036",
+        terrainIMG: `url(${saturnoTerrain})`,
+        moon: saturnoMoon,
+        moon2: false
+    },
+    {
+        background: "launch-rocket__div--container-animation-other",
+        img: `url(${saturnoBackground})`,
         terrain: "#9F7C2F",
-        terrain2: "#050927"
+        terrain2: "#050927",
+        terrainIMG: false,
+        moon: false,
+        moon2: false
     },
 ];
 
@@ -89,7 +117,8 @@ let styleWorldsClass = [
         ship: "launch-rocket__img--ship-animated-upwards",
         element1: "launch-rocket__img--galaxy",
         element2: "launch-rocket__img--element2",
-        element3: "launch-rocket__img--element3"
+        element3: "launch-rocket__img--element3",
+        moon: "launch-rocket__img--moon"
     },
     // //Volar hacia diagonal izquierda
     {
@@ -97,7 +126,8 @@ let styleWorldsClass = [
         ship: "launch-rocket__img--ship-animated-left-diagonal",
         element1: "launch-rocket__img--galaxy-left",
         element2: "launch-rocket__img--element2-left-diagonal",
-        element3: "launch-rocket__img--element3-left-diagonal"
+        element3: "launch-rocket__img--element3-left-diagonal",
+        moon: "launch-rocket__img--moon-left-diagonal"
     },
     // //Volar hacia izquierda
     {
@@ -105,7 +135,8 @@ let styleWorldsClass = [
         ship: "launch-rocket__img--ship-animated-left",
         element1: "launch-rocket__img--galaxy-left",
         element2: "launch-rocket__img--element2-left",
-        element3: "launch-rocket__img--element3-left"
+        element3: "launch-rocket__img--element3-left",
+        moon: "launch-rocket__img--moon-left"
     },
     //Volar hacia diagonal derecha
     {
@@ -113,7 +144,8 @@ let styleWorldsClass = [
         ship: "launch-rocket__img--ship-animated-right-diagonal",
         element1: "launch-rocket__img--galaxy-rigth",
         element2: "launch-rocket__img--element2-right-diagonal",
-        element3: "launch-rocket__img--element3-right-diagonal"
+        element3: "launch-rocket__img--element3-right-diagonal",
+        moon: "launch-rocket__img--moon-right-diagonal"
     },
     //Volar hacia derecha
     {
@@ -121,7 +153,8 @@ let styleWorldsClass = [
         ship: "launch-rocket__img--ship-animated-right",
         element1: "launch-rocket__img--galaxy-rigth",
         element2: "launch-rocket__img--element2-right",
-        element3: "launch-rocket__img--element3-right"
+        element3: "launch-rocket__img--element3-right",
+        moon: "launch-rocket__img--moon-right"
     },
 ];
 
@@ -136,6 +169,18 @@ const typeDirectionShip = () => {
 const props = defineProps({
     planet: Number
 });
+
+//Traer nave actual
+const actualRocket = (type) => {
+    let result;
+    let idRocket = getUsersLocalStorage().shipSelected;
+    if(type === "static"){
+        result = store_data[idRocket].img;
+    }else if("animated"){
+        result = store_data[idRocket].gif;
+    };
+    return result;
+};
 
 onBeforeMount(() => {
     planetSelectedAnimation.value = levelWorlds[props.planet - 1].background;
@@ -184,18 +229,21 @@ setTimeout(() => {
     <div :class="`${classBackgroundImageContainerRef} w-full h-full relative overflow-hidden`">
         <div v-if="starsAnimationRef" :class="`launch-rocket__div--stars-background  w-full h-full absolute`"></div>
         <div v-if="starsAnimationRef" :class="`${typeDirectionShipRef.stars} launch-rocket__div--stars w-full h-full absolute`"></div>
-        <img v-if="galaxyRef" :class="`${typeDirectionShipRef.element1} absolute top-20 right-0`" :src="galaxyIMG" alt="galaxy"/>
+        <img v-if="galaxyRef && !levelWorlds[props.planet - 1].terrainIMG" :class="`${typeDirectionShipRef.element1} absolute top-20 right-0`" :src="galaxyIMG" alt="galaxy"/>
         <img v-if="galaxyRef" :class="`${typeDirectionShipRef.element2} w-20 absolute left-10 xl:left-80`" :src="moon" alt="moon"/>
         <img v-if="nebulosaRef" :class="`${typeDirectionShipRef.element3} w-80 absolute left-10 xl:left-80`" :src="nebulosa" alt="nebulosa"/>
         <img v-if="cometaRef" class="launch-rocket__img--cometa w-80 absolute left-10 xl:left-80" :src="cometaGif" alt="cometa"/>
-        <div :class="`${classBackgroundImageRef} w-full h-full flex justify-center items-center overflow-hidden`" :style="{backgroundImage: levelWorlds[props.planet - 1].img}">
-            <div class="flex items-center justify-center w-72 xl:w-96 absolute z-20 bottom-14">
-                <img v-if="shipStaticRef" class="launch-rocket__div--ship relative z-40 w-96" :src="ship" alt="ship"/>
-                <img v-if="shipAnimatedRef" :class="`${typeDirectionShipRef.ship} absolute z-50`" :src="shipAnimated" alt="ship-animated"/>
+        <div :class="`${classBackgroundImageRef} w-full h-full flex justify-center items-center overflow-hidden`" :style="{backgroundImage: levelWorlds[props.planet - 1].img, }">
+        <div v-if="levelWorlds[props.planet - 1].terrainIMG" :class="`${classBackgroundImageRef} w-full h-full z-30`" :style="{backgroundImage: levelWorlds[props.planet - 1].terrainIMG}"></div>
+        <img v-if="levelWorlds[props.planet - 1].moon" :class="`${typeDirectionShipRef.moon} absolute z-20`" :src="levelWorlds[props.planet - 1].moon" alt="jupiter-moon"/>
+        <img v-if="levelWorlds[props.planet - 1].moon2" :class="`${typeDirectionShipRef.moon} w-5 absolute left-10 z-20`" :style="{width: '300px'}" :src="levelWorlds[props.planet - 1].moon2" alt="jupiter-moon"/>
+            <div class="flex items-center justify-center w-72 xl:w-96 absolute z-40 bottom-14">
+                <img v-if="shipStaticRef" class="launch-rocket__div--ship relative z-40 w-96" :src="actualRocket('static')" alt="ship"/>
+                <img v-if="shipAnimatedRef" :class="`${typeDirectionShipRef.ship} absolute z-50`" :src="actualRocket('animated')" alt="ship-animated"/>
                 <img v-if="robotStaticRef" :class="`${classRobotRef} w-28 xl:w-32 absolute bottom-8 right-2 z-50`" :src="robot" alt="robot"/>
                 <img v-if="robotTalkingRef" class="w-32 xl:w-36 absolute right-0 bottom-6 z-50" :src="robotTalking" alt="robot"/>
             </div>
-            <div :class="`${classTerrainRef} rounded-full flex justify-center items-center`" :style="{backgroundColor: levelWorlds[props.planet - 1].terrain}">
+            <div :class="`${classTerrainRef} rounded-full flex justify-center items-center z-30`" :style="{backgroundColor: levelWorlds[props.planet - 1].terrain}">
                 <div class="launch-rocket__div--terrain-2 rounded-full" :style="{backgroundColor: levelWorlds[props.planet - 1].terrain2}"></div>
             </div>
         </div>
@@ -212,7 +260,7 @@ setTimeout(() => {
 
 .launch-rocket__div--image-animation  {
     background-position: center;
-    background-size:cover;
+    background-size: cover;
     background-repeat: no-repeat;
     animation: backgroundImgAnimation 7s linear;
     animation-fill-mode: forwards;
@@ -278,11 +326,11 @@ setTimeout(() => {
 
 @keyframes containerBackgroundMarsAnimation {
     0%{
-        background-color: #FFBF76;
+        background-color: #F4906C;
     }
 
     60%{
-        background-color: #FFBF76;
+        background-color: #F4906C;
     }
 
     100%{
@@ -298,11 +346,11 @@ setTimeout(() => {
 
 @keyframes containerBackgroundVenusAnimation {
     0%{
-        background-color: #0A0E21;
+        background-color: #A66F0C;
     }
 
     60%{
-        background-color: #0A0E21;
+        background-color: #A66F0C;
     }
 
     100%{
@@ -312,17 +360,17 @@ setTimeout(() => {
 
 /* Planeta Jupiter */
 .launch-rocket__div--container-animation-jupiter {
-    animation: containerBackgroundVenusAnimation 10s linear;
+    animation: containerBackgroundJupiterAnimation 10s linear;
     animation-fill-mode: forwards;
 }
 
-@keyframes containerBackgroundVenusAnimation {
+@keyframes containerBackgroundJupiterAnimation {
     0%{
-        background-color: #F4ACB4;
+        background-color: #000101;
     }
 
     60%{
-        background-color: #F4ACB4;
+        background-color: #000101;
     }
 
     100%{
@@ -332,17 +380,17 @@ setTimeout(() => {
 
 /* Planeta urano */
 .launch-rocket__div--container-animation-urano {
-    animation: containerBackgroundVenusAnimation 10s linear;
+    animation: containerBackgroundUranoAnimation 10s linear;
     animation-fill-mode: forwards;
 }
 
-@keyframes containerBackgroundVenusAnimation {
+@keyframes containerBackgroundUranoAnimation {
     0%{
-        background-color: #060715;
+        background-color: #160D2F;
     }
 
     60%{
-        background-color: #060715;
+        background-color: #160D2F;
     }
 
     100%{
@@ -351,38 +399,38 @@ setTimeout(() => {
 }
 
 /* Planeta jupiter */
-.launch-rocket__div--container-animation-jupiter {
+/* .launch-rocket__div--container-animation-jupiter {
     animation: containerBackgroundVenusAnimation 10s linear;
     animation-fill-mode: forwards;
 }
 
 @keyframes containerBackgroundVenusAnimation {
     0%{
-        background-color: #172237;
+        background-color: #C58850;
     }
 
     60%{
-        background-color: #172237;
+        background-color: #C58850;
     }
 
     100%{
         background-color: #000000;
     }
-}
+} */
 
 /* Planeta saturno */
 .launch-rocket__div--container-animation-saturno {
-    animation: containerBackgroundVenusAnimation 10s linear;
+    animation: containerBackgroundSaturnoAnimation 10s linear;
     animation-fill-mode: forwards;
 }
 
-@keyframes containerBackgroundVenusAnimation {
+@keyframes containerBackgroundSaturnoAnimation {
     0%{
-        background-color: #2F3F4F;
+        background-color: #C3864F;
     }
 
     60%{
-        background-color: #2F3F4F;
+        background-color: #C3864F;
     }
 
     100%{
@@ -425,9 +473,9 @@ setTimeout(() => {
     transform: translateX(170px);
 }
 
-.launch-rocket__div--ship {
-    transform: rotate(-45deg);
-}
+/* .launch-rocket__div--ship {
+    transform: rotate(0deg);
+} */
 
 .launch-rocket__div--robot-arrived {
     animation: robotArrivedAnimation 3s linear;
@@ -488,7 +536,7 @@ setTimeout(() => {
 .launch-rocket__img--ship-animated-upwards {
     top: -320px;
     left: 15px;
-    width: 600px;
+    width: 500px;
     animation: shipupwardsLaunchAnimation 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -497,11 +545,11 @@ setTimeout(() => {
 /*Arriba*/
 @keyframes shipupwardsLaunchAnimation {
     0%{
-        transform: translateY(0px) scale(1.5);
+        transform: translateY(0px) scale(1.3);
     }
 
     100%{
-        transform: translateY(-180px) scale(1.5);
+        transform: translateY(-180px) scale(1.3);
     }
 }
 
@@ -509,7 +557,7 @@ setTimeout(() => {
 .launch-rocket__img--ship-animated-left-diagonal {
     top: -320px;
     left: 15px;
-    width: 600px;
+    width: 500px;
     animation: shipLaunchAnimationLeftDiagonal 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -518,15 +566,15 @@ setTimeout(() => {
 /*Diagonal izquierda*/
 @keyframes shipLaunchAnimationLeftDiagonal {
     0%{
-        transform: translate(0px, 0px) scale(1.5) rotate(0deg);
+        transform: translate(0px, 0px) scale(1.3) rotate(0deg);
     }
 
     50%{
-        transform: translate(0px, -180px) scale(1.5) rotate(0deg);
+        transform: translate(0px, -180px) scale(1.3) rotate(0deg);
     }
 
     100%{
-        transform: translate(0px, -180px) scale(1.5) rotate(-35deg);
+        transform: translate(0px, -180px) scale(1.3) rotate(-35deg);
     }
 }
 
@@ -535,7 +583,7 @@ setTimeout(() => {
 .launch-rocket__img--ship-animated-right-diagonal {
     top: -320px;
     left: 15px;
-    width: 600px;
+    width: 500px;
     animation: shipLaunchAnimationRightDiagonal 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -544,15 +592,15 @@ setTimeout(() => {
 /*Diagonal derecha*/
 @keyframes shipLaunchAnimationRightDiagonal {
     0%{
-        transform: translate(0px, 0px) scale(1.5) rotate(0deg);
+        transform: translate(0px, 0px) scale(1.3) rotate(0deg);
     }
 
     50%{
-        transform: translate(0px, -180px) scale(1.5) rotate(0deg);
+        transform: translate(0px, -180px) scale(1.3) rotate(0deg);
     }
 
     100%{
-        transform: translate(0px, -180px) scale(1.5) rotate(35deg);
+        transform: translate(0px, -180px) scale(1.3) rotate(35deg);
     }
 }
 
@@ -560,7 +608,7 @@ setTimeout(() => {
 .launch-rocket__img--ship-animated-right {
     top: -320px;
     left: 15px;
-    width: 600px;
+    width: 500px;
     animation: shipLaunchAnimationRight 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -569,15 +617,15 @@ setTimeout(() => {
 /*Derecha*/
 @keyframes shipLaunchAnimationRight {
     0%{
-        transform: translate(0px, 0px) scale(1.5) rotate(0deg);
+        transform: translate(0px, 0px) scale(1.3) rotate(0deg);
     }
 
     50%{
-        transform: translate(0px, -180px) scale(1.5) rotate(0deg);
+        transform: translate(0px, -180px) scale(1.3) rotate(0deg);
     }
 
     100%{
-        transform: translate(0px, -180px) scale(1.5) rotate(90deg);
+        transform: translate(0px, -180px) scale(1.3) rotate(90deg);
     }
 }
 
@@ -586,7 +634,7 @@ setTimeout(() => {
 .launch-rocket__img--ship-animated-left {
     top: -320px;
     left: 15px;
-    width: 600px;
+    width: 500px;
     animation: shipLaunchAnimationLeft 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -1085,6 +1133,123 @@ setTimeout(() => {
     100%{
         transform: translate(1000px, -1000px) rotate(-60deg);
         opacity: 65%;
+    }
+}
+
+/*Aniamcion luna hacia arriba */
+.launch-rocket__img--moon {
+    width: 800px;
+    right: 20px;
+    top: 100px;
+    opacity:50%;
+    animation: moonAnimation 20s linear;
+    animation-delay: 22s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes moonAnimation  {
+    0%{
+        transform: translateY(0px);
+        opacity: 50%;
+    }
+
+    100%{
+        transform: translateY(300px);
+        opacity: 100%;
+    }
+}
+
+/*Aniamcion luna diagonal izquierda */
+.launch-rocket__img--moon-left-diagonal{
+    width: 800px;
+    right: 20px;
+    top: 100px;
+    opacity:50%;
+    animation: moonAnimationLeftDiagonal 20s linear;
+    animation-delay: 22s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes moonAnimationLeftDiagonal  {
+    0%{
+        transform: translate(0px, 0px);
+        opacity: 50%;
+    }
+
+    100%{
+        transform: translate(300px, 300px);
+        opacity: 100%;
+    }
+}
+
+/*Aniamcion luna diagonal derecha */
+.launch-rocket__img--moon-right-diagonal{
+    width: 800px;
+    right: 20px;
+    top: 100px;
+    opacity:50%;
+    animation: moonAnimationRightDiagonal 20s linear;
+    animation-delay: 22s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes moonAnimationRightDiagonal   {
+    0%{
+        transform: translate(0px, 0px);
+        opacity: 50%;
+    }
+
+    100%{
+        transform: translate(-300px, 300px);
+        opacity: 100%;
+    }
+}
+
+
+/*Aniamcion luna izquierda */
+.launch-rocket__img--moon-left{
+    width: 800px;
+    right: 20px;
+    top: 100px;
+    opacity:50%;
+    animation: moonAnimationLeft 20s linear;
+    animation-delay: 22s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes moonAnimationLeft   {
+    0%{
+        transform: translateX(0px);
+        opacity: 50%;
+    }
+
+    100%{
+        transform: translateX(300px);
+        opacity: 100%;
+    }
+}
+
+
+/*Aniamcion luna izquierda */
+.launch-rocket__img--moon-right{
+    width: 800px;
+    right: 20px;
+    top: 100px;
+    opacity:50%;
+    animation: moonAnimationRight 20s linear;
+    animation-delay: 22s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes moonAnimationRight   {
+    0%{
+        transform: translateX(0px);
+        opacity: 50%;
+    }
+
+    100%{
+        transform: translateX(-300px);
+        opacity: 100%;
     }
 }
 </style>

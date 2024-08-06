@@ -11,7 +11,7 @@ const props = defineProps({
 
 <template>
     <div class="flex justify-center items-center">
-        <img class="rocket-selected__img--rocket w-60 absolute z-10" :src="props.rocketSelected.img" alt="rocket"/>
+        <img class="rocket-selected__img--rocket w-60 absolute z-10" :src="props.rocketSelected.gif" alt="rocket"/>
         <div :class="`rocket-selected__div--container w-52 h-60 md:h-96 md:w-60 m-5 border rounded-md flex justify-center items-center transition-all cursor-pointer relative`">
 
         </div>
@@ -70,18 +70,22 @@ const props = defineProps({
 } */
 
 .rocket-selected__img--rocket {
-    animation: rocketLaunchAnimation 5s;
-    animation-delay: 2s;
+    animation: rocketLaunchAnimation 7s;
+    animation-delay: 0s;
     animation-fill-mode: forwards;
 }
 
 @keyframes rocketLaunchAnimation {
     0% {
-        transform: translate(0px, 0px);
+        transform: translate(0px, 0px) rotate(0deg);
+    }
+
+    20% {
+        transform: translate(0px, 0px) rotate(45deg);
     }
 
     100% {
-        transform: translate(500px, -500px);
+        transform: translate(700px, -800px) rotate(45deg);
     }
 }
 
