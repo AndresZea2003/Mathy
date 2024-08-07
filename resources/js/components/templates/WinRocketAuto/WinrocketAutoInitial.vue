@@ -20,8 +20,8 @@ import background11 from '../../../../../public/images/backgrounds/background-11
 import background12 from '../../../../../public/images/backgrounds/background-12.png';
 import background13 from '../../../../../public/images/backgrounds/background-13.png';
 import background14 from '../../../../../public/images/backgrounds/background-14.png';
-import rocketGif from '../../../../../public/images/rockets/Cohetes-13.gif';
-import rocketInitialIMG from '../../../../../public/images/rockets/Cohetes-13.png';
+import rocketGif from '../../../../../public/images/rockets/cohetes-x-gif.gif';
+import rocketInitialIMG from '../../../../../public/images/rockets/cohetes-x.gif';
 
 
 //Ref
@@ -188,7 +188,7 @@ const backgroundRocketSelectionStorage = () => {
 
     rocketBackgroundRef.value = store_data[rocketSelected - 1].gif;
 
-    rocketBackgroundInitialRef.value = store_data[rocketSelected - 1].img;
+    rocketBackgroundInitialRef.value = store_data[rocketSelected - 1].staticAnimation;
 };
 
 
@@ -211,7 +211,7 @@ const rocketFinalRoad = () => {
     <div class="win-rocket-initial__div--container w-full flex justify-center items-center overflow-hidden" :style="{backgroundImage: `url(${backgroundSelected})`}">
         <AnimatedStars/>
         <div  class="w-full h-full overflow-hidden flex justify-center items-center relative">
-            <img v-if="rocketInitialGifRef" :class="`${initialGifClassRef} w-96 absolute overflow-hidden`" :src="rocketBackgroundRef" alt="rocket-initial"/>
+            <img v-if="rocketInitialGifRef" :class="`${initialGifClassRef} w-52 absolute overflow-hidden`" :src="rocketBackgroundRef" alt="rocket-initial"/>
             <img v-if="rocketInitialImgRef" :class="`win-rocket-initial__img--rocket-initial ${initialImgClassRef} absolute`" :src="rocketBackgroundInitialRef" alt="rocket-initial"/>
         </div>
         <div v-if="contentRef" :class="`win-rocket-initial__div--content ${contentInitialAnimationFinalRef} absolute w-4/5 rounded-lg backdrop-blur-sm flex justify-center items-center flex-col lg:flex-row py-5 my-5 overflow-hidden`">
@@ -319,13 +319,13 @@ const rocketFinalRoad = () => {
     }
 
     100% {
-        transform: translateX(0px) rotate(0deg);
+        transform: translateX(0px) translateY(-60px) rotate(0deg);
     }
 }
 
 .win-rocket-initial__img--rocket-initial {
-    transform: translate(0px, -115px);
-    width: 410px;
+    transform: translate(0px, -60px);
+    width: 210px;
 }
 
 
@@ -346,7 +346,8 @@ const rocketFinalRoad = () => {
 }
 
 .win-rocket-initial__img--rocket-launch {
-    width: 245px;
+    /* background-color: rgba(0, 0, 255, 0.603); */
+    width: 250px;
     animation: rocketFinalIMGAnimation 2s linear;
     animation-fill-mode: forwards;
     animation-delay: 3s;
@@ -364,9 +365,9 @@ const rocketFinalRoad = () => {
 
 
 .win-rocket-initial__img--rocket-launch-gif {
-    /* background-color: red; */
+    /* background-color: rgba(255, 0, 0, 0.493); */
     width: 250px;
-    transform: rotate(90deg) translate(0px, 100px);
+    transform: rotate(90deg) translate(0px, 0px);
     animation: rocketFinalGIFAnimation 2s linear;
     animation-fill-mode: forwards;
     animation-delay: 2s;
@@ -387,7 +388,7 @@ const rocketFinalRoad = () => {
 /*Codigo para imagen momentaneo*/
 @keyframes rocketFinalGIFAnimation {
     0% {
-        transform: rotate(90deg) translate(0px, 100px);
+        transform: rotate(90deg) translate(0px, 0px);
     }
 
     100% {

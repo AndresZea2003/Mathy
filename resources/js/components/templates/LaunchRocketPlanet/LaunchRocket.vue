@@ -8,7 +8,9 @@ import marsBackground from '../../../../../public/images/backgrounds/marte-backg
 import uranoBackground from '../../../../../public/images/backgrounds/urano-background.png';
 import saturnoBackground from '../../../../../public/images/backgrounds/saturno-background.png';
 import jupiterBackground from '../../../../../public/images/backgrounds/jupiter-background.png';
+import neptunoBackground from '../../../../../public/images/backgrounds/neptuno-background.png';
 import venusBackground from '../../../../../public/images/backgrounds/venus-background.png';
+import mercurioBackground from '../../../../../public/images/backgrounds/mercurio-background.png';
 import galaxyIMG from '../../../../../public/images/launch-rocket/galaxy.png';
 import moon from '../../../../../public/images/launch-rocket/moon.png';
 import nebulosa from '../../../../../public/images/launch-rocket/nebulosa.png';
@@ -100,10 +102,19 @@ const levelWorlds = [
         moon2: false
     },
     {
-        background: "launch-rocket__div--container-animation-other",
-        img: `url(${saturnoBackground})`,
-        terrain: "#9F7C2F",
-        terrain2: "#050927",
+        background: "launch-rocket__div--container-animation-neptuno",
+        img: `url(${neptunoBackground})`,
+        terrain: "#D4D2DC",
+        terrain2: "#9AB9E6",
+        terrainIMG: false,
+        moon: false,
+        moon2: false
+    },
+    {
+        background: "launch-rocket__div--container-animation-mercurio",
+        img: `url(${mercurioBackground})`,
+        terrain: "#59525A",
+        terrain2: "#2F1C1E",
         terrainIMG: false,
         moon: false,
         moon2: false
@@ -175,9 +186,9 @@ const actualRocket = (type) => {
     let result;
     let idRocket = getUsersLocalStorage().shipSelected;
     if(type === "static"){
-        result = store_data[idRocket].img;
+        result = store_data[idRocket - 1].staticAnimation;
     }else if("animated"){
-        result = store_data[idRocket].gif;
+        result = store_data[idRocket - 1].gif;
     };
     return result;
 };
@@ -398,25 +409,25 @@ setTimeout(() => {
     }
 }
 
-/* Planeta jupiter */
-/* .launch-rocket__div--container-animation-jupiter {
-    animation: containerBackgroundVenusAnimation 10s linear;
+/* Planeta neptuno */
+.launch-rocket__div--container-animation-neptuno {
+    animation: containerBackgroundNeptunoAnimation  10s linear;
     animation-fill-mode: forwards;
 }
 
-@keyframes containerBackgroundVenusAnimation {
+@keyframes containerBackgroundNeptunoAnimation {
     0%{
-        background-color: #C58850;
+        background-color: #888383;
     }
 
     60%{
-        background-color: #C58850;
+        background-color: #888383;
     }
 
     100%{
         background-color: #000000;
     }
-} */
+}
 
 /* Planeta saturno */
 .launch-rocket__div--container-animation-saturno {
@@ -438,6 +449,25 @@ setTimeout(() => {
     }
 }
 
+/* Planeta saturno */
+.launch-rocket__div--container-animation-mercurio {
+    animation: containerBackgroundMercurioAnimation 10s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes containerBackgroundMercurioAnimation {
+    0%{
+        background-color: #53332E;
+    }
+
+    60%{
+        background-color: #53332E;
+    }
+
+    100%{
+        background-color: #000000;
+    }
+}
 
 .launch-rocket__div--terrain {
     width: 1500px;
@@ -473,9 +503,12 @@ setTimeout(() => {
     transform: translateX(170px);
 }
 
-/* .launch-rocket__div--ship {
-    transform: rotate(0deg);
-} */
+.launch-rocket__div--ship {
+    position: relative;
+    /* background-color: rgba(255, 0, 0, 0.562); */
+    transform: scale(1.0);
+    top: 290px;
+}
 
 .launch-rocket__div--robot-arrived {
     animation: robotArrivedAnimation 3s linear;
@@ -534,9 +567,9 @@ setTimeout(() => {
 
 /*Arriba*/
 .launch-rocket__img--ship-animated-upwards {
-    top: -320px;
+    top: -390px;
     left: 15px;
-    width: 500px;
+    width: 384px;
     animation: shipupwardsLaunchAnimation 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -545,19 +578,19 @@ setTimeout(() => {
 /*Arriba*/
 @keyframes shipupwardsLaunchAnimation {
     0%{
-        transform: translateY(0px) scale(1.3);
+        transform: translate(-15px,  0px) scale(1.0);
     }
 
     100%{
-        transform: translateY(-180px) scale(1.3);
+        transform: translate(-15px, -180px) scale(1.0);
     }
 }
 
 /*Diagonal izquierda*/
 .launch-rocket__img--ship-animated-left-diagonal {
-    top: -320px;
+    top: -390px;
     left: 15px;
-    width: 500px;
+    width: 384px;
     animation: shipLaunchAnimationLeftDiagonal 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -566,24 +599,24 @@ setTimeout(() => {
 /*Diagonal izquierda*/
 @keyframes shipLaunchAnimationLeftDiagonal {
     0%{
-        transform: translate(0px, 0px) scale(1.3) rotate(0deg);
+        transform: translate(-15px, 0px) scale(1.0) rotate(0deg);
     }
 
     50%{
-        transform: translate(0px, -180px) scale(1.3) rotate(0deg);
+        transform: translate(-15px, -180px) scale(1.0) rotate(0deg);
     }
 
     100%{
-        transform: translate(0px, -180px) scale(1.3) rotate(-35deg);
+        transform: translate(-15px, -180px) scale(1.0) rotate(-35deg);
     }
 }
 
 
 /*Diagonal derecha*/
 .launch-rocket__img--ship-animated-right-diagonal {
-    top: -320px;
+    top: -390px;
     left: 15px;
-    width: 500px;
+    width: 384px;
     animation: shipLaunchAnimationRightDiagonal 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -592,23 +625,23 @@ setTimeout(() => {
 /*Diagonal derecha*/
 @keyframes shipLaunchAnimationRightDiagonal {
     0%{
-        transform: translate(0px, 0px) scale(1.3) rotate(0deg);
+        transform: translate(-15px,  0px) scale(1.0) rotate(0deg);
     }
 
     50%{
-        transform: translate(0px, -180px) scale(1.3) rotate(0deg);
+        transform: translate(-15px,  -180px) scale(1.0) rotate(0deg);
     }
 
     100%{
-        transform: translate(0px, -180px) scale(1.3) rotate(35deg);
+        transform: translate(-15px,  -180px) scale(1.0) rotate(35deg);
     }
 }
 
 
 .launch-rocket__img--ship-animated-right {
-    top: -320px;
+    top: -390px;
     left: 15px;
-    width: 500px;
+    width: 384px;
     animation: shipLaunchAnimationRight 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -617,24 +650,24 @@ setTimeout(() => {
 /*Derecha*/
 @keyframes shipLaunchAnimationRight {
     0%{
-        transform: translate(0px, 0px) scale(1.3) rotate(0deg);
+        transform: translate(-15px,  0px) scale(1.0) rotate(0deg);
     }
 
     50%{
-        transform: translate(0px, -180px) scale(1.3) rotate(0deg);
+        transform: translate(-15px, -180px) scale(1.0) rotate(0deg);
     }
 
     100%{
-        transform: translate(0px, -180px) scale(1.3) rotate(90deg);
+        transform: translate(-15px,  -180px) scale(1.0) rotate(90deg);
     }
 }
 
 
 
 .launch-rocket__img--ship-animated-left {
-    top: -320px;
+    top: -390px;
     left: 15px;
-    width: 500px;
+    width: 384px;
     animation: shipLaunchAnimationLeft 10s linear;
     animation-fill-mode: forwards;
     /* transform: scale(1.4); */
@@ -643,15 +676,15 @@ setTimeout(() => {
 /*Izquierda*/
 @keyframes shipLaunchAnimationLeft {
     0%{
-        transform: translate(0px, 0px) scale(1.5) rotate(0deg);
+        transform: translate(-15px, 0px) scale(1.0) rotate(0deg);
     }
 
     50%{
-        transform: translate(0px, -180px) scale(1.5) rotate(0deg);
+        transform: translate(-15px, -180px) scale(1.0) rotate(0deg);
     }
 
     100%{
-        transform: translate(0px, -180px) scale(1.5) rotate(-90deg);
+        transform: translate(-15px, -180px) scale(1.0) rotate(-90deg);
     }
 }
 

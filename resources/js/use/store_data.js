@@ -34,10 +34,44 @@ import ship30 from '../../../public/images/rockets/Cohetes-30.png';
 import ship31 from '../../../public/images/rockets/Cohetes-31.png';
 import ship32 from '../../../public/images/rockets/Cohetes-32.png';
 
-//Importacion de los gif de cada nave
+//Importacion de los gif de cada nave en forma estatica
+import statticGif1 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif2 from '../../../public/images/rockets/Cohetes-02-c.gif';
+import statticGif3 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif4 from '../../../public/images/rockets/Cohetes-04-c.gif';
+import statticGif5 from '../../../public/images/rockets/Cohetes-05-c.gif';
+import statticGif6 from '../../../public/images/rockets/Cohetes-06-c.gif';
+import statticGif7 from '../../../public/images/rockets/Cohetes-07-c.gif';
+import statticGif8 from '../../../public/images/rockets/Cohetes-08-c.gif';
+import statticGif9 from '../../../public/images/rockets/Cohetes-09-c.gif';
+import statticGif10 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif11 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif12 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif13 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif14 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif15 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif16 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif17 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif18 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif19 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif20 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif21 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif22 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif23 from '../../../public/images/rockets/Cohetes-01-c.gif';//Faltante
+import statticGif24 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif25 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif26 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif27 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif28 from '../../../public/images/rockets/Cohetes-01-c.gif';
+import statticGif29 from '../../../public/images/rockets/Cohetes-01-c.gif';//Faltante
+import statticGif30 from '../../../public/images/rockets/Cohetes-01-c.gif';//Faltante
+import statticGif31 from '../../../public/images/rockets/Cohetes-01-c.gif';//Faltante
+import statticGif32 from '../../../public/images/rockets/Cohetes-01-c.gif';//Faltante
+
+//Importacion del gif de cada nave
 import shipGif1 from '../../../public/images/rockets/Cohetes-01-gif.gif';
 import shipGif2 from '../../../public/images/rockets/Cohetes-02-gif.gif';
-import shipGif3 from '../../../public/images/rockets/Cohetes-01-gif.gif';//Faltante
+import shipGif3 from '../../../public/images/rockets/Cohetes-03-gif.gif';
 import shipGif4 from '../../../public/images/rockets/Cohetes-04-gif.gif';
 import shipGif5 from '../../../public/images/rockets/Cohetes-05-gif.gif';
 import shipGif6 from '../../../public/images/rockets/Cohetes-06-gif.gif';
@@ -91,6 +125,17 @@ import elipse3g from '../../../public/images/store/elipse-g-tier-3.png';
 import elipse4 from '../../../public/images/store/elipse-tier-4.png';
 import elipse4g from '../../../public/images/store/elipse-g-tier-4.png';
 
+//Importacion de nave inicial en mal estado
+import initialRocketIMG from '../../../public/images/rockets/cohetes-x.gif';
+import initialRocketGIF from '../../../public/images/rockets/cohetes-x-gif.gif';
+
+
+//Nave inicial en mal estado
+let initalRocket = {
+    img: initialRocketIMG,
+    gif: initialRocketGIF
+};
+
 
 //Array que contiene los datos de todas las naves que estaran en la tienda, datos principales dato, img, price y sus dos variantes de moneda oro y plata y purchased que indica si esa nave ya se compro o no.
 
@@ -100,6 +145,7 @@ let store_data = [
         id: 1,//id
         img: ship1,//Imagen de la nave
         gif: shipGif1,//Gif animado de la nave
+        staticAnimation: statticGif1, //Gif statico para acoplar animaciones
         tier: 1,//Tier de la nave
         smoke: smoke1,//Humo de tarjeta principal
         stars: stars1,//Estrellas de tarjeta principal
@@ -112,8 +158,9 @@ let store_data = [
     {
         name: "Nova",
         id: 2,
-        img: ship3,
+        img: ship2,
         gif: shipGif2,
+        staticAnimation: statticGif2,
         tier: 2,
         smoke: smoke2,
         stars: stars2,
@@ -126,8 +173,9 @@ let store_data = [
     {
         name: "Chispa",
         id: 3,
-        img: ship2,
+        img: ship3,
         gif: shipGif3,
+        staticAnimation: statticGif3,
         tier: 1,
         smoke: smoke1,
         stars: stars1,
@@ -142,6 +190,7 @@ let store_data = [
         id: 4,
         img: ship4,
         gif: shipGif4,
+        staticAnimation: statticGif4,
         tier: 2,
         smoke: smoke2,
         stars: stars2,
@@ -156,6 +205,7 @@ let store_data = [
         id: 5,
         img: ship5,
         gif: shipGif5,
+        staticAnimation: statticGif5,
         tier: 3,
         smoke: smoke3,
         stars: stars3,
@@ -170,6 +220,7 @@ let store_data = [
         id: 6,
         img: ship6,
         gif: shipGif6,
+        staticAnimation: statticGif6,
         tier: 3,
         smoke: smoke3,
         stars: stars3,
@@ -184,6 +235,7 @@ let store_data = [
         id: 7,
         img: ship7,
         gif: shipGif7,
+        staticAnimation: statticGif7,
         tier: 3,
         smoke: smoke3,
         stars: stars3,
@@ -198,6 +250,7 @@ let store_data = [
         id: 8,
         img: ship8,
         gif: shipGif8,
+        staticAnimation: statticGif8,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -212,6 +265,7 @@ let store_data = [
         id: 9,
         img: ship9,
         gif: shipGif9,
+        staticAnimation: statticGif9,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -226,6 +280,7 @@ let store_data = [
         id: 10,
         img: ship10,
         gif: shipGif10,
+        staticAnimation: statticGif10,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -240,6 +295,7 @@ let store_data = [
         id: 11,
         img: ship11,
         gif: shipGif11,
+        staticAnimation: statticGif11,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -254,6 +310,7 @@ let store_data = [
         id: 12,
         img: ship12,
         gif: shipGif12,
+        staticAnimation: statticGif12,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -268,6 +325,7 @@ let store_data = [
         id: 13,
         img: ship13,
         gif: shipGif13,
+        staticAnimation: statticGif13,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -282,6 +340,7 @@ let store_data = [
         id: 14,
         img: ship14,
         gif: shipGif14,
+        staticAnimation: statticGif14,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -296,6 +355,7 @@ let store_data = [
         id: 15,
         img: ship15,
         gif: shipGif15,
+        staticAnimation: statticGif15,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -310,6 +370,7 @@ let store_data = [
         id: 16,
         img: ship16,
         gif: shipGif16,
+        staticAnimation: statticGif16,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -324,6 +385,7 @@ let store_data = [
         id: 17,
         img: ship17,
         gif: shipGif17,
+        staticAnimation: statticGif17,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -338,6 +400,7 @@ let store_data = [
         id: 18,
         img: ship18,
         gif: shipGif18,
+        staticAnimation: statticGif18,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -352,6 +415,7 @@ let store_data = [
         id: 19,
         img: ship19,
         gif: shipGif19,
+        staticAnimation: statticGif19,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -366,6 +430,7 @@ let store_data = [
         id: 20,
         img: ship20,
         gif: shipGif20,
+        staticAnimation: statticGif20,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -380,6 +445,7 @@ let store_data = [
         id: 21,
         img: ship21,
         gif: shipGif21,
+        staticAnimation: statticGif21,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -394,6 +460,7 @@ let store_data = [
         id: 22,
         img: ship22,
         gif: shipGif22,
+        staticAnimation: statticGif22,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -408,6 +475,7 @@ let store_data = [
         id: 23,
         img: ship23,
         gif: shipGif23,
+        staticAnimation: statticGif23,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -422,6 +490,7 @@ let store_data = [
         id: 24,
         img: ship24,
         gif: shipGif24,
+        staticAnimation: statticGif24,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -436,6 +505,7 @@ let store_data = [
         id: 25,
         img: ship25,
         gif: shipGif25,
+        staticAnimation: statticGif25,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -450,6 +520,7 @@ let store_data = [
         id: 26,
         img: ship26,
         gif: shipGif26,
+        staticAnimation: statticGif26,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -464,6 +535,7 @@ let store_data = [
         id: 27,
         img: ship27,
         gif: shipGif27,
+        staticAnimation: statticGif27,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -478,6 +550,7 @@ let store_data = [
         id: 28,
         img: ship28,
         gif: shipGif28,
+        staticAnimation: statticGif28,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -492,6 +565,7 @@ let store_data = [
         id: 29,
         img: ship29,
         gif: shipGif29,
+        staticAnimation: statticGif29,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -506,6 +580,7 @@ let store_data = [
         id: 30,
         img: ship30,
         gif: shipGif30,
+        staticAnimation: statticGif30,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -520,6 +595,7 @@ let store_data = [
         id: 31,
         img: ship31,
         gif: shipGif31,
+        staticAnimation: statticGif31,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -534,6 +610,7 @@ let store_data = [
         id: 32,
         img: ship32,
         gif: shipGif32,
+        staticAnimation: statticGif32,
         tier: 4,
         smoke: smoke4,
         stars: stars4,
@@ -578,7 +655,7 @@ const initialRockets = [
     {
         name: "Nova",
         id: 2,
-        img: ship3,
+        img: ship2,
         tier: 2,
         smoke: smoke2,
         stars: stars2,
@@ -591,7 +668,7 @@ const initialRockets = [
     {
         name: "Chispa",
         id: 3,
-        img: ship2,
+        img: ship3,
         tier: 1,
         smoke: smoke1,
         stars: stars1,
@@ -630,4 +707,4 @@ const initialRockets = [
 ];
 
 
-export {store_data, standardShip, initialRockets};
+export {store_data, standardShip, initialRockets, initalRocket};

@@ -5,12 +5,12 @@ import { onMounted, ref } from 'vue';
 import AnimatedStars from '../../activities/DrawActivity/AnimatedStars.vue';
 
 //Imagenes
-import ship from '../../../../../public/images/rockets/Cohetes-13.gif';
+import ship from '../../../../../public/images/rockets/cohetes-x-gif.gif';
 import shipOrbit from '../../../../../public/images/rockets/Cohetes-23.png';
 import shipOrbit2 from '../../../../../public/images/rockets/Cohetes-27.png';
 import robot from '../../../../../public/images/characters/robot/robot.png';
 import conection from '../../../../../public/images/home/conection.png';
-import shipStatic from '../../../../../public/images/rockets/Cohetes-13.png';
+import shipStatic from '../../../../../public/images/rockets/cohetes-x.gif';
 import satelite from '../../../../../public/images/home/satelite.png';
 import asteroidBelt from '../../../../../public/images/home/asteroid-belt.png';
 
@@ -63,10 +63,10 @@ onMounted(() => {
     //Determinamos si el usuario ya ha hecho la intro y pondremos la nave que el usuario tiene si no sera la nave predeterminada del inicio
     if(getUsersLocalStorage().introduction){
         let numRocket = getUsersLocalStorage().shipSelected;
-        shipIMG.value = store_data[numRocket - 1].img;
+        shipIMG.value = store_data[numRocket - 1].staticAnimation;
         shipGIF.value = store_data[numRocket - 1].gif;
     }else if(!getUsersLocalStorage().introduction){
-        let numRocket = getUsersLocalStorage().shipSelected;
+        // let numRocket = getUsersLocalStorage().shipSelected;
         shipIMG.value = shipStatic;
         shipGIF.value = ship;
     }
@@ -154,7 +154,7 @@ setTimeout(() => {
     <div :class="video ? ('w-full h-full relative z-10'):('welcome-name__img--galaxy w-full h-full relative z-10')">
         <div v-if="video" class="video-container">
             <video v-if="video" :autoplay="true" loop="true">
-                <source :src="videoSrc" type="video/mp4" />
+                <source class="absolute" :src="videoSrc" type="video/mp4" />
                 Tu navegador no soporta la reproducción de video.
             </video>
         </div>
@@ -173,7 +173,7 @@ setTimeout(() => {
             <img v-if="shipAnimation2" class="welcome-name__img--ship-2" :src="shipGIF" alt="ship-2"/>
             <img v-if="shipAnimationLeft" class="welcome-name__img--ship-left" :src="shipGIF" alt="ship-2"/>
             <img v-if="robotRocket" :class="`${conectionClass} w-28 absolute  bottom-14 left-10`" :src="conection" alt="conection"/>
-            <img v-if="robotRocket" class="welcome-name__img--ship-static w-96 z-10 absolute" :src="shipIMG" alt="ship"/>
+            <img v-if="robotRocket" class="welcome-name__img--ship-static w-52 z-10 absolute" :src="shipIMG" alt="ship"/>
             <img v-if="robotRocket" :class="`${robotClass} w-40 relative bottom-4 z-0 left-24`" :src="typeRobot" alt="robot"/>
         </div>
 
@@ -229,6 +229,7 @@ setTimeout(() => {
 }
 
 .welcome-name__img--ship-2 {
+    /* background-color: rgba(0, 0, 255, 0.486); */
     width: 490px;
     margin: auto;
     position: absolute;
@@ -280,7 +281,7 @@ setTimeout(() => {
     }
 
     100% {
-        transform: translate(1000px, -300px) scale(1.4) rotate(90deg);
+        transform: translate(1800px, -300px) scale(1.4) rotate(90deg);
         opacity: 100%;
     }
 }
@@ -459,8 +460,9 @@ setTimeout(() => {
 
 .welcome-name__img--ship-static {
     /* transform: rotate(-45deg); */
-    left: -80px;
-    bottom: -40px;
+    /* background-color: rgba(255, 0, 0, 0.541); */
+    left: -60px;
+    bottom: -220px;
     animation: ship3Animation 6s infinite linear;
 }
 
@@ -483,7 +485,6 @@ setTimeout(() => {
 }
 
 .welcome-name__img--robot-arrived {
-    background-color: aqua;
     animation: robotArrivedAnimation 3s linear;
 }
 
@@ -652,7 +653,7 @@ setTimeout(() => {
 
 
 .video-container {
-    position: relative;
+    position: absolute;
     width: 100%;
     height: 100%;
     background: rgb(182, 182, 182);
