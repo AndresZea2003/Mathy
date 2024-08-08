@@ -32,6 +32,7 @@ import impactShot from '../../../../../public/audios/effects/winCoinImpact.mp3';
 import explosion from  '../../../../../public/audios/effects/winCoinExplosion.mp3';
 import turnCoin from '../../../../../public/audios/effects/winCoinTurnCoinEffect.mp3';
 import coinReward from '../../../../../public/audios/effects/WinCoinCoinPayout.mp3';
+import { store_data } from '../../../use/store_data';
 
 //Emits
 const emit = defineEmits(['updateCoins']);
@@ -106,7 +107,12 @@ const props = defineProps({
     type_coin: String
 });
 
+//Funcion que trae la nave actual del usuario
+const actualRocket = () => {
+    let idRocket = getUsersLocalStorage().shipSelected;
 
+    return store_data[idRocket - 1].img
+}
 
 //Funcion basica para sacar un numero random
 const randomNum = (array) => {
@@ -172,9 +178,9 @@ setTimeout(() => {
                 newCoinRef.value = true;
                 emit('updateCoins', false);
             }, 2000);
-        }, 3000);
+        }, 1500);
     }, 1500);
-}, 5900);
+}, 4500);
 
 //Algoritmo de sonidos
 const laserSounds = () => {
@@ -191,19 +197,13 @@ const laserSounds = () => {
     turnCoinSound.volume = 0.1;
     payoutCoinSound.volume = 0.1;
 
-    laserShotSound.play();
+
+    setTimeout(() => {
+        laserShotSound.play();
+    }, 2000);
 
     setTimeout(() => {
         impactSound.play();
-
-        setTimeout(() => {
-            impactSound.currentTime = 0;
-            impactSound.play();
-
-            setTimeout(() => {
-                impactSound.currentTime = 0;
-                impactSound.play();
-
                 setTimeout(() => {
                     explosionSound.play();
 
@@ -212,22 +212,20 @@ const laserSounds = () => {
                         setTimeout(() => {
                             payoutCoinSound.play();
                         }, 1000);
-                    }, 6000);
+                    }, 3700);
                 }, 100);
-            }, 2000);
-        }, 2000);
-    }, 1500);
+    }, 4000);
 
 
-    setTimeout(() => {
-        laserShotSound.currentTime = 0;
-        laserShotSound.play();
+    // setTimeout(() => {
+    //     laserShotSound.currentTime = 0;
+    //     laserShotSound.play();
 
-        setTimeout(() => {
-            laserShotSound.currentTime = 0;
-            laserShotSound.play();
-        }, 2000);
-    }, 2000);
+    //     setTimeout(() => {
+    //         laserShotSound.currentTime = 0;
+    //         laserShotSound.play();
+    //     }, 2000);
+    // }, 2000);
 };
 
 laserSounds();
@@ -236,16 +234,18 @@ laserSounds();
 
 <template>
     <div class="win-coin__div--container w-full h-full flex justify-center items-center absolute bg-no-repeat bg-cover top-0 left-0 z-50" :style="{backgroundImage: `url(${backgroundImage})`}">
-        <div class="relative">
-            <img class="win-coin__img--ship w-48 xl:w-60 relative bottom-40 right-10 xl:right-96 z-10" :src="shipStatic" alt="ship"/>
-            <div v-if="bulletImpactRef" class="win-coin__div--bullet w-14 h-4 rounded-xl relative " :style="{backgroundColor: bulletColor.background ,boxShadow:  `0px 0px 23px 8px ${bulletColor.shadow}`}"></div>
-            <img v-if="asteroidRef" class="win-coin__img--asteroid w-40 absolute left-14 xl:top-36 xl:left-96" :src="asteroid" alt="asteroid"/>
-            <div v-if="bulletImpactRef" class="win-coin__div--impact absolute bottom-5  w-10 h-10 left-28 xl:left-96 rounded-full"></div>
-            <div v-if="explosionRef" class="win-coin__div--explosion absolute w-10 h-10 left-28 rounded-full z-20"></div>
-            <img v-if="coinRef" class="win-coin__div--coin absolute left-20" :src="coinImg" alt="coin"/>
-            <div v-if="actualCoinTempRef" class="win-coin__div--actual-coins w-full grid grid-cols-5 absolute m-auto left-0 right-0 rounded bg-blue-950 border-2 border-cyan-400 rounded-xl overflow-hidden">
-                <img v-for="coin, index in actualCoinRef" :key="index" class="win-coin__img--coin-actual" :src="coinImg" alt="coin"/>
-                <img v-if="newCoinRef" class="win-coin__img--new-coin" :src="coinImg" alt="coin"/>
+        <div class="w-full h-full flex justify-center items-center ">
+            <div class="relative">
+                <img class="win-coin__img--ship w-48 xl:w-60 relative bottom-40 right-8 xl:right-96 z-10" :src="actualRocket()" alt="ship"/>
+                <div v-if="bulletImpactRef" class="win-coin__div--bullet w-20 h-4 rounded-xl relative " :style="{backgroundColor: bulletColor.background ,boxShadow:  `0px 0px 23px 8px ${bulletColor.shadow}`}"></div>
+                <img v-if="asteroidRef" class="win-coin__img--asteroid w-40 absolute left-14 xl:top-36 xl:left-96" :src="asteroid" alt="asteroid" />
+                <div v-if="bulletImpactRef" class="win-coin__div--impact absolute bottom-5  w-10 h-10 left-28 xl:left-96 rounded-full"></div>
+                <div v-if="explosionRef" class="win-coin__div--explosion absolute w-10 h-10 left-28 rounded-full z-20"></div>
+                <img v-if="coinRef" class="win-coin__div--coin absolute left-20" :src="coinImg" alt="coin"/>
+                <div v-if="actualCoinTempRef" class="win-coin__div--actual-coins w-full grid grid-cols-5 absolute m-auto left-0 right-0 rounded bg-blue-950 border-2 border-cyan-400 rounded-xl overflow-hidden">
+                    <img v-for="coin, index in actualCoinRef" :key="index" class="win-coin__img--coin-actual" :src="coinImg" alt="coin"/>
+                    <img v-if="newCoinRef" class="win-coin__img--new-coin" :src="coinImg" alt="coin"/>
+                </div>
             </div>
         </div>
     </div>
@@ -283,29 +283,29 @@ laserSounds();
 
 @keyframes shipAnimation  {
     0%{
-        transform: translate(3px,  0px) rotate(120deg);
+        transform: translate(3px,  0px) rotate(160deg);
     }
 
     50%{
-        transform: translate(0px,  0px) rotate(120deg);
+        transform: translate(0px,  0px) rotate(160deg);
     }
 
     100%{
-        transform: translate(3px,  0px) rotate(120deg);
+        transform: translate(3px,  0px) rotate(160deg);
     }
 }
 
 @keyframes shipXLAnimation  {
     0%{
-        transform: translate(3px,  0px) rotate(70deg);
+        transform: translate(3px,  0px) rotate(114deg);
     }
 
     50%{
-        transform: translate(0px,  0px) rotate(70deg);
+        transform: translate(0px,  0px) rotate(114deg);
     }
 
     100%{
-        transform: translate(3px,  0px) rotate(70deg);
+        transform: translate(3px,  0px) rotate(114deg);
     }
 }
 
@@ -329,17 +329,22 @@ laserSounds();
     transform: rotate(74deg);
     top: -250px;
     left: 33px;
-    animation: bulletAnimation 2s linear infinite;
-    background-color: rgb(132, 0, 255);
-    box-shadow: 0px 0px 23px 8px rgba(174, 0, 255, 0.75);
+    opacity: 0%;
+    animation: bulletAnimation 2s linear;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
 }
 
 @media screen and (min-width: 1300px) {
     .win-coin__div--bullet {
-        transform: rotate(74deg);
+        /* transform: rotate(74deg); */
+        transform: translate(-250px, 0px) rotate(22deg);
         top: -250px;
         left: 33px;
-        animation: bulletXLAnimation 2s linear infinite;
+        opacity: 0%;
+        animation: bulletXLAnimation 2.2s linear;
+        animation-delay: 2s;
+        animation-fill-mode: forwards;
     }
 }
 
@@ -347,10 +352,22 @@ laserSounds();
 @keyframes bulletAnimation  {
     0%{
         transform: translate(0px, 0px) rotate(74deg);
+        opacity: 0%;
+    }
+
+    0%{
+        transform: translate(0px, 0px) rotate(74deg);
+        opacity: 100%;
+    }
+
+    99%{
+        transform: translate(95px, 340px) rotate(74deg);
+        opacity: 100%;
     }
 
     100%{
         transform: translate(95px, 340px) rotate(74deg);
+        opacity: 0%;
     }
 }
 
@@ -358,24 +375,40 @@ laserSounds();
 @keyframes bulletXLAnimation  {
     0%{
         transform: translate(-250px, 0px) rotate(22deg);
+        opacity: 0%;
+    }
+
+    1%{
+        transform: translate(-250px, 0px) rotate(22deg);
+        opacity: 100%;
+    }
+
+    99%{
+        transform: translate(375px, 210px) rotate(22deg);
+        opacity: 100%;
     }
 
     100%{
         transform: translate(375px, 210px) rotate(22deg);
+        opacity: 0%;
     }
 }
 
 .win-coin__div--impact {
     bottom: -80px;
+    opacity: 0%;
     box-shadow: 0px 0px 48px 11px rgba(255, 255, 255, 0.13);
-    animation: impactAnimation 2s linear infinite;
+    animation: impactAnimation 2s linear;
+    animation-delay: 2.3s;
 }
 
 @media screen and (min-width: 1300px) {
     .win-coin__div--impact {
         bottom: 5px;
         left: 440px;
-        animation: impactAnimation 2.08s linear infinite;
+        opacity: 0%;
+        animation: impactAnimation 2.08s linear;
+        animation-delay: 2.3s;
     }
 }
 
@@ -439,14 +472,14 @@ laserSounds();
 
 .win-coin__div--coin  {
     bottom: -130px;
-    animation: winCoinAnimation 5s linear;
+    animation: winCoinAnimation 3s linear;
     animation-fill-mode: forwards;
 }
 
 @media screen and (min-width: 1300px) {
     .win-coin__div--coin  {
         bottom: -130px;
-        animation: winCoinXLAnimation 5s linear;
+        animation: winCoinXLAnimation 3s linear;
         animation-fill-mode: forwards;
     }
 }
@@ -501,17 +534,17 @@ laserSounds();
         opacity: 100%;
     }
 
-    50%{
+    40%{
         transform: translate(330px, -270px) rotate(0deg);
         opacity: 100%;
     }
 
-    80%{
+    70%{
         transform: translate(0px, -270px) rotate(0deg);
         opacity: 100%;
     }
 
-    84%{
+    74%{
         transform: translate(0px, -270px) rotate(360deg);
         opacity: 100%;
     }
